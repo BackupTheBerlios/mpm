@@ -67,35 +67,35 @@ action_check() {
 }
 
 action_list() {
-            check_db_status_short
-            for d in $_directories_db ; do
-                b="$MPM_DB/installed/$d"
-                cat $b/*/filename 2>/dev/null
-            done
+    check_db_status_short
+    for d in $_directories_db ; do
+        b="$MPM_DB/installed/$d"
+        cat $b/*/filename 2>/dev/null
+    done
 }
 
 action_queryfile() {
-            echostart "checking file: "
-            test -f "$1" || error "no such file: $1"
-            absfile="`relpath_to_abs \"$1\"`"
-            echoend "$absfile"
+    echostart "checking file: "
+    test -f "$1" || error "no such file: $1"
+    absfile="`relpath_to_abs \"$1\"`"
+    echoend "$absfile"
 
-            check_db_status_short
+    check_db_status_short
 
-            r=`grep -l "^$absfile\$" $MPM_DB/installed/*/*/filelist`
-            test -n "$r" || error "$absfile was not installed by any package"
-            for i in $r ; do
-                p=`echo "$i" | sed "s@$MPM_DB/installed/\(.*\)/filelist@\1@g"`
-                j="$j `cat \"$MPM_DB/installed/$p/filename\"`"
-            done
-            if test "`echo \"$j\" | wc -w`" -ne 1 ; then
-                warn "$absfile seems to be installed by multiple packages"
-                warn "uninstalling one of them, will delete this file"
-            fi
-            echo "$absfile was installed by:"
-            for i in $j ; do
-                echo "$i"
-            done
+    r=`grep -l "^$absfile\$" $MPM_DB/installed/*/*/filelist`
+    test -n "$r" || error "$absfile was not installed by any package"
+    for i in $r ; do
+        p=`echo "$i" | sed "s@$MPM_DB/installed/\(.*\)/filelist@\1@g"`
+        j="$j `cat \"$MPM_DB/installed/$p/filename\"`"
+    done
+    if test "`echo \"$j\" | wc -w`" -ne 1 ; then
+        warn "$absfile seems to be installed by multiple packages"
+        warn "uninstalling one of them, will delete this file"
+    fi
+    echo "$absfile was installed by:"
+    for i in $j ; do
+        echo "$i"
+    done
 }
 
 action_querypackage() {
@@ -155,13 +155,13 @@ case $_action in
 esac
 
 case $_action in
-    init)       action_init                             ;;
-    status)     action_status                           ;;
-    check)      action_check                            ;;
-    list)       action_list                             ;;
-    queryfile)  action_queryfile "$_query_arg"          ;;
-    querypackage) action_querypackage "$_query_arg"     ;;
-    delete)     action_delete                           ;;
+    init)           action_init                         ;;
+    status)         action_status                       ;;
+    check)          action_check                        ;;
+    list)           action_list                         ;;
+    queryfile)      action_queryfile "$_query_arg"      ;;
+    querypackage)   action_querypackage "$_query_arg"   ;;
+    delete)         action_delete                       ;;
     *)
         error "parsing command line: unkown action"
         ;;
