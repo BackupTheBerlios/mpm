@@ -1,0 +1,8 @@
+set -e
+
+if test "$_os" = "minix" ; then
+    cd $SMPM_BUILDROOT/grep-2.5.1a/.
+    patch -s -p1 < $SMPM_PATCHES/grep-2.5.1a-minix3.patch
+fi
+
+exit 0

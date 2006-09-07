@@ -1,0 +1,10 @@
+name:       gnu-grep
+version:    2.5.1a
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/grep/grep-2.5.1a.tar.bz2
+filesize:   527386
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU grep
+os:         yes
+arch:       yes
