@@ -143,7 +143,6 @@ while true ; do
     case "$1" in
         -quiet)         exec 1>/dev/null        ;;
         -really-quiet)  exec 1>/dev/null 2>&1   ;;
-        -all)           _query=all              ;;
         -striproot=*)   _striproot=`echo "$1" | cut -d '=' -f 2`         ;;
         -*)             error "parsing command line: unknown option: $1" ;;
         *)              break                   ;;
