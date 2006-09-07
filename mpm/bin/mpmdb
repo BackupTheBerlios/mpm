@@ -17,13 +17,15 @@ fi
 . "$MPM_HOME/bin/mpmcommon" || exit 2
 
 myusage() {
-    echo "$_myname <action> [options]"
+    echo "$_myname <action> [options] [<filename>|<packagename>]"
     echo ""
     echo "actions:"
     echo "  init                initialize new database"
     echo "  status              check status of database"
     echo "  check               check consistency of database"
-    echo "  query               query the database"
+    echo "  list                list all installed packages"
+    echo "  queryfile           query the database for <filename>"
+    echo "  querypackage        query the database for <packagename>"
     echo "  delete              delete complete database (use with caution!)"
     echo ""
     echo "generic options:"
@@ -31,12 +33,9 @@ myusage() {
     echo "  -really-quiet       suppress writing to stdout and stderr"
     echo "  -help|--help|-h|-?  print this help message"
     echo ""
-    echo "query options:"
-    echo "  -all                list all installed packages [default]"
-    echo "  -file=<file>        find package that installed <file>"
-    echo "  -striproot=<dir>    strip <dir> of the absolute filename <file> for -file"
-    echo "                      queries. (useful when doing installs with mpm"
-    echo "                      install -root=<dir>)"
+    echo "queryfile options:"
+    echo "  -striproot=<dir>    strip <dir> of the absolute <filename> (useful when"
+    echo "                      doing installs with mpm install -root=<dir>)"
     echo ""
 }
 
@@ -67,20 +66,18 @@ action_check() {
     # present and, if possible to check (like details), sane
 }
 
-action_query() {
-
-    case "$1" in
-        all)
+action_list() {
             check_db_status_short
             for d in $_directories_db ; do
                 b="$MPM_DB/installed/$d"
                 cat $b/*/filename 2>/dev/null
             done
-            ;;
-        file)
+}
+
+action_queryfile() {
             echostart "checking file: "
-            test -f "$2" || error "no such file: $2"
-            absfile="`relpath_to_abs \"$2\"`"
+            test -f "$1" || error "no such file: $1"
+            absfile="`relpath_to_abs \"$1\"`"
             echoend "$absfile"
 
             check_db_status_short
@@ -99,9 +96,9 @@ action_query() {
             for i in $j ; do
                 echo "$i"
             done
-            ;;
-        *)      error "bug! unknown query type" ;;
-    esac
+}
+
+action_querypackage() {
 }
 
 action_delete() {
@@ -132,27 +129,38 @@ if test $# -eq 0 ; then usage ; fi
 _action="$1"
 shift 1
 
-_query="all"
-_query_arg=""
-
-while test "$#" -ne 0 ; do
+while true ; do
     case "$1" in
         -quiet)         exec 1>/dev/null        ;;
         -really-quiet)  exec 1>/dev/null 2>&1   ;;
         -all)           _query=all              ;;
-        -file=*)        _query=file
-                        _query_arg=`echo "$1" | cut -d '=' -f 2`
-                        ;;
-        *)              error "parsing command line: unknown option: $1" ;;
+        -*)             error "parsing command line: unknown option: $1" ;;
+        *)              break                   ;;
     esac
     shift 1
 done
 
 case $_action in
+    query*)
+        if test $# -eq 0 ; then
+            error "parsing command line: no file- or packagename specified"
+        fi
+        _query_arg="$1"
+        shift 1
+        if test $# -ne 0 ; then
+            error "parsing command line: garbage at end of line"
+        fi
+        ;;
+    *)  ;;
+esac
+
+case $_action in
     init)       action_init                             ;;
     status)     action_status                           ;;
     check)      action_check                            ;;
-    query)      action_query  "$_query" "$_query_arg"   ;;
+    list)       action_list                             ;;
+    queryfile)  action_queryfile "$_query_arg"          ;;
+    querypackage) action_querypackage "$_query_arg"     ;;
     delete)     action_delete                           ;;
     *)
         error "parsing command line: unkown action"
