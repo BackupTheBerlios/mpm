@@ -80,6 +80,14 @@ action_queryfile() {
     absfile="`relpath_to_abs \"$1\"`"
     echoend "$absfile"
 
+    if test -n "$_striproot" ; then
+        echostart "stripping root: "
+        absfile2=`echo "$absfile" | sed "s@$_striproot\(.*\)@\1@"`
+        test "$absfile" != "$absfile2" || error "striproot does not match"
+        absfile="$absfile2"
+        echoend "$absfile"
+    fi
+
     check_db_status_short
 
     r=`grep -l "^$absfile\$" $MPM_DB/installed/*/*/filelist`
@@ -129,11 +137,14 @@ if test $# -eq 0 ; then usage ; fi
 _action="$1"
 shift 1
 
+_striproot=""
+
 while true ; do
     case "$1" in
         -quiet)         exec 1>/dev/null        ;;
         -really-quiet)  exec 1>/dev/null 2>&1   ;;
         -all)           _query=all              ;;
+        -striproot=*)   _striproot=`echo "$1" | cut -d '=' -f 2`         ;;
         -*)             error "parsing command line: unknown option: $1" ;;
         *)              break                   ;;
     esac
