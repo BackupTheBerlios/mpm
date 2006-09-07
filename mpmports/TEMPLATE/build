@@ -4,7 +4,7 @@
 #
 # MPM_WORK          MPM work directory; rarely needed
 #
-# SMPM_FILES        directory wehre additional files reside that could be
+# SMPM_FILES        directory where additional files reside that could be
 #                   moved to the pristine sources directory for succesful
 #                   compilation
 #
