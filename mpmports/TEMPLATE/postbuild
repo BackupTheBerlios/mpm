@@ -1,0 +1,27 @@
+# This is the post-build script. Do whatever you have to do after the build
+# script has run. Available environment variables are:
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# SMPM_FILES        directory wehre additional files reside that could be
+#                   moved to the pristine sources directory for succesful
+#                   compilation
+#
+# SMPM_PATCHES      directory containing patchfiles to be applied to the
+#                   pristine sources
+#
+# SMPM_BUILDROOT    directory where the unpacked pristine sources reside
+#
+# SMPM_INSTALLROOT  directory where the build script should install the
+#                   compiled binaries, libraries, documentation, et cetera.
+#                   this is what gets packaged in the binary MPM file
+#
+# _arch             current architecture, e.g. i386, ppc, et cetera
+#
+# _os               current operating system, e.g. minix, linux, et cetera
+
+set -e
+
+strip "$SMPM_INSTALLROOT/usr/bin/TEMPLATE"
+
+exit 0

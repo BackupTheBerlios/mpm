@@ -1,0 +1,3 @@
+somepackage
+someotherpackage (>=1.2.3)
+yetanotherpackage (=3.2.1)

@@ -1,0 +1,10 @@
+name:       package-name-without-spaces
+version:    1.2.3
+release:    1
+source:     http://ftp.somehost.org/path/TEMPLATE/TEMPLATE.tar.bz2
+filesize:   123456
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    This is the summary for TEMPLATE
+os:         yes
+arch:       yes

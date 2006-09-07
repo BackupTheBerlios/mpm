@@ -1,0 +1,11 @@
+# This is the post-install script. Do whatever you have to do after the
+# files have been installed. This script will be packaged in the binary
+# MPM file and run after installation. Available environment variables are:
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# MPM_INSTALLROOT   root directory where package was installed
+
+set -e
+
+exit 0

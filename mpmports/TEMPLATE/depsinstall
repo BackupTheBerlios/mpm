@@ -1,0 +1,4 @@
+somepackage
+someotherpackage (>=1.2.3)
+yetanotherpackagebutnotthesameasforbuild (=3.2.1)
+thispackageconflicts (conflict)

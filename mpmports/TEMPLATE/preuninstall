@@ -1,0 +1,12 @@
+# This is the pre-uninstall script. Do whatever you have to do before
+# the package gets uninstalled. This file will be wrapped inside the binary
+# MPM and stored in the database after installation. It will be run when
+# uninstallation is requested.
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# MPM_INSTALLROOT   root directory where package was installed
+
+set -e
+
+exit 0

@@ -1,0 +1,11 @@
+# This is the pre-install script. Do whatever you have to do before the
+# actual installation commences. This script will be packaged in the binary
+# MPM file and run before installation. Available environment variables are:
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# MPM_INSTALLROOT   root directory of where the package gets installed
+
+set -e
+
+exit 0

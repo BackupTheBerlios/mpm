@@ -1,0 +1,51 @@
+# This is the build script. Do whatever you have to do to build the
+# application, like running configure, make, et cetera. Available environment
+# variables are:
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# SMPM_FILES        directory wehre additional files reside that could be
+#                   moved to the pristine sources directory for succesful
+#                   compilation
+#
+# SMPM_PATCHES      directory containing patchfiles to be applied to the
+#                   pristine sources
+#
+# SMPM_BUILDROOT    directory where the unpacked pristine sources reside
+#
+# SMPM_INSTALLROOT  directory where the build script should install the
+#                   compiled binaries, libraries, documentation, et cetera.
+#                   this is what gets packaged in the binary MPM file
+#
+# _arch             current architecture, e.g. i386, ppc, et cetera
+#
+# _os               current operating system, e.g. minix, linux, et cetera
+
+set -e
+
+cd $SMPM_BUILDROOT/some-directory
+
+if test "$_os" = "minix" ; then
+    PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+    export PATH
+
+    CC="cc"
+    LD="cc"
+    CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1"
+
+    PREFIX="/usr/gnu"
+else
+    PREFIX="/usr"
+fi
+
+CC="$CC" LD="$LD" CFLAGS="$CFLAGS" sh \
+configure --prefix="$PREFIX" \
+          --disable-nls \
+          --disable-dependency-tracking \
+
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0
