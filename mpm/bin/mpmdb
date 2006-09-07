@@ -34,7 +34,7 @@ myusage() {
     echo "  -help|--help|-h|-?  print this help message"
     echo ""
     echo "queryfile options:"
-    echo "  -striproot=<dir>    strip <dir> of the absolute <filename> (useful when"
+    echo "  -striproot=<path>   strip <path> of the absolute <filename> (useful when"
     echo "                      doing installs with mpm install -root=<dir>)"
     echo ""
 }
