@@ -1,0 +1,12 @@
+# set this to no if you do not want to check for all applications that
+# mpmsrc needs to function properly (i.e. you KNOW they are all there)
+_check_applications=no
+
+# to turn off the coloured output on a colour capable terminal, uncomment
+# the next line
+#TERM=dumb
+
+# this is the same thing you can specify on the command line with -root=<dir>
+# it defines where the software gets installed
+_mpm_install_root="/"
+

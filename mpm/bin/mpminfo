@@ -1,0 +1,62 @@
+#! /bin/sh
+
+# Minix Package Manager
+#
+# Copyright (c) 2006 by Ivo van Poorten.
+# All rights reserved.
+
+test -z "$MPM_HOME" && MPM_HOME="/usr/mpm"
+export MPM_HOME
+
+i=`echo "$MPM_HOME" | wc -c`
+if test "$i" -lt 4 -o "$i" = "/usr" -o "$i" = "/usr/local" ; then
+    echo "MPM_HOME is set to $MPM_HOME. that doesn't seem right."
+    exit 2
+fi
+
+. "$MPM_HOME/bin/mpmcommon" || exit 2
+
+myusage() {
+    echo "$_myname [options] <filename>"
+    echo ""
+    echo "print detailed information of an .mpm or .src.mpm package"
+    echo ""
+    echo "options:"
+    echo "  -quiet              suppress writing to stdout"
+    echo "  -really-quiet       suppress writing to stdout and stderr"
+    echo "  -help|--help|-h|-?  print this help message"
+    echo "  -descr              print full description"
+    echo "  -deps               print all dependencies"
+    echo ""
+}
+
+check_help_and_quiet $@
+check_system
+
+# -----------------------------------------------------------------------------
+
+if test $# -eq 0 ; then usage ; fi
+
+while test $# -ne 0 ; do
+    case "$1" in
+        -quiet)         exec 1>/dev/null        ;;
+        -really-quiet)  exec 1>/dev/null 2>&1   ;;
+        -*)             error "parsing command line: unknown option: $1" ;;
+        *)              break;
+    esac
+    shift 1
+done
+
+if test $# -eq 0 ; then
+    error "parsing command line: no subject specified"
+fi
+_subject="$1"
+shift 1
+
+if test $# -ne 0 ; then
+    error "parsing command line: garbage after subject"
+fi
+
+action_info "$subject"
+
+exit 0

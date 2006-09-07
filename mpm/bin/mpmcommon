@@ -1,0 +1,412 @@
+#! /bin/sh
+
+# Minix Package Manager
+#
+# Copyright (c) 2006 by Ivo van Poorten.
+# All rights reserved.
+
+_myname=`basename $0`
+
+if test "$_myname" = "mpmcommon" ; then
+    echo "do not call mpmcommon directly. only use the mpm and mpmsrc wrappers"
+    exit 2
+fi
+
+MPM_WORK=${MPM_WORK-"$MPM_HOME/work"}
+export MPM_WORK
+MPM_DB=${MPM_DB-"$MPM_HOME/db"}
+MPM_ETC=${MPM_ETC-"$MPM_HOME/etc"}
+MPM_VERSION="`cat \"$MPM_ETC/version\"`"
+MPM_COMMON="$MPM_HOME/bin/mpmcommon"
+MPM_MPMS=${MPM_MPMS-"$MPM_HOME/MPMS"}
+MPM_SMPMS=${MPM_SMPMS-"$MPM_HOME/SMPMS"}
+
+#. "$MPM_ETC/$_myname.rc"
+. "$MPM_ETC/mpm.rc"
+
+_files="details description prebuild build postbuild preinstall postinstall preuninstall postuninstall depsbuild depsinstall"
+_files_bmpm="details description preinstall postinstall preuninstall postuninstall filelist depsinstall"
+_files_installed="details description preuninstall postuninstall filelist filename installroot"
+_directories="FILES PATCHES"
+_directories_bmpm=""
+_directories_installed="DEPENDSON DEPENDSONME"
+_directories_db="0 1 2 3 4 5 6 7 8 9 a b c d e f g h i j k l m n o p q r s t u v w x y z"
+_details=" name version release source license summary os arch filesize md5sum "
+# spaces before and after the detail fields are IMPORTANT!
+
+LC_ALL=C
+export LC_ALL
+
+# BSD or SYSV echo?
+case `echo -n` in
+    -n) _echo_n=""      _echo_c='\c'    ;;
+    *)  _echo_n="-n"    _echo_c=""      ;;
+esac
+case `echo "\r"` in
+    "\r")   _echo_e="-e"    ;;
+    *)      _echo_e=""      ;;
+esac
+
+# colors
+case "$TERM" in
+    xterm|linux|minix)
+        _echo_bold="[1m"
+        _echo_red="[31m"
+        _echo_green="[32m"
+        _echo_yellow="[33m"
+        _echo_cyan="[36m"
+        _echo_normal="[0m[39m"
+        ;;
+    *)
+        ;;
+esac
+
+usage() {
+    echo "$_myname version $MPM_VERSION"
+    echo ""
+    echo "usage:"
+    echo ""
+    myusage
+    exit 2
+}
+
+check_help_and_quiet() {
+    for i in $@ ; do
+        case "$i" in
+            -\?|-h|-help|--help)    usage ;;
+            -quiet)                 exec 1>/dev/null        ;;
+            -really-quiet)          exec 1>/dev/null 2>&1   ;;
+        esac
+    done
+}
+
+rm-f() {
+#    rm -if $@
+    rm -f "$@"
+}
+
+rm-rf() {
+#    rm -irf $@
+    rm -rf "$@"
+}
+
+echostart() {
+    _echostart="$@"
+    echo $_echo_n "* $@$_echo_c"
+}
+
+echomid() {
+    echo $_echo_n "$_echo_cyan$@$_echo_normal$_echo_c"
+}
+
+echoend() {
+    unset _echostart
+    case "$@" in
+        failed)     echo "$_echo_red$@$_echo_normal"    ;;
+        ok)         echo "$_echo_green$@$_echo_normal"   ;;
+        *)          echo "$_echo_yellow$@$_echo_normal" ;;
+    esac
+}
+
+die() {
+    test -n "$_echostart" && echoend "failed"
+    echo "$_myname: $@" >&2
+    exit 2
+}
+
+error() {
+    test -n "$_echostart" && echoend "failed"
+    echo "$_myname: error: $@" >&2
+    exit 2
+}
+
+warn() {
+    test -n "$_echostart" && _echostart2="$_echostart" && echoend "warning"
+    echo "$_myname: warning: $@" >&2
+    test -n "$_echostart2" && echostart "$_echostart2" && unset _echostart2
+}
+
+check_workdir() {
+    echostart "checking working directory: "
+    test -d "$MPM_WORK" -a -w "$MPM_WORK" || error "$MPM_WORK is not a writable directory"
+    echoend "$MPM_WORK"
+}
+
+check_tempdir() {
+    echostart "checking temporary directory: "
+    test -z "$TEMPDIR" && TEMPDIR="/tmp"
+
+    for i in "$TEMPDIR" /tmp /usr/tmp /usr/local/tmp XnotempdirX ; do
+        test -d "$i" -a -w "$i" && break
+    done
+
+    test "$i" = "XnotempdirX" && error "cannot find a writable temporary directory"
+    export TEMPDIR="$i"
+    echoend "$i"
+}
+
+# ALWAYS call this before doing anything serious
+check_system() {
+    test "$_check_applications" = "no" || check_applications
+    check_arch_os
+    case "$os" in
+        minix)  binsizes xxl    ;;
+        *)                      ;;
+    esac
+    if test -z "$download" ; then
+        case "$os" in
+            minix)  download="urlget"       ;;
+            *)      download="wget -O -"    ;;
+        esac
+    fi
+}
+
+# checking applications that are needed for proper operation of mpm
+check_applications() {
+#    check_tempdir      forget about the tempdir and test tar like touch etc.
+
+    echostart "checking applications: "
+
+    r=`( echo "qwerty" | grep "wer" ) 2>/dev/null`
+    test -n "$r" || error "cannot find grep"
+    echomid "grep "
+
+    r=`( echo "1:2:3" | cut -d ':' -f 2 ) 2>/dev/null`
+    test "$r" -eq 2 || error "cannot find cut"
+    echomid "cut "
+
+    r=`( echo "1 2 3" | wc -w ) 2>/dev/null`
+    test "$r" -eq 3 || error "cannot find wc"
+    echomid "wc "
+
+    r=`( echo "bilbo" | sed 's/bilbo/frodo/' ) 2>/dev/null`
+    test "$r" = "frodo" || error "cannot find sed"
+    echomid "sed "
+
+    r=`( touch 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find touch"
+    echomid "touch "
+
+    r=`( tar 2>&1 ) 2>/dev/null;`
+    test -n "$r" || error "cannot find tar"
+    echomid "tar "
+
+    r=`( echo "gandalf" | bzip2 -9c | bzip2 -dc ) 2>/dev/null`
+    test "$r" = "gandalf" || error "cannot find bzip2"
+    echomid "bzip2 "
+
+    r=`( basename /path/file.ext .ext ) 2>/dev/null`
+    test "$r" = "file" || error "cannot find basename"
+    echomid "basename "
+
+    urlget="urlget"
+    r=`( urlget 2>&1 ) 2>/dev/null`
+    test -n "$r" || unset urlget
+    wget="wget"
+    r=`( wget --version >/dev/null 2>&1 && echo yes ) 2>/dev/null`
+    test -n "$r" || unset wget
+    test -z "$wget" -a -z "$urlget" && error "cannot find urlget or wget"
+    download="$wget"
+    test -z "$download" && download="$urlget"
+    echomid "$download "
+    test "$download" = "wget" && download="wget -O -"
+
+    r=`( echo "SAM" | tr '[A-Z]' '[a-z]' ) 2>/dev/null`
+    test "$r" = "sam" || error "cannot find tr"
+    echomid "tr "
+
+    rp=`( uname -p ) 2>/dev/null`
+    rs=`( uname -s ) 2>/dev/null`
+    test -n "$rp" -a -n "$rs" || error "cannot find uname"
+    test "$rp" != "unknown" || error "uname -p returns unknown"
+    test "$rs" != "unknown" || error "uname -s returns unknown"
+    echomid "uname "
+
+    r=`( expr 6 \* 7 ) 2>/dev/null`
+    test "$r" -eq 42 || error "cannot find expr"
+    echomid "expr "
+
+    r=`( echo "gandalf" | gzip -9c | gzip -dc ) 2>/dev/null`
+    test "$r" = "gandalf" || error "cannot find gzip"
+    echomid "gzip "
+
+    r=`( patch --help 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find patch"
+    echomid "patch "
+
+    r=`( find $MPM_HOME/bin ) 2>/dev/null`
+    test -n "$r" || error "cannot find find"
+    echomid "find "
+
+    r=`( cp 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find cp"
+    echomid "cp "
+
+    r=`( mkdir 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find mkdir"
+    echomid "mkdir "
+
+    r=`( rm 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find rm"
+    echomid "rm "
+
+    # minix tar cannot handle extracting of selected files, so i need pax
+    r=`( pax -h 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find pax"
+    echomid "pax "
+
+    r=`( echo "ring" | rev ) 2>/dev/null`
+    test "$r" = "gnir" || error "cannot find rev"
+    echomid "rev "
+
+    r=`( pwd 2>&1 ) 2>/dev/null`
+    test -n "$r" || error "cannot find pwd"
+    echomid "pwd "
+
+    echoend ""
+}
+
+check_arch_os() {
+    arch="`uname -p | tr '[A-Z]' '[a-z]'`"
+    os="`uname -s | tr '[A-Z]' '[a-z]'`"
+}
+
+bzcat() {
+    bzip2 -dc $@
+}
+
+# $1 = directory
+# $2 = filelist
+check_directory() {
+    test -d "$1" || error "$1 is not a directory"
+    for i in $3 ; do
+        test -d "$1/$i" || error "$1 does not contain a $i subdirectory"
+    done
+    for i in $2 ; do
+        test -f "$1/$i" || error "$i is missing from $1"
+    done
+}
+
+stripws() {
+    sed 's/^[ 	]*//' | sed 's/[ 	]*$//'
+}
+
+cut_detail() {
+    echo "$1" | cut -d ':' -f 2 | stripws
+}
+
+cut_detail2() {
+    echo "$1" | sed "s/$2//" | stripws
+}
+
+__read_details() {
+    while true ; do
+        read i
+        case $i in
+            name:*)     _d_name=`cut_detail "$i"`       ;;
+            version:*)  _d_version=`cut_detail "$i"`    ;;
+            release:*)  _d_release=`cut_detail "$i"`    ;;
+            source:*)   _d_source=`cut_detail2 "$i" "source:"`    ;;
+            filesize:*) _d_filesize=`cut_detail "$i"`    ;;
+            md5sum:*)   _d_md5sum=`cut_detail "$i"`    ;;
+            license:*)  _d_license=`cut_detail "$i"`    ;;
+            summary:*)  _d_summary=`cut_detail "$i"`    ;;
+            os:*)       _d_os=`cut_detail "$i"`    ;;
+            arch:*)     _d_arch=`cut_detail "$i"`    ;;
+            *)          break                           ;;
+        esac
+    done
+}
+
+read_details() {
+    __read_details < "$1"
+}
+
+__check_details() {
+    while true ; do
+        read i
+        i=`echo "$i" | cut -d ':' -f 1 | stripws`
+        test -z "$i" && break
+        case "$_details" in
+            *\ $i\ *)   ;;
+            *)          warn "unknown field $i specified" ;;
+        esac
+    done
+}
+
+# XXX: FIXME: this is relatively slow. possible fix is to set a bunch of
+# dummy variables (eg _count_$i) to zero, read each line of $_details and
+# increase counters. error if counter>0, error if counter does not exist
+# before increase and error if field is empty. this merges the above function
+# plus the two tests below all into one loop and avoids multiple calls to grep
+check_details() {
+    for i in $_details ; do
+        c=`grep -c "$i" "$1"`
+        case $c in
+            0)  error "$i is not specified in $1" ;;
+            1)  ;;
+            *)  error "$i is specified multiple times in $1" ;;
+        esac
+        j=`grep "$i" "$1" | cut -d ':' -f 2 | stripws`
+        test -n "$j" || error "$i is present but empty"
+        case "$i" in
+            arch|os)
+                case "$j" in
+                    yes|no)     ;;
+                    *)      error "$i field only allows yes or no"  ;;
+                esac
+                ;;
+            *) ;;
+        esac
+    done
+    __check_details < "$1"
+}
+
+unmangle_smpmname() {
+    b=`basename "$1" .src.mpm`
+    i=`echo "$b" | rev`
+    _s_release=`echo "$i" | cut -d '-' -f 1 | rev`
+    _s_version=`echo "$i" | cut -d '-' -f 2 | rev`
+    _s_name=`basename "$1" -$_s_version-$_s_release.src.mpm`
+}
+
+unmangle_bmpmname() {
+    b=`basename "$1" .mpm`
+    i=`echo "$b" | rev`
+    _b_arch=`echo "$i" | cut -d '-' -f 1 | rev`
+    _b_os=`echo "$i" | cut -d '-' -f 2 | rev`
+    _b_release=`echo "$i" | cut -d '-' -f 3 | rev`
+    _b_version=`echo "$i" | cut -d '-' -f 4 | rev`
+    _b_name=`basename "$1" -$_b_version-$_b_release-$_b_os-$_b_arch.mpm`
+}
+
+check_db_status_short() {
+    echostart "checking database location: "
+    test -d "$MPM_DB" || error "there is no database at $MPM_DB"
+    echoend "$MPM_DB"
+
+    echostart "checking database signature: "
+    test -f "$MPM_DB/MPMDB" || error "mpmdb signature not found"
+    echoend "ok"
+
+    echostart "checking structure: "
+    _db_installed="$MPM_DB/installed"
+    test -d "$_db_installed" || error "there are no contents"
+    cd "$_db_installed"
+    for i in $_directories_db ; do
+        test -d "$i" || error "bucket $_db_installed/$i is missing"
+    done
+    echoend "ok"
+}
+
+relpath_to_abs() {
+    if test ! -f "$1" ; then
+        echo "$1"
+        error "cannot determine path"
+    fi
+    b="`basename \"$1\"`"
+    p="`echo \"$1\" | sed \"s@$b@@\"`"
+    test -z "$p" && p="."
+    p="`cd \"$p\"; pwd`"
+    echo "$p/$b"
+}

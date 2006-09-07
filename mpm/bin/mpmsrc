@@ -1,0 +1,263 @@
+#! /bin/sh
+
+# Minix Package Manager
+#
+# Copyright (c) 2006 by Ivo van Poorten.
+# All rights reserved.
+
+test -z "$MPM_HOME" && MPM_HOME="/usr/mpm"
+export MPM_HOME
+
+i=`echo "$MPM_HOME" | wc -c`
+if test "$i" -lt 4 -o "$i" = "/usr" -o "$i" = "/usr/local" ; then
+    echo "MPM_HOME is set to $MPM_HOME. that doesn't seem right."
+    exit 2
+fi
+
+. "$MPM_HOME/bin/mpmcommon" || exit 2
+
+myusage() {
+    echo "$_myname <action> [options] <subject>"
+    echo ""
+    echo "actions:"
+    echo "  check               check directory <subject> before create"
+    echo "  create              create .src.mpm from directory <subject>"
+    echo ""
+    echo "  verify              verify .src.mpm file <subject> before build"
+    echo "  build               build binary mpm from file <subject>"
+    echo ""
+    echo "options:"
+    echo "  -quiet              suppress writing to stdout"
+    echo "  -really-quiet       suppress writing to stdout and stderr"
+    echo "  -help|--help|-h|-?  print this help message"
+    echo ""
+}
+
+check_help_and_quiet $@
+check_system
+
+action_check_directory() {
+    echostart "checking directory: "
+    check_directory "$1" "$_files" "$_directories"
+    echoend "ok"
+
+    echostart "checking details: "
+    check_details "$1/details"
+    echoend "ok"
+}
+
+action_create_smpm() {
+    _dir="$1"
+
+    action_check_directory "$_dir"
+
+    echostart "reading details: "
+    read_details "$_dir/details"
+    echoend "ok"
+
+    check_workdir
+
+    echostart "setting up package: "
+    _smpm_basename="$_d_name-$_d_version-$_d_release"
+    _base="$MPM_WORK/$_smpm_basename"
+    rm-rf "$_base"
+    mkdir "$_base"
+    mkdir "$_base/.mpm"
+    cp "$MPM_ETC/version" "$_base/.mpm/SMPM"
+    for i in $_files ; do
+        cp -p "$_dir/$i" "$_base/.mpm" || error "!!!"
+    done
+    cp -pr "$_dir/FILES" "$_base/.mpm"
+    cp -pr "$_dir/PATCHES" "$_base/.mpm"
+    echoend "ok"
+
+    _output="$MPM_SMPMS/$_smpm_basename.src.mpm"
+    echostart "creating $_echo_bold$_output$_echo_normal ... "
+    cd "$_base/.."
+    tar cf - "$_smpm_basename" | bzip2 -9 -c > "$_output" || error "cannot create package"
+    echoend "ok"
+
+    echostart "cleaning up: "
+    rm-rf "$_base"
+    echoend "ok"
+}
+
+action_verify_smpm() {
+    test -f "$1" || error "$1 is not a file"
+
+    echostart "absolute path to package: "
+    echoend "$1"
+
+    echostart "checking filename conventions: "
+    _smpm=`basename "$1"`
+    _smpm_basename=`basename "$_smpm" .src.mpm`
+    unmangle_smpmname "$_smpm"
+    test "$_smpm_basename.src.mpm" = "$_smpm" || error "no .src.mpm extension"
+    test "$_s_name-$_s_version-$_s_release.src.mpm" = "$_smpm" || \
+        error "correct format should be name-version-release.src.mpm"
+    echoend "ok"
+
+    check_workdir
+
+    echostart "unpacking archive: "
+    cd "$MPM_WORK"
+    rm-rf "$MPM_WORK/$_smpm_basename"
+    bzcat "$1" | tar xf - || error "error unpacking $1"
+    _dotmpmdir="$MPM_WORK/$_smpm_basename/.mpm"
+    echoend "ok"
+
+    echostart "checking signature: "
+    test -f "$_dotmpmdir/SMPM" || error "$1 is not a .src.mpm file"
+    echoend "ok"
+
+    action_check_directory "$_dotmpmdir"
+
+    echostart "reading details: "
+    read_details "$_dotmpmdir/details"
+    echoend "ok"
+
+    echostart "checking if details match filename: "
+    test "$_s_name" = "$_d_name" || error "name does not match"
+    test "$_s_version" = "$_d_version" || error "version does not match"
+    test "$_s_release" = "$_d_release" || error "release does not match"
+    echoend "ok"
+
+    if test "$_action" != "build" ; then
+        echostart "cleaning up: "
+        cd "$MPM_WORK"
+        rm-rf "$MPM_WORK/$_smpm_basename"
+        echoend "ok"
+    fi
+}
+
+action_build_smpm() {
+    action_verify_smpm "$1"
+
+    SMPM_BUILDROOT="$MPM_WORK/$_smpm_basename/buildroot"
+    SMPM_INSTALLROOT="$MPM_WORK/$_smpm_basename/installroot"
+    export SMPM_BUILDROOT
+    export SMPM_INSTALLROOT
+    mkdir $SMPM_BUILDROOT
+    mkdir $SMPM_INSTALLROOT
+
+    echostart "downloading pristine sources: "
+    cd $SMPM_BUILDROOT
+    test -z "$download" && error "this shouldn't happen; there is no download client"
+    _src_tarball=`basename $_d_source`
+    r=`$download "$_d_source" 2>&1 > "$SMPM_BUILDROOT/$_src_tarball"` || error "could not download pristine sources: $r"
+    echoend "ok"
+
+    echostart "checking filesize: "
+    r=`expr -s "$SMPM_BUILDROOT/$_src_tarball"`
+    test "$r" = "$_d_filesize" || error "filesize does not match"
+    echoend "ok"
+
+    echostart "unpacking sources: "
+    cd $SMPM_BUILDROOT
+    case "$_src_tarball" in
+        *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar xf -    ;;
+        *)  error "don't know how to unpack $_src_tarball"          ;;
+    esac
+    echoend "ok"
+
+    echostart "cleaning up: "
+    cd "$MPM_WORK"
+    rm-f "$SMPM_BUILDROOT/$_src_tarball"
+    echoend "ok"
+
+    SMPM_FILES="$_dotmpmdir/FILES"
+    SMPM_PATCHES="$_dotmpmdir/PATCHES"
+    _os="$os"
+    _arch="$arch"
+    export SMPM_FILES
+    export SMPM_PATCHES
+    export _os
+    export _arch
+
+    echostart "running prebuild script"
+    echoend ""
+    sh "$_dotmpmdir/prebuild" || error "an error occurred during the prebuild script"
+
+    echostart "running build script"
+    echoend ""
+    sh "$_dotmpmdir/build" || error "an error occurred during the build script"
+
+    echostart "running postbuild script"
+    echoend ""
+    sh "$_dotmpmdir/postbuild" || error "an error occurred during the postbuild script"
+
+    echostart "cleaning up: "
+    cd "$MPM_WORK"
+    rm-rf "$SMPM_BUILDROOT"
+    echoend "ok"
+
+    echostart "generating filelist: "
+    cd "$SMPM_INSTALLROOT"
+    find . | grep -v "^.$" | cut -b 2- > "$_dotmpmdir/filelist" || error "cannot generate filelist"
+    echoend "ok"
+
+    echostart "setting up package: "
+    mkdir "$SMPM_INSTALLROOT/.mpm"
+    cp "$MPM_ETC/version" "$SMPM_INSTALLROOT/.mpm/BMPM"
+    for i in $_files_bmpm ; do
+        cp -p "$_dotmpmdir/$i" "$SMPM_INSTALLROOT/.mpm" || error "!!!"
+    done
+    echoend "ok"
+
+    case "$_d_os$_d_arch" in
+        yesyes) osarch="$os-$arch"  ;;
+        yesno)  osarch="$os-any"    ;;
+        noyes)  osarch="any-$arch"  ;;
+        nono)   osarch="any-any"    ;;
+    esac
+    _output="$MPM_MPMS/$_smpm_basename-$osarch.mpm"
+    echostart "creating $_echo_bold$_output$_echo_normal ... "
+    cd "$SMPM_INSTALLROOT"
+    tar cf - . | bzip2 -9 -c > "$_output" || error "cannot create package"
+    echoend "ok"
+
+    echostart "cleaning up: "
+    cd "$MPM_WORK"
+    rm-rf "$MPM_WORK/$_smpm_basename"
+    echoend "ok"
+}
+
+# -----------------------------------------------------------------------------
+
+if test $# -eq 0 ; then usage ; fi
+_action="$1"
+shift 1
+
+while true ; do
+    case "$1" in
+        -quiet)         exec 1>/dev/null        ;;
+        -really-quiet)  exec 1>/dev/null 2>&1   ;;
+        -*)             error "parsing command line: unknown option: $1" ;;
+        *)              break;
+    esac
+    shift 1
+done
+
+if test $# -eq 0 ; then
+    error "parsing command line: no subject specified"
+fi
+_subject="$1"
+shift 1
+
+if test $# -ne 0 ; then
+    error "parsing command line: garbage after subject"
+fi
+
+case $_action in
+    check)      action_check_directory "$_subject"          ;;
+    create)     action_create_smpm "$_subject"              ;;
+    verify)     _subject="`relpath_to_abs \"$_subject\"`"
+                action_verify_smpm "$_subject"              ;;
+    build)      _subject="`relpath_to_abs \"$_subject\"`"
+                action_build_smpm "$_subject"               ;;
+    *)
+        error "parsing command line: unkown action"
+        ;;
+esac
+
+exit 0
