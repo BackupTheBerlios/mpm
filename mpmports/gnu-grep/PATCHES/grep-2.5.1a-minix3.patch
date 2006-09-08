@@ -1,0 +1,84 @@
+Common subdirectories: grep-2.5.1a/bootstrap and grep-2.5.1a-patched/bootstrap
+diff -c grep-2.5.1a/configure grep-2.5.1a-patched/configure
+*** grep-2.5.1a/configure Tue Mar 26 16:09:38 2002
+--- grep-2.5.1a-patched/configure Fri Sep  1 16:43:13 2006
+***************
+*** 6252,6260 ****
+  
+  test $jm_cv_func_decl_strtoul != yes
+  
+! cat >>confdefs.h <<_ACEOF
+! #define HAVE_DECL_STRTOUL $?
+! _ACEOF
+  
+  test $jm_cv_func_decl_strtoull != yes
+  
+--- 6252,6260 ----
+  
+  test $jm_cv_func_decl_strtoul != yes
+  
+! #cat >>confdefs.h <<_ACEOF
+! #define HAVE_DECL_STRTOUL $?
+! #_ACEOF
+  
+  test $jm_cv_func_decl_strtoull != yes
+  
+Common subdirectories: grep-2.5.1a/djgpp and grep-2.5.1a-patched/djgpp
+Common subdirectories: grep-2.5.1a/doc and grep-2.5.1a-patched/doc
+Common subdirectories: grep-2.5.1a/intl and grep-2.5.1a-patched/intl
+Common subdirectories: grep-2.5.1a/lib and grep-2.5.1a-patched/lib
+Common subdirectories: grep-2.5.1a/lib/posix and grep-2.5.1a-patched/lib/posix
+Common subdirectories: grep-2.5.1a/m4 and grep-2.5.1a-patched/m4
+Common subdirectories: grep-2.5.1a/po and grep-2.5.1a-patched/po
+Common subdirectories: grep-2.5.1a/src and grep-2.5.1a-patched/src
+diff -c grep-2.5.1a/src/dfa.c grep-2.5.1a-patched/src/dfa.c
+*** grep-2.5.1a/src/dfa.c Wed Sep 26 16:57:55 2001
+--- grep-2.5.1a-patched/src/dfa.c Fri Sep  1 16:16:58 2006
+***************
+*** 1052,1063 ****
+  			  setbit_case_fold (c, ccl);
+  		      } else {
+  			/* POSIX locales are painful - leave the decision to libc */
+! 			char expr[6] = { '[', c, '-', c2, ']', '\0' };
+! 			regex_t re;
+! 			if (regcomp (&re, expr, case_fold ? REG_ICASE : 0) == REG_NOERROR) {
+! 			  for (c = 0; c < NOTCHAR; ++c) {
+! 			    char buf[2] = { c, '\0' };
+! 			    regmatch_t mat;
+  			    if (regexec (&re, buf, 1, &mat, 0) == REG_NOERROR
+                                 && mat.rm_so == 0 && mat.rm_eo == 1)
+                                setbit_case_fold (c, ccl);
+--- 1052,1066 ----
+  			  setbit_case_fold (c, ccl);
+  		      } else {
+  			/* POSIX locales are painful - leave the decision to libc */
+! 			char expr[6] = { '[', 0, '-', 0, ']', '\0' };
+! 			regex_t re;
+! 			expr[1] = c;
+! 			expr[3] = c2;
+! 			if (regcomp (&re, expr, case_fold ? REG_ICASE : 0) == REG_NOERROR) {
+! 			  for (c = 0; c < NOTCHAR; ++c) {
+! 			    char buf[2] = { 0, '\0' };
+! 			    regmatch_t mat;
+! 			    buf[0] = c;
+  			    if (regexec (&re, buf, 1, &mat, 0) == REG_NOERROR
+                                 && mat.rm_so == 0 && mat.rm_eo == 1)
+                                setbit_case_fold (c, ccl);
+diff -c grep-2.5.1a/src/grep.c grep-2.5.1a-patched/src/grep.c
+*** grep-2.5.1a/src/grep.c Fri Nov 12 11:25:35 2004
+--- grep-2.5.1a-patched/src/grep.c Fri Sep  1 16:16:58 2006
+***************
+*** 45,50 ****
+--- 45,53 ----
+  #undef MAX
+  #define MAX(A,B) ((A) > (B) ? (A) : (B))
+  
++ #define S_IFSOCK	0140000
++ #define S_ISSOCK(m)	(((m) & S_IFMT) == S_IFSOCK)
++ 
+  struct stats
+  {
+    struct stats const *parent;
+Common subdirectories: grep-2.5.1a/src/posix and grep-2.5.1a-patched/src/posix
+Common subdirectories: grep-2.5.1a/tests and grep-2.5.1a-patched/tests
+Common subdirectories: grep-2.5.1a/vms and grep-2.5.1a-patched/vms
