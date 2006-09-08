@@ -67,7 +67,7 @@ action_verify_bmpm() {
     echostart "unpacking relevant portion of the archive: "
     cd "$MPM_WORK"
     rm-rf "$MPM_WORK/.mpm"
-    bzcat "$1" | pax -r './.mpm*' || error "error unpacking $1"
+    bzcat "$1" | pax -r -p e './.mpm*' || error "error unpacking $1"
     _dotmpmdir="$MPM_WORK/.mpm"
     echoend "ok"
 
@@ -131,7 +131,7 @@ action_install_bmpm() {
 
     echostart "installing $_b_name to $_mpm_install_root: "
     cd "$_mpm_install_root"
-    bzcat "$1" | pax -r -c './.mpm*'    || error "unable to install $_b_name"
+    bzcat "$1" | pax -r -p e -c './.mpm*'    || error "unable to install $_b_name"
     echoend "ok"
 
     echostart "updating database: "
