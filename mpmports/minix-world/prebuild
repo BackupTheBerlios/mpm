@@ -1,0 +1,230 @@
+# This is the pre-build script. Do whatever you have to do before the build
+# script is run. Available environment variables are:
+#
+# MPM_WORK          MPM work directory; rarely needed
+#
+# SMPM_FILES        directory wehre additional files reside that could be
+#                   moved to the pristine sources directory for succesful
+#                   compilation
+#
+# SMPM_PATCHES      directory containing patchfiles to be applied to the
+#                   pristine sources
+#
+# SMPM_BUILDROOT    directory where the unpacked pristine sources reside
+#
+# SMPM_INSTALLROOT  directory where the build script should install the
+#                   compiled binaries, libraries, documentation, et cetera.
+#                   this is what gets packaged in the binary MPM file
+#
+# _arch             current architecture, e.g. i386, ppc, et cetera
+#
+# _os               current operating system, e.g. minix, linux, et cetera
+
+set -e
+
+# these lists can certainly be smaller, but for now: better safe than sorry
+
+_files_bin=" \
+    M U [ bigsh cat cd chroot command cp date dev2name echo elvis expr false \
+    fsck getopts getty halt install intr ln loadkeys ls mount mv printroot \
+    pwd read readclock reboot rm sed service setup sh sync sysenv test true \
+    umask umount wait"
+
+_files_usr_bin=" \
+    DESCRIBE M MAKEDEV U [ aal acd add_route adduser advent anm apropos ar \
+    arch arp ash asize at atnormalize autopart awk backup badblocks banner \
+    basename bc bigmake binpackage binpackages binsizes bsfilt cal calendar \
+    cat cawf cc cd cdiff cdprobe cgrep checkhier chfn chgrp chmem chmod chown \
+    chsh ci cksum cleantmp clear clone clr cmp co colcrt comm command compress \
+    cp cpdir crc cron crontab ctags cut date dd de decomp16 del_route devsize \
+    df dhcpd dhrystone diff dirname dis88 dosdir dosread doswrite du easypack \
+    echo ed edparams egrep eject elle ellec elvis elvprsv elvrec env expand \
+    expr factor false fdisk fgrep file find finger fix floppysetup fmt fold \
+    format fortune fsck fsck1 fstat ftp ftpdsh ftpget getopts getpack getty \
+    gomoku grep halt head host hostaddr httpget id ifconfig ifdef in.fingerd \
+    in.ftpd in.rlogind in.rshd in.telnetd indent install installboot intr \
+    irdpd isodir isoinfo isoread join kill last leave lex life ln loadfont \
+    loadkeys loadramdisk logger login look lp lpd ls m2 m4 mail make \
+    makewhatis man mdb mesg mined mixer mkdep mkdir mkdist mkfifo mkfs mknod \
+    mkproto mkswap modem more mount msh mt mtools mv newroot nice nm nonamed \
+    nroff od packit packman part partition passwd paste patch pax pc ping \
+    playwave postmort pr pr_routes prep printenv printf printroot progressbar \
+    proto ps pwd ramdisk rarpd rawspeed rcp rdate read readall readclock \
+    readfs readlink reboot recwave ref remsync repartition restore rev rget \
+    rlogin rm rmdir rotate rput rsh rz screendump sdump sed setup.anonftp sh \
+    shar shutdown size sleep slip sort spell split srccrc stat strings strip \
+    stty su sum svclog swapfs sync synctree sysenv syslog_test syslogd sz tail \
+    talk talkd tar tcpd tcpdp tcpstat tee telnet term termcap test tget time \
+    top touch tr treecmp true truncate tsort ttt tty udpstat umask umount \
+    uname uncompress unexpand uniq update uptime urlget uud uudecode uue \
+    uuencode version vol wait wc whatis whereis which who whoami write \
+    writeisofs xargs yacc yap yes zcat"
+
+_files_usr_include=" \
+    a.out.h alloca.h ansi.h assert.h configfile.h ctype.h curses.h dirent.h \
+    env.h errno.h fcntl.h float.h fts.h grp.h ifaddrs.h inttypes.h lib.h \
+    libgen.h libutil.h limits.h locale.h math.h mathconst.h netdb.h pwd.h \
+    regex.h regexp.h setjmp.h sgtty.h signal.h stdarg.h stddef.h stdint.h \
+    stdio.h stdlib.h string.h strings.h sysexits.h syslog.h tar.h termcap.h \
+    termios.h time.h timers.h tools.h ttyent.h unistd.h utime.h utmp.h"
+
+_files_usr_include_arpa="inet.h"
+
+_files_usr_include_ibm=" \
+    bios.h cmos.h cpu.h diskparm.h int86.h interrupt.h memory.h partition.h \
+    pci.h portio.h ports.h"
+
+_files_usr_include_minix=" \
+    bitmap.h callnr.h cdrom.h com.h config.h const.h devio.h dl_eth.h dmap.h \
+    endpoint.h fslib.h ioctl.h ipc.h jmp_buf.h keymap.h minlib.h partition.h \
+    paths.h queryparam.h sound.h swap.h sys_config.h syslib.h sysutil.h \
+    type.h u64.h"
+
+_files_usr_include_net="hton.h if.h ioctl.h netlib.h"
+
+_files_usr_include_net_gen=" \
+    arp_io.h dhcp.h eth_hdr.h eth_io.h ether.h icmp.h icmp_hdr.h if_ether.h \
+    in.h inet.h ip_hdr.h ip_io.h nameser.h netdb.h oneCsum.h psip_hdr.h \
+    psip_io.h resolv.h rip.h route.h socket.h tcp.h tcp_hdr.h tcp_io.h udp.h \
+    udp_hdr.h udp_io.h vjhc.h"
+
+_files_usr_include_netinet="in.h tcp.h"
+
+_files_usr_include_sys=" \
+    asynchio.h dir.h file.h ioc_cmos.h ioc_disk.h ioc_file.h ioc_memory.h \
+    ioc_scsi.h ioc_sound.h ioc_tape.h ioc_tty.h ioctl.h kbdio.h mtio.h \
+    param.h ptrace.h resource.h select.h sigcontext.h socket.h stat.h \
+    statfs.h svrctl.h time.h times.h types.h uio.h un.h utsname.h vm.h \
+    wait.h"
+
+_files_usr_lib=" \
+    asmconv cpp cpp.ansi crontab cv descr em_basic em_cemcom.ansi em_decode \
+    em_ego em_encode em_led em_m2 em_occam em_opt em_opt2 em_pc fortune.dat \
+    libfl.a libmath.b more.help occam pwdauth"
+
+_files_usr_lib_cawf="common device.cf dumb.dev man.mac me.mac mnx.mac ms.mac"
+
+_files_usr_lib_ego="bo ca cf cj cs i386descr i86descr ic il lv ra sp sr ud"
+
+_files_usr_lib_flex="flex.skel"
+
+_files_usr_lib_fonts=" \
+    cp437.fnt cp850.fnt cp865.fnt cp866.fnt iso1.fnt koi8-r.fnt polish.fnt"
+
+_files_usr_lib_i386=" \
+    as cg crtso.o end.a libbas.a libc.a libcurses.a libd.a libe.a libedit.a \
+    libfl.a libfp.a libm.a libm2.a libocm.a libp.a libsys.a libsysutil.a \
+    libtimers.a libutil.a liby.a libz.a m2rtso.o prtso.o"
+
+_files_usr_lib_i86="as cg end.a libc.a libd.a libe.a libfp.a libsys.a"
+
+_files_usr_lib_keymaps=" \
+    dvorak.map french.map german.map italian.map japanese.map latin-am.map \
+    latin-america.map olivetti.map polish.map scandinavian.map scandinavn.map \
+    spanish.map uk.map us-std.map us-swap.map"
+
+_files_usr_lib_m2=" \
+    ASCII.def Arguments.def ArraySort.def CSP.def Conversion.def EM.def \
+    Epilogue.def InOut.def MathLib0.def Mathlib.def PascalIO.def \
+    Processes.def RealConver.def RealInOut.def Semaphores.def Storage.def \
+    Streams.def Strings.def StripUnix.def Termcap.def Terminal.def Traps.def \
+    Unix.def XXTermcap.def random.def"
+
+_files_etc=" \
+    passwd group services termcap version binary_sizes binary_sizes.big \
+    binary_sizes.xxl"
+
+# setup chroot environment
+if test "$_os" != "minix" ; then
+    echo "for now, this can only be build on Minix" >&2
+    exit 1
+fi
+
+echo "*** setting up chroot environment"
+
+empty_dir() {
+    echo -n "$1"
+    mkdir "$2"
+    echo "[ok]"
+}
+
+copy_files() {
+    cd "$SMPM_BUILDROOT"
+    echo -n "$1"
+    mkdir "$2"
+    for i in $4 ; do
+        cp -p "/$3/$i" "$2"
+    done
+    echo "[ok]"
+}
+
+copy_files "    bin                     " "bin" "/bin" "$_files_bin"
+
+empty_dir "    sbin                    " "sbin"
+empty_dir "    usr                     " "usr"
+empty_dir "    usr/tmp                 " "usr/tmp"
+empty_dir "    usr/mdec                " "usr/mdec"
+empty_dir "    usr/sbin                " "usr/sbin"
+empty_dir "    lib                     " "lib"
+empty_dir "    tmp                     " "tmp"
+empty_dir "    boot                    " "boot"
+empty_dir "    boot/image              " "boot/image"
+
+copy_files "    usr/bin                 " \
+    "usr/bin" "/usr/bin" "$_files_usr_bin"
+copy_files "    usr/include             " \
+    "usr/include" "/usr/include" "$_files_usr_include"
+copy_files "    usr/include/arpa        " \
+    "usr/include/arpa" "/usr/include/arpa" "$_files_usr_include_arpa"
+copy_files "    usr/include/ibm         " \
+    "usr/include/ibm" "/usr/include/ibm" "$_files_usr_include_ibm"
+copy_files "    usr/include/minix       " \
+    "usr/include/minix" "/usr/include/minix" "$_files_usr_include_minix"
+copy_files "    usr/include/net         " \
+    "usr/include/net" "/usr/include/net" "$_files_usr_include_net"
+copy_files "    usr/include/net/gen     " \
+    "usr/include/net/gen" "/usr/include/net/gen" "$_files_usr_include_net_gen"
+copy_files "    usr/include/netinet     " \
+    "usr/include/netinet" "/usr/include/netinet" "$_files_usr_include_netinet"
+copy_files "    usr/include/sys         " \
+    "usr/include/sys" "/usr/include/sys" "$_files_usr_include_sys"
+copy_files "    usr/lib                 " \
+    "usr/lib" "/usr/lib" "$_files_usr_lib"
+copy_files "    usr/lib/cawf            " \
+    "usr/lib/cawf" "/usr/lib/cawf" "$_files_usr_lib_cawf"
+copy_files "    usr/lib/ego             " \
+    "usr/lib/ego" "/usr/lib/ego" "$_files_usr_lib_ego"
+copy_files "    usr/lib/flex            " \
+    "usr/lib/flex" "/usr/lib/flex" "$_files_usr_lib_flex"
+copy_files "    usr/lib/fonts           " \
+    "usr/lib/fonts" "/usr/lib/fonts" "$_files_usr_lib_fonts"
+copy_files "    usr/lib/i386            " \
+    "usr/lib/i386" "/usr/lib/i386" "$_files_usr_lib_i386"
+copy_files "    usr/lib/i86             " \
+    "usr/lib/i86" "/usr/lib/i86" "$_files_usr_lib_i86"
+copy_files "    usr/lib/keymaps         " \
+    "usr/lib/keymaps" "/usr/lib/keymaps" "$_files_usr_lib_keymaps"
+copy_files "    usr/lib/m2              " \
+    "usr/lib/m2" "/usr/lib/m2" "$_files_usr_lib_m2"
+copy_files "    etc                     " \
+    "etc" "/etc" "$_files_etc"
+
+echo -n "    usr/src                 "
+mv minix-3.1.2a/src usr
+echo "[ok]"
+
+echo -n "    dev                     "
+mkdir dev
+mknod dev/null c 1 3
+chmod 666 dev/null
+chown root dev/null
+chgrp kmem dev/null
+echo "[ok]"
+
+echo -n "    etc/fstab               "
+echo "root=/dev/ROOT" > etc/fstab
+echo "[ok]"
+
+# set uid/gid/perm of directories
+
+exit 0

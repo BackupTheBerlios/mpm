@@ -1,0 +1,12 @@
+set -e
+
+PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+export PATH
+
+cd "$SMPM_BUILDROOT"
+touch "timestamp"
+
+echo "*** entering chroot environment and building world"
+exec chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src; make world'"
+
+exit 0

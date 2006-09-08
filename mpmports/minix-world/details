@@ -1,0 +1,10 @@
+name:       minix-world
+version:    3.1.2a
+release:    1
+source:     http://ivop.free.fr/minix3/3.1.2a/src/minix-src-3.1.2a.tar.bz2
+filesize:   4914548
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Minix 3.1.2a kernel, libraries, drivers, servers and commands
+os:         yes
+arch:       yes

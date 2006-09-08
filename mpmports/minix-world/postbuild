@@ -1,0 +1,12 @@
+set -e
+
+PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+export PATH
+
+cd "$SMPM_BUILDROOT"
+
+echo "*** copying relevant files to installroot"
+find . -cnewer timestamp | egrep -v "^./(usr/src|dev|tmp)" | pax -w -d | \
+    (cd "$SMPM_INSTALLROOT"; pax -r -p e )
+
+exit 0
