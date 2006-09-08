@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_BUILDROOT/minix-3.1.2a"
+
+mkdir "$SMPM_INSTALLROOT/usr"
+mv src "$SMPM_INSTALLROOT/usr"
+
+exit 0
