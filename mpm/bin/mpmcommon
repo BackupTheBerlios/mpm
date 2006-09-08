@@ -341,7 +341,7 @@ __check_details() {
 # plus the two tests below all into one loop and avoids multiple calls to grep
 check_details() {
     for i in $_details ; do
-        c=`grep -c "$i" "$1"`
+        c=`grep -c "$i:" "$1"`
         case $c in
             0)  error "$i is not specified in $1" ;;
             1)  ;;
