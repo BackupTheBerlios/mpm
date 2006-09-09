@@ -40,4 +40,7 @@ usr=/dev/UNKNOWN
 home=/dev/UNKNOWN
 EOF
 
+# default keymap is us-std.map
+cp -p usr/lib/keymaps/us-std.map "$SMPM_INSTALLROOT/etc/keymap"
+
 exit 0
