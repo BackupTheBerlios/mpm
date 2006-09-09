@@ -95,7 +95,7 @@ _files_usr_lib_m2=" \
     Streams.def Strings.def StripUnix.def Termcap.def Terminal.def Traps.def \
     Unix.def XXTermcap.def random.def"
 
-_files_etc="passwd group binary_sizes binary_sizes.big binary_sizes.xxl"
+#_files_etc="passwd group binary_sizes binary_sizes.big binary_sizes.xxl"
 
 # setup chroot environment
 if test "$_os" != "minix" ; then
@@ -132,6 +132,7 @@ empty_dir "    lib                     " "lib"
 empty_dir "    tmp                     " "tmp"
 empty_dir "    boot                    " "boot"
 empty_dir "    boot/image              " "boot/image"
+empty_dir "    etc                     " "etc"
 
 copy_files "    usr/bin                 " \
     "usr/bin" "/usr/bin" "$_files_usr_bin"
@@ -161,8 +162,8 @@ copy_files "    usr/lib/i86             " \
     "usr/lib/i86" "/usr/lib/i86" "$_files_usr_lib_i86"
 copy_files "    usr/lib/m2              " \
     "usr/lib/m2" "/usr/lib/m2" "$_files_usr_lib_m2"
-copy_files "    etc                     " \
-    "etc" "/etc" "$_files_etc"
+#copy_files "    etc                     " \
+#    "etc" "/etc" "$_files_etc"
 
 echo -n "    usr/src                 "
 mv minix-3.1.2a/src usr
