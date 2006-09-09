@@ -86,6 +86,9 @@ rm-f() {
 }
 
 rm-rf() {
+    case "$@" in
+        /|/usr|/bin|/lib)	error "bug in mpm! trying to rm -rf $@" ;;
+    esac
 #    rm -irf $@
     rm -rf "$@"
 }
@@ -150,7 +153,7 @@ check_system() {
     test "$_check_applications" = "no" || check_applications
     check_arch_os
     case "$os" in
-        minix)  binsizes xxl    ;;
+        minix)  binsizes xxl >/dev/null ;;	# bug in 3.1.2a no /usr/bin/lex
         *)                      ;;
     esac
     if test -z "$download" ; then
