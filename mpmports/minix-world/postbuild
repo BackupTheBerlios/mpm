@@ -43,4 +43,7 @@ EOF
 # default keymap is us-std.map
 cp -p usr/lib/keymaps/us-std.map "$SMPM_INSTALLROOT/etc/keymap"
 
+# no /usr/gnu directory. it will be created if any gnu-* packages are installed
+rm -rf "$SMPM_INSTALLROOT/usr/gnu"
+
 exit 0
