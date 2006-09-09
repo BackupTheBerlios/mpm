@@ -6,6 +6,10 @@ export PATH
 cd "$SMPM_BUILDROOT"
 touch "timestamp"
 
+# be absolutely sure that timestamp is at least one minute older than any newer
+# file
+sleep 60
+
 echo "*** entering chroot environment and making fresh etcfiles"
 chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src; make etcfiles;'"
 
