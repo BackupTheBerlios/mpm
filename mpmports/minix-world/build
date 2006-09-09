@@ -7,6 +7,12 @@ cd "$SMPM_BUILDROOT"
 touch "timestamp"
 
 echo "*** entering chroot environment and building world"
-exec chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src; make world'"
+chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src; make world;'"
+
+echo "*** entering chroot environment and making etcfiles"
+chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src; make etcfiles;'"
+
+echo "*** entering chroot environment and installing commands/scripts"
+chroot "$SMPM_BUILDROOT/" "/bin/sh -c 'cd /usr/src/commands/scripts; touch *; make install;'"
 
 exit 0

@@ -9,4 +9,23 @@ echo "*** copying relevant files to installroot"
 find . -cnewer timestamp | egrep -v "^./(usr/src|dev|tmp)" | pax -w -d | \
     (cd "$SMPM_INSTALLROOT"; pax -r -p e )
 
+# there is no (f)lex in world
+rm -f "$SMPM_INSTALLROOT/usr/man/man1/flex.1"
+rm -f "$SMPM_INSTALLROOT/usr/man/man1/flexdoc.1"
+
+# descr is not build so copy it from chroot jail
+cp -p usr/lib/descr "$SMPM_INSTALLROOT/usr/lib"
+
+# minix 3.1.2a world does not build /usr/lib/i86 so copy them from chroot jail
+cp -pr usr/lib/i86 "$SMPM_INSTALLROOT/usr/lib"
+
+# binary_sizes
+cp -p etc/binary_sizes* "$SMPM_INSTALLROOT/etc"
+
+# /usr/lib/m2 is not included in minix 3.1.2 sources --> copy
+cp -pr usr/lib/m2 "$SMPM_INSTALLROOT/usr/lib"
+
+# /usr/lib/ego --> copy
+cp -pr usr/lib/ego "$SMPM_INSTALLROOT/usr/lib"
+
 exit 0
