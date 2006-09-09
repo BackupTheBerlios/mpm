@@ -21,7 +21,7 @@ _files_usr_bin=" \
     format fortune fsck fsck1 fstat ftp ftpdsh ftpget getopts getpack getty \
     gomoku grep halt head host hostaddr httpget id ifconfig ifdef in.fingerd \
     in.ftpd in.rlogind in.rshd in.telnetd indent install installboot intr \
-    irdpd isodir isoinfo isoread join kill last leave lex life ln loadfont \
+    irdpd isodir isoinfo isoread join kill last leave life ln loadfont \
     loadkeys loadramdisk logger login look lp lpd ls m2 m4 mail make \
     makewhatis man mdb mesg mined mixer mkdep mkdir mkdist mkfifo mkfs mknod \
     mkproto mkswap modem more mount msh mt mtools mv newroot nice nm nonamed \
@@ -77,29 +77,16 @@ _files_usr_include_sys=" \
 
 _files_usr_lib=" \
     asmconv cpp cpp.ansi crontab cv descr em_basic em_cemcom.ansi em_decode \
-    em_ego em_encode em_led em_m2 em_occam em_opt em_opt2 em_pc fortune.dat \
-    libfl.a libmath.b more.help occam pwdauth"
-
-_files_usr_lib_cawf="common device.cf dumb.dev man.mac me.mac mnx.mac ms.mac"
+    em_ego em_encode em_led em_m2 em_occam em_opt em_opt2 em_pc pwdauth"
 
 _files_usr_lib_ego="bo ca cf cj cs i386descr i86descr ic il lv ra sp sr ud"
 
-_files_usr_lib_flex="flex.skel"
-
-_files_usr_lib_fonts=" \
-    cp437.fnt cp850.fnt cp865.fnt cp866.fnt iso1.fnt koi8-r.fnt polish.fnt"
-
 _files_usr_lib_i386=" \
-    as cg crtso.o end.a libbas.a libc.a libcurses.a libd.a libe.a libedit.a \
-    libfl.a libfp.a libm.a libm2.a libocm.a libp.a libsys.a libsysutil.a \
+    as cg crtso.o end.a libc.a libcurses.a libd.a libe.a libedit.a \
+    libfl.a libfp.a libm.a libm2.a libp.a libsys.a libsysutil.a \
     libtimers.a libutil.a liby.a libz.a m2rtso.o prtso.o"
 
 _files_usr_lib_i86="as cg end.a libc.a libd.a libe.a libfp.a libsys.a"
-
-_files_usr_lib_keymaps=" \
-    dvorak.map french.map german.map italian.map japanese.map latin-am.map \
-    latin-america.map olivetti.map polish.map scandinavian.map scandinavn.map \
-    spanish.map uk.map us-std.map us-swap.map"
 
 _files_usr_lib_m2=" \
     ASCII.def Arguments.def ArraySort.def CSP.def Conversion.def EM.def \
@@ -108,9 +95,7 @@ _files_usr_lib_m2=" \
     Streams.def Strings.def StripUnix.def Termcap.def Terminal.def Traps.def \
     Unix.def XXTermcap.def random.def"
 
-_files_etc=" \
-    passwd group services termcap version binary_sizes binary_sizes.big \
-    binary_sizes.xxl"
+_files_etc="passwd group binary_sizes binary_sizes.big binary_sizes.xxl"
 
 # setup chroot environment
 if test "$_os" != "minix" ; then
@@ -168,20 +153,12 @@ copy_files "    usr/include/sys         " \
     "usr/include/sys" "/usr/include/sys" "$_files_usr_include_sys"
 copy_files "    usr/lib                 " \
     "usr/lib" "/usr/lib" "$_files_usr_lib"
-copy_files "    usr/lib/cawf            " \
-    "usr/lib/cawf" "/usr/lib/cawf" "$_files_usr_lib_cawf"
 copy_files "    usr/lib/ego             " \
     "usr/lib/ego" "/usr/lib/ego" "$_files_usr_lib_ego"
-copy_files "    usr/lib/flex            " \
-    "usr/lib/flex" "/usr/lib/flex" "$_files_usr_lib_flex"
-copy_files "    usr/lib/fonts           " \
-    "usr/lib/fonts" "/usr/lib/fonts" "$_files_usr_lib_fonts"
 copy_files "    usr/lib/i386            " \
     "usr/lib/i386" "/usr/lib/i386" "$_files_usr_lib_i386"
 copy_files "    usr/lib/i86             " \
     "usr/lib/i86" "/usr/lib/i86" "$_files_usr_lib_i86"
-copy_files "    usr/lib/keymaps         " \
-    "usr/lib/keymaps" "/usr/lib/keymaps" "$_files_usr_lib_keymaps"
 copy_files "    usr/lib/m2              " \
     "usr/lib/m2" "/usr/lib/m2" "$_files_usr_lib_m2"
 copy_files "    etc                     " \
