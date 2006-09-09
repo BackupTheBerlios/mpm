@@ -18,7 +18,7 @@ _files_usr_bin=" \
     df dhcpd dhrystone diff dirname dis88 dosdir dosread doswrite du easypack \
     echo ed edparams egrep eject elle ellec elvis elvprsv elvrec env expand \
     expr factor false fdisk fgrep file find finger fix floppysetup fmt fold \
-    format fortune fsck fsck1 fstat ftp ftpdsh ftpget getopts getpack getty \
+    format fortune fsck fsck1 fstat ftp ftpget getopts getpack getty \
     gomoku grep halt head host hostaddr httpget id ifconfig ifdef in.fingerd \
     in.ftpd in.rlogind in.rshd in.telnetd indent install installboot intr \
     irdpd isodir isoinfo isoread join kill last leave life ln loadfont \
@@ -29,7 +29,7 @@ _files_usr_bin=" \
     playwave postmort pr pr_routes prep printenv printf printroot progressbar \
     proto ps pwd ramdisk rarpd rawspeed rcp rdate read readall readclock \
     readfs readlink reboot recwave ref remsync repartition restore rev rget \
-    rlogin rm rmdir rotate rput rsh rz screendump sdump sed setup.anonftp sh \
+    rlogin rm rmdir rotate rput rsh rz screendump sdump sed sh \
     shar shutdown size sleep slip sort spell split srccrc stat strings strip \
     stty su sum svclog swapfs sync synctree sysenv syslog_test syslogd sz tail \
     talk talkd tar tcpd tcpdp tcpstat tee telnet term termcap test tget time \
