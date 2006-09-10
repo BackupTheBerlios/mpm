@@ -11,7 +11,8 @@ all:
 	@echo ""
 
 allsrcmpm:
-#	@test -d CVS && echo "please use cvs export first"
+	@test -d CVS && echo "please use cvs export first, to avoid CVS" \
+	             && echo "directories inside the packages" && exit 1
 	@test -d work  || mkdir work
 	@test -d SMPMS || mkdir SMPMS
 	@set -e && for i in $(PACKAGES) ; do \
