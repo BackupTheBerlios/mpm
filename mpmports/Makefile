@@ -1,3 +1,7 @@
+PACKAGES=gnu-grep \
+	 minix-world-source \
+	 minix-world \
+
 all:
 	@echo "MPM ports collection"
 	@echo ""
@@ -7,7 +11,14 @@ all:
 	@echo ""
 
 allsrcmpm:
-	@echo "not implemented yet"
+#	@test -d CVS && echo "please use cvs export first"
+	@test -d work  || mkdir work
+	@test -d SMPMS || mkdir SMPMS
+	@set -e && for i in $(PACKAGES) ; do \
+		echo "[[[ creating .src.mpm for $$i ]]]" ; \
+		MPM_WORK=`pwd`/work MPM_SMPMS=`pwd`/SMPMS \
+		/usr/mpm/bin/mpmsrc create $$i ; \
+	done
 
 clean:
 	rm -f *~ */*~ */*/*~
