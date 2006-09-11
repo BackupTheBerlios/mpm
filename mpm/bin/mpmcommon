@@ -49,7 +49,7 @@ esac
 
 # colors
 case "$TERM" in
-    xterm|linux|minix)
+    xterm|linux|minix*)
         _echo_bold="[1m"
         _echo_red="[31m"
         _echo_green="[32m"
