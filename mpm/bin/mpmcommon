@@ -57,6 +57,14 @@ case "$TERM" in
         _echo_cyan="[36m"
         _echo_normal="[0m[39m"
         ;;
+    dialog)
+        _echo_bold="\Zb"
+        _echo_red="\Z1"
+        _echo_green="\Z2"
+        _echo_yellow="\Z3"
+        _echo_cyan="\Z6"
+        _echo_normal="\Zn"
+        ;;
     *)
         ;;
 esac
