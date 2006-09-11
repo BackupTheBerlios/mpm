@@ -142,7 +142,6 @@ action_install_bmpm() {
         mkdir "$_database_entry/$i"     || error "unable to update database"
     done
     echo "`basename $1`" > "$_dotmpmdir/filename"
-    echo "$_mpm_install_root" > "$_dotmpmdir/installroot"
     for i in $_files_installed ; do
         cp "$_dotmpmdir/$i" "$_database_entry/$i"   || error "unable to update database"
     done

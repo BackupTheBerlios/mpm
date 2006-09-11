@@ -26,7 +26,7 @@ MPM_SMPMS=${MPM_SMPMS-"$MPM_HOME/SMPMS"}
 
 _files="details description prebuild build postbuild preinstall postinstall preuninstall postuninstall depsbuild depsinstall"
 _files_bmpm="details description preinstall postinstall preuninstall postuninstall filelist depsinstall"
-_files_installed="details description preuninstall postuninstall filelist filename installroot"
+_files_installed="details description preuninstall postuninstall filelist filename"
 _directories="FILES PATCHES"
 _directories_bmpm=""
 _directories_installed="DEPENDSON DEPENDSONME"
