@@ -2,7 +2,6 @@ set -e
 
 cd "$SMPM_BUILDROOT/grep-2.5.1a"
 
-if test "$_os" = "minix" ; then
     PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
     export PATH
 
@@ -11,9 +10,6 @@ if test "$_os" = "minix" ; then
     CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1"
 
     PREFIX="/usr/gnu"
-else
-    PREFIX="/usr"
-fi
 
 CC="$CC" LD="$LD" CFLAGS="$CFLAGS" sh \
 configure --prefix="$PREFIX" \

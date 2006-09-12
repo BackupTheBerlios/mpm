@@ -1,8 +1,5 @@
 set -e
 
-PREFIX=/usr
-test "$_os" = "minix" && PREFIX=/usr/gnu
-
-strip "$SMPM_INSTALLROOT$PREFIX/bin/grep"
+strip "$SMPM_INSTALLROOT/usr/gnu/bin/grep"
 
 exit 0
