@@ -1,0 +1,12 @@
+set -e
+
+PREFIX=/usr
+test "$_os" = "minix" && PREFIX=/usr/gnu
+
+strip "$SMPM_INSTALLROOT$PREFIX/bin/gzip"
+rm -f "$SMPM_INSTALLROOT$PREFIX/bin/gunzip"
+rm -f "$SMPM_INSTALLROOT$PREFIX/bin/zcat"
+ln -s gzip "$SMPM_INSTALLROOT$PREFIX/bin/gunzip"
+ln -s gzip "$SMPM_INSTALLROOT$PREFIX/bin/zcat"
+
+exit 0

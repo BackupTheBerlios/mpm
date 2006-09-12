@@ -1,0 +1,7 @@
+set -e
+
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/gnu/bin"
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/gnu/man/man1"
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/gnu/info"
+
+exit 0

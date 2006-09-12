@@ -1,0 +1,10 @@
+name:       gnu-gzip
+version:    1.2.4a
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/gzip/gzip-1.2.4a.tar
+filesize:   798720
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU gzip
+os:         yes
+arch:       yes
