@@ -2,15 +2,10 @@ set -e
 
 cd "$SMPM_BUILDROOT"
 
-owner=root
-owngrp=root
-
-if test "$_os" = "minix" ; then
-    PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
-    export PATH
-    owner=bin
-    owngrp=operator
-fi
+PATH=/bin:/usr/bin
+export PATH
+owner=bin
+owngrp=operator
 
 make
 
