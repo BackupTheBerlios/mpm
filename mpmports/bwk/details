@@ -1,0 +1,10 @@
+name:       bwk
+version:    20050424
+release:    1
+source:     http://plan9.bell-labs.com/who/bwk/awk.tar.gz
+filesize:   114935
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    Brian Kenighan's One True AWK
+os:         yes
+arch:       yes
