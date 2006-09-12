@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT/mawk-1.3.3"
+
+if test "$_os" = "minix" ; then
+    PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+    export PATH
+fi
+
+sh configure
+
+make mawk
+
+mkdir -p "$SMPM_INSTALLROOT/usr/local/bin"
+mkdir -p "$SMPM_INSTALLROOT/usr/local/man/man1"
+install -o bin -m 755 -S 512k "$SMPM_BUILDROOT/mawk-1.3.3/mawk" "$SMPM_INSTALLROOT/usr/local/bin/mawk"
+install -o bin -m 644 "$SMPM_BUILDROOT/mawk-1.3.3/man/mawk.1" "$SMPM_INSTALLROOT/usr/local/man/man1/mawk.1"
+
+exit 0

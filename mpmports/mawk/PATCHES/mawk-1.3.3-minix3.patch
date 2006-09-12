@@ -1,0 +1,120 @@
+Only in mawk-1.3.3-patched: Makefile
+Common subdirectories: mawk-1.3.3/atarist and mawk-1.3.3-patched/atarist
+diff -c mawk-1.3.3/bi_funct.c mawk-1.3.3-patched/bi_funct.c
+*** mawk-1.3.3/bi_funct.c Sun Jan 14 17:16:11 1996
+--- mawk-1.3.3-patched/bi_funct.c Tue Sep 12 01:09:12 2006
+***************
+*** 74,80 ****
+  #include "regexp.h"
+  #include "repl.h"
+  #include <math.h>
+! 
+  
+  /* statics */
+  static STRING *PROTO(gsub, (PTR, CELL *, char *, int)) ;
+--- 74,80 ----
+  #include "regexp.h"
+  #include "repl.h"
+  #include <math.h>
+! #include <unistd.h>
+  
+  /* statics */
+  static STRING *PROTO(gsub, (PTR, CELL *, char *, int)) ;
+Common subdirectories: mawk-1.3.3/config-user and mawk-1.3.3-patched/config-user
+Only in mawk-1.3.3-patched: config.cache
+Only in mawk-1.3.3-patched: config.h
+Only in mawk-1.3.3-patched: config.log
+Only in mawk-1.3.3-patched: config.status
+diff -c mawk-1.3.3/config.user mawk-1.3.3-patched/config.user
+*** mawk-1.3.3/config.user Fri Nov  8 16:18:26 1996
+--- mawk-1.3.3-patched/config.user Tue Sep 12 11:01:21 2006
+***************
+*** 13,23 ****
+  # default is to look for gcc and use cc if no gcc
+  # change if you do not want gcc or want a different compiler from
+  # gcc or cc
+! #CC=lcc
+  
+  # change if need special C compiler flags
+  # otherwise default is -O
+! # CFLAGS='-O4 -special flags'
+  
+  # configure will look for libm. Change if you know this will fail
+  # or want a different math library
+--- 13,23 ----
+  # default is to look for gcc and use cc if no gcc
+  # change if you do not want gcc or want a different compiler from
+  # gcc or cc
+! CC=cc
+  
+  # change if need special C compiler flags
+  # otherwise default is -O
+! CFLAGS='-O'
+  
+  # configure will look for libm. Change if you know this will fail
+  # or want a different math library
+***************
+*** 35,41 ****
+  # most likely candidate is fpe tests
+  # This gets put in config.h via: echo "$USER_DEFINES"
+  # example:
+! #USER_DEFINES='
+  #define FPE_TRAPS_ON 1
+  #define NOINFO_SIGFPE 1'
+          
+--- 35,41 ----
+  # most likely candidate is fpe tests
+  # This gets put in config.h via: echo "$USER_DEFINES"
+  # example:
+! USER_DEFINES='
+  #define FPE_TRAPS_ON 1
+  #define NOINFO_SIGFPE 1'
+          
+Common subdirectories: mawk-1.3.3/examples and mawk-1.3.3-patched/examples
+diff -c mawk-1.3.3/files.c mawk-1.3.3-patched/files.c
+*** mawk-1.3.3/files.c Sun Jan 14 17:14:10 1996
+--- mawk-1.3.3-patched/files.c Tue Sep 12 11:07:18 2006
+***************
+*** 60,65 ****
+--- 60,68 ----
+  #include "files.h"
+  #include "memory.h"
+  #include "fin.h"
++ #include <unistd.h>
++ #include <sys/wait.h>
++ #include <stdio.h>
+  
+  static FILE *PROTO(tfopen, (char *, char *)) ;
+  static void PROTO(efflush, (FILE*)) ;
+diff -c mawk-1.3.3/fin.c mawk-1.3.3-patched/fin.c
+*** mawk-1.3.3/fin.c Sun Dec 24 22:23:22 1995
+--- mawk-1.3.3-patched/fin.c Tue Sep 12 11:07:00 2006
+***************
+*** 76,81 ****
+--- 76,82 ----
+  #include "field.h"
+  #include "symtype.h"
+  #include "scan.h"
++ #include <stdio.h>
+  
+  #ifndef	  NO_FCNTL_H
+  #include <fcntl.h>
+diff -c mawk-1.3.3/init.c mawk-1.3.3-patched/init.c
+*** mawk-1.3.3/init.c Sun Aug 20 17:35:21 1995
+--- mawk-1.3.3-patched/init.c Tue Sep 12 01:06:50 2006
+***************
+*** 69,74 ****
+--- 69,75 ----
+  #include "init.h"
+  #include "bi_vars.h"
+  #include "field.h"
++ #include <stdlib.h>
+  
+  #ifdef MSDOS
+  #include <fcntl.h>
+Common subdirectories: mawk-1.3.3/man and mawk-1.3.3-patched/man
+Common subdirectories: mawk-1.3.3/msdos and mawk-1.3.3-patched/msdos
+Common subdirectories: mawk-1.3.3/msdos/examples and mawk-1.3.3-patched/msdos/examples
+Common subdirectories: mawk-1.3.3/rexp and mawk-1.3.3-patched/rexp
+Common subdirectories: mawk-1.3.3/test and mawk-1.3.3-patched/test
+Common subdirectories: mawk-1.3.3/v7 and mawk-1.3.3-patched/v7

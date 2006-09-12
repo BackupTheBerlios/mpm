@@ -1,0 +1,10 @@
+name:       mawk
+version:    1.3.3
+release:    1
+source:     ftp://ftp.fu-berlin.de/unix/languages/mawk/mawk-1.3.3.tar.gz
+filesize:   209942
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Mike's AWK (POSIX 1003.2 conformant)
+os:         yes
+arch:       yes
