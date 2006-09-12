@@ -3,7 +3,7 @@ PACKAGES=gnu-grep \
 	 minix-world \
 	 mawk \
 	 bwk \
-	 gnu-zip \
+	 gnu-gzip \
 	 gnu-make \
 
 all:
