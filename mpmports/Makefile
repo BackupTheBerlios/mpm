@@ -1,10 +1,11 @@
-PACKAGES=gnu-grep \
-	 minix-world-source \
-	 minix-world \
-	 mawk \
-	 bwk \
-	 gnu-gzip \
-	 gnu-make \
+PACKAGES=\
+	bwk \
+	gnu-grep \
+	gnu-gzip \
+	gnu-make \
+	mawk \
+	minix-world-source \
+	minix-world \
 
 all:
 	@echo "MPM ports collection"
