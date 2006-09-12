@@ -1,8 +1,6 @@
 set -e
 
-if test "$_os" = "minix" ; then
-    cd "$SMPM_BUILDROOT/mawk-1.3.3"
-    patch -s -p1 < "$SMPM_PATCHES/mawk-1.3.3-minix3.patch"
-fi
+cd "$SMPM_BUILDROOT/mawk-1.3.3"
+patch -s -p1 < "$SMPM_PATCHES/mawk-1.3.3-minix3.patch"
 
 exit 0
