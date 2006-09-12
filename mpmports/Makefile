@@ -1,6 +1,7 @@
 PACKAGES=gnu-grep \
 	 minix-world-source \
 	 minix-world \
+	 mawk \
 
 all:
 	@echo "MPM ports collection"
