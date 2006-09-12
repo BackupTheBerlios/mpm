@@ -1,0 +1,63 @@
+diff -c fileutils-4.1/configure fileutils-4.1-patched/configure
+*** fileutils-4.1/configure Sun Apr 29 08:26:09 2001
+--- fileutils-4.1-patched/configure Tue Sep 12 20:31:58 2006
+***************
+*** 20092,20097 ****
+--- 20092,20099 ----
+    fi
+  fi
+  
++ ac_list_mounted_fs="patch for minix"
++ 
+  if test -z "$ac_list_mounted_fs"; then
+    { { echo "$as_me:20096: error: could not determine how to read list of mounted filesystems" >&5
+  echo "$as_me: error: could not determine how to read list of mounted filesystems" >&2;}
+Common subdirectories: fileutils-4.1/doc and fileutils-4.1-patched/doc
+Common subdirectories: fileutils-4.1/intl and fileutils-4.1-patched/intl
+Common subdirectories: fileutils-4.1/lib and fileutils-4.1-patched/lib
+Common subdirectories: fileutils-4.1/m4 and fileutils-4.1-patched/m4
+Common subdirectories: fileutils-4.1/man and fileutils-4.1-patched/man
+Common subdirectories: fileutils-4.1/po and fileutils-4.1-patched/po
+Common subdirectories: fileutils-4.1/src and fileutils-4.1-patched/src
+diff -c fileutils-4.1/src/chown-core.c fileutils-4.1-patched/src/chown-core.c
+*** fileutils-4.1/src/chown-core.c Sat Dec 16 18:51:27 2000
+--- fileutils-4.1-patched/src/chown-core.c Tue Sep 12 21:20:13 2006
+***************
+*** 296,303 ****
+  		  /* Applying chown to a symlink and expecting it to affect
+  		     the referent is not portable.  So instead, open the
+  		     file and use fchown on the resulting descriptor.  */
+! 		  int fd = open (file, O_RDONLY | O_NONBLOCK | O_NOCTTY);
+! 		  fail = (fd == -1 ? 1 : fchown (fd, new_uid, new_gid));
+  		}
+  	      else
+  		{
+--- 296,306 ----
+  		  /* Applying chown to a symlink and expecting it to affect
+  		     the referent is not portable.  So instead, open the
+  		     file and use fchown on the resulting descriptor.  */
+! 		  /* this does not work on minix 3.1.2a
+!  		   * int fd = open (file, O_RDONLY | O_NONBLOCK | O_NOCTTY);
+! 		   * fail = (fd == -1 ? 1 : fchown (fd, new_uid, new_gid)); */
+!           /* just do chown */
+!             fail = chown (file, new_uid, new_gid);  
+  		}
+  	      else
+  		{
+Common subdirectories: fileutils-4.1/tests and fileutils-4.1-patched/tests
+Common subdirectories: fileutils-4.1/tests/chgrp and fileutils-4.1-patched/tests/chgrp
+Common subdirectories: fileutils-4.1/tests/chmod and fileutils-4.1-patched/tests/chmod
+Common subdirectories: fileutils-4.1/tests/cp and fileutils-4.1-patched/tests/cp
+Common subdirectories: fileutils-4.1/tests/dd and fileutils-4.1-patched/tests/dd
+Common subdirectories: fileutils-4.1/tests/dircolors and fileutils-4.1-patched/tests/dircolors
+Common subdirectories: fileutils-4.1/tests/du and fileutils-4.1-patched/tests/du
+Common subdirectories: fileutils-4.1/tests/install and fileutils-4.1-patched/tests/install
+Common subdirectories: fileutils-4.1/tests/ln and fileutils-4.1-patched/tests/ln
+Common subdirectories: fileutils-4.1/tests/ls and fileutils-4.1-patched/tests/ls
+Common subdirectories: fileutils-4.1/tests/ls-2 and fileutils-4.1-patched/tests/ls-2
+Common subdirectories: fileutils-4.1/tests/mkdir and fileutils-4.1-patched/tests/mkdir
+Common subdirectories: fileutils-4.1/tests/mv and fileutils-4.1-patched/tests/mv
+Common subdirectories: fileutils-4.1/tests/rm and fileutils-4.1-patched/tests/rm
+Common subdirectories: fileutils-4.1/tests/rmdir and fileutils-4.1-patched/tests/rmdir
+Common subdirectories: fileutils-4.1/tests/shred and fileutils-4.1-patched/tests/shred
+Common subdirectories: fileutils-4.1/tests/touch and fileutils-4.1-patched/tests/touch
