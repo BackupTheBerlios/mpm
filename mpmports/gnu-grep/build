@@ -1,6 +1,6 @@
 set -e
 
-cd $SMPM_BUILDROOT/grep-2.5.1a
+cd "$SMPM_BUILDROOT/grep-2.5.1a"
 
 if test "$_os" = "minix" ; then
     PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
