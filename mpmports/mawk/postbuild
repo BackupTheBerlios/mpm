@@ -1,5 +1,3 @@
 set -e
 
-strip "$SMPM_INSTALLROOT/usr/local/bin/mawk"
-
 exit 0

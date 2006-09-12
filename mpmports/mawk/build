@@ -18,7 +18,7 @@ make mawk
 
 install -d -o $owner -g $owngrp "$SMPM_INSTALLROOT/usr/local/bin"
 install -d -o $owner -g $owngrp "$SMPM_INSTALLROOT/usr/local/man/man1"
-install -o $owner -g $owngrp -m 755 -S 512k "$SMPM_BUILDROOT/mawk-1.3.3/mawk" "$SMPM_INSTALLROOT/usr/local/bin/mawk"
+install -o $owner -g $owngrp -m 755 -S 512k -s "$SMPM_BUILDROOT/mawk-1.3.3/mawk" "$SMPM_INSTALLROOT/usr/local/bin/mawk"
 install -o $owner -g $owngrp -m 644 "$SMPM_BUILDROOT/mawk-1.3.3/man/mawk.1" "$SMPM_INSTALLROOT/usr/local/man/man1/mawk.1"
 
 exit 0
