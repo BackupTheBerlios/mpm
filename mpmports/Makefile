@@ -4,8 +4,8 @@ PACKAGES=\
 	gnu-gzip \
 	gnu-make \
 	mawk \
-	minix-world-source \
 	minix-world \
+	minix-world-source \
 
 all:
 	@echo "MPM ports collection"
