@@ -1,0 +1,10 @@
+name:       gnu-make
+version:    3.81
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/make/make-3.81.tar.bz2
+filesize:   1151445
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU make
+os:         yes
+arch:       yes

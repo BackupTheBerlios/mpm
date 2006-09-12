@@ -1,0 +1,7 @@
+set -e
+
+if test "$_os" = "minix" ; then
+    cp "$SMPM_FILES/ar.h" "$SMPM_BUILDROOT/make-3.81/."
+fi
+
+exit 0

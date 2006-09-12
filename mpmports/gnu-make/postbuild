@@ -1,0 +1,8 @@
+set -e
+
+PREFIX=/usr
+test "$_os" = "minix" && PREFIX=/usr/gnu
+
+strip "$SMPM_INSTALLROOT$PREFIX/bin/make"
+
+exit 0
