@@ -2,8 +2,8 @@ set -e
 
 cd "$SMPM_BUILDROOT/gzip-1.2.4a"
 
-PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
-export PATH
+    PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+    export PATH
 
 CC="cc" LD="cc" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
 configure --prefix="$SMPM_INSTALLROOT/usr/gnu" \
