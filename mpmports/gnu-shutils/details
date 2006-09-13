@@ -5,6 +5,6 @@ source:     http://ftp.gnu.org/pub/gnu/sh-utils/sh-utils-2.0.tar.gz
 filesize:   1243391
 md5sum:     0123456789abcdef0123456789abcdef
 license:    GPL
-summary:    GNU sh-utils
+summary:    GNU sh-utils (deprecated by coreutils)
 os:         yes
 arch:       yes
