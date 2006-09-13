@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/sed-4.1.5"
+patch -s -p1 < "$SMPM_PATCHES/sed-4.1.5-minix3.patch"
+
+exit 0

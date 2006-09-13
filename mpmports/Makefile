@@ -5,6 +5,7 @@ PACKAGES=\
 	gnu-grep \
 	gnu-gzip \
 	gnu-make \
+	gnu-sed \
 	mawk \
 	minix-world \
 	minix-world-source \

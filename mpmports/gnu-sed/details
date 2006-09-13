@@ -1,0 +1,10 @@
+name:       gnu-sed
+version:    4.1.5
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/sed/sed-4.1.5.tar.gz
+filesize:   799584
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU sed
+os:         yes
+arch:       yes
