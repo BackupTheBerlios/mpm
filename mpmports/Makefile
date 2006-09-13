@@ -6,6 +6,7 @@ PACKAGES=\
 	gnu-gzip \
 	gnu-make \
 	gnu-sed \
+	gnu-shutils \
 	mawk \
 	minix-world \
 	minix-world-source \

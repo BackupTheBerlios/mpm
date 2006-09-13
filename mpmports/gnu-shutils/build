@@ -1,0 +1,40 @@
+set -e
+
+cd "$SMPM_BUILDROOT/sh-utils-2.0"
+
+# depends on gnu sed for correct makefile generation
+# ln -s could fail if /usr/gnu is on a different partition
+# just adding /usr/gnu/bin to PATH will probably work, but i want to assure
+# this is build with minix-world tools only, except for gnu sed, which is
+# known to work.
+
+mkdir bin
+cp /usr/gnu/bin/sed bin
+PATH="`pwd`/bin:/bin:/usr/bin"
+export PATH
+
+CC="cc" LD="cc" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+configure --prefix=/usr/gnu \
+          --disable-nls \
+          --disable-dependency-tracking \
+          --host=i386-pc-minix \
+
+binsizes xxl
+make
+
+fix_makefile() {
+    sed "s@^DESTDIR =@DESTDIR = $SMPM_INSTALLROOT@" "$1" > "$1.fixed"
+    mv "$1.fixed" "$1"
+}
+
+fix_makefile Makefile
+fix_makefile doc/Makefile
+fix_makefile lib/Makefile
+fix_makefile m4/Makefile
+fix_makefile man/Makefile
+fix_makefile src/Makefile
+fix_makefile tests/Makefile
+
+make install
+
+exit 0
