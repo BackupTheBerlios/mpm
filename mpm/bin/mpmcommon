@@ -226,8 +226,8 @@ check_applications() {
     test "$r" = "sam" || error "cannot find tr"
     echomid "tr "
 
-    rp=`( uname -p ) 2>/dev/null`
-    rs=`( uname -s ) 2>/dev/null`
+    rp=`( /usr/bin/uname -p ) 2>/dev/null`
+    rs=`( /usr/bin/uname -s ) 2>/dev/null`
     test -n "$rp" -a -n "$rs" || error "cannot find uname"
     test "$rp" != "unknown" || error "uname -p returns unknown"
     test "$rs" != "unknown" || error "uname -s returns unknown"
@@ -278,8 +278,8 @@ check_applications() {
 }
 
 check_arch_os() {
-    arch="`uname -p | tr '[A-Z]' '[a-z]'`"
-    os="`uname -s | tr '[A-Z]' '[a-z]'`"
+    arch="`/usr/bin/uname -p | tr '[A-Z]' '[a-z]'`"
+    os="`/usr/bin/uname -s | tr '[A-Z]' '[a-z]'`"
 }
 
 bzcat() {
