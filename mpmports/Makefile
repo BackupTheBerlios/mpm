@@ -1,5 +1,6 @@
 PACKAGES=\
 	bwk \
+	gnu-diffutils \
 	gnu-fileutils \
 	gnu-grep \
 	gnu-gzip \
