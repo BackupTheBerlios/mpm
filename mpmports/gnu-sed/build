@@ -1,6 +1,6 @@
 set -e
 
-cd "$SMPM_BUILDROOT/sed-4.1.5"
+cd "$SMPM_BUILDROOT/sed-3.02"
 
 PATH=/bin:/usr/bin
 export PATH
@@ -10,24 +10,10 @@ configure --prefix=/usr/gnu \
           --disable-nls \
           --disable-dependency-tracking \
 
-# configure generates wrong Makefiles in intl/ and po/
-# because minix sed is not working as expected.
-# luckily, this can be easily fixed with grep -v
-
-mv intl/Makefile intl/Makefile.wrong
-mv po/Makefile po/Makefile.wrong
-grep -v "^nstall" intl/Makefile.wrong >intl/Makefile
-grep -v "^nstall" po/Makefile.wrong >po/Makefile
-
-# make all fails because there is no perl to "fix" the manual page
-# just make the library and install-exec&data
-
 binsizes xxl
-cd lib
-make all
-cd ..
+make
 
 DESTDIR="$SMPM_INSTALLROOT" \
-make DESTDIR="$SMPM_INSTALLROOT" install-exec install-data
+make DESTDIR="$SMPM_INSTALLROOT" install
 
 exit 0
