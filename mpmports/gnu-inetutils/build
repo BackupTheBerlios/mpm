@@ -1,0 +1,25 @@
+set -e
+
+cd "$SMPM_BUILDROOT/inetutils-1.4.2"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc" LD="cc" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -DPATH_WTMP=WTMP -DPATH_UTMP=UTMP -DMSG_OOB=0x01" sh \
+configure --prefix=/usr/gnu \
+          --disable-nls \
+          --disable-dependency-tracking \
+          --disable-servers \
+          --disable-telnet \
+          --disable-rlogin \
+          --disable-talk \
+          --disable-ping \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

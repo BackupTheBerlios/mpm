@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/inetutils-1.4.2"
+patch -s -p1 < "$SMPM_PATCHES/inetutils-1.4.2-minix3.patch"
+
+exit 0

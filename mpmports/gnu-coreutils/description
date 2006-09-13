@@ -1,0 +1,4 @@
+GNU coreutils
+
+All coreutils, except stat, which is too system dependant. Use minix-world's
+stat instead.

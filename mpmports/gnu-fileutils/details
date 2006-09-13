@@ -5,6 +5,6 @@ source:     http://ftp.gnu.org/pub/gnu/fileutils/fileutils-4.1.tar.gz
 filesize:   1812537
 md5sum:     0123456789abcdef0123456789abcdef
 license:    GPL
-summary:    GNU fileutils
+summary:    GNU fileutils (deprecated by coreutils)
 os:         yes
 arch:       yes

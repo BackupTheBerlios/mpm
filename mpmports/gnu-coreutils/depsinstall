@@ -1,0 +1,3 @@
+gnu-fileutils (conflicts)
+gnu-textutils (conflicts)
+gnu-shutils (conflicts)

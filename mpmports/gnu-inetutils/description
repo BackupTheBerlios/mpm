@@ -1,0 +1,16 @@
+GNU inetutils
+
+Too much low-level stuff is missing yet from Minix and GNU inetutils are not
+very portable. But I managed to get a few clients to compile with some patches.
+If you need, say, an ftp server, you should look elsewhere.
+
+clients
+-------
+includes:   ftp, glob, whois, logger, rcp, rsh, tftp
+excludes:   ping, rlogin, talk, telnet
+
+servers
+-------
+includes:
+excludes:   ftpd, inetd, rexecd, rlogind, rshd, talkd, telnetd, tftpd, uucpd
+

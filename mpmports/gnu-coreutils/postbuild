@@ -1,0 +1,11 @@
+set -e
+
+P="$SMPM_INSTALLROOT/usr/gnu"
+
+cd "$P/bin"
+strip *
+rm -f dir vdir
+ln -s ls dir
+ln -s ls vdir
+
+exit 0

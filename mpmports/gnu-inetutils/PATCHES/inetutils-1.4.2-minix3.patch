@@ -1,0 +1,263 @@
+diff -c inetutils-1.4.2/Makefile.in inetutils-1.4.2-patched/Makefile.in
+*** inetutils-1.4.2/Makefile.in Mon Dec 23 04:32:25 2002
+--- inetutils-1.4.2-patched/Makefile.in Wed Sep 13 19:13:45 2006
+***************
+*** 167,176 ****
+  
+  EXTRA_DIST = README-alpha paths ChangeLog.0
+  
+! SUBDIRS = headers libinetutils libtelnet glob \
+! 	inetd telnetd libls ftpd rshd rlogind uucpd rexecd syslogd tftpd \
+! 	talkd telnet ftp rsh rcp rlogin tftp logger gwhois talk \
+! 	libicmp ping doc
+  
+  
+  DISTCLEANFILES = pathdefs.make paths.defs include/*.h include/*/*.h \
+--- 167,173 ----
+  
+  EXTRA_DIST = README-alpha paths ChangeLog.0
+  
+! SUBDIRS = headers libinetutils glob libls ftp rsh rcp tftp logger gwhois
+  
+  
+  DISTCLEANFILES = pathdefs.make paths.defs include/*.h include/*/*.h \
+Common subdirectories: inetutils-1.4.2/doc and inetutils-1.4.2-patched/doc
+Common subdirectories: inetutils-1.4.2/doc/rfc and inetutils-1.4.2-patched/doc/rfc
+Common subdirectories: inetutils-1.4.2/ftp and inetutils-1.4.2-patched/ftp
+Common subdirectories: inetutils-1.4.2/ftpd and inetutils-1.4.2-patched/ftpd
+Common subdirectories: inetutils-1.4.2/glob and inetutils-1.4.2-patched/glob
+diff -c inetutils-1.4.2/glob/glob.c inetutils-1.4.2-patched/glob/glob.c
+*** inetutils-1.4.2/glob/glob.c Sun Apr 18 00:40:31 1999
+--- inetutils-1.4.2-patched/glob/glob.c Wed Sep 13 19:19:44 2006
+***************
+*** 181,186 ****
+--- 181,187 ----
+      return (char *) malloc (n);
+    return (char *) realloc (p, n);
+  }
++ #undef realloc
+  #define	realloc	my_realloc
+  #endif /* __SASC */
+  #endif /* __GNU_LIBRARY__ */
+Common subdirectories: inetutils-1.4.2/gwhois and inetutils-1.4.2-patched/gwhois
+diff -c inetutils-1.4.2/gwhois/whois.c inetutils-1.4.2-patched/gwhois/whois.c
+*** inetutils-1.4.2/gwhois/whois.c Wed Jun 26 03:15:05 2002
+--- inetutils-1.4.2-patched/gwhois/whois.c Wed Sep 13 19:23:32 2006
+***************
+*** 444,450 ****
+  #else
+      if ((hostinfo = gethostbyname(server)) == NULL)
+  	err_quit(_("Host %s not found."), server);
+!     if ((fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
+  	err_sys("socket");
+      memset(&saddr, 0, sizeof(saddr));
+      saddr.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+--- 444,450 ----
+  #else
+      if ((hostinfo = gethostbyname(server)) == NULL)
+  	err_quit(_("Host %s not found."), server);
+!     if ((fd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
+  	err_sys("socket");
+      memset(&saddr, 0, sizeof(saddr));
+      saddr.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+Common subdirectories: inetutils-1.4.2/headers and inetutils-1.4.2-patched/headers
+Common subdirectories: inetutils-1.4.2/headers/arpa and inetutils-1.4.2-patched/headers/arpa
+Common subdirectories: inetutils-1.4.2/headers/protocols and inetutils-1.4.2-patched/headers/protocols
+diff -c inetutils-1.4.2/headers/syslog-int.h inetutils-1.4.2-patched/headers/syslog-int.h
+*** inetutils-1.4.2/headers/syslog-int.h Thu Jul  6 04:21:07 2000
+--- inetutils-1.4.2-patched/headers/syslog-int.h Wed Sep 13 19:22:50 2006
+***************
+*** 50,60 ****
+  #define	INTERNAL_NOPRI	0x10	/* the "no priority" priority */
+  				/* mark "facility" */
+  #define	INTERNAL_MARK	LOG_MAKEPRI(LOG_NFACILITIES, 0)
+! typedef struct _code {
+! 	char	*c_name;
+! 	int	c_val;
+! } CODE;
+! 
+  CODE prioritynames[] = {
+  #ifdef LOG_ALERT
+  	"alert",	LOG_ALERT,
+--- 50,60 ----
+  #define	INTERNAL_NOPRI	0x10	/* the "no priority" priority */
+  				/* mark "facility" */
+  #define	INTERNAL_MARK	LOG_MAKEPRI(LOG_NFACILITIES, 0)
+! /*typedef struct _code {
+! 	char	*c_name;
+! 	int	c_val;
+! } CODE;  already defined in minix' syslog.h */
+! typedef struct _code CODE;
+  CODE prioritynames[] = {
+  #ifdef LOG_ALERT
+  	"alert",	LOG_ALERT,
+Common subdirectories: inetutils-1.4.2/inetd and inetutils-1.4.2-patched/inetd
+Common subdirectories: inetutils-1.4.2/libicmp and inetutils-1.4.2-patched/libicmp
+Common subdirectories: inetutils-1.4.2/libinetutils and inetutils-1.4.2-patched/libinetutils
+diff -c inetutils-1.4.2/libinetutils/getusershell.c inetutils-1.4.2-patched/libinetutils/getusershell.c
+*** inetutils-1.4.2/libinetutils/getusershell.c Wed Dec 11 12:37:50 2002
+--- inetutils-1.4.2-patched/libinetutils/getusershell.c Wed Sep 13 19:18:36 2006
+***************
+*** 36,42 ****
+  # include <stdlib.h>
+  #endif
+  #include <ctype.h>
+! #include "unlocked-io.h"
+  #include "xalloc.h"
+  
+  #if defined (STDC_HEADERS) || (!defined (isascii) && !defined (HAVE_ISASCII))
+--- 36,42 ----
+  # include <stdlib.h>
+  #endif
+  #include <ctype.h>
+! /*#include "unlocked-io.h"*/
+  #include "xalloc.h"
+  
+  #if defined (STDC_HEADERS) || (!defined (isascii) && !defined (HAVE_ISASCII))
+diff -c inetutils-1.4.2/libinetutils/ruserok.c inetutils-1.4.2-patched/libinetutils/ruserok.c
+*** inetutils-1.4.2/libinetutils/ruserok.c Wed Jun 26 03:15:06 2002
+--- inetutils-1.4.2-patched/libinetutils/ruserok.c Wed Sep 13 19:19:17 2006
+***************
+*** 71,77 ****
+  #  include <time.h>
+  # endif
+  #endif
+! #include <resolv.h>
+  
+  extern int iruserok(u_long raddr, int superuser,
+  		    const char *ruser, const char *luser);
+--- 71,77 ----
+  #  include <time.h>
+  # endif
+  #endif
+! /*#include <resolv.h>*/
+  
+  extern int iruserok(u_long raddr, int superuser,
+  		    const char *ruser, const char *luser);
+diff -c inetutils-1.4.2/libinetutils/xmalloc.c inetutils-1.4.2-patched/libinetutils/xmalloc.c
+*** inetutils-1.4.2/libinetutils/xmalloc.c Wed Dec 11 12:42:01 2002
+--- inetutils-1.4.2-patched/libinetutils/xmalloc.c Wed Sep 13 19:17:54 2006
+***************
+*** 34,40 ****
+  #define _(msgid) gettext (msgid)
+  #define N_(msgid) msgid
+  
+! #include "error.h"
+  #include "xalloc.h"
+  
+  #ifndef EXIT_FAILURE
+--- 34,50 ----
+  #define _(msgid) gettext (msgid)
+  #define N_(msgid) msgid
+  
+! #include <stdio.h>
+! static void error(int status, int errnum, const char *format, char *arg) {
+!     fprintf(stderr, format, arg);
+!     if (errnum != 0)
+!         fprintf(stderr, ": %s\n", strerror(errnum));
+!     else
+!         fprintf(stderr, "\n");
+!     if (status != 0)
+!         exit(status);
+! }
+! 
+  #include "xalloc.h"
+  
+  #ifndef EXIT_FAILURE
+Common subdirectories: inetutils-1.4.2/libls and inetutils-1.4.2-patched/libls
+Common subdirectories: inetutils-1.4.2/libtelnet and inetutils-1.4.2-patched/libtelnet
+Common subdirectories: inetutils-1.4.2/logger and inetutils-1.4.2-patched/logger
+Common subdirectories: inetutils-1.4.2/ping and inetutils-1.4.2-patched/ping
+Common subdirectories: inetutils-1.4.2/rcp and inetutils-1.4.2-patched/rcp
+diff -c inetutils-1.4.2/rcp/rcp.c inetutils-1.4.2-patched/rcp/rcp.c
+*** inetutils-1.4.2/rcp/rcp.c Mon Sep  2 14:14:39 2002
+--- inetutils-1.4.2-patched/rcp/rcp.c Wed Sep 13 19:21:04 2006
+***************
+*** 906,924 ****
+  	  run_err ("%s: truncate: %s", np, strerror (errno));
+  	  wrerr = DISPLAYED;
+  	}
+        if (pflag)
+  	{
+  	  if (exists || omode != mode)
+! 	    if (fchmod (ofd, omode))
+  	      run_err ("%s: set mode: %s", np, strerror (errno));
+  	}
+        else
+  	{
+  	  if (!exists && omode != mode)
+! 	    if (fchmod (ofd, omode & ~mask))
+! 	      run_err ("%s: set mode: %s", np, strerror (errno));
+! 	}
+!       close (ofd);
+        response ();
+        if (setimes && wrerr == NO)
+  	{
+--- 906,924 ----
+  	  run_err ("%s: truncate: %s", np, strerror (errno));
+  	  wrerr = DISPLAYED;
+  	}
++       close (ofd);
+        if (pflag)
+  	{
+  	  if (exists || omode != mode)
+! 	    if (chmod (np, omode))
+  	      run_err ("%s: set mode: %s", np, strerror (errno));
+  	}
+        else
+  	{
+  	  if (!exists && omode != mode)
+! 	    if (chmod (np, omode & ~mask))
+! 	      run_err ("%s: set mode: %s", np, strerror (errno));
+! 	}
+        response ();
+        if (setimes && wrerr == NO)
+  	{
+Common subdirectories: inetutils-1.4.2/rexecd and inetutils-1.4.2-patched/rexecd
+Common subdirectories: inetutils-1.4.2/rlogin and inetutils-1.4.2-patched/rlogin
+Common subdirectories: inetutils-1.4.2/rlogind and inetutils-1.4.2-patched/rlogind
+Common subdirectories: inetutils-1.4.2/rsh and inetutils-1.4.2-patched/rsh
+diff -c inetutils-1.4.2/rsh/rsh.c inetutils-1.4.2-patched/rsh/rsh.c
+*** inetutils-1.4.2/rsh/rsh.c Wed Jun 26 03:15:06 2002
+--- inetutils-1.4.2-patched/rsh/rsh.c Wed Sep 13 19:20:29 2006
+***************
+*** 81,86 ****
+--- 81,88 ----
+  extern char *krb_realmofhost();
+  #endif
+  
++ #include <fcntl.h>
++ 
+  /*
+   * rsh - remote shell
+   */
+***************
+*** 458,465 ****
+  #endif
+      {
+        int one = 1;
+!       ioctl (rfd2, FIONBIO, &one);
+!       ioctl (rem, FIONBIO, &one);
+      }
+  
+    talk (nflag, &osigs, pid, rem);
+--- 460,469 ----
+  #endif
+      {
+        int one = 1;
+! /*      ioctl (rfd2, FIONBIO, &one);
+!       ioctl (rem, FIONBIO, &one);*/
+!       fcntl(rfd2, F_SETFL, O_NONBLOCK);
+!       fcntl(rem, F_SETFL, O_NONBLOCK);
+      }
+  
+    talk (nflag, &osigs, pid, rem);
+Common subdirectories: inetutils-1.4.2/rshd and inetutils-1.4.2-patched/rshd
+Common subdirectories: inetutils-1.4.2/syslogd and inetutils-1.4.2-patched/syslogd
+Common subdirectories: inetutils-1.4.2/talk and inetutils-1.4.2-patched/talk
+Common subdirectories: inetutils-1.4.2/talkd and inetutils-1.4.2-patched/talkd
+Common subdirectories: inetutils-1.4.2/telnet and inetutils-1.4.2-patched/telnet
+Common subdirectories: inetutils-1.4.2/telnetd and inetutils-1.4.2-patched/telnetd
+Common subdirectories: inetutils-1.4.2/tftp and inetutils-1.4.2-patched/tftp
+Common subdirectories: inetutils-1.4.2/tftpd and inetutils-1.4.2-patched/tftpd
+Common subdirectories: inetutils-1.4.2/uucpd and inetutils-1.4.2-patched/uucpd

@@ -1,12 +1,15 @@
 PACKAGES=\
 	bwk \
+	gnu-coreutils \
 	gnu-diffutils \
 	gnu-fileutils \
 	gnu-grep \
 	gnu-gzip \
+	gnu-inetutils \
 	gnu-make \
 	gnu-sed \
 	gnu-shutils \
+	gnu-textutils \
 	mawk \
 	minix-world \
 	minix-world-source \

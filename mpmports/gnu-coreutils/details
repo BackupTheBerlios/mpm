@@ -1,0 +1,10 @@
+name:       gnu-coreutils
+version:    5.2.1
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/coreutils/coreutils-5.2.1.tar.bz2
+filesize:   4270776
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU coreutils
+os:         yes
+arch:       yes

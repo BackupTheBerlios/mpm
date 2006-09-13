@@ -1,0 +1,10 @@
+name:       gnu-inetutils
+version:    1.4.2
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/inetutils/inetutils-1.4.2.tar.gz
+filesize:   1043024
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU inetutils
+os:         yes
+arch:       yes

@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_BUILDROOT/coreutils-5.2.1"
+patch -s -p1 < "$SMPM_PATCHES/coreutils-5.2.1-minix3.patch"
+cp "$SMPM_FILES/configure" .
+cp "$SMPM_FILES/src.Makefile.in" src/Makefile.in
+
+exit 0

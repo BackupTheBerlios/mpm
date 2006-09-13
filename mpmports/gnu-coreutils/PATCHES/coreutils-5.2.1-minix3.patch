@@ -1,0 +1,20 @@
+diff -c coreutils-5.2.1/Makefile.in coreutils-5.2.1-patched/Makefile.in
+*** coreutils-5.2.1/Makefile.in Thu Mar 11 08:57:59 2004
+--- coreutils-5.2.1-patched/Makefile.in Wed Sep 13 21:34:14 2006
+***************
+*** 284,290 ****
+  sharedstatedir = @sharedstatedir@
+  sysconfdir = @sysconfdir@
+  target_alias = @target_alias@
+! SUBDIRS = lib src doc man m4 po tests
+  EXTRA_DIST = Makefile.cfg Makefile.maint GNUmakefile \
+    .kludge-stamp .prev-version THANKS-to-translators THANKStt.in \
+    .x-sc_space_tab .x-sc_sun_os_names \
+--- 284,290 ----
+  sharedstatedir = @sharedstatedir@
+  sysconfdir = @sysconfdir@
+  target_alias = @target_alias@
+! SUBDIRS = lib src man m4 po tests
+  EXTRA_DIST = Makefile.cfg Makefile.maint GNUmakefile \
+    .kludge-stamp .prev-version THANKS-to-translators THANKStt.in \
+    .x-sc_space_tab .x-sc_sun_os_names \

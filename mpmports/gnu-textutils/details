@@ -1,0 +1,10 @@
+name:       gnu-textutils
+version:    2.1
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/textutils/textutils-2.1.tar.bz2
+filesize:   1891096
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU textutils (deprecated by coreutils)
+os:         yes
+arch:       yes

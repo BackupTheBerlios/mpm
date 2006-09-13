@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT/textutils-2.1"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc" LD="cc" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+configure --prefix=/usr/gnu \
+          --disable-nls \
+          --disable-dependency-tracking \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0
