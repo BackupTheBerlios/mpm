@@ -2,17 +2,6 @@ set -e
 
 cd "$SMPM_BUILDROOT/ncurses-5.5"
 
-# depends on gnu sed for correct manpage handling
-# ln -s could fail if /usr/gnu is on a different device
-# just adding /usr/gnu/bin to PATH will probably work, but i want to assure
-# this is built with minix-world tools only, except for gnu sed, which is
-# known to work.
-
-mkdir bin
-cp /usr/gnu/bin/sed bin
-PATH="`pwd`/bin:/bin:/usr/bin"
-export PATH
-
 PATH=/bin:/usr/bin
 export PATH
 
