@@ -8,6 +8,7 @@ PACKAGES=\
 	gnu-gzip \
 	gnu-inetutils \
 	gnu-make \
+	gnu-ncurses \
 	gnu-sed \
 	gnu-shutils \
 	gnu-textutils \
