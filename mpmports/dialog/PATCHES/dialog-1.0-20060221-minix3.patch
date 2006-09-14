@@ -1,0 +1,71 @@
+diff -c dialog-1.0-20060221/configure dialog-1.0-20060221-patched/configure
+*** dialog-1.0-20060221/configure Fri Jan 27 00:59:57 2006
+--- dialog-1.0-20060221-patched/configure Thu Sep 14 17:13:20 2006
+***************
+*** 994,1002 ****
+  echo $ECHO_N "checking for package version... $ECHO_C" >&6
+  
+  	# if there are not enough fields, cut returns the last one...
+! 	cf_field1=`sed -e '2,$d' $srcdir/VERSION|cut -f1`
+! 	cf_field2=`sed -e '2,$d' $srcdir/VERSION|cut -f2`
+! 	cf_field3=`sed -e '2,$d' $srcdir/VERSION|cut -f3`
+  
+  	# this is how CF_BUNDLED_INTL uses $VERSION:
+  	VERSION="$cf_field1"
+--- 994,1002 ----
+  echo $ECHO_N "checking for package version... $ECHO_C" >&6
+  
+  	# if there are not enough fields, cut returns the last one...
+! 	cf_field1=`sed -e '2,$d' $srcdir/VERSION|cut -f 1`
+! 	cf_field2=`sed -e '2,$d' $srcdir/VERSION|cut -f 2`
+! 	cf_field3=`sed -e '2,$d' $srcdir/VERSION|cut -f 3`
+  
+  	# this is how CF_BUNDLED_INTL uses $VERSION:
+  	VERSION="$cf_field1"
+***************
+*** 6372,6378 ****
+  LIBTOOL=
+  
+  # common library maintenance symbols that are convenient for libtool scripts:
+! LIB_CREATE='$(AR) -cr'
+  LIB_OBJECT='$(OBJECTS)'
+  LIB_SUFFIX=.a
+  LIB_PREP="$RANLIB"
+--- 6372,6378 ----
+  LIBTOOL=
+  
+  # common library maintenance symbols that are convenient for libtool scripts:
+! LIB_CREATE='$(AR) cr'
+  LIB_OBJECT='$(OBJECTS)'
+  LIB_SUFFIX=.a
+  LIB_PREP="$RANLIB"
+diff -c dialog-1.0-20060221/makefile.in dialog-1.0-20060221-patched/makefile.in
+*** dialog-1.0-20060221/makefile.in Wed Jan 18 22:42:18 2006
+--- dialog-1.0-20060221-patched/makefile.in Thu Sep 14 17:39:50 2006
+***************
+*** 15,21 ****
+  o		= .@OBJEXT@
+  a		= @LIB_SUFFIX@
+  
+- DESTDIR		=
+  bindir		= $(DESTDIR)@bindir@
+  includedir	= $(DESTDIR)@includedir@
+  libdir		= $(DESTDIR)@libdir@
+--- 15,20 ----
+Common subdirectories: dialog-1.0-20060221/po and dialog-1.0-20060221-patched/po
+Common subdirectories: dialog-1.0-20060221/samples and dialog-1.0-20060221-patched/samples
+Common subdirectories: dialog-1.0-20060221/samples/copifuncs and dialog-1.0-20060221-patched/samples/copifuncs
+Common subdirectories: dialog-1.0-20060221/samples/install and dialog-1.0-20060221-patched/samples/install
+diff -c dialog-1.0-20060221/ui_getc.c dialog-1.0-20060221-patched/ui_getc.c
+*** dialog-1.0-20060221/ui_getc.c Sun Nov 27 16:38:28 2005
+--- dialog-1.0-20060221-patched/ui_getc.c Mon Sep 11 01:53:53 2006
+***************
+*** 22,27 ****
+--- 22,28 ----
+   *	Boston, MA 02110, USA.
+   */
+  
++ #include <sys/select.h>
+  #include <dialog.h>
+  #include <dlg_keys.h>
+  

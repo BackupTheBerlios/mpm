@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/dialog-1.0-20060221"
+patch -s -p1 < "$SMPM_PATCHES/dialog-1.0-20060221-minix3.patch"
+
+exit 0

@@ -1,5 +1,6 @@
 PACKAGES=\
 	bwk \
+	dialog \
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \

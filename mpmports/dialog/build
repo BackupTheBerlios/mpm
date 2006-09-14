@@ -1,0 +1,22 @@
+set -e
+
+cd "$SMPM_BUILDROOT/dialog-1.0-20060221"
+
+PATH=/bin:/usr/bin
+export PATH
+
+INCLUDES="-I/usr/gnu/include/ncurses -I/usr/gnu/include"
+
+CC="cc" LD="cc" RANLIB=true \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 $INCLUDES" \
+LDFLAGS="-L/usr/gnu/lib" sh \
+configure --prefix=/usr/local \
+          --with-ncurses \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

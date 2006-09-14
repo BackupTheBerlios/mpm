@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/local/bin"
+strip *
+
+exit 0
