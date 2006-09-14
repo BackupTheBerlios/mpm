@@ -2,9 +2,13 @@ set -e
 
 cd "$SMPM_BUILDROOT/bash-3.1"
 P="$SMPM_INSTALLROOT/usr/gnu"
+
 install -d -o bin -g operator -m 755 "$P/man/man1"
 install    -o bin -g operator -m 644 doc/bash.1 "$P/man/man1/bash.1"
 install    -o bin -g operator -m 644 doc/rbash.1 "$P/man/man1/rbash.1"
 install    -o bin -g operator -m 644 doc/builtins.1 "$P/man/man1/builtins.1"
+
+install -d -o bin -g operator -m 755 "$P/etc"
+install    -o bin -g operator -m 644 "$SMPM_FILES/bashrc" "$P/etc/bashrc"
 
 exit 0
