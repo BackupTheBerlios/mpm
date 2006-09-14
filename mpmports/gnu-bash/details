@@ -1,0 +1,10 @@
+name:       gnu-bash
+version:    3.1.17
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/bash/bash-3.1.tar.gz
+filesize:   2533934
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU bash
+os:         yes
+arch:       yes

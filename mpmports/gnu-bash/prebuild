@@ -1,0 +1,9 @@
+set -e
+
+cd "$SMPM_BUILDROOT/bash-3.1"
+for i in 001 002 003 004 005 006 007 008 009 010 011 012 013 014 015 016 017; do
+    patch -s -p0 < "$SMPM_PATCHES/bash31-$i"
+done
+patch -s -p1 < "$SMPM_PATCHES/bash-3.1-minix3.patch"
+
+exit 0

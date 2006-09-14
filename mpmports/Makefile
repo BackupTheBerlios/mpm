@@ -1,5 +1,6 @@
 PACKAGES=\
 	bwk \
+	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \
 	gnu-fileutils \

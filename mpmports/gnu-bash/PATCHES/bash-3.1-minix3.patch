@@ -1,0 +1,96 @@
+Common subdirectories: bash-3.1-upstream/CWRU and bash-3.1-upstream-and-local/CWRU
+Common subdirectories: bash-3.1-upstream/CWRU/misc and bash-3.1-upstream-and-local/CWRU/misc
+Common subdirectories: bash-3.1-upstream/builtins and bash-3.1-upstream-and-local/builtins
+diff -c bash-3.1-upstream/builtins/umask.def bash-3.1-upstream-and-local/builtins/umask.def
+*** bash-3.1-upstream/builtins/umask.def Sat Jul 17 01:02:58 2004
+--- bash-3.1-upstream-and-local/builtins/umask.def Thu Sep 14 11:25:46 2006
+***************
+*** 144,151 ****
+  /* Print the umask in a symbolic form.  In the output, a letter is
+     printed if the corresponding bit is clear in the umask. */
+  static void
+! print_symbolic_umask (um)
+!      mode_t um;
+  {
+    char ubits[4], gbits[4], obits[4];		/* u=rwx,g=rwx,o=rwx */
+    int i;
+--- 144,150 ----
+  /* Print the umask in a symbolic form.  In the output, a letter is
+     printed if the corresponding bit is clear in the umask. */
+  static void
+! print_symbolic_umask (mode_t um)
+  {
+    char ubits[4], gbits[4], obits[4];		/* u=rwx,g=rwx,o=rwx */
+    int i;
+Common subdirectories: bash-3.1-upstream/cross-build and bash-3.1-upstream-and-local/cross-build
+Common subdirectories: bash-3.1-upstream/doc and bash-3.1-upstream-and-local/doc
+Common subdirectories: bash-3.1-upstream/examples and bash-3.1-upstream-and-local/examples
+Common subdirectories: bash-3.1-upstream/examples/bashdb and bash-3.1-upstream-and-local/examples/bashdb
+Common subdirectories: bash-3.1-upstream/examples/complete and bash-3.1-upstream-and-local/examples/complete
+Common subdirectories: bash-3.1-upstream/examples/functions and bash-3.1-upstream-and-local/examples/functions
+Common subdirectories: bash-3.1-upstream/examples/loadables and bash-3.1-upstream-and-local/examples/loadables
+Common subdirectories: bash-3.1-upstream/examples/loadables/perl and bash-3.1-upstream-and-local/examples/loadables/perl
+Common subdirectories: bash-3.1-upstream/examples/misc and bash-3.1-upstream-and-local/examples/misc
+Common subdirectories: bash-3.1-upstream/examples/obashdb and bash-3.1-upstream-and-local/examples/obashdb
+Common subdirectories: bash-3.1-upstream/examples/scripts and bash-3.1-upstream-and-local/examples/scripts
+Common subdirectories: bash-3.1-upstream/examples/scripts.noah and bash-3.1-upstream-and-local/examples/scripts.noah
+Common subdirectories: bash-3.1-upstream/examples/scripts.v2 and bash-3.1-upstream-and-local/examples/scripts.v2
+Common subdirectories: bash-3.1-upstream/examples/startup-files and bash-3.1-upstream-and-local/examples/startup-files
+Common subdirectories: bash-3.1-upstream/examples/startup-files/apple and bash-3.1-upstream-and-local/examples/startup-files/apple
+Common subdirectories: bash-3.1-upstream/include and bash-3.1-upstream-and-local/include
+Common subdirectories: bash-3.1-upstream/lib and bash-3.1-upstream-and-local/lib
+Common subdirectories: bash-3.1-upstream/lib/glob and bash-3.1-upstream-and-local/lib/glob
+Common subdirectories: bash-3.1-upstream/lib/glob/doc and bash-3.1-upstream-and-local/lib/glob/doc
+Common subdirectories: bash-3.1-upstream/lib/intl and bash-3.1-upstream-and-local/lib/intl
+Common subdirectories: bash-3.1-upstream/lib/malloc and bash-3.1-upstream-and-local/lib/malloc
+diff -c bash-3.1-upstream/lib/malloc/imalloc.h bash-3.1-upstream-and-local/lib/malloc/imalloc.h
+*** bash-3.1-upstream/lib/malloc/imalloc.h Sat Dec 20 00:14:53 2003
+--- bash-3.1-upstream-and-local/lib/malloc/imalloc.h Thu Sep 14 11:36:14 2006
+***************
+*** 159,164 ****
+--- 159,165 ----
+      memcpy ((dest), (src), (nbytes))					\
+  } while(0)
+  
++ #undef NULL
+  #if defined (SHELL)
+  #  include "bashintl.h"
+  #else
+Common subdirectories: bash-3.1-upstream/lib/readline and bash-3.1-upstream-and-local/lib/readline
+Common subdirectories: bash-3.1-upstream/lib/readline/doc and bash-3.1-upstream-and-local/lib/readline/doc
+Common subdirectories: bash-3.1-upstream/lib/readline/examples and bash-3.1-upstream-and-local/lib/readline/examples
+Common subdirectories: bash-3.1-upstream/lib/sh and bash-3.1-upstream-and-local/lib/sh
+diff -c bash-3.1-upstream/lib/sh/winsize.c bash-3.1-upstream-and-local/lib/sh/winsize.c
+*** bash-3.1-upstream/lib/sh/winsize.c Sat Nov 12 04:17:19 2005
+--- bash-3.1-upstream-and-local/lib/sh/winsize.c Thu Sep 14 11:30:14 2006
+***************
+*** 42,47 ****
+--- 42,48 ----
+  #endif /* !STRUCT_WINSIZE_IN_SYS_IOCTL */
+  
+  #include <stdio.h>
++ #include <termios.h>
+  
+  /* Return the fd from which we are actually getting input. */
+  #define input_tty() (shell_tty != -1) ? shell_tty : fileno (stderr)
+Common subdirectories: bash-3.1-upstream/lib/termcap and bash-3.1-upstream-and-local/lib/termcap
+Common subdirectories: bash-3.1-upstream/lib/termcap/grot and bash-3.1-upstream-and-local/lib/termcap/grot
+Common subdirectories: bash-3.1-upstream/lib/tilde and bash-3.1-upstream-and-local/lib/tilde
+Common subdirectories: bash-3.1-upstream/po and bash-3.1-upstream-and-local/po
+Common subdirectories: bash-3.1-upstream/support and bash-3.1-upstream-and-local/support
+diff -c bash-3.1-upstream/support/mkversion.sh bash-3.1-upstream-and-local/support/mkversion.sh
+*** bash-3.1-upstream/support/mkversion.sh Sat Sep 11 14:08:31 2004
+--- bash-3.1-upstream-and-local/support/mkversion.sh Thu Sep 14 11:15:11 2006
+***************
+*** 101,108 ****
+  # Any characters other than digits and `.' are invalid.
+  case "$dist_version" in
+  [0-9].[0-9][a-z])	;;	# special case
+- *[!0-9.]*)	echo "mkversion.sh: ${dist_version}: bad distribution version" >&2
+- 		exit 1 ;;
+  *.*)	;;
+  *)	dist_version=${dist_version}.00 ;;
+  esac
+--- 101,106 ----
+Common subdirectories: bash-3.1-upstream/tests and bash-3.1-upstream-and-local/tests
+Common subdirectories: bash-3.1-upstream/tests/misc and bash-3.1-upstream-and-local/tests/misc
