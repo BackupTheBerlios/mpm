@@ -3,9 +3,9 @@ set -e
 cd "$SMPM_BUILDROOT/sh-utils-2.0"
 
 # depends on gnu sed for correct makefile generation
-# ln -s could fail if /usr/gnu is on a different partition
+# ln -s could fail if /usr/gnu is on a different device
 # just adding /usr/gnu/bin to PATH will probably work, but i want to assure
-# this is build with minix-world tools only, except for gnu sed, which is
+# this is built with minix-world tools only, except for gnu sed, which is
 # known to work.
 
 mkdir bin
