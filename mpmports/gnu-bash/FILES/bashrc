@@ -1,13 +1,4 @@
-# Generic bashrc
-#
-# Will be installed in /usr/gnu/etc. Every user can source this by adding
-# . /usr/gnu/etc/bashrc in their ~/.bashrc
-#
-# Note that root and bin do NOT have /usr/gnu/bin in their PATH
-
-umask 022
-
-export EDITOR=vi
+export EDITOR=elvis
 export PAGER=more
 
 if test "$USER" = "root" -o "$USER" = "bin"; then
@@ -18,10 +9,10 @@ else
     export PATH=$HOME/bin:/usr/gnu/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin
 fi
 
-test -f /usr/gnu/bin/ls && alias ls='/usr/gnu/bin/ls --color=auto'
 alias vi='elvis'
-test -f /usr/local/bin/vim && alias vi='vim'
-alias rm='rm -i'
-alias mv='mv -i'
-alias cp='cp -i'
+test -f /usr/gnu/bin/ls && alias ls='/usr/gnu/bin/ls --color=auto'
+test -f /usr/local/bin/vim && alias vi='vim' && export EDITOR=vim
+test -f /usr/gnu/bin/rm && alias rm='/usr/gnu/bin/rm -i'
+test -f /usr/gnu/bin/mv && alias mv='/usr/gnu/bin/mv -i'
+test -f /usr/gnu/bin/cp && alias cp='/usr/gnu/bin/cp -i'
 
