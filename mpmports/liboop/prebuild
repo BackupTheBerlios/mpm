@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/liboop-1.0"
+patch -s -p1 < "$SMPM_PATCHES/liboop-1.0-minix3.patch"
+
+exit 0

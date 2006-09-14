@@ -1,0 +1,34 @@
+Only in liboop-1.0-patched: bin
+diff -c liboop-1.0/oop.h liboop-1.0-patched/oop.h
+*** liboop-1.0/oop.h Fri Jul 18 14:46:22 2003
+--- liboop-1.0-patched/oop.h Thu Sep 14 21:59:38 2006
+***************
+*** 10,15 ****
+--- 10,16 ----
+  #include <sys/time.h>
+  #include <sys/types.h>
+  #include <unistd.h>
++ #include <sys/select.h>
+  
+  /* ------------------------------------------------------------------------- */
+  
+diff -c liboop-1.0/sys.c liboop-1.0-patched/sys.c
+*** liboop-1.0/sys.c Fri Jul 18 14:46:22 2003
+--- liboop-1.0-patched/sys.c Thu Sep 14 22:11:48 2006
+***************
+*** 190,196 ****
+  	sys->sig_active = 1;
+  
+  	/* Break out of select() loop, if necessary. */
+! 	if (sys->do_jmp) siglongjmp(sys->env,1);
+  }
+  
+  static void sys_on_signal(oop_source *source,int sig,
+--- 190,196 ----
+  	sys->sig_active = 1;
+  
+  	/* Break out of select() loop, if necessary. */
+! 	if (sys->do_jmp) longjmp(sys->env,1);
+  }
+  
+  static void sys_on_signal(oop_source *source,int sig,

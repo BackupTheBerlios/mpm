@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT/liboop-1.0"
+
+PATH=/bin:/usr/bin
+export PATH
+
+# the usual braindead autocrap. looking for c++ and a fortran compiler? *sigh*
+CXX="cc" CC="cc" LD="cc" RANLIB=true CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+configure --prefix=/usr/local \
+          --disable-dependency-tracking \
+          --disable-nls \
+
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

@@ -13,6 +13,7 @@ PACKAGES=\
 	gnu-sed \
 	gnu-shutils \
 	gnu-textutils \
+	liboop \
 	mawk \
 	minix-world \
 	minix-world-source \

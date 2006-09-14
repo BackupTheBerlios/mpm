@@ -1,0 +1,10 @@
+name:       liboop
+version:    1.0
+release:    1
+source:     http://ivop.free.fr/minix3/3.1.2a/src/liboop-1.0.tar.bz2
+filesize:   215477
+md5sum:     0123456789abcdef0123456789abcdef
+license:    LGPL
+summary:    liboop
+os:         yes
+arch:       yes
