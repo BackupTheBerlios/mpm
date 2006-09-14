@@ -45,6 +45,9 @@ cp -p "$SMPM_FILES/crontab" "$SMPM_INSTALLROOT/usr/lib"
 # no /usr/gnu directory. it will be created if any gnu-* packages are installed
 rm -rf "$SMPM_INSTALLROOT/usr/gnu"
 
+# /usr/local/gnu is obsolete
+rm -rf "$SMPM_INSTALLROOT/usr/local/gnu"
+
 # fix symlinks in .../usr/bin and .../bin. make them relative so install -root=
 # won't fail. this takes a little more diskspace, but avoids cross-device link
 # errors. all packages should have relative links only.
