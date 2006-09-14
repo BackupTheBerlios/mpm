@@ -1,0 +1,10 @@
+name:       gnu-ncurses
+version:    5.5
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.5.tar.gz
+filesize:   2314030
+md5sum:     0123456789abcdef0123456789abcdef
+license:    MIT
+summary:    GNU ncurses
+os:         yes
+arch:       yes

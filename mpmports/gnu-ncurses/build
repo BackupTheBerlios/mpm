@@ -1,0 +1,43 @@
+set -e
+
+cd "$SMPM_BUILDROOT/ncurses-5.5"
+
+# depends on gnu sed for correct manpage handling
+# ln -s could fail if /usr/gnu is on a different device
+# just adding /usr/gnu/bin to PATH will probably work, but i want to assure
+# this is built with minix-world tools only, except for gnu sed, which is
+# known to work.
+
+mkdir bin
+cp /usr/gnu/bin/sed bin
+PATH="`pwd`/bin:/bin:/usr/bin"
+export PATH
+
+PATH=/bin:/usr/bin
+export PATH
+
+AWK=/usr/local/bin/bwk \
+CC="cc" LD="cc" RANLIB=true CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+configure --prefix=/usr/gnu \
+          --without-cxx \
+          --without-cxx-binding \
+          --without-ada \
+          --without-debug \
+          --disable-database \
+          --disable-big-core \
+          --disable-lp64 \
+          --enable-termcap \
+          --enable-getcap \
+          --enable-symlinks \
+          --with-bool=int \
+          --with-chtype=int \
+          --with-ospeed=int \
+          --with-mmask-t=int \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0
