@@ -1,0 +1,107 @@
+#
+# Makefile.minix
+#
+# by Ivo van Poorten
+# Public Domain (p) 2006
+#
+
+CC          = cc
+LD          = cc
+
+INC         = -I. -Icharset -Iunix
+DEF         = -D_MINIX -D_POSIX_SOURCE -DNO_IPV6
+CFLAGS      = -O -g $(INC) $(DEF)
+LDFLAGS     = 
+INSTALL    ?= install
+INSTALLE   ?= $(INSTALL)
+INSTALLD   ?= $(INSTALL)
+OWNGRP      = -o bin -g operator
+
+prefix      = /usr/local
+bindir      = $(prefix)/bin
+mandir      = $(prefix)/man
+man1dir     = $(mandir)/man1
+
+all:	plink puttygen psftp pscp
+	
+		# pscp psftp pterm putty puttygen puttytel
+
+PLINK_OBJS = be_all.o cmdline.o cproxy.o ldisc.o logging.o misc.o pinger.o \
+             portfwd.o proxy.o raw.o rlogin.o settings.o ssh.o sshaes.o \
+             sshblowf.o sshbn.o sshcrc.o sshcrcda.o sshdes.o sshdh.o sshdss.o \
+             sshmd5.o sshpubk.o sshrand.o sshrsa.o sshsh512.o sshsha.o \
+             sshzlib.o telnet.o time.o timing.o tree234.o unix/ux_x11.o \
+             unix/uxagentc.o unix/uxcons.o unix/uxmisc.o unix/uxnet.o \
+             unix/uxnoise.o unix/uxplink.o unix/uxproxy.o unix/uxsel.o \
+             unix/uxsignal.o unix/uxstore.o wildcard.o x11fwd.o version.o
+
+PUTTYGEN_OBJS = cmdgen.o import.o misc.o notiming.o sshaes.o sshbn.o sshdes.o \
+                sshdss.o sshdssg.o sshmd5.o sshprime.o sshpubk.o sshrand.o \
+                sshrsa.o sshrsag.o sshsh512.o sshsha.o time.o tree234.o \
+                unix/uxcons.o unix/uxgen.o unix/uxmisc.o unix/uxnoise.o \
+                unix/uxstore.o version.o
+
+PSFTP_OBJS = be_none.o cmdline.o cproxy.o int64.o logging.o misc.o pinger.o \
+             portfwd.o proxy.o psftp.o settings.o sftp.o ssh.o sshaes.o \
+             sshblowf.o sshbn.o sshcrc.o sshcrcda.o sshdes.o sshdh.o \
+             sshdss.o sshmd5.o sshpubk.o sshrand.o sshrsa.o sshsh512.o \
+             sshsha.o sshzlib.o time.o timing.o tree234.o unix/uxagentc.o \
+             unix/uxcons.o unix/uxmisc.o unix/uxnet.o unix/uxnoise.o \
+             unix/uxproxy.o unix/uxsel.o unix/uxsftp.o unix/uxstore.o \
+             version.o wildcard.o x11fwd.o
+
+PSCP_OBJS = be_none.o cmdline.o cproxy.o int64.o logging.o misc.o pinger.o \
+            portfwd.o proxy.o pscp.o settings.o sftp.o ssh.o sshaes.o \
+            sshblowf.o sshbn.o sshcrc.o sshcrcda.o sshdes.o sshdh.o \
+            sshdss.o sshmd5.o sshpubk.o sshrand.o sshrsa.o sshsh512.o \
+            sshsha.o sshzlib.o time.o timing.o tree234.o unix/uxagentc.o \
+            unix/uxcons.o unix/uxmisc.o unix/uxnet.o unix/uxnoise.o \
+            unix/uxproxy.o unix/uxsel.o unix/uxsftp.o unix/uxstore.o \
+            version.o wildcard.o x11fwd.o
+
+OBJS = $(PLINK_OBJS) $(PUTTYGEN_OBJS) $(PSFTP_OBJS) $(PSCP_OBJS)
+
+plink:	$(PLINK_OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(PLINK_OBJS)
+
+puttygen:	$(PUTTYGEN_OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(PUTTYGEN_OBJS)
+
+psftp:	$(PSFTP_OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(PSFTP_OBJS)
+
+pscp:	$(PSCP_OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(PSCP_OBJS)
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+depend:
+	/usr/bin/mkdep "$(CC) -E $(CFLAGS)" `echo $(OBJS) | sed 's/\.o/\.c/g'` > .depend
+
+version.o:
+	$(CC) $(CFLAGS) `cat version.def` -c -o version.o version.c
+
+install:
+	$(INSTALL) -d $(OWNGRP) $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(OWNGRP) $(DESTDIR)$(man1dir)
+	$(INSTALLE) $(OWNGRP) -m 755 plink $(DESTDIR)$(bindir)/plink
+	$(INSTALLE) $(OWNGRP) -m 755 puttygen $(DESTDIR)$(bindir)/puttygen
+	$(INSTALLE) $(OWNGRP) -m 755 psftp $(DESTDIR)$(bindir)/psftp
+	$(INSTALLE) $(OWNGRP) -m 755 pscp $(DESTDIR)$(bindir)/pscp
+	$(INSTALLD) $(OWNGRP) -m 644 doc/plink.1 $(DESTDIR)$(man1dir)/plink.1
+	$(INSTALLD) $(OWNGRP) -m 644 doc/puttygen.1 $(DESTDIR)$(man1dir)/puttygen.1
+	$(INSTALLD) $(OWNGRP) -m 644 doc/psftp.1 $(DESTDIR)$(man1dir)/psftp.1
+	$(INSTALLD) $(OWNGRP) -m 644 doc/pscp.1 $(DESTDIR)$(man1dir)/pscp.1
+
+install-strip:
+	$(MAKE) -f Makefile.minix install INSTALLE="$(INSTALL) -s" DESTDIR="$(DESTDIR)"
+
+clean:
+	rm -f $(OBJS) plink puttygen psftp pscp .depend
+	touch .depend
+
+distclean:	clean
+	rm -f *~ */*~ */*/*~ */*/*/*~
+
+include .depend

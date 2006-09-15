@@ -1,0 +1,151 @@
+diff -c putty-0.58/unix/uxagentc.c putty-0.58-patched/unix/uxagentc.c
+*** putty-0.58/unix/uxagentc.c Tue Apr  5 19:37:47 2005
+--- putty-0.58-patched/unix/uxagentc.c Fri Sep 15 17:11:37 2006
+***************
+*** 14,19 ****
+--- 14,23 ----
+  #include "tree234.h"
+  #include "puttymem.h"
+  
++ #ifdef _MINIX
++ #define PF_UNIX AF_UNIX
++ #endif
++ 
+  #define GET_32BIT(cp) \
+      (((unsigned long)(unsigned char)(cp)[0] << 24) | \
+      ((unsigned long)(unsigned char)(cp)[1] << 16) | \
+diff -c putty-0.58/unix/uxnet.c putty-0.58-patched/unix/uxnet.c
+*** putty-0.58/unix/uxnet.c Tue Apr  5 19:37:47 2005
+--- putty-0.58-patched/unix/uxnet.c Fri Sep 15 17:30:18 2006
+***************
+*** 26,31 ****
+--- 26,43 ----
+  # define X11_UNIX_PATH "/tmp/.X11-unix/X"
+  #endif
+  
++ #ifdef _MINIX
++ #define AF_INET6 AF_UNSPEC
++ #define INADDR_LOOPBACK 0x7f000001
++ #define SOMAXCONN 128
++ #define MSG_OOB 0x01
++ #define MSG_PEEK 0x02
++ #undef send
++ #undef recv
++ #define send(a,b,c,d) write(a,b,c)
++ #define recv(a,b,c,d) read(a,b,c)
++ #endif
++ 
+  struct Socket_tag {
+      struct socket_function_table *fn;
+      /* the above variable absolutely *must* be the first in this structure */
+***************
+*** 465,474 ****
+--- 477,488 ----
+  	goto ret;
+      }
+  
++ #ifndef _MINIX
+      if (sock->oobinline) {
+  	int b = TRUE;
+  	setsockopt(s, SOL_SOCKET, SO_OOBINLINE, (void *) &b, sizeof(b));
+      }
++ #endif
+  
+      if (sock->nodelay) {
+  	int b = TRUE;
+***************
+*** 1090,1096 ****
+  	 */
+  	if (s->oobinline && s->oobpending) {
+  	    atmark = 1;
+! 	    if (ioctl(s->s, SIOCATMARK, &atmark) == 0 && atmark)
+  		s->oobpending = FALSE; /* clear this indicator */
+  	} else
+  	    atmark = 1;
+--- 1104,1114 ----
+  	 */
+  	if (s->oobinline && s->oobpending) {
+  	    atmark = 1;
+! #ifndef _MINIX
+! 	    if (ioctl(s->s, SIOCATMARK, &atmark) == 0 && atmark)
+! #else
+! 	    if (atmark)
+! #endif
+  		s->oobpending = FALSE; /* clear this indicator */
+  	} else
+  	    atmark = 1;
+diff -c putty-0.58/unix/uxnoise.c putty-0.58-patched/unix/uxnoise.c
+*** putty-0.58/unix/uxnoise.c Tue Apr  5 19:37:47 2005
+--- putty-0.58-patched/unix/uxnoise.c Fri Sep 15 17:06:54 2006
+***************
+*** 97,103 ****
+      int fd;
+      int ret;
+      char buf[512];
+!     struct rusage rusage;
+  
+      if ((fd = open("/proc/meminfo", O_RDONLY)) >= 0) {
+  	while ( (ret = read(fd, buf, sizeof(buf))) > 0)
+--- 97,105 ----
+      int fd;
+      int ret;
+      char buf[512];
+! #ifndef _MINIX
+!     struct rusage rusage;
+! #endif
+  
+      if ((fd = open("/proc/meminfo", O_RDONLY)) >= 0) {
+  	while ( (ret = read(fd, buf, sizeof(buf))) > 0)
+***************
+*** 109,116 ****
+  	    random_add_noise(buf, ret);
+  	close(fd);
+      }
+!     getrusage(RUSAGE_SELF, &rusage);
+!     random_add_noise(&rusage, sizeof(rusage));
+  }
+  
+  /*
+--- 111,120 ----
+  	    random_add_noise(buf, ret);
+  	close(fd);
+      }
+! #ifndef _MINIX
+!     getrusage(RUSAGE_SELF, &rusage);
+!     random_add_noise(&rusage, sizeof(rusage));
+! #endif
+  }
+  
+  /*
+diff -c putty-0.58/unix/uxsftp.c putty-0.58-patched/unix/uxsftp.c
+*** putty-0.58/unix/uxsftp.c Tue Apr  5 19:37:47 2005
+--- putty-0.58-patched/unix/uxsftp.c Fri Sep 15 17:06:54 2006
+***************
+*** 12,18 ****
+  #include <utime.h>
+  #include <errno.h>
+  #include <assert.h>
+! #include <glob.h>
+  
+  #include "putty.h"
+  #include "psftp.h"
+--- 12,30 ----
+  #include <utime.h>
+  #include <errno.h>
+  #include <assert.h>
+! #ifndef _MINIX
+! #include <glob.h>
+! #else
+! /* no glob on MINIX */
+! typedef struct {
+!     int gl_pathc;
+!     char **gl_pathv;
+!     int gl_flags;
+! } glob_t;
+! #define glob(a,b,c,d) (0)
+! #define globfree(a)
+! #include <sys/select.h>
+! #endif
+  
+  #include "putty.h"
+  #include "psftp.h"
