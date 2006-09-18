@@ -1,5 +1,6 @@
 PACKAGES=\
 	bwk \
+	cvs \
 	dialog \
 	gnu-bash \
 	gnu-coreutils \

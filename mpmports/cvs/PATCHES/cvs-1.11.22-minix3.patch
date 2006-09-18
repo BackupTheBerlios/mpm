@@ -1,0 +1,50 @@
+diff -c cvs-1.11.22/src/buffer.c cvs-1.11.22-patched/src/buffer.c
+*** cvs-1.11.22/src/buffer.c Thu May  4 15:13:40 2006
+--- cvs-1.11.22-patched/src/buffer.c Mon Sep 18 23:30:36 2006
+***************
+*** 32,37 ****
+--- 32,42 ----
+  #define EIO EBADPOS
+  #endif
+  
++ #ifdef _MINIX
++ #undef S_ISSOCK
++ #define S_ISSOCK(m) (((m) & S_IFMT) == 0140000)
++ #endif
++ 
+  /* Linked list of available buffer_data structures.  */
+  static struct buffer_data *free_buffer_data;
+  
+diff -c cvs-1.11.22/src/client.c cvs-1.11.22-patched/src/client.c
+*** cvs-1.11.22/src/client.c Thu Jun  8 14:36:03 2006
+--- cvs-1.11.22-patched/src/client.c Mon Sep 18 23:31:45 2006
+***************
+*** 85,90 ****
+--- 85,94 ----
+  
+  # endif /* HAVE_GSSAPI */
+  
++ #ifdef _MINIX
++ #undef S_ISSOCK
++ #define S_ISSOCK(m) (((m) & S_IFMT) == 0140000)
++ #endif
+  
+  
+  /* Keep track of any paths we are sending for Max-dotdot so that we can verify
+diff -c cvs-1.11.22/src/run.c cvs-1.11.22-patched/src/run.c
+*** cvs-1.11.22/src/run.c Mon Oct  3 20:31:12 2005
+--- cvs-1.11.22-patched/src/run.c Mon Sep 18 23:32:00 2006
+***************
+*** 18,23 ****
+--- 18,28 ----
+  extern int execvp PROTO((char *file, char **argv));
+  #endif
+  
++ #ifdef _MINIX
++ #undef S_ISSOCK
++ #define S_ISSOCK(m) (((m) & S_IFMT) == 0140000)
++ #endif
++ 
+  static void run_add_arg PROTO((const char *s));
+  
+  extern char *strtok ();

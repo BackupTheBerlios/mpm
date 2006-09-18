@@ -1,0 +1,10 @@
+name:       cvs
+version:    1.11.22
+release:    1
+source:     http://ftp.gnu.org/pub/non-gnu/cvs/source/stable/1.11.22/cvs-1.11.22.tar.bz2
+filesize:   2939294
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    cvs, concurrent version system
+os:         yes
+arch:       yes
