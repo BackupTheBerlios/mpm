@@ -17,6 +17,7 @@ PACKAGES=\
 	mawk \
 	minix-world \
 	minix-world-source \
+	putty \
 
 all:
 	@echo "MPM ports collection"

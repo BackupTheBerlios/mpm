@@ -17,7 +17,7 @@ INSTALLE   ?= $(INSTALL)
 INSTALLD   ?= $(INSTALL)
 OWNGRP      = -o bin -g operator
 
-prefix      = /usr/local
+prefix     ?= /usr/local
 bindir      = $(prefix)/bin
 mandir      = $(prefix)/man
 man1dir     = $(mandir)/man1

@@ -1,0 +1,8 @@
+PuTTY is a collection of command line utilities for connecting to telnet and
+ssh servers. It consists of:
+
+plink       - ssh and telnet client
+psftp       - sftp client
+pscp        - scp client
+puttygen    - generate ssh-1 and ssh-2 public/private key-pairs.
+

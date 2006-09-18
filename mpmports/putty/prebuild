@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_BUILDROOT/putty-0.58"
+patch -s -p1 < "$SMPM_PATCHES/putty-0.58-minix3.patch"
+cp "$SMPM_FILES/Makefile.minix" .
+touch .depend
+
+exit 0

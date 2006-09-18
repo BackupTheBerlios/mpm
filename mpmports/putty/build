@@ -1,0 +1,14 @@
+set -e
+
+cd "$SMPM_BUILDROOT/putty-0.58"
+
+PATH=/bin:/usr/bin
+export PATH
+
+binsizes xxl
+make -f Makefile.minix
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make -f Makefile.minix DESTDIR="$SMPM_INSTALLROOT" install-strip
+
+exit 0
