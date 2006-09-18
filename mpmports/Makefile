@@ -24,7 +24,7 @@ all:
 	@echo ""
 	@echo "    make all              this message"
 	@echo "    make allsrcmpm        turn all directories into .src.mpm files"
-	@echo "                          (be sure you did cvs export)
+	@echo "                          (be sure you did cvs export)"
 	@echo "    make clean            remove temporary files"
 	@echo ""
 
