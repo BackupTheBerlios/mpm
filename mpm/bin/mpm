@@ -127,7 +127,7 @@ action_install_bmpm() {
     echoend ""
     MPM_INSTALLROOT="$_mpm_install_root"
     export MPM_INSTALLROOT
-    sh "$_dotmpmdir/preinstall"     || error "an error occurred during the preinstall scripts"
+    sh "$_dotmpmdir/preinstall"     || error "an error occurred during the preinstall script"
 
     echostart "installing $_b_name to $_mpm_install_root: "
     cd "$_mpm_install_root"
@@ -149,7 +149,7 @@ action_install_bmpm() {
 
     echostart "running postinstall script"
     echoend ""
-    sh "$_dotmpmdir/postinstall"     || error "an error occurred during the postinstall scripts"
+    sh "$_dotmpmdir/postinstall"     || error "an error occurred during the postinstall script"
 
     echostart "cleaning up: "
     rm-rf "$_dotmpmdir"
