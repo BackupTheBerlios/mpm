@@ -1,0 +1,7 @@
+set -e
+
+cd "$SMPM_BUILDROOT/findutils-4.1.20"
+patch -s -p1 < "$SMPM_PATCHES/findutils-4.1.20-minix3.patch"
+cp "$SMPM_FILES/fnmatch.c" gnulib/lib
+
+exit 0

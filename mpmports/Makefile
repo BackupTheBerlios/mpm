@@ -6,6 +6,7 @@ PACKAGES=\
 	gnu-coreutils \
 	gnu-diffutils \
 	gnu-fileutils \
+	gnu-findutils \
 	gnu-grep \
 	gnu-gzip \
 	gnu-inetutils \

@@ -1,0 +1,10 @@
+name:       gnu-findutils
+version:    4.1.20
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/findutils/findutils-4.1.20.tar.gz
+filesize:   777980
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU findutils
+os:         yes
+arch:       yes

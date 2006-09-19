@@ -1,0 +1,10 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/gnu"
+
+for i in bin/find bin/locate bin/xargs libexec/bigram libexec/code libexec/frcode; do
+    strip $i
+    chmem =`expr 2 \* 1024 \* 1024` $i
+done
+
+exit 0

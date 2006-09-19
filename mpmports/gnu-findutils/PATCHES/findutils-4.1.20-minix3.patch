@@ -1,0 +1,37 @@
+diff -cr findutils-4.1.20/gnulib/lib/Makefile.in findutils-4.1.20-patched/gnulib/lib/Makefile.in
+*** findutils-4.1.20/gnulib/lib/Makefile.in	Mon May 26 12:09:29 2003
+--- findutils-4.1.20-patched/gnulib/lib/Makefile.in	Tue Sep 19 13:53:46 2006
+***************
+*** 134,140 ****
+  noinst_LIBRARIES = libgnulib.a
+  
+  #libgnulib_la_LIBADD += @LTALLOCA@
+! libgnulib_a_SOURCES = argmatch.h argmatch.c dirname.h dirname.c basename.c stripslash.c filemode.h filemode.c getline.h getopt.h getopt.c getopt1.c gettext.h human.h human.c idcache.c modechange.h modechange.c pathmax.h quote.h quote.c quotearg.h quotearg.c regex.h savedir.h savedir.c stpcpy.h strftime.c unlocked-io.h xalloc.h xmalloc.c xstrdup.c xgetcwd.h xgetcwd.c xstrtol.h xstrtol.c xstrtoul.c xstrtoumax.c yesno.c
+  
+  libgnulib_a_LIBADD = @LIBOBJS@ @ALLOCA@
+  #libgnulib_la_LIBADD = @LTLIBOBJS@
+--- 134,140 ----
+  noinst_LIBRARIES = libgnulib.a
+  
+  #libgnulib_la_LIBADD += @LTALLOCA@
+! libgnulib_a_SOURCES = argmatch.h argmatch.c dirname.h dirname.c basename.c stripslash.c filemode.h filemode.c getline.h getopt.h getopt.c getopt1.c gettext.h human.h human.c idcache.c modechange.h modechange.c pathmax.h quote.h quote.c quotearg.h quotearg.c regex.h savedir.h savedir.c stpcpy.h strftime.c unlocked-io.h xalloc.h xmalloc.c xstrdup.c xgetcwd.h xgetcwd.c xstrtol.h xstrtol.c xstrtoul.c xstrtoumax.c yesno.c fnmatch.c
+  
+  libgnulib_a_LIBADD = @LIBOBJS@ @ALLOCA@
+  #libgnulib_la_LIBADD = @LTLIBOBJS@
+***************
+*** 161,167 ****
+  	quotearg.$(OBJEXT) savedir.$(OBJEXT) strftime.$(OBJEXT) \
+  	xmalloc.$(OBJEXT) xstrdup.$(OBJEXT) xgetcwd.$(OBJEXT) \
+  	xstrtol.$(OBJEXT) xstrtoul.$(OBJEXT) xstrtoumax.$(OBJEXT) \
+! 	yesno.$(OBJEXT)
+  libgnulib_a_OBJECTS = $(am_libgnulib_a_OBJECTS)
+  
+  DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+--- 161,167 ----
+  	quotearg.$(OBJEXT) savedir.$(OBJEXT) strftime.$(OBJEXT) \
+  	xmalloc.$(OBJEXT) xstrdup.$(OBJEXT) xgetcwd.$(OBJEXT) \
+  	xstrtol.$(OBJEXT) xstrtoul.$(OBJEXT) xstrtoumax.$(OBJEXT) \
+! 	yesno.$(OBJEXT) fnmatch.$(OBJEXT)
+  libgnulib_a_OBJECTS = $(am_libgnulib_a_OBJECTS)
+  
+  DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
