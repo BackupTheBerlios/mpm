@@ -31,7 +31,7 @@ myusage() {
     echo "  -quiet              suppress writing to stdout"
     echo "  -really-quiet       suppress writing to stdout and stderr"
     echo "  -help|--help|-h|-?  print this help message"
-    echo "  -root=<dir>         specify root directory for install/upgrade/remove"
+    echo "  -root=<dir>         specify root directory for install/remove"
     echo "                      (useful for doing installs to a mounted partition"
     echo "                      that will become / later)"
 #    echo "  -nodeps             ignore dependencies (use with caution!)"
@@ -106,7 +106,7 @@ action_verify_bmpm() {
 
 is_installed() {
     fl=`echo "$1" | sed 's/\(.\).*/\1/'`    # first letter
-    ls -ld "$MPM_DB/installed/$fl/$1" 2>/dev/null
+    ls -d "$MPM_DB/installed/$fl/$1" 2>/dev/null
 }
 
 action_install_bmpm() {
@@ -156,6 +156,63 @@ action_install_bmpm() {
     echoend "ok"
 }
 
+action_remove() {
+    check_db_status_short
+
+    echostart "checking if $_subject is in the database: "
+    r=`is_installed "$_subject"`
+    test -n "$r" || error "$_subject is not installed"
+    echoend "ok"
+
+    echostart "checking for filelist: "
+    _filelist="$r/filelist"
+    test -f "$_filelist" || error "cannot find $_filelist"
+    echoend "ok"
+
+    echostart "checking installation root: "
+    test -n "$_mpm_install_root" || _mpm_install_root="/"
+    test -d "$_mpm_install_root" -a -w "$_mpm_install_root" || error "cannot find $_mpm_install_root or it is not writable"
+    echoend "$_mpm_install_root"
+
+    echostart "running preuninstall script"
+    echoend ""
+    MPM_INSTALLROOT="$_mpm_install_root"
+    export MPM_INSTALLROOT
+    sh "$r/preuninstall"     || error "an error occurred during the preuninstall script"
+
+    echostart "removing files: "
+    { cat "$_filelist" ; echo __EOF__ ; } | {
+        read line
+        while test "$line" != "__EOF__" ; do
+            full="$_mpm_install_root$line"
+            test -d "$full" || rm -f "$full"
+            read line
+        done
+    }
+    echoend "ok"
+
+    echostart "pruning empty directories: "
+    { cat "$_filelist" | sort -r ; echo __EOF__ ; } | {
+        read line
+        while test "$line" != "__EOF__" ; do
+            full="$_mpm_install_root$line"
+            test -d "$full" && rmdir "$full" 2>/dev/null
+            read line
+        done
+    }
+    echoend "ok"
+
+    echostart "running postuninstall script"
+    echoend ""
+    MPM_INSTALLROOT="$_mpm_install_root"
+    export MPM_INSTALLROOT
+    sh "$r/postuninstall"     || error "an error occurred during the postuninstall script"
+
+    echostart "updating database: "
+    rm-rf "$r"
+    echoend "ok"
+}
+
 # -----------------------------------------------------------------------------
 
 if test $# -eq 0 ; then usage ; fi
@@ -193,7 +250,7 @@ case $_action in
     verify)     action_verify_bmpm "$_subject" ;;
     install)    action_install_bmpm "$_subject" ;;
     upgrade)    ;;
-    remove)     ;;
+    remove)     action_remove "$_subject" ;;
     *)          error "parsing command line: unkown action"     ;;
 esac
 
