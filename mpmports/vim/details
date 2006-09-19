@@ -1,0 +1,10 @@
+name:       vim
+version:    7.0
+release:    1
+source:     ftp://ftp.vim.org/pub/vim/unix/vim-7.0.tar.bz2
+filesize:   6575205
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    vim, vi improved, text editor
+os:         yes
+arch:       yes

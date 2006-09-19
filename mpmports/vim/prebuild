@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/vim70"
+patch -s -p1 < "$SMPM_PATCHES/vim-7.0-minix3.patch"
+
+exit 0

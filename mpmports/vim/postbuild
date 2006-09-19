@@ -1,0 +1,5 @@
+set -e
+
+strip "$SMPM_INSTALLROOT/usr/local/bin/vim"
+
+exit 0

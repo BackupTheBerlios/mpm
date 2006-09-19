@@ -19,6 +19,7 @@ PACKAGES=\
 	minix-world \
 	minix-world-source \
 	putty \
+	vim \
 
 all:
 	@echo "MPM ports collection"

@@ -1,0 +1,77 @@
+diff -c vim70/src/memfile.c vim70-patched/src/memfile.c
+*** vim70/src/memfile.c Mon Mar  6 08:59:15 2006
+--- vim70-patched/src/memfile.c Tue Sep 19 01:14:56 2006
+***************
+*** 57,62 ****
+--- 57,65 ----
+  #  ifdef __MINT__		/* do we still need this? */
+  #   define fstatfs(fd, buf, len, nul) mch_fstat((fd), (buf))
+  #  endif
++ #  ifdef _MINIX
++ #   define fstatfs(fd, buf, len, nul) fstatfs(fd, buf)
++ #  endif
+  # endif
+  #endif
+  
+diff -c vim70/src/os_unix.c vim70-patched/src/os_unix.c
+*** vim70/src/os_unix.c Mon May  1 08:13:15 2006
+--- vim70-patched/src/os_unix.c Tue Sep 19 01:17:15 2006
+***************
+*** 2078,2088 ****
+--- 2078,2092 ----
+   * Insert user name for "uid" in s[len].
+   * Return OK if a name found.
+   */
++ #ifdef _MINIX
++ int mch_get_uname(uid_t uid, char_u *s, int len)
++ #else
+      int
+  mch_get_uname(uid, s, len)
+      uid_t	uid;
+      char_u	*s;
+      int		len;
++ #endif
+  {
+  #if defined(HAVE_PWD_H) && defined(HAVE_GETPWUID)
+      struct passwd   *pw;
+diff -c vim70/src/osdef2.h.in vim70-patched/src/osdef2.h.in
+*** vim70/src/osdef2.h.in Mon Jun  7 14:32:26 2004
+--- vim70-patched/src/osdef2.h.in Tue Sep 19 01:37:43 2006
+***************
+*** 11,17 ****
+  extern int	setenv __ARGS((char *, char *, int));
+  extern int	putenv __ARGS((const char *));
+  
+! extern int	gethostname __ARGS((char *, int));
+  extern void	perror __ARGS((char *));
+  
+  extern int	sleep __ARGS((int));
+--- 11,19 ----
+  extern int	setenv __ARGS((char *, char *, int));
+  extern int	putenv __ARGS((const char *));
+  
+! #ifndef _MINIX
+! extern int	gethostname __ARGS((char *, int));
+! #endif
+  extern void	perror __ARGS((char *));
+  
+  extern int	sleep __ARGS((int));
+***************
+*** 32,38 ****
+  extern int	write __ARGS((int, char *, size_t));
+  extern int	pipe __ARGS((int *));
+  extern off_t	lseek __ARGS((int, off_t, int));
+! extern void	sync __ARGS((void));
+  extern uid_t	getuid __ARGS((void));
+  extern gid_t	getgid __ARGS((void));
+  extern void	qsort __ARGS((void *, size_t, size_t, int (*)(const void *, const void *)));
+--- 34,42 ----
+  extern int	write __ARGS((int, char *, size_t));
+  extern int	pipe __ARGS((int *));
+  extern off_t	lseek __ARGS((int, off_t, int));
+! #ifndef _MINIX
+! extern void	sync __ARGS((void));
+! #endif
+  extern uid_t	getuid __ARGS((void));
+  extern gid_t	getgid __ARGS((void));
+  extern void	qsort __ARGS((void *, size_t, size_t, int (*)(const void *, const void *)));
