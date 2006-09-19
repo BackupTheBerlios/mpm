@@ -5,4 +5,8 @@ P="$SMPM_INSTALLROOT/usr/gnu"
 cd "$P/bin"
 strip *
 
+for i in cmp diff diff3 sdiff ; do
+    chmem =`expr 2\* 1024 \* 1024` $i
+done
+
 exit 0
