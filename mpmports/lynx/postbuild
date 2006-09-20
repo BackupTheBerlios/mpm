@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/local/bin"
+
+strip lynx
+chmem =`expr 1024 \* 1024 \* 2` lynx
+
+exit 0

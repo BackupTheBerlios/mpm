@@ -1,0 +1,10 @@
+name:       lynx
+version:    2.8.5
+release:    1
+source:     ftp://lynx.isc.org/lynx2.8.5/lynx2.8.5.tar.bz2
+filesize:   2177287
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Lynx textual web browser
+os:         yes
+arch:       yes

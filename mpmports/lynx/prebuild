@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/lynx2-8-5"
+patch -s -p1 < "$SMPM_PATCHES/lynx2.8.5-minix3.patch"
+
+exit 0

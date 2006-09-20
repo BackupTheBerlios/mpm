@@ -18,6 +18,7 @@ PACKAGES=\
 	gnu-tar \
 	gnu-textutils \
 	liboop \
+	lynx \
 	mawk \
 	minix-world \
 	minix-world-source \

@@ -1,0 +1,13 @@
+diff -c lynx2-8-5/src/chrtrans/makefile.in lynx2-8-5-patched/src/chrtrans/makefile.in
+*** lynx2-8-5/src/chrtrans/makefile.in Thu Jan  8 02:03:09 2004
+--- lynx2-8-5-patched/src/chrtrans/makefile.in Wed Sep 20 18:25:48 2006
+***************
+*** 98,103 ****
+--- 98,104 ----
+  
+  makeuctb$x: makeuctb$o
+  	$(CC) $(CC_OPTS) $(LDFLAGS) -o $@ makeuctb$o $(INTLLIB) $(LIBS)
++ 	chmem =`expr 1024 \* 1024` $@
+  
+  makeuctb$o: $(srcdir)/UCkd.h $(srcdir)/makeuctb.c
+  
