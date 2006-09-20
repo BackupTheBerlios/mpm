@@ -141,32 +141,32 @@ action_build_smpm() {
     mkdir $SMPM_INSTALLROOT
 
     if test "$_d_source" != "none" ; then
-    echostart "downloading pristine sources: "
-    cd $SMPM_BUILDROOT
-    test -z "$download" && error "this shouldn't happen; there is no download client"
-    _src_tarball=`basename $_d_source`
-    r=`$download "$_d_source" 2>&1 > "$SMPM_BUILDROOT/$_src_tarball"` || error "could not download pristine sources: $r"
-    echoend "ok"
+        echostart "downloading pristine sources: "
+        cd $SMPM_BUILDROOT
+        test -z "$download" && error "this shouldn't happen; there is no download client"
+        _src_tarball=`basename $_d_source`
+        r=`$download "$_d_source" 2>&1 > "$SMPM_BUILDROOT/$_src_tarball"` || error "could not download pristine sources: $r"
+        echoend "ok"
 
-    echostart "checking filesize: "
-    r=`expr -s "$SMPM_BUILDROOT/$_src_tarball"`
-    test "$r" = "$_d_filesize" || error "filesize does not match"
-    echoend "ok"
+        echostart "checking filesize: "
+        r=`expr -s "$SMPM_BUILDROOT/$_src_tarball"`
+        test "$r" = "$_d_filesize" || error "filesize does not match"
+        echoend "ok"
 
-    echostart "unpacking sources: "
-    cd $SMPM_BUILDROOT
-    case "$_src_tarball" in
-        *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar xf -    ;;
-        *.tar.gz|*.tgz)         gzip -dc "$_src_tarball" | tar xf - ;;
-        *.tar)                  tar xf "$_src_tarball"              ;;
-        *)  error "don't know how to unpack $_src_tarball"          ;;
-    esac
-    echoend "ok"
+        echostart "unpacking sources: "
+        cd $SMPM_BUILDROOT
+        case "$_src_tarball" in
+            *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar xf -    ;;
+            *.tar.gz|*.tgz)         gzip -dc "$_src_tarball" | tar xf - ;;
+            *.tar)                  tar xf "$_src_tarball"              ;;
+            *)  error "don't know how to unpack $_src_tarball"          ;;
+        esac
+        echoend "ok"
 
-    echostart "cleaning up: "
-    cd "$MPM_WORK"
-    rm-f "$SMPM_BUILDROOT/$_src_tarball"
-    echoend "ok"
+        echostart "cleaning up: "
+        cd "$MPM_WORK"
+        rm-f "$SMPM_BUILDROOT/$_src_tarball"
+        echoend "ok"
     fi
 
     SMPM_FILES="$_dotmpmdir/FILES"
