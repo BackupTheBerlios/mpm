@@ -1,6 +1,6 @@
 # set this to no if you do not want to check for all applications that
 # mpmsrc needs to function properly (i.e. you KNOW they are all there)
-_check_applications=no
+_check_applications=yes
 
 # to turn off the coloured output on a colour capable terminal, uncomment
 # the next line
