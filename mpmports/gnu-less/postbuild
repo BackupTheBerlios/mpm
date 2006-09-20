@@ -1,0 +1,10 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/gnu/bin"
+
+for i in less lessecho lesskey; do
+    strip $i
+    chmem =`expr 512 \* 1024` $i
+done
+
+exit 0

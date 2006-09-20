@@ -10,6 +10,7 @@ PACKAGES=\
 	gnu-grep \
 	gnu-gzip \
 	gnu-inetutils \
+	gnu-less \
 	gnu-make \
 	gnu-ncurses \
 	gnu-sed \

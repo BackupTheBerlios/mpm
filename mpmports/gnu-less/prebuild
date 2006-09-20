@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/less-394"
+patch -s -p1 < "$SMPM_PATCHES/less-394-minix3.patch"
+
+exit 0

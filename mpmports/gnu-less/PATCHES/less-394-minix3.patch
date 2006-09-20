@@ -1,0 +1,42 @@
+diff -c less-394/charset.c less-394-patched/charset.c
+*** less-394/charset.c Sat Dec  3 20:20:32 2005
+--- less-394-patched/charset.c Wed Sep 20 15:23:54 2006
+***************
+*** 18,24 ****
+  #if HAVE_LOCALE
+  #include <locale.h>
+  #include <ctype.h>
+! #include <langinfo.h>
+  #endif
+  
+  #include "charset.h"
+--- 18,26 ----
+  #if HAVE_LOCALE
+  #include <locale.h>
+  #include <ctype.h>
+! #ifndef _MINIX
+! #include <langinfo.h>
+! #endif
+  #endif
+  
+  #include "charset.h"
+***************
+*** 321,326 ****
+--- 323,329 ----
+  		return;
+  	}
+  
++ #ifndef _MINIX
+  #if HAVE_LOCALE
+  	/*
+  	 * Try using the codeset name as the charset name.
+***************
+*** 329,334 ****
+--- 332,338 ----
+  	if (icharset(s, 1))
+  		return;
+  #endif
++ #endif
+  
+  #if HAVE_STRSTR
+  	/*

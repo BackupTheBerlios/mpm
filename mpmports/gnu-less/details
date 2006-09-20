@@ -1,0 +1,10 @@
+name:       gnu-less
+version:    394
+release:    1
+source:     http://www.greenwoodsoftware.com/less/less-394.tar.gz
+filesize:   292585
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU less
+os:         yes
+arch:       yes
