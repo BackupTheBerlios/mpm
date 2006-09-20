@@ -140,6 +140,7 @@ action_build_smpm() {
     mkdir $SMPM_BUILDROOT
     mkdir $SMPM_INSTALLROOT
 
+    if test "$_d_source" != "none" ; then
     echostart "downloading pristine sources: "
     cd $SMPM_BUILDROOT
     test -z "$download" && error "this shouldn't happen; there is no download client"
@@ -166,6 +167,7 @@ action_build_smpm() {
     cd "$MPM_WORK"
     rm-f "$SMPM_BUILDROOT/$_src_tarball"
     echoend "ok"
+    fi
 
     SMPM_FILES="$_dotmpmdir/FILES"
     SMPM_PATCHES="$_dotmpmdir/PATCHES"
