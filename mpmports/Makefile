@@ -14,6 +14,7 @@ PACKAGES=\
 	gnu-ncurses \
 	gnu-sed \
 	gnu-shutils \
+	gnu-tar \
 	gnu-textutils \
 	liboop \
 	mawk \

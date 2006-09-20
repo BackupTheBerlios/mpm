@@ -1,0 +1,9 @@
+set -e
+
+P="$SMPM_INSTALLROOT/usr/gnu"
+
+cd "$P/bin"
+strip *
+chmem =`expr 512 \* 1024` tar
+
+exit 0
