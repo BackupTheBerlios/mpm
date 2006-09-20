@@ -5,5 +5,9 @@ P="$SMPM_INSTALLROOT/usr/gnu"
 cd "$P/bin"
 strip *
 chmem =`expr 512 \* 1024` tar
+cd "$P/libexec"
+strip *
+chmem =`expr 512 \* 1024` rmt
+rmdir "$P/sbin"
 
 exit 0
