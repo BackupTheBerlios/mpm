@@ -24,6 +24,7 @@ PACKAGES=\
 	minix-world-source \
 	putty \
 	vim \
+	xorg-proto \
 
 all:
 	@echo "MPM ports collection"

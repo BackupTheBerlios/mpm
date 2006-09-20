@@ -1,0 +1,25 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+PATH=/bin:/usr/bin
+export PATH
+
+binsizes xxl
+
+for i in `cat "$SMPM_FILES/proto-7.1.list"` ; do
+    j=`basename $i .tar.bz2`
+    echo "*** $j"
+    cd "$SMPM_BUILDROOT/$j"
+    
+    CC=cc LD=cc CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+    ./configure --prefix=/usr \
+                --sysconfdir=/usr/etc \
+                --localstatedir=/usr/var \
+                --datadir=/usr/lib
+
+    DESTDIR="$SMPM_INSTALLROOT" \
+    make DESTDIR="$SMPM_INSTALLROOT" install
+done
+
+exit 0

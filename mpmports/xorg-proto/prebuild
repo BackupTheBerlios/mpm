@@ -1,0 +1,15 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+for i in `cat "$SMPM_FILES/proto-7.1.list"` ; do
+    echo -n "*** $i: "
+    urlget ftp://ftp.gwdg.de/pub/x11/x.org/pub/individual/proto/$i > $i
+    echo -n "downloaded "
+    bzip2 -dc "$i" | tar xf -
+    echo -n "unpacked "
+    rm "$i"
+    echo    "done"
+done
+
+exit 0
