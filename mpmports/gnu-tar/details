@@ -1,8 +1,8 @@
 name:       gnu-tar
-version:    1.15.1
+version:    1.12
 release:    1
-source:     http://ftp.gnu.org/pub/gnu/tar/tar-1.15.1.tar.bz2
-filesize:   1611489
+source:     http://ftp.gnu.org/pub/gnu/tar/tar-1.12.tar.gz
+filesize:   867759
 md5sum:     0123456789abcdef0123456789abcdef
 license:    GPL
 summary:    GNU tar
