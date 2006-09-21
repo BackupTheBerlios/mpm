@@ -1,7 +1,7 @@
 xtrans-1.0.0.tar.bz2
 libXau-1.0.1.tar.bz2
-#libXdmcp-1.0.1.tar.bz2
-#libX11-1.0.1.tar.bz2
+libXdmcp-1.0.1.tar.bz2
+libX11-1.0.1.tar.bz2
 #libXext-1.0.1.tar.bz2
 #libICE-1.0.1.tar.bz2
 #libSM-1.0.1.tar.bz2
