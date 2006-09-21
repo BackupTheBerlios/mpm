@@ -25,6 +25,7 @@ for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
     case $i in
     \#*)        continue    ;;
     libX11-*)   SOMEEXTRA="-UX11_t -UTRANS_CLIENT" ;;
+    libICE-*)   SOMEEXTRA="-UICE_t -UTRANS_CLIENT -UTRANS_SERVER" ;;
     esac
 
     j=`basename $i .tar.bz2`
