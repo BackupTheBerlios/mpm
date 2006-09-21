@@ -1,0 +1,16 @@
+diff -pNur libX11-1.0.1.orig/src/xlibi18n/lcFile.c libX11-1.0.1/src/xlibi18n/lcFile.c
+--- libX11-1.0.1.orig/src/xlibi18n/lcFile.c	2006-05-12 18:46:51.000000000 +0000
++++ libX11-1.0.1/src/xlibi18n/lcFile.c	2006-08-05 16:25:30.000000000 +0000
+@@ -269,7 +269,11 @@ xlocaledir(
+ 	    if (seteuid(0) != 0) {
+ 		priv = 0;
+ 	    } else {
+-		seteuid(oldeuid);
++		if (seteuid(oldeuid) == -1) {
++		    /* XXX ouch, coudn't get back to original uid 
++		     what can we do ??? */
++		    _exit(127);
++		}
+ 		priv = 1;
+ 	    }
+ #endif

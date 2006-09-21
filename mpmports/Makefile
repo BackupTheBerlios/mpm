@@ -25,6 +25,7 @@ PACKAGES=\
 	pkg-config \
 	putty \
 	vim \
+	xorg-lib \
 	xorg-proto \
 	xorg-util \
 
