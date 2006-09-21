@@ -22,6 +22,7 @@ PACKAGES=\
 	mawk \
 	minix-world \
 	minix-world-source \
+	pkg-config \
 	putty \
 	vim \
 	xorg-proto \

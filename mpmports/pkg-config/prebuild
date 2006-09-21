@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_BUILDROOT/pkg-config-0.20"
+patch -s -p1 < "$SMPM_PATCHES/pkg-config-0.20-minix3.patch"
+cp "$SMPM_FILES/configure" configure
+cp "$SMPM_FILES/configure2" glib-1.2.8/configure
+
+exit 0

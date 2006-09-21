@@ -1,0 +1,218 @@
+diff -cr pkg-config-0.20/glib-1.2.8/gcompletion.c pkg-config-0.20-patched/glib-1.2.8/gcompletion.c
+*** pkg-config-0.20/glib-1.2.8/gcompletion.c	Fri May 19 06:30:23 2000
+--- pkg-config-0.20-patched/glib-1.2.8/gcompletion.c	Thu Sep 21 11:32:57 2006
+***************
+*** 29,34 ****
+--- 29,35 ----
+   */
+  
+  #include "glib.h"
++ #undef NULL
+  #include <string.h>
+  
+  static void completion_check_cache (GCompletion* cmp,
+diff -cr pkg-config-0.20/glib-1.2.8/gdate.c pkg-config-0.20-patched/glib-1.2.8/gdate.c
+*** pkg-config-0.20/glib-1.2.8/gdate.c	Sat Jul 17 09:47:55 1999
+--- pkg-config-0.20-patched/glib-1.2.8/gdate.c	Thu Sep 21 11:33:28 2006
+***************
+*** 34,39 ****
+--- 34,40 ----
+  
+  #include "glib.h"
+  
++ #undef NULL
+  #include <time.h>
+  #include <string.h>
+  #include <ctype.h>
+diff -cr pkg-config-0.20/glib-1.2.8/giochannel.c pkg-config-0.20-patched/glib-1.2.8/giochannel.c
+*** pkg-config-0.20/glib-1.2.8/giochannel.c	Wed Feb 24 06:13:37 1999
+--- pkg-config-0.20-patched/glib-1.2.8/giochannel.c	Thu Sep 21 11:33:45 2006
+***************
+*** 35,40 ****
+--- 35,41 ----
+  
+  #include "glib.h"
+  #ifdef HAVE_UNISTD_H
++ #undef NULL
+  #include <unistd.h>
+  #endif
+  
+diff -cr pkg-config-0.20/glib-1.2.8/giounix.c pkg-config-0.20-patched/glib-1.2.8/giounix.c
+*** pkg-config-0.20/glib-1.2.8/giounix.c	Sat Jul 17 09:48:04 1999
+--- pkg-config-0.20-patched/glib-1.2.8/giounix.c	Thu Sep 21 11:34:02 2006
+***************
+*** 33,38 ****
+--- 33,39 ----
+  
+  #include "glib.h"
+  #include <sys/types.h>
++ #undef NULL
+  #include <unistd.h>
+  #include <errno.h>
+  
+diff -cr pkg-config-0.20/glib-1.2.8/gmain.c pkg-config-0.20-patched/glib-1.2.8/gmain.c
+*** pkg-config-0.20/glib-1.2.8/gmain.c	Fri May 19 05:58:48 2000
+--- pkg-config-0.20-patched/glib-1.2.8/gmain.c	Thu Sep 21 11:34:29 2006
+***************
+*** 40,45 ****
+--- 40,46 ----
+  
+  #include "glib.h"
+  #include <sys/types.h>
++ #undef NULL
+  #include <time.h>
+  #ifdef HAVE_SYS_TIME_H
+  #include <sys/time.h>
+diff -cr pkg-config-0.20/glib-1.2.8/gmodule/gmodule.c pkg-config-0.20-patched/glib-1.2.8/gmodule/gmodule.c
+*** pkg-config-0.20/glib-1.2.8/gmodule/gmodule.c	Wed Mar  1 04:39:16 2000
+--- pkg-config-0.20-patched/glib-1.2.8/gmodule/gmodule.c	Thu Sep 21 11:36:31 2006
+***************
+*** 31,36 ****
+--- 31,37 ----
+  #include	"gmodule.h"
+  #include	"gmoduleconf.h"
+  #include	<errno.h>
++ #undef NULL
+  #include	<string.h>
+  
+  
+diff -cr pkg-config-0.20/glib-1.2.8/gmodule/libgplugin_a.c pkg-config-0.20-patched/glib-1.2.8/gmodule/libgplugin_a.c
+*** pkg-config-0.20/glib-1.2.8/gmodule/libgplugin_a.c	Sat Feb 19 18:42:43 2000
+--- pkg-config-0.20-patched/glib-1.2.8/gmodule/libgplugin_a.c	Thu Sep 21 11:37:03 2006
+***************
+*** 25,30 ****
+--- 25,31 ----
+   */
+  
+  #include	<gmodule.h>
++ #undef NULL
+  #include	<stdlib.h>
+  
+  #if defined (NATIVE_WIN32) && defined (__LCC__)
+diff -cr pkg-config-0.20/glib-1.2.8/grel.c pkg-config-0.20-patched/glib-1.2.8/grel.c
+*** pkg-config-0.20/glib-1.2.8/grel.c	Sat Jul 17 09:48:14 1999
+--- pkg-config-0.20-patched/glib-1.2.8/grel.c	Thu Sep 21 11:34:49 2006
+***************
+*** 29,34 ****
+--- 29,35 ----
+  
+  #include "glib.h"
+  #include <stdarg.h>
++ #undef NULL
+  #include <string.h>
+  
+  typedef struct _GRealRelation      GRealRelation;
+diff -cr pkg-config-0.20/glib-1.2.8/gtimer.c pkg-config-0.20-patched/glib-1.2.8/gtimer.c
+*** pkg-config-0.20/glib-1.2.8/gtimer.c	Mon Jan 31 22:25:41 2000
+--- pkg-config-0.20-patched/glib-1.2.8/gtimer.c	Thu Sep 21 11:35:10 2006
+***************
+*** 34,39 ****
+--- 34,40 ----
+  
+  #include "glib.h"
+  #ifdef HAVE_UNISTD_H
++ #undef NULL
+  #include <unistd.h>
+  #endif /* HAVE_UNISTD_H */
+  #ifndef NATIVE_WIN32
+diff -cr pkg-config-0.20/glib-1.2.8/testgdate.c pkg-config-0.20-patched/glib-1.2.8/testgdate.c
+*** pkg-config-0.20/glib-1.2.8/testgdate.c	Fri May 19 06:43:50 2000
+--- pkg-config-0.20-patched/glib-1.2.8/testgdate.c	Thu Sep 21 11:35:53 2006
+***************
+*** 1,6 ****
+--- 1,7 ----
+  
+  #include "glib.h"
+  
++ #undef NULL
+  #include <stdio.h>
+  #include <string.h>
+  #include <locale.h>
+diff -cr pkg-config-0.20/glib-1.2.8/testgdateparser.c pkg-config-0.20-patched/glib-1.2.8/testgdateparser.c
+*** pkg-config-0.20/glib-1.2.8/testgdateparser.c	Wed Dec  2 20:20:35 1998
+--- pkg-config-0.20-patched/glib-1.2.8/testgdateparser.c	Thu Sep 21 11:36:10 2006
+***************
+*** 1,6 ****
+--- 1,7 ----
+  
+  #include "glib.h"
+  
++ #undef NULL
+  #include <stdio.h>
+  #include <string.h>
+  #include <locale.h>
+diff -cr pkg-config-0.20/main.c pkg-config-0.20-patched/main.c
+*** pkg-config-0.20/main.c	Sun Oct 16 18:04:50 2005
+--- pkg-config-0.20-patched/main.c	Thu Sep 21 11:50:59 2006
+***************
+*** 24,29 ****
+--- 24,30 ----
+  #include "pkg.h"
+  #include "parse.h"
+  
++ #undef NULL
+  #include "popt.h"
+  #include <stdlib.h>
+  #include <string.h>
+***************
+*** 169,177 ****
+    return FALSE;
+  }
+  
+- int
+- main (int argc, char **argv)
+- {
+    int want_my_version = 0;
+    int want_version = 0;
+    int want_libs = 0;
+--- 170,175 ----
+***************
+*** 184,190 ****
+    int want_list = 0;
+    int want_static_lib_list = ENABLE_INDIRECT_DEPS;
+    int want_short_errors = 0;
+-   int result;
+    int want_uninstalled = 0;
+    char *variable_name = NULL;
+    int want_exists = 0;
+--- 182,187 ----
+***************
+*** 193,198 ****
+--- 190,200 ----
+    char *required_max_version = NULL;
+    char *required_pkgconfig_version = NULL;
+    int want_silence_errors = 0;
++ 
++ int
++ main (int argc, char **argv)
++ {
++   int result;
+    GString *str;
+    GSList *packages = NULL;
+    char *search_path;
+diff -cr pkg-config-0.20/parse.c pkg-config-0.20-patched/parse.c
+*** pkg-config-0.20/parse.c	Sun Oct 16 17:09:39 2005
+--- pkg-config-0.20-patched/parse.c	Thu Sep 21 11:49:52 2006
+***************
+*** 22,27 ****
+--- 22,28 ----
+  #endif
+  
+  #include "parse.h"
++ #undef NULL
+  #include <stdio.h>
+  #include <errno.h>
+  #include <string.h>
+diff -cr pkg-config-0.20/pkg.c pkg-config-0.20-patched/pkg.c
+*** pkg-config-0.20/pkg.c	Sun Oct 16 17:28:31 2005
+--- pkg-config-0.20-patched/pkg.c	Thu Sep 21 11:49:35 2006
+***************
+*** 35,40 ****
+--- 35,41 ----
+  
+  #include <sys/types.h>
+  #include <dirent.h>
++ #undef NULL
+  #include <string.h>
+  #include <errno.h>
+  #include <stdio.h>
