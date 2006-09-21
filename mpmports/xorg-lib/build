@@ -38,6 +38,10 @@ for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
     # "fix" Makefile.in to avoid unsupported linker options
     sed -e 's/_la_LDFLAGS\ =/_XXX_do_NoThInG\ =/' Makefile.in > Makefile.in.minix.fixed
     mv Makefile.in.minix.fixed Makefile.in
+    if test -f src/Makefile.in ; then
+        sed -e 's/_la_LDFLAGS\ =/_XXX_do_NoThInG\ =/' src/Makefile.in > src/Makefile.in.minix.fixed
+        mv src/Makefile.in.minix.fixed src/Makefile.in
+    fi
 
     # there is no pthread_self, but setting it to yes anyway avoids UIThrStubs
     # to be build
