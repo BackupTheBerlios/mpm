@@ -26,6 +26,7 @@ PACKAGES=\
 	putty \
 	vim \
 	xorg-proto \
+	xorg-util \
 
 all:
 	@echo "MPM ports collection"

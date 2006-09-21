@@ -1,0 +1,50 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+PATH=/bin:/usr/bin
+export PATH
+
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
+PKG_CONFIG=/usr/local/bin/pkg-config
+export PKG_CONFIG
+
+XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
+
+binsizes xxl
+
+echo "*** xorg-cf-files-1.0.2"
+cd "$SMPM_BUILDROOT/xorg-cf-files-1.0.2"
+sed "s@/usr/X11R6@/usr@" X11.tmpl > X11.tmpl.newone
+mv X11.tmpl.newone X11.tmpl
+CC=cc LD=cc CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure $XORG_CONFIG --with-configdir=/usr/lib/X11/config
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+echo "*** imake-1.0.2"
+cd "$SMPM_BUILDROOT/imake-1.0.2"
+CC=cc LD=cc CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure $XORG_CONFIG --with-configdir=/usr/lib/X11/config
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+for i in `cat "$SMPM_FILES/util-7.1.list"` ; do
+    case $i in
+    xorg-cf-files*)     continue ;;
+    imake-*)            continue ;;
+    esac
+
+    j=`basename $i .tar.bz2`
+    echo "*** $j"
+    cd "$SMPM_BUILDROOT/$j"
+    
+    CC=cc LD=cc CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+    ./configure $XORG_CONFIG
+
+    DESTDIR="$SMPM_INSTALLROOT" \
+    make DESTDIR="$SMPM_INSTALLROOT" install
+done
+
+exit 0

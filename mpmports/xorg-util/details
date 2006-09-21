@@ -1,0 +1,10 @@
+name:       xorg-util
+version:    7.1
+release:    1
+source:     none
+filesize:   0
+md5sum:     0123456789abcdef0123456789abcdef
+license:    MIT
+summary:    Xorg 7.1 utilities
+os:         yes
+arch:       yes

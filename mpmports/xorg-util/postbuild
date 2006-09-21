@@ -1,0 +1,9 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/bin"
+for i in imake lndir makedepend revpath ; do
+    strip $i
+    chmem =`expr 1024 \* 1024` $i
+done
+
+exit 0
