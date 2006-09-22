@@ -13,10 +13,8 @@ export PKG_CONFIG
 XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
 
 MINIX_FLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo"
-EXTRA_INC="-I$SMPM_INSTALLROOT/usr/include"
-EXTRA_LIB="-L$SMPM_INSTALLROOT/usr/lib"
-CFLAGS="$MINIX_FLAGS $EXTRA_INC"
-LDFLAGS="$EXTRA_LIB"
+CFLAGS="$MINIX_FLAGS -I$SMPM_INSTALLROOT/usr/include"
+LDFLAGS=""
 
 binsizes xxl
 

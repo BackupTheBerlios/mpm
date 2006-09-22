@@ -1,1 +1,8 @@
-Xorg libraries
+Xorg libraries, part 1
+
+Provides:
+
+xtrans
+libXau
+libXdmcp
+libX11
