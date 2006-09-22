@@ -49,6 +49,7 @@ for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
     ac_cv_lib_c_pthread_self=yes \
     lt_cv_path_SED=/usr/gnu/bin/sed \
     CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
+    INSTALL=/bin/install \
     lt_cv_sys_max_cmd_len=4096 \
     CC=cc LD=cc CFLAGS="$CFLAGS $SOMEEXTRA" LDFLAGS="$LDFLAGS" \
     /usr/gnu/bin/bash \
