@@ -1,0 +1,13 @@
+diff -c libICE-1.0.1/src/icetrans.c libICE-1.0.1-patched/src/icetrans.c
+*** libICE-1.0.1/src/icetrans.c Thu Jun  9 15:54:47 2005
+--- libICE-1.0.1-patched/src/icetrans.c Fri Sep 22 00:44:19 2006
+***************
+*** 26,32 ****
+  #include <config.h>
+  #endif
+  
+- #define ICE_t
+  #define TRANS_CLIENT
+  #define TRANS_SERVER
+  
+--- 26,31 ----

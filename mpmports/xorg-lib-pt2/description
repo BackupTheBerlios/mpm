@@ -1,0 +1,9 @@
+Xorg libraries, part 2
+
+Provides:
+
+libXext
+libICE
+libSM
+libXt
+libXmu
