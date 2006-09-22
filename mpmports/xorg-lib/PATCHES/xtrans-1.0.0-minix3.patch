@@ -1,0 +1,60 @@
+diff -c xtrans-1.0.0/Xtrans.c xtrans-1.0.0-patched/Xtrans.c
+*** xtrans-1.0.0/Xtrans.c Tue Nov  8 06:33:26 2005
+--- xtrans-1.0.0-patched/Xtrans.c Fri Sep 22 10:45:19 2006
+***************
+*** 1303,1309 ****
+  
+  #endif /* CRAY */
+  
+! #if (defined(SYSV) && defined(i386) && !defined(__SCO__)) || defined(WIN32) || defined(__sxg__) || defined(__UNIXOS2__)
+  
+  /*
+   * emulate readv
+--- 1303,1309 ----
+  
+  #endif /* CRAY */
+  
+! #if (defined(_MINIX)) || (defined(SYSV) && defined(i386) && !defined(__SCO__)) || defined(WIN32) || defined(__sxg__) || defined(__UNIXOS2__)
+  
+  /*
+   * emulate readv
+diff -c xtrans-1.0.0/Xtrans.h xtrans-1.0.0-patched/Xtrans.h
+*** xtrans-1.0.0/Xtrans.h Fri Apr 23 18:44:27 2004
+--- xtrans-1.0.0-patched/Xtrans.h Fri Sep 22 10:44:37 2006
+***************
+*** 198,204 ****
+  #endif
+  
+  
+! #if defined(WIN32) || (defined(USG) && !defined(CRAY) && !defined(umips) && !defined(MOTOROLA) && !defined(uniosu) && !defined(__sxg__))
+  
+  /*
+   *      TRANS(Readv) and TRANS(Writev) use struct iovec, normally found
+--- 198,204 ----
+  #endif
+  
+  
+! #if defined(_MINIX) || defined(WIN32) || (defined(USG) && !defined(CRAY) && !defined(umips) && !defined(MOTOROLA) && !defined(uniosu) && !defined(__sxg__))
+  
+  /*
+   *      TRANS(Readv) and TRANS(Writev) use struct iovec, normally found
+diff -c xtrans-1.0.0/Xtransint.h xtrans-1.0.0-patched/Xtransint.h
+*** xtrans-1.0.0/Xtransint.h Tue Nov  8 06:33:26 2005
+--- xtrans-1.0.0-patched/Xtransint.h Fri Sep 22 10:44:57 2006
+***************
+*** 383,389 ****
+   * systems, so they may be emulated.
+   */
+  
+! #if defined(CRAY) || (defined(SYSV) && defined(i386) && !defined(__SCO__)) || defined(WIN32) || defined(__sxg__) || defined(__UNIXOS2__)
+  
+  #define READV(ciptr, iov, iovcnt)	TRANS(ReadV)(ciptr, iov, iovcnt)
+  
+--- 383,389 ----
+   * systems, so they may be emulated.
+   */
+  
+! #if defined(_MINIX) || defined(CRAY) || (defined(SYSV) && defined(i386) && !defined(__SCO__)) || defined(WIN32) || defined(__sxg__) || defined(__UNIXOS2__)
+  
+  #define READV(ciptr, iov, iovcnt)	TRANS(ReadV)(ciptr, iov, iovcnt)
+  

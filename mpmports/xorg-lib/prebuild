@@ -21,6 +21,8 @@ done
 #cd "$SMPM_BUILDROOT/libX11-1.0.1"
 #patch -p1 < "$SMPM_PATCHES/libX11-1.0.1-setuid-1.patch"
 
+cd "$SMPM_BUILDROOT/xtrans-1.0.0"
+patch -p1 < "$SMPM_PATCHES/xtrans-1.0.0-minix3.patch"
 cd "$SMPM_BUILDROOT/libICE-1.0.1"
 patch -p1 < "$SMPM_PATCHES/libICE-1.0.1-minix3.patch"
 
