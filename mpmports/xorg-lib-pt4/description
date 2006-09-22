@@ -1,0 +1,13 @@
+Xorg libraries, part 4
+
+Provides:
+
+libXfontenc
+libxkbfile
+libXprintutil
+libXv
+libdmx
+libFS
+liblbxutil
+liboldX
+libXaw

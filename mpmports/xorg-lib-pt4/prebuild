@@ -1,0 +1,24 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
+    case $i in
+    \#*)    continue    ;; 
+    esac
+
+    echo    "*** $i: "
+    echo -n "    downloading: "
+    urlget ftp://ftp.fu-berlin.de/unix/X11/FTP.X.ORG/pub/individual/lib/$i > $i
+    echo    "ok"
+    echo -n "    unpacking: "
+    bzip2 -dc "$i" | tar xf -
+    echo    "ok"
+done
+
+cd "$SMPM_BUILDROOT/libXprintUtil-1.0.1"
+patch -p1 < "$SMPM_PATCHES/libXprintUtil-1.0.1-minix3.patch"
+cd "$SMPM_BUILDROOT/libXaw-1.0.2"
+patch -p1 < "$SMPM_PATCHES/libXaw-1.0.2-minix3.patch"
+
+exit 0

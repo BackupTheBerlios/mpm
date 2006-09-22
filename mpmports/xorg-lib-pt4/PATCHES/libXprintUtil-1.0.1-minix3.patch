@@ -1,0 +1,15 @@
+diff -c libXprintUtil-1.0.1/src/xprintutil_printtofile.c libXprintUtil-1.0.1-patched/src/xprintutil_printtofile.c
+*** libXprintUtil-1.0.1/src/xprintutil_printtofile.c Fri Apr 23 18:43:47 2004
+--- libXprintUtil-1.0.1-patched/src/xprintutil_printtofile.c Fri Sep 22 18:18:04 2006
+***************
+*** 47,52 ****
+--- 47,55 ----
+  #include <sys/time.h>
+  #include <sys/types.h>
+  #include <sys/wait.h>
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
+  
+  /* local prototypes */
+  #ifdef DEBUG

@@ -1,0 +1,15 @@
+diff -c libXaw-1.0.2/src/TextAction.c libXaw-1.0.2-patched/src/TextAction.c
+*** libXaw-1.0.2/src/TextAction.c Mon May 23 21:47:37 2005
+--- libXaw-1.0.2-patched/src/TextAction.c Fri Sep 22 19:15:18 2006
+***************
+*** 50,55 ****
+--- 50,58 ----
+  #include <X11/Xaw/XawImP.h>
+  #include "Private.h"
+  #include "XawI18n.h"
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
+  
+  #define SrcScan			XawTextSourceScan
+  #define FindDist		XawTextSinkFindDistance
