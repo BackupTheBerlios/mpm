@@ -27,6 +27,7 @@ PACKAGES=\
 	vim \
 	xorg-lib \
 	xorg-lib-pt2 \
+	xorg-lib-pt3 \
 	xorg-proto \
 	xorg-util \
 

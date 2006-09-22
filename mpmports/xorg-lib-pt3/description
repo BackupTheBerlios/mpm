@@ -1,0 +1,8 @@
+Xorg libraries, part 3
+
+Provides:
+
+libXpm
+libXp
+libXfixes
+libXrender
