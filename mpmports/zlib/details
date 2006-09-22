@@ -1,0 +1,10 @@
+name:       zlib
+version:    1.2.3
+release:    1
+source:     http://www.zlib.net/zlib-1.2.3.tar.gz
+filesize:   496597
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    zlib compression library
+os:         yes
+arch:       yes

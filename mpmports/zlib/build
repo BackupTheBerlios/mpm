@@ -1,0 +1,17 @@
+set -e
+
+cd "$SMPM_BUILDROOT/zlib-1.2.3"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc" LD="cc" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+configure --prefix="$SMPM_INSTALLROOT/usr/local" \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

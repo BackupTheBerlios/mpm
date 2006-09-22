@@ -30,6 +30,7 @@ PACKAGES=\
 	xorg-lib-pt3 \
 	xorg-proto \
 	xorg-util \
+	zlib \
 
 all:
 	@echo "MPM ports collection"
