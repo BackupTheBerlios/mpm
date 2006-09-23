@@ -1,0 +1,166 @@
+diff -c expat-2.0.0/Makefile.in expat-2.0.0-patched/Makefile.in
+*** expat-2.0.0/Makefile.in Thu Feb 10 15:52:02 2005
+--- expat-2.0.0-patched/Makefile.in Sat Sep 23 16:05:21 2006
+***************
+*** 73,81 ****
+  	rm -f expat_config.h.in configure
+  	rm -f conftools/ltconfig conftools/ltmain.sh conftools/libtool.m4
+  
+! check: tests/runtests tests/runtestspp
+! 	tests/runtests
+! 	tests/runtestspp
+  
+  install: xmlwf/xmlwf installlib
+  	$(mkinstalldirs) $(INSTALL_ROOT)$(bindir) $(INSTALL_ROOT)$(man1dir)
+--- 73,80 ----
+  	rm -f expat_config.h.in configure
+  	rm -f conftools/ltconfig conftools/ltmain.sh conftools/libtool.m4
+  
+! check: tests/runtests
+! 	tests/runtests
+  
+  install: xmlwf/xmlwf installlib
+  	$(mkinstalldirs) $(INSTALL_ROOT)$(bindir) $(INSTALL_ROOT)$(man1dir)
+diff -c expat-2.0.0/lib/xmltok.c expat-2.0.0-patched/lib/xmltok.c
+*** expat-2.0.0/lib/xmltok.c Sat Feb 26 01:38:13 2005
+--- expat-2.0.0-patched/lib/xmltok.c Sat Sep 23 15:21:35 2006
+***************
+*** 1342,1347 ****
+--- 1342,1348 ----
+  {
+    int i;
+    struct unknown_encoding *e = (struct unknown_encoding *)mem;
++   unsigned char *e_n_t;
+    for (i = 0; i < (int)sizeof(struct normal_encoding); i++)
+      ((char *)mem)[i] = ((char *)&latin1_encoding)[i];
+    for (i = 0; i < 128; i++)
+***************
+*** 1352,1358 ****
+    for (i = 0; i < 256; i++) {
+      int c = table[i];
+      if (c == -1) {
+!       e->normal.type[i] = BT_MALFORM;
+        /* This shouldn't really get used. */
+        e->utf16[i] = 0xFFFF;
+        e->utf8[i][0] = 1;
+--- 1353,1361 ----
+    for (i = 0; i < 256; i++) {
+      int c = table[i];
+      if (c == -1) {
+!       e_n_t= (unsigned char *)&e->normal.type[0];
+!       e_n_t[i]= BT_MALFORM;
+!       /* e->normal.type[i] = BT_MALFORM; */
+        /* This shouldn't really get used. */
+        e->utf16[i] = 0xFFFF;
+        e->utf8[i][0] = 1;
+***************
+*** 1361,1367 ****
+      else if (c < 0) {
+        if (c < -4)
+          return 0;
+!       e->normal.type[i] = (unsigned char)(BT_LEAD2 - (c + 2));
+        e->utf8[i][0] = 0;
+        e->utf16[i] = 0;
+      }
+--- 1364,1372 ----
+      else if (c < 0) {
+        if (c < -4)
+          return 0;
+!       e_n_t= (unsigned char *)&e->normal.type[0];
+!       e_n_t[i]= (unsigned char)(BT_LEAD2 - (c + 2));
+!       /* e->normal.type[i] = (unsigned char)(BT_LEAD2 - (c + 2)); */
+        e->utf8[i][0] = 0;
+        e->utf16[i] = 0;
+      }
+***************
+*** 1370,1382 ****
+            && latin1_encoding.type[c] != BT_NONXML
+            && c != i)
+          return 0;
+!       e->normal.type[i] = latin1_encoding.type[c];
+        e->utf8[i][0] = 1;
+        e->utf8[i][1] = (char)c;
+        e->utf16[i] = (unsigned short)(c == 0 ? 0xFFFF : c);
+      }
+      else if (checkCharRefNumber(c) < 0) {
+!       e->normal.type[i] = BT_NONXML;
+        /* This shouldn't really get used. */
+        e->utf16[i] = 0xFFFF;
+        e->utf8[i][0] = 1;
+--- 1375,1391 ----
+            && latin1_encoding.type[c] != BT_NONXML
+            && c != i)
+          return 0;
+!       e_n_t= (unsigned char *)&e->normal.type[0];
+!       e_n_t[i]= latin1_encoding.type[c];
+!       /* e->normal.type[i] = latin1_encoding.type[c]; */
+        e->utf8[i][0] = 1;
+        e->utf8[i][1] = (char)c;
+        e->utf16[i] = (unsigned short)(c == 0 ? 0xFFFF : c);
+      }
+      else if (checkCharRefNumber(c) < 0) {
+!       e_n_t= (unsigned char *)&e->normal.type[0];
+!       e_n_t[i]= BT_NONXML;
+!       /* e->normal.type[i] = BT_NONXML; */
+        /* This shouldn't really get used. */
+        e->utf16[i] = 0xFFFF;
+        e->utf8[i][0] = 1;
+***************
+*** 1385,1396 ****
+      else {
+        if (c > 0xFFFF)
+          return 0;
+!       if (UCS2_GET_NAMING(nmstrtPages, c >> 8, c & 0xff))
+!         e->normal.type[i] = BT_NMSTRT;
+!       else if (UCS2_GET_NAMING(namePages, c >> 8, c & 0xff))
+!         e->normal.type[i] = BT_NAME;
+!       else
+!         e->normal.type[i] = BT_OTHER;
+        e->utf8[i][0] = (char)XmlUtf8Encode(c, e->utf8[i] + 1);
+        e->utf16[i] = (unsigned short)c;
+      }
+--- 1394,1414 ----
+      else {
+        if (c > 0xFFFF)
+          return 0;
+!       if (UCS2_GET_NAMING(nmstrtPages, c >> 8, c & 0xff)) {
+!         e_n_t= (unsigned char *)&e->normal.type[0];
+!         e_n_t[i]= BT_NMSTRT;
+!         /* e->normal.type[i] = BT_NMSTRT; */
+!       }
+!       else if (UCS2_GET_NAMING(namePages, c >> 8, c & 0xff)) {
+!         e_n_t= (unsigned char *)&e->normal.type[0];
+!         e_n_t[i]= BT_NAME;
+!         /* e->normal.type[i] = BT_NAME; */
+!       }
+!       else {
+!         e_n_t= (unsigned char *)&e->normal.type[0];
+!         e_n_t[i]= BT_OTHER;
+!         /* e->normal.type[i] = BT_OTHER; */
+!       }
+        e->utf8[i][0] = (char)XmlUtf8Encode(c, e->utf8[i] + 1);
+        e->utf16[i] = (unsigned short)c;
+      }
+***************
+*** 1631,1638 ****
+                           void *userData)
+  {
+    ENCODING *enc = XmlInitUnknownEncoding(mem, table, convert, userData);
+!   if (enc)
+!     ((struct normal_encoding *)enc)->type[ASCII_COLON] = BT_COLON;
+    return enc;
+  }
+  
+--- 1649,1660 ----
+                           void *userData)
+  {
+    ENCODING *enc = XmlInitUnknownEncoding(mem, table, convert, userData);
+!   unsigned char *n_t;
+!   if (enc) {
+!     n_t = (unsigned char *)&((struct normal_encoding *)enc)->type[0];
+!     n_t[ASCII_COLON] = BT_COLON;
+!     /* ((struct normal_encoding *)enc)->type[ASCII_COLON] = BT_COLON; */
+!   }
+    return enc;
+  }
+  

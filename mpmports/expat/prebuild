@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/expat-2.0.0"
+patch -s -p1 < "$SMPM_PATCHES/expat-2.0.0-minix3.patch"
+
+exit 0

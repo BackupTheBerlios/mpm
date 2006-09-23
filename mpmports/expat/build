@@ -1,0 +1,22 @@
+set -e
+
+cd "$SMPM_BUILDROOT/expat-2.0.0"
+
+PATH=/bin:/usr/bin
+export PATH
+
+lt_cv_sys_max_cmd_len=4096 \
+CC="cc" LD="cc" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" \
+sh \
+configure --prefix=/usr/local \
+          --disable-dependency-tracking \
+
+binsizes xxl
+/usr/gnu/bin/make
+/usr/gnu/bin/make check
+
+DESTDIR="$SMPM_INSTALLROOT" \
+/usr/gnu/bin/make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

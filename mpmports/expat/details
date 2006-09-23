@@ -1,0 +1,10 @@
+name:       expat
+version:    2.0.0
+release:    1
+source:     ftp://ftp.fu-berlin.de/unix/linux/mirrors/gentoo/distfiles/expat-2.0.0.tar.gz
+filesize:   450860
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    Expat XML 2.0 Library
+os:         yes
+arch:       yes
