@@ -4,3 +4,8 @@ Provides:
 
 libXres
 libXscrnSaver
+libXTrap
+libXtst
+libXxf86misc
+libXxf86vm
+
