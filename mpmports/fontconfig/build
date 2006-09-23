@@ -1,0 +1,24 @@
+set -e
+
+cd "$SMPM_BUILDROOT/fontconfig-2.3.2"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CXX=true CXXCPP="cc -E" \
+lt_cv_sys_max_cmd_len=4096 \
+CC="cc" LD="cc" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo -I/usr/local/include" \
+LDFLAGS="-L/usr/local/lib" \
+sh \
+configure --prefix=/usr/local \
+          --disable-dependency-tracking \
+          --with-freetype-config=/usr/local/bin/freetype-config \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+/usr/gnu/bin/make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

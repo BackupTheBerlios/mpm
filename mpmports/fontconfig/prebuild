@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/fontconfig-2.3.2"
+patch -s -p1 < "$SMPM_PATCHES/fontconfig-2.3.2-minix3.patch"
+
+exit 0

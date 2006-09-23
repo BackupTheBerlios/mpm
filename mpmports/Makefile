@@ -3,6 +3,7 @@ PACKAGES=\
 	cvs \
 	dialog \
 	expat \
+	fontconfig \
 	freetype \
 	gnu-bash \
 	gnu-coreutils \

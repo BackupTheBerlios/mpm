@@ -1,0 +1,20 @@
+diff -c fontconfig-2.3.2/src/fcfreetype.c fontconfig-2.3.2-patched/src/fcfreetype.c
+*** fontconfig-2.3.2/src/fcfreetype.c Thu Apr 21 12:37:43 2005
+--- fontconfig-2.3.2-patched/src/fcfreetype.c Sat Sep 23 16:21:49 2006
+***************
+*** 2777,2783 ****
+  	goto Fail;
+      }
+  
+!     // sort the tag list before returning it
+      qsort(*stags, *script_count, sizeof(FT_ULong), compareulong);
+  
+      return TT_Err_Ok;
+--- 2777,2783 ----
+  	goto Fail;
+      }
+  
+!     /* sort the tag list before returning it */
+      qsort(*stags, *script_count, sizeof(FT_ULong), compareulong);
+  
+      return TT_Err_Ok;

@@ -1,0 +1,10 @@
+name:       fontconfig
+version:    2.3.2
+release:    1
+source:     ftp://ftp.fu-berlin.de/unix/linux/mirrors/gentoo/distfiles/fontconfig-2.3.2.tar.gz
+filesize:   964045
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    Fontconfig
+os:         yes
+arch:       yes
