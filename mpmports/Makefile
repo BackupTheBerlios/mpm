@@ -36,6 +36,7 @@ PACKAGES=\
 	xorg-lib-pt6 \
 	xorg-proto \
 	xorg-util \
+	xorg-xbitmaps \
 	zlib \
 
 all:

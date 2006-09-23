@@ -1,0 +1,20 @@
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
+
+binsizes xxl
+
+cd "$SMPM_BUILDROOT/xbitmaps-1.0.1"
+
+CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
+INSTALL=/bin/install \
+/usr/gnu/bin/bash \
+./configure $XORG_CONFIG --disable-dependency-tracking \
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

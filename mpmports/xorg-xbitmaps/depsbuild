@@ -1,0 +1,15 @@
+pkg-config
+xorg-proto
+xorg-util
+gnu-bash
+gnu-sed
+xorg-lib-pt1
+xorg-lib-pt2
+xorg-lib-pt3
+xorg-lib-pt4
+xorg-lib-pt5
+xorg-lib-pt6
+zlib
+freetype
+expat
+fontconfig
