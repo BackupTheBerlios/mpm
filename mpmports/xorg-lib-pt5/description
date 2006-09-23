@@ -2,7 +2,11 @@ Xorg libraries, part 5
 
 Provides:
 
-libXcomposite
-libXcursor
-libXdamage
-libXevie
+libXfont
+libXfontcache
+libXft
+libXi
+libXinerama
+libxbui
+libXprintAppUtil
+libXrandr
