@@ -1,0 +1,10 @@
+name:       freetype
+version:    2.1.10
+release:    1
+source:     ftp://ftp.fu-berlin.de/unix/linux/mirrors/gentoo/distfiles/freetype-2.1.10.tar.bz2
+filesize:   1037107
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    FreeType
+os:         yes
+arch:       yes

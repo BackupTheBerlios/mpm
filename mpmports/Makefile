@@ -2,6 +2,7 @@ PACKAGES=\
 	bwk \
 	cvs \
 	dialog \
+	freetype \
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \

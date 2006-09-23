@@ -1,0 +1,830 @@
+diff -c freetype-2.1.10/src/otvalid/otvbase.c freetype-2.1.10-patched/src/otvalid/otvbase.c
+*** freetype-2.1.10/src/otvalid/otvbase.c Fri Sep 10 14:39:00 2004
+--- freetype-2.1.10-patched/src/otvalid/otvbase.c Sat Sep 23 11:43:22 2006
+***************
+*** 126,152 ****
+      FT_UInt   table_size;
+      FT_UInt   FeatMinMaxCount;
+  
+!     OTV_OPTIONAL_TABLE( MinCoord );
+!     OTV_OPTIONAL_TABLE( MaxCoord );
+  
+  
+      OTV_NAME_ENTER( "MinMax" );
+  
+      OTV_LIMIT_CHECK( 6 );
+  
+!     OTV_OPTIONAL_OFFSET( MinCoord );
+!     OTV_OPTIONAL_OFFSET( MaxCoord );
+!     FeatMinMaxCount = FT_NEXT_USHORT( p );
+  
+      OTV_TRACE(( " (FeatMinMaxCount = %d)\n", FeatMinMaxCount ));
+  
+      table_size = FeatMinMaxCount * 8 + 6;
+  
+!     OTV_SIZE_CHECK( MinCoord );
+      if ( MinCoord )
+        otv_BaseCoord_validate( table + MinCoord, valid );
+  
+!     OTV_SIZE_CHECK( MaxCoord );
+      if ( MaxCoord )
+        otv_BaseCoord_validate( table + MaxCoord, valid );
+  
+--- 126,152 ----
+      FT_UInt   table_size;
+      FT_UInt   FeatMinMaxCount;
+  
+!     OTV_OPTIONAL_TABLE(MinCoord);
+!     OTV_OPTIONAL_TABLE(MaxCoord);
+  
+  
+      OTV_NAME_ENTER( "MinMax" );
+  
+      OTV_LIMIT_CHECK( 6 );
+  
+!     OTV_OPTIONAL_OFFSET(MinCoord);
+!     OTV_OPTIONAL_OFFSET(MaxCoord);
+!     FeatMinMaxCount = FT_NEXT_USHORT(p);
+  
+      OTV_TRACE(( " (FeatMinMaxCount = %d)\n", FeatMinMaxCount ));
+  
+      table_size = FeatMinMaxCount * 8 + 6;
+  
+!     OTV_SIZE_CHECK(MinCoord);
+      if ( MinCoord )
+        otv_BaseCoord_validate( table + MinCoord, valid );
+  
+!     OTV_SIZE_CHECK(MaxCoord);
+      if ( MaxCoord )
+        otv_BaseCoord_validate( table + MaxCoord, valid );
+  
+***************
+*** 157,170 ****
+      {
+        p += 4;                           /* skip FeatureTableTag */
+  
+!       OTV_OPTIONAL_OFFSET( MinCoord );
+!       OTV_OPTIONAL_OFFSET( MaxCoord );
+! 
+!       OTV_SIZE_CHECK( MinCoord );
+        if ( MinCoord )
+          otv_BaseCoord_validate( table + MinCoord, valid );
+  
+!       OTV_SIZE_CHECK( MaxCoord );
+        if ( MaxCoord )
+          otv_BaseCoord_validate( table + MaxCoord, valid );
+      }
+--- 157,170 ----
+      {
+        p += 4;                           /* skip FeatureTableTag */
+  
+!       OTV_OPTIONAL_OFFSET(MinCoord);
+!       OTV_OPTIONAL_OFFSET(MaxCoord);
+! 
+!       OTV_SIZE_CHECK(MinCoord);
+        if ( MinCoord )
+          otv_BaseCoord_validate( table + MinCoord, valid );
+  
+!       OTV_SIZE_CHECK(MaxCoord);
+        if ( MaxCoord )
+          otv_BaseCoord_validate( table + MaxCoord, valid );
+      }
+***************
+*** 181,206 ****
+      FT_UInt   table_size;
+      FT_UInt   BaseLangSysCount;
+  
+!     OTV_OPTIONAL_TABLE( BaseValues    );
+!     OTV_OPTIONAL_TABLE( DefaultMinMax );
+  
+  
+      OTV_NAME_ENTER( "BaseScript" );
+  
+      OTV_LIMIT_CHECK( 6 );
+!     OTV_OPTIONAL_OFFSET( BaseValues    );
+!     OTV_OPTIONAL_OFFSET( DefaultMinMax );
+!     BaseLangSysCount = FT_NEXT_USHORT( p );
+  
+      OTV_TRACE(( " (BaseLangSysCount = %d)\n", BaseLangSysCount ));
+  
+      table_size = BaseLangSysCount * 6 + 6;
+  
+!     OTV_SIZE_CHECK( BaseValues );
+      if ( BaseValues )
+        otv_BaseValues_validate( table + BaseValues, valid );
+  
+!     OTV_SIZE_CHECK( DefaultMinMax );
+      if ( DefaultMinMax )
+        otv_MinMax_validate( table + DefaultMinMax, valid );
+  
+--- 181,206 ----
+      FT_UInt   table_size;
+      FT_UInt   BaseLangSysCount;
+  
+!     OTV_OPTIONAL_TABLE(BaseValues);
+!     OTV_OPTIONAL_TABLE(DefaultMinMax);
+  
+  
+      OTV_NAME_ENTER( "BaseScript" );
+  
+      OTV_LIMIT_CHECK( 6 );
+!     OTV_OPTIONAL_OFFSET(BaseValues);
+!     OTV_OPTIONAL_OFFSET(DefaultMinMax);
+!     BaseLangSysCount = FT_NEXT_USHORT(p);
+  
+      OTV_TRACE(( " (BaseLangSysCount = %d)\n", BaseLangSysCount ));
+  
+      table_size = BaseLangSysCount * 6 + 6;
+  
+!     OTV_SIZE_CHECK(BaseValues);
+      if ( BaseValues )
+        otv_BaseValues_validate( table + BaseValues, valid );
+  
+!     OTV_SIZE_CHECK(DefaultMinMax);
+      if ( DefaultMinMax )
+        otv_MinMax_validate( table + DefaultMinMax, valid );
+  
+***************
+*** 211,217 ****
+      {
+        p += 4;       /* skip BaseLangSysTag */
+  
+!       otv_MinMax_validate( table + FT_NEXT_USHORT( p ), valid );
+      }
+  
+      OTV_EXIT;
+--- 211,217 ----
+      {
+        p += 4;       /* skip BaseLangSysTag */
+  
+!       otv_MinMax_validate( table + FT_NEXT_USHORT(p), valid );
+      }
+  
+      OTV_EXIT;
+***************
+*** 229,235 ****
+      OTV_NAME_ENTER( "BaseScriptList" );
+  
+      OTV_LIMIT_CHECK( 2 );
+!     BaseScriptCount = FT_NEXT_USHORT( p );
+  
+      OTV_TRACE(( " (BaseScriptCount = %d)\n", BaseScriptCount ));
+  
+--- 229,235 ----
+      OTV_NAME_ENTER( "BaseScriptList" );
+  
+      OTV_LIMIT_CHECK( 2 );
+!     BaseScriptCount = FT_NEXT_USHORT(p);
+  
+      OTV_TRACE(( " (BaseScriptCount = %d)\n", BaseScriptCount ));
+  
+***************
+*** 241,247 ****
+        p += 4;       /* skip BaseScriptTag */
+  
+        /* BaseScript */
+!       otv_BaseScript_validate( table + FT_NEXT_USHORT( p ), valid );
+      }
+  
+      OTV_EXIT;
+--- 241,247 ----
+        p += 4;       /* skip BaseScriptTag */
+  
+        /* BaseScript */
+!       otv_BaseScript_validate( table + FT_NEXT_USHORT(p), valid );
+      }
+  
+      OTV_EXIT;
+***************
+*** 255,271 ****
+      FT_Bytes  p = table;
+      FT_UInt   table_size;
+  
+!     OTV_OPTIONAL_TABLE( BaseTagList );
+  
+  
+      OTV_NAME_ENTER( "Axis" );
+  
+      OTV_LIMIT_CHECK( 4 );
+!     OTV_OPTIONAL_OFFSET( BaseTagList );
+  
+      table_size = 4;
+  
+!     OTV_SIZE_CHECK( BaseTagList );
+      if ( BaseTagList )
+        otv_BaseTagList_validate( table + BaseTagList, valid );
+  
+--- 255,271 ----
+      FT_Bytes  p = table;
+      FT_UInt   table_size;
+  
+!     OTV_OPTIONAL_TABLE(BaseTagList);
+  
+  
+      OTV_NAME_ENTER( "Axis" );
+  
+      OTV_LIMIT_CHECK( 4 );
+!     OTV_OPTIONAL_OFFSET(BaseTagList);
+  
+      table_size = 4;
+  
+!     OTV_SIZE_CHECK(BaseTagList);
+      if ( BaseTagList )
+        otv_BaseTagList_validate( table + BaseTagList, valid );
+  
+***************
+*** 285,292 ****
+      FT_Bytes          p     = table;
+      FT_UInt           table_size;
+  
+!     OTV_OPTIONAL_TABLE( HorizAxis );
+!     OTV_OPTIONAL_TABLE( VertAxis  );
+  
+  
+      valid->root = ftvalid;
+--- 285,292 ----
+      FT_Bytes          p     = table;
+      FT_UInt           table_size;
+  
+!     OTV_OPTIONAL_TABLE(HorizAxis);
+!     OTV_OPTIONAL_TABLE(VertAxis);
+  
+  
+      valid->root = ftvalid;
+***************
+*** 301,313 ****
+  
+      table_size = 6;
+  
+!     OTV_OPTIONAL_OFFSET( HorizAxis );
+!     OTV_SIZE_CHECK( HorizAxis );
+      if ( HorizAxis )
+        otv_Axis_validate( table + HorizAxis, valid );
+  
+!     OTV_OPTIONAL_OFFSET( VertAxis );
+!     OTV_SIZE_CHECK( VertAxis );
+      if ( VertAxis )
+        otv_Axis_validate( table + VertAxis, valid );
+  
+--- 301,313 ----
+  
+      table_size = 6;
+  
+!     OTV_OPTIONAL_OFFSET(HorizAxis);
+!     OTV_SIZE_CHECK(HorizAxis);
+      if ( HorizAxis )
+        otv_Axis_validate( table + HorizAxis, valid );
+  
+!     OTV_OPTIONAL_OFFSET(VertAxis);
+!     OTV_SIZE_CHECK(VertAxis);
+      if ( VertAxis )
+        otv_Axis_validate( table + VertAxis, valid );
+  
+diff -c freetype-2.1.10/src/otvalid/otvgdef.c freetype-2.1.10-patched/src/otvalid/otvgdef.c
+*** freetype-2.1.10/src/otvalid/otvgdef.c Fri May  6 05:53:31 2005
+--- freetype-2.1.10-patched/src/otvalid/otvgdef.c Sat Sep 23 11:45:08 2006
+***************
+*** 153,162 ****
+      FT_UInt           table_size;
+      FT_Bool           need_MarkAttachClassDef;
+  
+!     OTV_OPTIONAL_TABLE( GlyphClassDef );
+!     OTV_OPTIONAL_TABLE( AttachListOffset );
+!     OTV_OPTIONAL_TABLE( LigCaretListOffset );
+!     OTV_OPTIONAL_TABLE( MarkAttachClassDef );
+  
+  
+      valid->root = ftvalid;
+--- 153,162 ----
+      FT_UInt           table_size;
+      FT_Bool           need_MarkAttachClassDef;
+  
+!     OTV_OPTIONAL_TABLE(GlyphClassDef);
+!     OTV_OPTIONAL_TABLE(AttachListOffset);
+!     OTV_OPTIONAL_TABLE(LigCaretListOffset);
+!     OTV_OPTIONAL_TABLE(MarkAttachClassDef);
+  
+  
+      valid->root = ftvalid;
+***************
+*** 183,213 ****
+      else
+        table_size = 10;              /* OpenType < 1.2  */
+  
+!     OTV_OPTIONAL_OFFSET( GlyphClassDef );
+!     OTV_SIZE_CHECK( GlyphClassDef );
+      if ( GlyphClassDef )
+        otv_ClassDef_validate( table + GlyphClassDef, valid );
+  
+!     OTV_OPTIONAL_OFFSET( AttachListOffset );
+!     OTV_SIZE_CHECK( AttachListOffset );
+!     if ( AttachListOffset )
+!     {
+!       OTV_NEST2( AttachList, AttachPoint );
+        OTV_RUN( table + AttachListOffset, valid );
+      }
+  
+!     OTV_OPTIONAL_OFFSET( LigCaretListOffset );
+!     OTV_SIZE_CHECK( LigCaretListOffset );
+!     if ( LigCaretListOffset )
+!     {
+!       OTV_NEST3( LigCaretList, LigGlyph, CaretValue );
+        OTV_RUN( table + LigCaretListOffset, valid );
+      }
+  
+      if ( need_MarkAttachClassDef )
+      {
+!       OTV_OPTIONAL_OFFSET( MarkAttachClassDef );
+!       OTV_SIZE_CHECK( MarkAttachClassDef );
+        if ( MarkAttachClassDef )
+          otv_ClassDef_validate( table + MarkAttachClassDef, valid );
+      }
+--- 183,213 ----
+      else
+        table_size = 10;              /* OpenType < 1.2  */
+  
+!     OTV_OPTIONAL_OFFSET(GlyphClassDef);
+!     OTV_SIZE_CHECK(GlyphClassDef);
+      if ( GlyphClassDef )
+        otv_ClassDef_validate( table + GlyphClassDef, valid );
+  
+!     OTV_OPTIONAL_OFFSET(AttachListOffset);
+!     OTV_SIZE_CHECK(AttachListOffset);
+!     if ( AttachListOffset )
+!     {
+!       OTV_NEST2(AttachList, AttachPoint);
+        OTV_RUN( table + AttachListOffset, valid );
+      }
+  
+!     OTV_OPTIONAL_OFFSET(LigCaretListOffset);
+!     OTV_SIZE_CHECK(LigCaretListOffset);
+!     if ( LigCaretListOffset )
+!     {
+!       OTV_NEST3(LigCaretList, LigGlyph, CaretValue);
+        OTV_RUN( table + LigCaretListOffset, valid );
+      }
+  
+      if ( need_MarkAttachClassDef )
+      {
+!       OTV_OPTIONAL_OFFSET(MarkAttachClassDef);
+!       OTV_SIZE_CHECK(MarkAttachClassDef);
+        if ( MarkAttachClassDef )
+          otv_ClassDef_validate( table + MarkAttachClassDef, valid );
+      }
+diff -c freetype-2.1.10/src/otvalid/otvgpos.c freetype-2.1.10-patched/src/otvalid/otvgpos.c
+*** freetype-2.1.10/src/otvalid/otvgpos.c Mon Mar  7 07:44:59 2005
+--- freetype-2.1.10-patched/src/otvalid/otvgpos.c Sat Sep 23 11:48:57 2006
+***************
+*** 78,91 ****
+      for ( ; Count > 0; Count-- )
+        for ( count1 = valid->extra1; count1 > 0; count1-- )
+        {
+!         OTV_OPTIONAL_TABLE( anchor_offset );
+! 
+! 
+!         OTV_OPTIONAL_OFFSET( anchor_offset );
+  
+          if ( valid->extra2 )
+          {
+!           OTV_SIZE_CHECK( anchor_offset );
+            if ( anchor_offset )
+              otv_Anchor_validate( table + anchor_offset, valid );
+          }        
+--- 78,91 ----
+      for ( ; Count > 0; Count-- )
+        for ( count1 = valid->extra1; count1 > 0; count1-- )
+        {
+!         OTV_OPTIONAL_TABLE(anchor_offset);
+! 
+! 
+!         OTV_OPTIONAL_OFFSET(anchor_offset);
+  
+          if ( valid->extra2 )
+          {
+!           OTV_SIZE_CHECK(anchor_offset);
+            if ( anchor_offset )
+              otv_Anchor_validate( table + anchor_offset, valid );
+          }        
+***************
+*** 211,222 ****
+        {
+          FT_UInt   table_size;
+  
+!         OTV_OPTIONAL_TABLE( device );
+  
+  
+          /* XPlaDevice, YPlaDevice, XAdvDevice, YAdvDevice */
+          OTV_LIMIT_CHECK( 2 );
+!         OTV_OPTIONAL_OFFSET( device );
+  
+          /* XXX: this value is usually too small, especially if the current */
+          /* ValueRecord is part of an array -- getting the correct table    */
+--- 211,222 ----
+        {
+          FT_UInt   table_size;
+  
+!         OTV_OPTIONAL_TABLE(device);
+  
+  
+          /* XPlaDevice, YPlaDevice, XAdvDevice, YAdvDevice */
+          OTV_LIMIT_CHECK( 2 );
+!         OTV_OPTIONAL_OFFSET(device);
+  
+          /* XXX: this value is usually too small, especially if the current */
+          /* ValueRecord is part of an array -- getting the correct table    */
+***************
+*** 224,230 ****
+  
+          table_size = p - valid->extra3;
+  
+!         OTV_SIZE_CHECK( device );
+          if ( device )
+            otv_Device_validate( valid->extra3 + device, valid );
+        }
+--- 224,230 ----
+  
+          table_size = p - valid->extra3;
+  
+!         OTV_SIZE_CHECK(device);
+          if ( device )
+            otv_Device_validate( valid->extra3 + device, valid );
+        }
+***************
+*** 273,293 ****
+        {
+          FT_UInt   table_size;
+  
+!         OTV_OPTIONAL_TABLE( XDeviceTable );
+!         OTV_OPTIONAL_TABLE( YDeviceTable );
+  
+  
+          OTV_LIMIT_CHECK( 4 );
+!         OTV_OPTIONAL_OFFSET( XDeviceTable );
+!         OTV_OPTIONAL_OFFSET( YDeviceTable );
+  
+          table_size = 6 + 4;
+  
+!         OTV_SIZE_CHECK( XDeviceTable );
+          if ( XDeviceTable )
+            otv_Device_validate( table + XDeviceTable, valid );
+  
+!         OTV_SIZE_CHECK( YDeviceTable );
+          if ( YDeviceTable )
+            otv_Device_validate( table + YDeviceTable, valid );
+        }
+--- 273,293 ----
+        {
+          FT_UInt   table_size;
+  
+!         OTV_OPTIONAL_TABLE(XDeviceTable);
+!         OTV_OPTIONAL_TABLE(YDeviceTable);
+  
+  
+          OTV_LIMIT_CHECK( 4 );
+!         OTV_OPTIONAL_OFFSET(XDeviceTable);
+!         OTV_OPTIONAL_OFFSET(YDeviceTable);
+  
+          table_size = 6 + 4;
+  
+!         OTV_SIZE_CHECK(XDeviceTable);
+          if ( XDeviceTable )
+            otv_Device_validate( table + XDeviceTable, valid );
+  
+!         OTV_SIZE_CHECK(YDeviceTable);
+          if ( YDeviceTable )
+            otv_Device_validate( table + YDeviceTable, valid );
+        }
+***************
+*** 595,602 ****
+          FT_UInt   table_size;
+          FT_UInt   Coverage, EntryExitCount;
+  
+!         OTV_OPTIONAL_TABLE( EntryAnchor );
+!         OTV_OPTIONAL_TABLE( ExitAnchor  );
+  
+  
+          OTV_LIMIT_CHECK( 4 );
+--- 595,602 ----
+          FT_UInt   table_size;
+          FT_UInt   Coverage, EntryExitCount;
+  
+!         OTV_OPTIONAL_TABLE(EntryAnchor);
+!         OTV_OPTIONAL_TABLE(ExitAnchor);
+  
+  
+          OTV_LIMIT_CHECK( 4 );
+***************
+*** 614,627 ****
+          /* EntryExitRecord */
+          for ( ; EntryExitCount > 0; EntryExitCount-- )
+          {
+!           OTV_OPTIONAL_OFFSET( EntryAnchor );
+!           OTV_OPTIONAL_OFFSET( ExitAnchor  );
+! 
+!           OTV_SIZE_CHECK( EntryAnchor );
+            if ( EntryAnchor )
+              otv_Anchor_validate( table + EntryAnchor, valid );
+  
+!           OTV_SIZE_CHECK( ExitAnchor );
+            if ( ExitAnchor )
+              otv_Anchor_validate( table + ExitAnchor, valid );
+          }
+--- 614,627 ----
+          /* EntryExitRecord */
+          for ( ; EntryExitCount > 0; EntryExitCount-- )
+          {
+!           OTV_OPTIONAL_OFFSET(EntryAnchor);
+!           OTV_OPTIONAL_OFFSET(ExitAnchor);
+! 
+!           OTV_SIZE_CHECK(EntryAnchor);
+            if ( EntryAnchor )
+              otv_Anchor_validate( table + EntryAnchor, valid );
+  
+!           OTV_SIZE_CHECK(ExitAnchor);
+            if ( ExitAnchor )
+              otv_Anchor_validate( table + ExitAnchor, valid );
+          }
+diff -c freetype-2.1.10/src/otvalid/otvjstf.c freetype-2.1.10-patched/src/otvalid/otvjstf.c
+*** freetype-2.1.10/src/otvalid/otvjstf.c Fri Sep 10 14:39:00 2004
+--- freetype-2.1.10-patched/src/otvalid/otvjstf.c Sat Sep 23 11:53:01 2006
+***************
+*** 46,61 ****
+      FT_UInt   table_size;
+      FT_UInt   gsub_lookup_count, gpos_lookup_count;
+  
+!     OTV_OPTIONAL_TABLE( ShrinkageEnableGSUB  );
+!     OTV_OPTIONAL_TABLE( ShrinkageDisableGSUB );
+!     OTV_OPTIONAL_TABLE( ShrinkageEnableGPOS  );
+!     OTV_OPTIONAL_TABLE( ShrinkageDisableGPOS );
+!     OTV_OPTIONAL_TABLE( ExtensionEnableGSUB  );
+!     OTV_OPTIONAL_TABLE( ExtensionDisableGSUB );
+!     OTV_OPTIONAL_TABLE( ExtensionEnableGPOS  );
+!     OTV_OPTIONAL_TABLE( ExtensionDisableGPOS );
+!     OTV_OPTIONAL_TABLE( ShrinkageJstfMax );
+!     OTV_OPTIONAL_TABLE( ExtensionJstfMax );
+  
+  
+      OTV_ENTER;
+--- 46,61 ----
+      FT_UInt   table_size;
+      FT_UInt   gsub_lookup_count, gpos_lookup_count;
+  
+!     OTV_OPTIONAL_TABLE(ShrinkageEnableGSUB);
+!     OTV_OPTIONAL_TABLE(ShrinkageDisableGSUB);
+!     OTV_OPTIONAL_TABLE(ShrinkageEnableGPOS);
+!     OTV_OPTIONAL_TABLE(ShrinkageDisableGPOS);
+!     OTV_OPTIONAL_TABLE(ExtensionEnableGSUB);
+!     OTV_OPTIONAL_TABLE(ExtensionDisableGSUB);
+!     OTV_OPTIONAL_TABLE(ExtensionEnableGPOS);
+!     OTV_OPTIONAL_TABLE(ExtensionDisableGPOS);
+!     OTV_OPTIONAL_TABLE(ShrinkageJstfMax);
+!     OTV_OPTIONAL_TABLE(ExtensionJstfMax);
+  
+  
+      OTV_ENTER;
+***************
+*** 70,99 ****
+  
+      valid->extra1 = gsub_lookup_count;
+      
+!     OTV_OPTIONAL_OFFSET( ShrinkageEnableGSUB );
+!     OTV_SIZE_CHECK( ShrinkageEnableGSUB );
+      if ( ShrinkageEnableGSUB )
+        otv_x_ux( table + ShrinkageEnableGSUB, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ShrinkageDisableGSUB );
+!     OTV_SIZE_CHECK( ShrinkageDisableGSUB );
+      if ( ShrinkageDisableGSUB )
+        otv_x_ux( table + ShrinkageDisableGSUB, valid );
+  
+      valid->extra1 = gpos_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET( ShrinkageEnableGPOS );
+!     OTV_SIZE_CHECK( ShrinkageEnableGPOS );
+      if ( ShrinkageEnableGPOS )
+        otv_x_ux( table + ShrinkageEnableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ShrinkageDisableGPOS );
+!     OTV_SIZE_CHECK( ShrinkageDisableGPOS );
+      if ( ShrinkageDisableGPOS )
+        otv_x_ux( table + ShrinkageDisableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ShrinkageJstfMax );
+!     OTV_SIZE_CHECK( ShrinkageJstfMax );
+      if ( ShrinkageJstfMax )
+      {
+        /* XXX: check lookup types? */
+--- 70,99 ----
+  
+      valid->extra1 = gsub_lookup_count;
+      
+!     OTV_OPTIONAL_OFFSET(ShrinkageEnableGSUB);
+!     OTV_SIZE_CHECK(ShrinkageEnableGSUB);
+      if ( ShrinkageEnableGSUB )
+        otv_x_ux( table + ShrinkageEnableGSUB, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ShrinkageDisableGSUB);
+!     OTV_SIZE_CHECK(ShrinkageDisableGSUB);
+      if ( ShrinkageDisableGSUB )
+        otv_x_ux( table + ShrinkageDisableGSUB, valid );
+  
+      valid->extra1 = gpos_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET(ShrinkageEnableGPOS);
+!     OTV_SIZE_CHECK(ShrinkageEnableGPOS);
+      if ( ShrinkageEnableGPOS )
+        otv_x_ux( table + ShrinkageEnableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ShrinkageDisableGPOS);
+!     OTV_SIZE_CHECK(ShrinkageDisableGPOS);
+      if ( ShrinkageDisableGPOS )
+        otv_x_ux( table + ShrinkageDisableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ShrinkageJstfMax);
+!     OTV_SIZE_CHECK(ShrinkageJstfMax);
+      if ( ShrinkageJstfMax )
+      {
+        /* XXX: check lookup types? */
+***************
+*** 103,132 ****
+  
+      valid->extra1 = gsub_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET( ExtensionEnableGSUB );
+!     OTV_SIZE_CHECK( ExtensionEnableGSUB );
+      if ( ExtensionEnableGSUB )
+        otv_x_ux( table + ExtensionEnableGSUB, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ExtensionDisableGSUB );
+!     OTV_SIZE_CHECK( ExtensionDisableGSUB );
+      if ( ExtensionDisableGSUB )
+        otv_x_ux( table + ExtensionDisableGSUB, valid );
+  
+      valid->extra1 = gpos_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET( ExtensionEnableGPOS );
+!     OTV_SIZE_CHECK( ExtensionEnableGPOS );
+      if ( ExtensionEnableGPOS )
+        otv_x_ux( table + ExtensionEnableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ExtensionDisableGPOS );
+!     OTV_SIZE_CHECK( ExtensionDisableGPOS );
+      if ( ExtensionDisableGPOS )
+        otv_x_ux( table + ExtensionDisableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET( ExtensionJstfMax );
+!     OTV_SIZE_CHECK( ExtensionJstfMax );
+      if ( ExtensionJstfMax )
+      {
+        /* XXX: check lookup types? */
+--- 103,132 ----
+  
+      valid->extra1 = gsub_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET(ExtensionEnableGSUB);
+!     OTV_SIZE_CHECK(ExtensionEnableGSUB);
+      if ( ExtensionEnableGSUB )
+        otv_x_ux( table + ExtensionEnableGSUB, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ExtensionDisableGSUB);
+!     OTV_SIZE_CHECK(ExtensionDisableGSUB);
+      if ( ExtensionDisableGSUB )
+        otv_x_ux( table + ExtensionDisableGSUB, valid );
+  
+      valid->extra1 = gpos_lookup_count;
+  
+!     OTV_OPTIONAL_OFFSET(ExtensionEnableGPOS);
+!     OTV_SIZE_CHECK(ExtensionEnableGPOS);
+      if ( ExtensionEnableGPOS )
+        otv_x_ux( table + ExtensionEnableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ExtensionDisableGPOS);
+!     OTV_SIZE_CHECK(ExtensionDisableGPOS);
+      if ( ExtensionDisableGPOS )
+        otv_x_ux( table + ExtensionDisableGPOS, valid );
+  
+!     OTV_OPTIONAL_OFFSET(ExtensionJstfMax);
+!     OTV_SIZE_CHECK(ExtensionJstfMax);
+      if ( ExtensionJstfMax )
+      {
+        /* XXX: check lookup types? */
+***************
+*** 152,191 ****
+      FT_UInt   table_size;
+      FT_UInt   JstfLangSysCount;
+  
+!     OTV_OPTIONAL_TABLE( ExtGlyph );
+!     OTV_OPTIONAL_TABLE( DefJstfLangSys );
+  
+  
+      OTV_NAME_ENTER( "JstfScript" );
+  
+      OTV_LIMIT_CHECK( 6 );
+!     OTV_OPTIONAL_OFFSET( ExtGlyph );
+!     OTV_OPTIONAL_OFFSET( DefJstfLangSys );
+      JstfLangSysCount = FT_NEXT_USHORT( p );
+  
+      OTV_TRACE(( " (JstfLangSysCount = %d)\n", JstfLangSysCount ));
+  
+      table_size = JstfLangSysCount * 6 + 6;
+  
+!     OTV_SIZE_CHECK( ExtGlyph );
+      if ( ExtGlyph )
+      {
+        valid->extra1 = valid->glyph_count;
+!       OTV_NEST1( ExtenderGlyph );
+        OTV_RUN( table + ExtGlyph, valid );
+      }
+  
+!     OTV_SIZE_CHECK( DefJstfLangSys );
+!     if ( DefJstfLangSys )
+!     {
+!       OTV_NEST2( JstfLangSys, JstfPriority );
+        OTV_RUN( table + DefJstfLangSys, valid );
+      }
+  
+      OTV_LIMIT_CHECK( 6 * JstfLangSysCount );
+  
+      /* JstfLangSysRecord */
+!     OTV_NEST2( JstfLangSys, JstfPriority );
+      for ( ; JstfLangSysCount > 0; JstfLangSysCount-- )
+      {
+        p += 4;       /* skip JstfLangSysTag */
+--- 152,191 ----
+      FT_UInt   table_size;
+      FT_UInt   JstfLangSysCount;
+  
+!     OTV_OPTIONAL_TABLE(ExtGlyph);
+!     OTV_OPTIONAL_TABLE(DefJstfLangSys);
+  
+  
+      OTV_NAME_ENTER( "JstfScript" );
+  
+      OTV_LIMIT_CHECK( 6 );
+!     OTV_OPTIONAL_OFFSET(ExtGlyph);
+!     OTV_OPTIONAL_OFFSET(DefJstfLangSys);
+      JstfLangSysCount = FT_NEXT_USHORT( p );
+  
+      OTV_TRACE(( " (JstfLangSysCount = %d)\n", JstfLangSysCount ));
+  
+      table_size = JstfLangSysCount * 6 + 6;
+  
+!     OTV_SIZE_CHECK(ExtGlyph);
+      if ( ExtGlyph )
+      {
+        valid->extra1 = valid->glyph_count;
+!       OTV_NEST1(ExtenderGlyph);
+        OTV_RUN( table + ExtGlyph, valid );
+      }
+  
+!     OTV_SIZE_CHECK(DefJstfLangSys);
+!     if ( DefJstfLangSys )
+!     {
+!       OTV_NEST2(JstfLangSys, JstfPriority);
+        OTV_RUN( table + DefJstfLangSys, valid );
+      }
+  
+      OTV_LIMIT_CHECK( 6 * JstfLangSysCount );
+  
+      /* JstfLangSysRecord */
+!     OTV_NEST2(JstfLangSys, JstfPriority);
+      for ( ; JstfLangSysCount > 0; JstfLangSysCount-- )
+      {
+        p += 4;       /* skip JstfLangSysTag */
+diff -c freetype-2.1.10/src/truetype/ttgxvar.c freetype-2.1.10-patched/src/truetype/ttgxvar.c
+*** freetype-2.1.10/src/truetype/ttgxvar.c Sun May 22 05:49:48 2005
+--- freetype-2.1.10-patched/src/truetype/ttgxvar.c Sat Sep 23 11:56:06 2006
+***************
+*** 397,403 ****
+      if ( (error = face->goto_table( face, TTAG_gvar, stream, &table_len )) != 0 )
+        goto Exit;
+  
+!     gvar_start = FT_STREAM_POS( );
+      if ( FT_STREAM_READ_FIELDS( gvar_fields, &gvar_head ) )
+        goto Exit;
+  
+--- 397,403 ----
+      if ( (error = face->goto_table( face, TTAG_gvar, stream, &table_len )) != 0 )
+        goto Exit;
+  
+!     gvar_start = FT_STREAM_POS();
+      if ( FT_STREAM_READ_FIELDS( gvar_fields, &gvar_head ) )
+        goto Exit;
+  
+***************
+*** 668,674 ****
+                                        stream, &table_len )) != 0 )
+          goto Exit;
+  
+!       fvar_start = FT_STREAM_POS( );
+  
+        if ( FT_STREAM_READ_FIELDS( fvar_fields, &fvar_head ) )
+          goto Exit;
+--- 668,674 ----
+                                        stream, &table_len )) != 0 )
+          goto Exit;
+  
+!       fvar_start = FT_STREAM_POS();
+  
+        if ( FT_STREAM_READ_FIELDS( fvar_fields, &fvar_head ) )
+          goto Exit;
