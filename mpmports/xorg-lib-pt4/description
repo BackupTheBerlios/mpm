@@ -11,3 +11,7 @@ libFS
 liblbxutil
 liboldX
 libXaw
+libXcomposite
+libXcursor
+libXdamage
+libXevie
