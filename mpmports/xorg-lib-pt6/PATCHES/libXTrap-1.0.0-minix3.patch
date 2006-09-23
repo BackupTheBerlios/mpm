@@ -1,0 +1,32 @@
+diff -c libXTrap-1.0.0/src/XEWrappers.c libXTrap-1.0.0-patched//src/XEWrappers.c
+*** libXTrap-1.0.0/src/XEWrappers.c Mon Jun 20 21:47:31 2005
+--- libXTrap-1.0.0-patched//src/XEWrappers.c Sat Sep 23 21:10:03 2006
+***************
+*** 102,114 ****
+   * implementations do, as compared to using one of the core input event masks.
+   */
+  
+! Boolean (*XETrapGetEventHandler(XETC *tc, CARD32 id))(XETrapDataEvent *event, XETC *tc)
+  {
+      return((id < XETrapNumberEvents) ? tc->eventFunc[id] : NULL);
+  }
+  
+  Boolean (*XETrapSetEventHandler(XETC *tc, CARD32 id,
+! 			Boolean (*pfunc)(XETrapDataEvent *event, XETC *tc)))(XETrapDataEvent *event, XETC *tc)
+  {
+      register Boolean (*rfunc)(XETrapDataEvent *event, XETC *tc) = NULL;
+  
+--- 102,114 ----
+   * implementations do, as compared to using one of the core input event masks.
+   */
+  
+! Boolean (*XETrapGetEventHandler(XETC *tc, CARD32 id))(XETrapDataEvent *event, XETC *tc2)
+  {
+      return((id < XETrapNumberEvents) ? tc->eventFunc[id] : NULL);
+  }
+  
+  Boolean (*XETrapSetEventHandler(XETC *tc, CARD32 id,
+! 			Boolean (*pfunc)(XETrapDataEvent *event, XETC *tc2)))(XETrapDataEvent *event, XETC *tc3)
+  {
+      register Boolean (*rfunc)(XETrapDataEvent *event, XETC *tc) = NULL;
+  

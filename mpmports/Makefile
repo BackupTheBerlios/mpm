@@ -33,6 +33,7 @@ PACKAGES=\
 	xorg-lib-pt3 \
 	xorg-lib-pt4 \
 	xorg-lib-pt5 \
+	xorg-lib-pt6 \
 	xorg-proto \
 	xorg-util \
 	zlib \
