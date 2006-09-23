@@ -42,6 +42,10 @@ for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
         mv src/Makefile.in.minix.fixed src/Makefile.in
     fi
 
+    # sigh. more pkg-config failure. hardcode cflags/libs here
+    XDAMAGE_CFLAGS=" " XDAMAGE_LIBS="-lXfixes" \
+    XCURSOR_CFLAGS=" " XCURSOR_LIBS="-lXfixes -lX11" \
+    XCOMPOSITE_CFLAGS=" " XCOMPOSITE_LIBS="-lX11 -lXfixes -lXext" \
     lt_cv_path_SED=/usr/gnu/bin/sed \
     CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
     INSTALL=/bin/install \
