@@ -1,0 +1,64 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+PATH=/bin:/usr/bin
+export PATH
+
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:"$SMPM_INSTALLROOT/usr/lib/pkgconfig"
+export PKG_CONFIG_PATH
+PKG_CONFIG=/usr/local/bin/pkg-config
+export PKG_CONFIG
+
+XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
+
+MINIX_FLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo"
+EXTRA_INC="-I$SMPM_INSTALLROOT/usr/include -I/usr/local/include"
+EXTRA_LIB="-L/usr/local/lib"
+CFLAGS="$MINIX_FLAGS $EXTRA_INC"
+LDFLAGS="$EXTRA_LIB"
+
+binsizes xxl
+
+for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
+    SOMEEXTRA=""
+    case $i in
+    \#*)        continue    ;;
+    esac
+
+    j=`basename $i .tar.bz2`
+    echo "*** $j"
+    cd "$SMPM_BUILDROOT/$j"
+
+    # "fix" configure
+    sed -e 's/--atleast-pkgconfig-version/--version/' configure > configure.minix.fixed
+    mv configure.minix.fixed configure
+
+    # "fix" Makefile.in to avoid unsupported linker options
+    sed -e 's/_la_LDFLAGS\ =/_XXX_do_NoThInG\ =/' Makefile.in > Makefile.in.minix.fixed
+    mv Makefile.in.minix.fixed Makefile.in
+    if test -f src/Makefile.in ; then
+        sed -e 's/_la_LDFLAGS\ =/_XXX_do_NoThInG\ =/' src/Makefile.in > src/Makefile.in.minix.fixed
+        mv src/Makefile.in.minix.fixed src/Makefile.in
+    fi
+
+    # and again, more pkg-config failure. prehaps i should fix pkg-config ;)
+    RANDR_CFLAGS=" " RANDR_LIBS="-lXau -lX11 -lXext -lXrender" \
+    FONTCONFIG_CFLAGS="-I/usr/local/include" \
+    FONTCONFIG_LIBS="-L/usr/local/lib -lfontconfig" \
+    XRENDER_CFLAGS=" " XRENDER_LIBS="-lXau -lX11 -lXrender" \
+    lt_cv_path_SED=/usr/gnu/bin/sed \
+    CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
+    INSTALL=/bin/install \
+    lt_cv_sys_max_cmd_len=4096 \
+    CXX=true CXXCPP="cc -E" \
+    CC=cc LD=cc CFLAGS="$CFLAGS $SOMEEXTRA" LDFLAGS="$LDFLAGS" \
+    /usr/gnu/bin/bash \
+    ./configure $XORG_CONFIG --disable-dependency-tracking --disable-xthreads \
+        --disable-loadable-i18n --disable-loadable-xcursor
+
+    DESTDIR="$SMPM_INSTALLROOT" \
+    make DESTDIR="$SMPM_INSTALLROOT" install
+done
+
+exit 0

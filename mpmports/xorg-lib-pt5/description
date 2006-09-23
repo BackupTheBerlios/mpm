@@ -1,0 +1,8 @@
+Xorg libraries, part 5
+
+Provides:
+
+libXcomposite
+libXcursor
+libXdamage
+libXevie
