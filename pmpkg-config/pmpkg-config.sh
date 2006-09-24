@@ -202,6 +202,17 @@ extract() {
     done
 }
 
+printop() {
+    case "$1" in
+        lteq)   echo "<="   ;;
+        lt)     echo "<"    ;;
+        eq)     echo "="    ;;
+        neq)    echo "!="   ;;
+        gt)     echo ">"    ;;
+        gteq)   echo ">="   ;;
+    esac
+}
+
 # number filename
 check_constraints() {
     mod=`eval echo \\$_mod_$1`
@@ -214,14 +225,25 @@ check_constraints() {
     min=`echo $v.0.0.0 | cut -d '.' -f 2`
     sub=`echo $v.0.0.0 | cut -d '.' -f 3`
 
-    case "$v" in
-        lteq)   ;;
-        lt)     ;;
-        eq)     ;;
-        neq)    ;;
-        gt)     ;;
-        gteq)   ;;
+    modver=`data_from_file Version $2`
+    modmaj=`echo $modver.0.0.0 | cut -d '.' -f 1`
+    modmin=`echo $modver.0.0.0 | cut -d '.' -f 2`
+    modsub=`echo $modver.0.0.0 | cut -d '.' -f 3`
+
+    newver=`printf "%03i%03i%03i" "$maj" "$min" "$sub"`
+    newmodver=`printf "%03i%03i%03i" "$modmaj" "$modmin" "$modsub"`
+
+    errmsg="Requested $mod `printop $c` $v but version of $mod is $modver"
+    trap 'echo $errmsg' EXIT
+    case "$c" in
+        lteq)   test "$newmodver" -le "$newver" || exit 2 ;;
+        lt)     test "$newmodver" -lt "$newver" || exit 2 ;;
+        eq)     test "$newmodver" -eq "$newver" || exit 2 ;;
+        neq)    test "$newmodver" -ne "$newver" || exit 2 ;;
+        gt)     test "$newmodver" -gt "$newver" || exit 2 ;;
+        gteq)   test "$newmodver" -ge "$newver" || exit 2 ;;
     esac
+    trap '' EXIT
 
     exit 0
 }
