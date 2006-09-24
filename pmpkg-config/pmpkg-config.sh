@@ -20,7 +20,7 @@ test "$#" = "0" && echo "Must specify package names on the command line" &&
 
 case " $@" in
     *\ --help*|*\ -\?)
-    cat << __EOF__
+    cat >&2 << __EOF__
 Poor Man's pkg-config $VERSION -- Copyright (c) 2006 by Ivo van Poorten
 Usage: $0 [OPTION...]
   --version                               output version of $0
@@ -52,7 +52,7 @@ Usage: $0 [OPTION...]
 __EOF__
     exit 2 ;;
     *\ --usage*)
-    cat << __EOF__
+    cat >&2 << __EOF__
 Usage: $0 [-?] [--version] [--modversion]
         [--atleast-pkgconfig-version=VERSION] [--libs] [--static]
         [--short-errors] [--libs-only-l] [--libs-only-other] [--libs-only-L]
