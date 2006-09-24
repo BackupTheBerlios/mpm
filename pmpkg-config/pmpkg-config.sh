@@ -224,7 +224,7 @@ fi
 if test "$_libsl" = "yes" -o "$_libsL" = "yes" ; then
     _LIBS=`collect_data Libs $requires`
     if test "$_plus_private" = "yes"; then
-    _LIBSP=`collect_data Libs.private $requires`
+        _LIBSP=`collect_data Libs.private $requires`
     else
         _LIBSP=""
     fi
