@@ -269,11 +269,11 @@ check_constraints() {
     modmin=`echo $modver.0.0.0 | cut -d '.' -f 2`
     modsub=`echo $modver.0.0.0 | cut -d '.' -f 3`
 
-    newver=`printf "%03i%03i%03i" "$maj" "$min" "$sub"`
-    newmodver=`printf "%03i%03i%03i" "$modmaj" "$modmin" "$modsub"`
+    newver=`printf '%03d%03d%03d' "$maj" "$min" "$sub"`
+    newmodver=`printf '%03d%03d%03d' "$modmaj" "$modmin" "$modsub"`
 
     errmsg="Requested $mod `printop $c` $v but version of $mod is $modver"
-    trap 'echo $errmsg >&2' EXIT
+    trap 'echo $errmsg >&2' 0
     case "$c" in
         lteq)   test "$newmodver" -le "$newver" || exit 2 ;;
         lt)     test "$newmodver" -lt "$newver" || exit 2 ;;
@@ -282,7 +282,7 @@ check_constraints() {
         gt)     test "$newmodver" -gt "$newver" || exit 2 ;;
         gteq)   test "$newmodver" -ge "$newver" || exit 2 ;;
     esac
-    trap '' EXIT
+    trap '' 0
     echo ok
 }
 
