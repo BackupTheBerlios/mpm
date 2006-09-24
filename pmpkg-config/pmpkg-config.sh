@@ -63,6 +63,8 @@ parse_modname() {
         esac
         eval _mod_${nmod}_c=$c
         eval _mod_${nmod}_v=$3
+    else
+        eval _mod_${nmod}_c=ok
     fi
 
     nmod=`expr $nmod + 1`
@@ -98,8 +100,6 @@ parse_cmd_line() {
         shift 1
     done
 }
-
-parse_cmd_line $@
 
 find_file() {
     for i in /usr/lib/pkgconfig /usr/local/lib/pkgconfig `IFS=":"; echo $PKG_CONFIG_PATH` ; do
@@ -195,6 +195,15 @@ extract() {
         shift 1
     done
 }
+
+check_constraints() {
+    :
+}
+
+parse_cmd_line $@
+
+test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" &&
+    _exists=yes
 
 if test "$_exists" = "yes" ; then
     exec 1>/dev/null 2>&1
