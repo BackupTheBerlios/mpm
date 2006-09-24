@@ -34,9 +34,11 @@ esac
 _plus_private=no
 
 _exists=no
-_cflags=no
+_cflagsI=no
+_cflagso=no
 _libsl=no
 _libsL=no
+_libso=no
 _modversion=no
 
 _CFLAGS=""
@@ -70,13 +72,24 @@ parse_cmd_line() {
     while test "$#" != "0" ; do
         case "$1" in
             --exists)       _exists=yes ;;
-            --cflags)       _cflags=yes ;;
+            --cflags)               _cflagsI=yes
+                                    _cflagso=yes ;;
+            --cflags-only-I)        _cflagsI=yes
+                                    _cflagso=no ;;
+            --cflags-only-other)    _cflagsI=no
+                                    _cflagso=yes ;;
             --libs)         _libsl=yes
-                            _libsL=yes  ;;
+                            _libsL=yes
+                            _libso=yes  ;;
             --libs-only-l)  _libsl=yes
-                            _libsL=no   ;;
+                            _libsL=no
+                            _libso=no   ;;
             --libs-only-L)  _libsl=no
-                            _libsL=yes  ;;
+                            _libsL=yes
+                            _libso=no  ;;
+            --libs-only-other)  _libsl=no
+                                _libsL=no
+                                _libso=yes ;;
             --static)       _plus_private=yes ;;
             --modversion)   _modversion=yes ;;
             --*)            ;;  # silently ignore unknown options
@@ -168,12 +181,16 @@ extract() {
     while test "$#" != "0" ; do
         case $which in
             L)  case "$1" in
-                    \-l*)   ;;
-                    *)      echo $1 ;;
+                    \-L*|\-R*)      echo $1 ;;
                 esac
                 ;;
             l)  case "$1" in
-                    \-l*)   echo $1 ;;
+                    \-l*)           echo $1 ;;
+                esac
+                ;;
+            lo) case "$1" in
+                    \-l*|\-L*|\-R*)         ;;
+                    *)              echo $1 ;;
                 esac
                 ;;
             D)  case "$1" in
@@ -216,13 +233,13 @@ case "$requires" in
     *notfound*)     exit 2 ;;
 esac
 requires=`remove_doubles $requires`
-if test "$_cflags" = "yes" ; then
+if test "$_cflagsI" = "yes" -o "$_cflagso" = "yes"; then
     _CFLAGS=`collect_data Cflags $requires`
     _CFLAGS=`remove_doubles $_CFLAGS`
-    _CFLAGSD=`extract D $_CFLAGS`
-    _CFLAGSI=`extract I $_CFLAGS`
+    test "$_cflagsI" = "yes" && _CFLAGSI=`extract I $_CFLAGS`
+    test "$_cflagso" = "yes" && _CFLAGSo=`extract D $_CFLAGS`
 fi
-if test "$_libsl" = "yes" -o "$_libsL" = "yes" ; then
+if test "$_libsl" = "yes" -o "$_libsL" = "yes" -o "$_libso" = "yes" ; then
     _LIBS=`collect_data Libs $requires`
     if test "$_plus_private" = "yes"; then
         _LIBSP=`collect_data Libs.private $requires`
@@ -233,6 +250,7 @@ if test "$_libsl" = "yes" -o "$_libsL" = "yes" ; then
     _LIBS=`remove_doubles $_LIBS`
     test "$_libsL" = "yes" && _LIBSL=`extract L $_LIBS`
     test "$_libsl" = "yes" && _LIBSl=`extract l $_LIBS`
+    test "$_libso" = "yes" && _LIBSo=`extract lo $_LIBS`
 fi
 
 for i in $_MODVERSIONS ; do
@@ -241,7 +259,9 @@ done
 
 PRINT=no
 LINE=""
-test "$_cflags" = "yes" && LINE="$_CFLAGSD $_CFLAGSI" && PRINT=yes
+test "$_cflagsI" = "yes" && LINE="$LINE $_CFLAGSI" && PRINT=yes
+test "$_cflagso" = "yes" && LINE="$LINE $_CFLAGSo" && PRINT=yes
 test "$_libsL" = "yes" && LINE="$LINE $_LIBSL" && PRINT=yes
 test "$_libsl" = "yes" && LINE="$LINE $_LIBSl" && PRINT=yes
+test "$_libso" = "yes" && LINE="$LINE $_LIBSo" && PRINT=yes
 test "$PRINT" = "yes" && echo $LINE
