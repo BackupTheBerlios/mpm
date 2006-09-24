@@ -151,15 +151,21 @@ all_requires() {
     done
 }
 
+data_from_file() {
+    field=$1
+    file=$2
+    env=`cat $file | sed -e '/^[ ]*$/q'`
+    flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
+    output=`eval "eval $env"; eval echo $flags`
+    echo $output
+}
+
 collect_data() {
     field=$1
     shift 1
     while test "$#" != "0" ; do
         file=`find_file $1`
-        env=`cat $file | sed -e '/^[ ]*$/q'`
-        flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
-        output=`eval "eval $env"; eval echo $flags`
-        echo $output
+        data_from_file $field $file
         shift 1
     done
 }
@@ -196,8 +202,28 @@ extract() {
     done
 }
 
+# number filename
 check_constraints() {
-    :
+    mod=`eval echo \\$_mod_$1`
+    c=`eval echo \\$_mod_$1_c`
+    v=`eval echo \\$_mod_$1_v`
+
+    test "$c" = "ok" && exit 0
+
+    maj=`echo $v.0.0.0 | cut -d '.' -f 1`
+    min=`echo $v.0.0.0 | cut -d '.' -f 2`
+    sub=`echo $v.0.0.0 | cut -d '.' -f 3`
+
+    case "$v" in
+        lteq)   ;;
+        lt)     ;;
+        eq)     ;;
+        neq)    ;;
+        gt)     ;;
+        gteq)   ;;
+    esac
+
+    exit 0
 }
 
 parse_cmd_line $@
@@ -212,6 +238,7 @@ if test "$_exists" = "yes" ; then
         mod=`eval echo \\$_mod_$n`
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
+        check_constraints $n $file || exit 2
         n=`expr $n + 1`
     done
     exit 0
@@ -221,7 +248,9 @@ if test "$_modversion" = "yes" ; then
     n=0
     while test "$n" != "$nmod" ; do
         mod=`eval echo \\$_mod_$n`
-        _MODVERSIONS="$_MODVERSIONS `collect_data Version $mod`"
+        file=`find_file $mod`
+        test "$file" != "notfound" || exit 2
+        _MODVERSIONS="$_MODVERSIONS `data_from_file Version $file`"
         n=`expr $n + 1`
     done
 fi
