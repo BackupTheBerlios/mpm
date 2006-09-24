@@ -7,9 +7,24 @@
 # All rights reserved.
 #
 
-#set -v
-
 VERSION=0.90
+
+test "$#" = "0" && echo "Must specify package names on the command line" &&
+    exit 2
+
+case " $@" in
+    \ --help*)
+    echo "Poor Man's pkg-config $VERSION"
+    echo "Usage: $0 [OPTION...]"
+    echo "  --version                               output version of $0"
+    echo "  --modversion                            output version for package"
+    echo "  --atleast-pkgconfig-version=VERSION     require given version of"
+    echo "                                          pkg-config (always true)"
+    echo "  --libs                                  output all linker flags"
+    echo "  --static                                output linker flags for"
+    echo "                                          static linking"
+    exit 2
+esac
 
 case "$@" in
     *--version*)      echo "$VERSION" ; exit 0 ;;
@@ -61,7 +76,7 @@ parse_cmd_line() {
                             _libsL=no   ;;
             --libs-only-L)  _libsl=no
                             _libsL=yes  ;;
-            --plus-private) _plus_private=yes ;;
+            --static)       _plus_private=yes ;;
             --modversion)   _modversion=yes ;;
             --*)            ;;  # silently ignore unknown options
             -*)             ;;
@@ -208,6 +223,8 @@ if test "$_cflags" = "yes" ; then
 fi
 if test "$_libsl" = "yes" -o "$_libsL" = "yes" ; then
     _LIBS=`collect_data Libs $requires`
+    _LIBSP=`collect_data Libs.private $requires`
+    _LIBS="$_LIBS $_LIBSP"
     _LIBS=`remove_doubles $_LIBS`
     test "$_libsL" = "yes" && _LIBSL=`extract L $_LIBS`
     test "$_libsl" = "yes" && _LIBSl=`extract l $_LIBS`
