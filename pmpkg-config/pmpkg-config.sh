@@ -71,27 +71,16 @@ parse_modname() {
 parse_cmd_line() {
     while test "$#" != "0" ; do
         case "$1" in
-            --exists)       _exists=yes ;;
-            --cflags)               _cflagsI=yes
-                                    _cflagso=yes ;;
-            --cflags-only-I)        _cflagsI=yes
-                                    _cflagso=no ;;
-            --cflags-only-other)    _cflagsI=no
-                                    _cflagso=yes ;;
-            --libs)         _libsl=yes
-                            _libsL=yes
-                            _libso=yes  ;;
-            --libs-only-l)  _libsl=yes
-                            _libsL=no
-                            _libso=no   ;;
-            --libs-only-L)  _libsl=no
-                            _libsL=yes
-                            _libso=no  ;;
-            --libs-only-other)  _libsl=no
-                                _libsL=no
-                                _libso=yes ;;
-            --static)       _plus_private=yes ;;
-            --modversion)   _modversion=yes ;;
+            --exists)               _exists=yes ;;
+            --cflags)               _cflagsI=yes _cflagso=yes ;;
+            --cflags-only-I)        _cflagsI=yes _cflagso=no ;;
+            --cflags-only-other)    _cflagsI=no  _cflagso=yes ;;
+            --libs)                 _libsl=yes _libsL=yes _libso=yes  ;;
+            --libs-only-l)          _libsl=yes _libsL=no  _libso=no   ;;
+            --libs-only-L)          _libsl=no  _libsL=yes _libso=no  ;;
+            --libs-only-other)      _libsl=no  _libsL=no  _libso=yes ;;
+            --static)               _plus_private=yes ;;
+            --modversion)           _modversion=yes ;;
             --*)            ;;  # silently ignore unknown options
             -*)             ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
