@@ -219,7 +219,10 @@ check_constraints() {
     c=`eval echo \\$_mod_$1_c`
     v=`eval echo \\$_mod_$1_v`
 
-    test "$c" = "ok" && exit 0
+    if test "$c" = "ok" ; then
+        echo ok
+        exit 0
+    fi
 
     maj=`echo $v.0.0.0 | cut -d '.' -f 1`
     min=`echo $v.0.0.0 | cut -d '.' -f 2`
@@ -234,7 +237,7 @@ check_constraints() {
     newmodver=`printf "%03i%03i%03i" "$modmaj" "$modmin" "$modsub"`
 
     errmsg="Requested $mod `printop $c` $v but version of $mod is $modver"
-    trap 'echo $errmsg' EXIT
+    trap 'echo $errmsg >&2' EXIT
     case "$c" in
         lteq)   test "$newmodver" -le "$newver" || exit 2 ;;
         lt)     test "$newmodver" -lt "$newver" || exit 2 ;;
@@ -244,8 +247,7 @@ check_constraints() {
         gteq)   test "$newmodver" -ge "$newver" || exit 2 ;;
     esac
     trap '' EXIT
-
-    exit 0
+    echo ok
 }
 
 parse_cmd_line $@
@@ -260,7 +262,8 @@ if test "$_exists" = "yes" ; then
         mod=`eval echo \\$_mod_$n`
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
-        check_constraints $n $file || exit 2
+        ret=`check_constraints $n $file`
+        test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
     exit 0
@@ -273,6 +276,8 @@ if test "$_modversion" = "yes" ; then
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
         _MODVERSIONS="$_MODVERSIONS `data_from_file Version $file`"
+        ret=`check_constraints $n $file`
+        test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
 fi
@@ -314,3 +319,5 @@ test "$_libsL" = "yes" && LINE="$LINE $_LIBSL" && PRINT=yes
 test "$_libsl" = "yes" && LINE="$LINE $_LIBSl" && PRINT=yes
 test "$_libso" = "yes" && LINE="$LINE $_LIBSo" && PRINT=yes
 test "$PRINT" = "yes" && echo $LINE
+
+exit 0
