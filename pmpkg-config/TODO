@@ -1,0 +1,4 @@
+* implement --variable=VARIABLE
+* implement --atleast-version=VERSION, --exact-version=VERSION and
+  --max-version=VERSION
+
