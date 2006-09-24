@@ -140,7 +140,7 @@ collect_data() {
         file=`find_file $1`
         env=`cat $file | sed -e '/^[ ]*$/q'`
         flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
-        output=`eval "eval $env echo $flags"`
+        output=`eval "eval $env"; eval echo $flags`
         echo $output
         shift 1
     done
