@@ -13,7 +13,7 @@ test "$#" = "0" && echo "Must specify package names on the command line" &&
     exit 2
 
 case " $@" in
-    \ --help*)
+    \ --help*|\ -\?)
     cat << __EOF__
 Poor Man's pkg-config $VERSION
 Usage: $0 [OPTION...]
@@ -35,10 +35,19 @@ Usage: $0 [OPTION...]
                                           cflags-only-I option
   --exists                                return 0 if the module(s) exist
   --debug                                 show verbose debug information
-  --help                                  show this help message
+  -?, --help                              show this help message
   --usage                                 display brief usage message
 __EOF__
-    exit 2
+    exit 2 ;;
+    \ --usage*)
+    cat << __EOF__
+Usage: $0 [-?] [--version] [--modversion]
+        [--atleast-pkgconfig-version=VERSION] [--libs] [--static]
+        [--short-errors] [--libs-only-l] [--libs-only-other] [--libs-only-L]
+        [--cflags] [--cflags-only-I] [--cflags-only-other]
+        [--exists] [--debug] [--help] [--usage]
+__EOF__
+    exit 2 ;;
 esac
 
 case "$@" in
