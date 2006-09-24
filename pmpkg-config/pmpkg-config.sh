@@ -28,6 +28,7 @@ esac
 
 case "$@" in
     *--version*)      echo "$VERSION" ; exit 0 ;;
+    *--atleast-pkgconfig-version*)      exit 0 ;;
 esac
 
 _plus_private=no
