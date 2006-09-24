@@ -14,15 +14,30 @@ test "$#" = "0" && echo "Must specify package names on the command line" &&
 
 case " $@" in
     \ --help*)
-    echo "Poor Man's pkg-config $VERSION"
-    echo "Usage: $0 [OPTION...]"
-    echo "  --version                               output version of $0"
-    echo "  --modversion                            output version for package"
-    echo "  --atleast-pkgconfig-version=VERSION     require given version of"
-    echo "                                          pkg-config (always true)"
-    echo "  --libs                                  output all linker flags"
-    echo "  --static                                output linker flags for"
-    echo "                                          static linking"
+    cat << __EOF__
+Poor Man's pkg-config $VERSION
+Usage: $0 [OPTION...]
+  --version                               output version of $0
+  --modversion                            output version for package
+  --atleast-pkgconfig-version=VERSION     require given version of pkg-config
+                                          (always exits with 0)
+  --libs                                  output all linker flags
+  --static                                output linker flags for static
+                                          linking
+  --short-errors                          print short errors
+  --libs-only-l                           output -l flags
+  --libs-only-other                       output other libs (e.g. -pthread)
+  --libs-only-L                           output -L flags
+  --cflags                                output all pre-processor and compiler
+                                          flags
+  --cflags-only-I                         output -I flags
+  --cflags-only-other                     output cflags not covered by the
+                                          cflags-only-I option
+  --exists                                return 0 if the module(s) exist
+  --debug                                 show verbose debug information
+  --help                                  show this help message
+  --usage                                 display brief usage message
+__EOF__
     exit 2
 esac
 
@@ -83,8 +98,8 @@ parse_cmd_line() {
             --libs-only-other)      _libsl=no  _libsL=no  _libso=yes ;;
             --static)               _plus_private=yes ;;
             --modversion)           _modversion=yes ;;
-            --*)            ;;  # silently ignore unknown options
-            -*)             ;;
+            --short-errors)         ;;
+            --debug)                ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
                 case "$2" in
                     \<*|\=*|\>*|\!*)
