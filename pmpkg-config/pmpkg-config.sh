@@ -6,6 +6,9 @@
 # Copyright (c) 2006 by Ivo van Poorten
 # All rights reserved.
 #
+# License: GNU General Public License version 2.0
+# (and NOT at your option any later version)
+#
 
 VERSION=0.90
 
