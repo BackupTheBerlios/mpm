@@ -15,7 +15,7 @@ test "$#" = "0" && echo "Must specify package names on the command line" &&
 case " $@" in
     *\ --help*|*\ -\?)
     cat << __EOF__
-Poor Man's pkg-config $VERSION
+Poor Man's pkg-config $VERSION -- Copyright (c) 2006 by Ivo van Poorten
 Usage: $0 [OPTION...]
   --version                               output version of $0
   --modversion                            output version for package
@@ -35,6 +35,12 @@ Usage: $0 [OPTION...]
                                           cflags-only-I option
   --exists                                return 0 if the module(s) exist
   --debug                                 show verbose debug information
+  --print-errors                          show verbose information about
+                                          missing packages
+  --silence-errors                        do not show verbose information
+                                          about missing packages
+  --errors-to-stdout                      print errors from --print-errors
+                                          to stdout and not to stderr
   -?, --help                              show this help message
   --usage                                 display brief usage message
 __EOF__
@@ -45,7 +51,8 @@ Usage: $0 [-?] [--version] [--modversion]
         [--atleast-pkgconfig-version=VERSION] [--libs] [--static]
         [--short-errors] [--libs-only-l] [--libs-only-other] [--libs-only-L]
         [--cflags] [--cflags-only-I] [--cflags-only-other]
-        [--exists] [--debug] [--help] [--usage]
+        [--exists] [--debug] [--help] [--usage] [--print-errors]
+        [--silence-errors] [--errors-to-stdout]
 __EOF__
     exit 2 ;;
 esac
@@ -56,6 +63,8 @@ case "$@" in
 esac
 
 _plus_private=no
+_verbose=normal
+_tostdout=no
 
 _exists=no
 _cflagsI=no
@@ -109,6 +118,9 @@ parse_cmd_line() {
             --modversion)           _modversion=yes ;;
             --short-errors)         ;;
             --debug)                ;;
+            --print-errors)         _verbose=all ;;
+            --silence-errors)       _verbose=none ;;
+            --errors-to-stdout)     _tostdout=yes ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
                 case "$2" in
                     \<*|\=*|\>*|\!*)
@@ -276,11 +288,20 @@ check_constraints() {
 
 parse_cmd_line $@
 
+if test "$_tostdout" = "yes" ; then
+    exec 2>&1
+fi
+if test "$_verbose" = "none" ; then
+    exec 1>/dev/null 2>&1
+fi
+
 test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" &&
     _exists=yes
 
 if test "$_exists" = "yes" ; then
-    exec 1>/dev/null 2>&1
+    if test "$_verbose" != "all" ; then
+        exec 1>/dev/null 2>&1
+    fi
     n=0
     while test "$n" != "$nmod" ; do
         mod=`eval echo \\$_mod_$n`
