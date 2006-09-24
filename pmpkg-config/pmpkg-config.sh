@@ -223,7 +223,11 @@ if test "$_cflags" = "yes" ; then
 fi
 if test "$_libsl" = "yes" -o "$_libsL" = "yes" ; then
     _LIBS=`collect_data Libs $requires`
+    if test "$_plus_private" = "yes"; then
     _LIBSP=`collect_data Libs.private $requires`
+    else
+        _LIBSP=""
+    fi
     _LIBS="$_LIBS $_LIBSP"
     _LIBS=`remove_doubles $_LIBS`
     test "$_libsL" = "yes" && _LIBSL=`extract L $_LIBS`
