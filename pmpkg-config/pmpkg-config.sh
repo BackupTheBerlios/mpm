@@ -1,6 +1,5 @@
 #! /bin/sh
 
-#
 # Poor Man's Package Config
 #
 # Copyright (c) 2006 by Ivo van Poorten
@@ -9,6 +8,10 @@
 # License: GNU General Public License version 2.0
 # (and NOT at your option any later version)
 #
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 
 VERSION=0.90
 
