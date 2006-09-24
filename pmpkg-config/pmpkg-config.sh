@@ -13,7 +13,7 @@ test "$#" = "0" && echo "Must specify package names on the command line" &&
     exit 2
 
 case " $@" in
-    \ --help*|\ -\?)
+    *\ --help*|*\ -\?)
     cat << __EOF__
 Poor Man's pkg-config $VERSION
 Usage: $0 [OPTION...]
@@ -39,7 +39,7 @@ Usage: $0 [OPTION...]
   --usage                                 display brief usage message
 __EOF__
     exit 2 ;;
-    \ --usage*)
+    *\ --usage*)
     cat << __EOF__
 Usage: $0 [-?] [--version] [--modversion]
         [--atleast-pkgconfig-version=VERSION] [--libs] [--static]
