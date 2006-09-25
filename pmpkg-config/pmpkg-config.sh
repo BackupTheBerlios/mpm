@@ -50,6 +50,7 @@ Usage: $0 [OPTION...]
                                           version VERSION
   --max-version=VERSION                   return 0 if the module is at most
                                           version VERSION
+  --list-all                              list all known packages
   --debug                                 show verbose debug information
   --print-errors                          show verbose information about
                                           missing packages
@@ -70,7 +71,7 @@ Usage: $0 [-?] [--version] [--modversion]
         [--exists] [--debug] [--help] [--usage] [--print-errors]
         [--silence-errors] [--errors-to-stdout] [--variable=VARIABLENAME]
         [--define-variable=VARIABLENAME=VALUE] [--atleast-version=VERSION]
-        [--exact-version=VERSION] [--max-version=VERSION]
+        [--exact-version=VERSION] [--max-version=VERSION] [--list-all]
 __EOF__
     exit 2 ;;
 esac
