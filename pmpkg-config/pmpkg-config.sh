@@ -317,6 +317,9 @@ fi
 test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" \
      -a -z "$_variable" && _exists=yes
 
+test "$_cflagsI$_cflagso$_libsl$_libsL$_libso" != "nonononono" && \
+    _variable=""
+
 if test "$_exists" = "yes" ; then
     if test "$_verbose" != "all" ; then
         exec 1>/dev/null 2>&1
