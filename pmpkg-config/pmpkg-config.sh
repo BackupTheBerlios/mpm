@@ -196,15 +196,23 @@ remove_doubles() {
 
 add_mods() {
     while test "$#" != "0" ; do
-        case "$2" in
+        cur=$1
+        shift 1
+        case "$1" in
             \<*|\=*|\>*|\!*)
-                parse_modname $1 $2 $3
+                case " $@ " in
+                    *\ $cur\ *) ;;
+                    *)          parse_modname $cur $1 $2 ;;
+                esac
                 shift 2
                 ;;
             *)
-                parse_modname $1
+                case " $@ " in
+                    *\ $cur\ *) ;;
+                    *)          parse_modname $cur ;;
+                esac
+                ;;
         esac
-        shift 1
     done
 }
 
