@@ -83,7 +83,8 @@ _libsL=no
 _libso=no
 _modversion=no
 _variable=""
-_defvar=""
+_defenv=""
+_defvars=""
 
 _CFLAGS=""
 _LIBSl=""
@@ -133,9 +134,11 @@ parse_cmd_line() {
             --silence-errors)       _verbose=none ;;
             --errors-to-stdout)     _tostdout=yes ;;
             --variable=*)           _variable=`echo $1 | cut -d '=' -f 2` ;;
-            --define-variable=*)
-                _tmpvar=`echo "$1" | sed -e 's/[^=]*=\(.*\)/\1/'` 
-                _defvar="$_defvar $_tmpvar"
+            --define-variable=*=*)
+                _tmpenv=`echo "$1" | sed -e 's/[^=]*=\(.*\)/\1/'` 
+                _defenv="$_defenv $_tmpenv"
+                _tmpvar=`echo "$1" | cut -d '=' -f 2`
+                _defvars="$_defvars $_tmpvar"
                 ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
                 case "$2" in
@@ -203,21 +206,28 @@ all_requires() {
     done
 }
 
+remove_defined() {
+    test -z "$_defvars" && cat
+    for i in $_defvars ; do
+        sed -e "/^$i/d"
+    done
+}
+
 data_from_file() {
     field=$1
     file=$2
 #    env=`cat $file | sed -e '/^[ ]*$/q'`
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
-    output=`eval "eval $env $_defvar"; eval echo $flags`
+    output=`eval "eval $_defenv; $env "; eval echo $flags`
     echo $output
 }
 
 var_from_file() {
     var=$1
     file=$2
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
-    output=`eval "eval $env $_defvar"; eval echo \$\{$var\}`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined`
+    output=`eval "eval $_defenv; $env "; eval echo \$\{$var\}`
     echo $output
 }
 
