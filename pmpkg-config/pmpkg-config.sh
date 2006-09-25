@@ -13,6 +13,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+# set -v
+
 VERSION=0.90
 
 test "$#" = "0" && echo "Must specify package names on the command line" &&
@@ -79,6 +81,7 @@ _libsl=no
 _libsL=no
 _libso=no
 _modversion=no
+_variable=""
 
 _CFLAGS=""
 _LIBSl=""
@@ -127,6 +130,7 @@ parse_cmd_line() {
             --print-errors)         _verbose=all ;;
             --silence-errors)       _verbose=none ;;
             --errors-to-stdout)     _tostdout=yes ;;
+            --variable=*)           _variable=`echo $1 | cut -d '=' -f 2` ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
                 case "$2" in
                     \<*|\=*|\>*|\!*)
@@ -200,6 +204,14 @@ data_from_file() {
     env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]\+:/d' $file`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
     output=`eval "eval $env"; eval echo $flags`
+    echo $output
+}
+
+var_from_file() {
+    var=$1
+    file=$2
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]\+:/d' $file`
+    output=`eval "eval $env"; eval echo \$\{$var\}`
     echo $output
 }
 
@@ -302,8 +314,8 @@ if test "$_verbose" = "none" ; then
     exec 1>/dev/null 2>&1
 fi
 
-test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" &&
-    _exists=yes
+test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" \
+     -a -z "$_variable" && _exists=yes
 
 if test "$_exists" = "yes" ; then
     if test "$_verbose" != "all" ; then
@@ -332,6 +344,24 @@ if test "$_modversion" = "yes" ; then
         test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
+    for i in $_MODVERSIONS ; do
+        echo $i
+    done
+fi
+
+if test -n "$_variable" ; then
+    n=0
+    while test "$n" != "$nmod" ; do
+        mod=`eval echo \\$_mod_$n`
+        file=`find_file $mod`
+        test "$file" != "notfound" || exit 2
+        _VARIABLES="$_VARIABLES `var_from_file $_variable $file`"
+        ret=`check_constraints $n $file`
+        test "$ret" = "ok" || exit 2
+        n=`expr $n + 1`
+    done
+    echo $_VARIABLES
+    exit 0
 fi
 
 requires="`all_requires`"
@@ -358,10 +388,6 @@ if test "$_libsl" = "yes" -o "$_libsL" = "yes" -o "$_libso" = "yes" ; then
     test "$_libsl" = "yes" && _LIBSl=`extract l $_LIBS`
     test "$_libso" = "yes" && _LIBSo=`extract lo $_LIBS`
 fi
-
-for i in $_MODVERSIONS ; do
-    echo $i
-done
 
 PRINT=no
 LINE=""
