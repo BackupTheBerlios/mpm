@@ -83,6 +83,7 @@ _libsL=no
 _libso=no
 _modversion=no
 _variable=""
+_defvar=""
 
 _CFLAGS=""
 _LIBSl=""
@@ -132,6 +133,10 @@ parse_cmd_line() {
             --silence-errors)       _verbose=none ;;
             --errors-to-stdout)     _tostdout=yes ;;
             --variable=*)           _variable=`echo $1 | cut -d '=' -f 2` ;;
+            --define-variable=*)
+                _tmpvar=`echo "$1" | sed -e 's/[^=]*=\(.*\)/\1/'` 
+                _defvar="$_defvar $_tmpvar"
+                ;;
             [abcdefghijklmnopqrstuvwxyz0123456789]*)
                 case "$2" in
                     \<*|\=*|\>*|\!*)
@@ -204,7 +209,7 @@ data_from_file() {
 #    env=`cat $file | sed -e '/^[ ]*$/q'`
     env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
-    output=`eval "eval $env"; eval echo $flags`
+    output=`eval "eval $env $_defvar"; eval echo $flags`
     echo $output
 }
 
@@ -212,7 +217,7 @@ var_from_file() {
     var=$1
     file=$2
     env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
-    output=`eval "eval $env"; eval echo \$\{$var\}`
+    output=`eval "eval $env $_defvar"; eval echo \$\{$var\}`
     echo $output
 }
 
