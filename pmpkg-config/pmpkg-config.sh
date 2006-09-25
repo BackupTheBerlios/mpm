@@ -42,7 +42,14 @@ Usage: $0 [OPTION...]
   --cflags-only-other                     output cflags not covered by the
                                           cflags-only-I option
   --variable=VARIABLENAME                 get the value of a variable
+  --define-variable=VARIABLENAME=VALUE    set the value of a variable
   --exists                                return 0 if the module(s) exist
+  --atleast-version=VERSION               return 0 if the module is at least
+                                          version VERSION
+  --exact-version=VERSION                 return 0 if the module is at exactly
+                                          version VERSION
+  --max-version=VERSION                   return 0 if the module is at most
+                                          version VERSION
   --debug                                 show verbose debug information
   --print-errors                          show verbose information about
                                           missing packages
@@ -62,6 +69,8 @@ Usage: $0 [-?] [--version] [--modversion]
         [--cflags] [--cflags-only-I] [--cflags-only-other]
         [--exists] [--debug] [--help] [--usage] [--print-errors]
         [--silence-errors] [--errors-to-stdout] [--variable=VARIABLENAME]
+        [--define-variable=VARIABLENAME=VALUE] [--atleast-version=VERSION]
+        [--exact-version=VERSION] [--max-version=VERSION]
 __EOF__
     exit 2 ;;
 esac
