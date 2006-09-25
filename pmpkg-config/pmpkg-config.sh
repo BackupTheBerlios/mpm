@@ -224,7 +224,13 @@ all_requires() {
     done
 }
 
+add_quotes() {
+#    cat
+    sed -e 's/\(.*\)=\(.*\)/\1="\2"/'
+}
+
 remove_defined() {
+    test -z "$_defvar" && cat && exit 0
     for i in $_defvars ; do
         sed -e "/^$i/d"
     done
@@ -234,7 +240,7 @@ data_from_file() {
     field=$1
     file=$2
 #    env=`cat $file | sed -e '/^[ ]*$/q'`
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined | add_quotes`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
     output=`eval "eval $_defenv; $env "; eval echo $flags`
     echo $output
@@ -243,7 +249,7 @@ data_from_file() {
 var_from_file() {
     var=$1
     file=$2
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined | add_quotes`
     output=`eval "eval $_defenv; $env "; eval echo \$\{$var\}`
     echo $output
 }
