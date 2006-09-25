@@ -41,6 +41,7 @@ Usage: $0 [OPTION...]
   --cflags-only-I                         output -I flags
   --cflags-only-other                     output cflags not covered by the
                                           cflags-only-I option
+  --variable=VARIABLENAME                 get the value of a variable
   --exists                                return 0 if the module(s) exist
   --debug                                 show verbose debug information
   --print-errors                          show verbose information about
@@ -60,7 +61,7 @@ Usage: $0 [-?] [--version] [--modversion]
         [--short-errors] [--libs-only-l] [--libs-only-other] [--libs-only-L]
         [--cflags] [--cflags-only-I] [--cflags-only-other]
         [--exists] [--debug] [--help] [--usage] [--print-errors]
-        [--silence-errors] [--errors-to-stdout]
+        [--silence-errors] [--errors-to-stdout] [--variable=VARIABLENAME]
 __EOF__
     exit 2 ;;
 esac
