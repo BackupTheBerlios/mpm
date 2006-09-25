@@ -1,8 +1,7 @@
-* implement --atleast-version=VERSION, --exact-version=VERSION and
-  --max-version=VERSION
+* implement --list-all
 * change default search path(s) to directories relative to where pmpkg-config
   was installed (pkg-config behaviour)
-* obey all pkg-config environment variables
+* obey most pkg-config environment variables
 
 After that, it's almost an exact copy
 
