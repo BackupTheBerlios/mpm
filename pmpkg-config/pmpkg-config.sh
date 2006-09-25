@@ -225,7 +225,6 @@ all_requires() {
 }
 
 remove_defined() {
-    test -z "$_defvars" && cat
     for i in $_defvars ; do
         sed -e "/^$i/d"
     done
