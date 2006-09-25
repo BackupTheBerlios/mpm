@@ -224,6 +224,10 @@ all_requires() {
     done
 }
 
+all_requires2() {
+    :
+}
+
 add_quotes() {
     sed -e 's/\(.*\)=\(.*\)/\1="\2"/'
 }
@@ -306,7 +310,7 @@ printop() {
 }
 
 # number filename
-check_constraints() {
+check_constraint_n() {
     mod=`eval echo \\$_mod_$1`
     c=`eval echo \\$_mod_$1_c`
     v=`eval echo \\$_mod_$1_v`
@@ -316,11 +320,20 @@ check_constraints() {
         exit 0
     fi
 
+    check_constraint $mod $c $v $file
+}
+
+check_constraint() {
+    mod=$1
+    c=$2
+    v=$3
+    f=$4
+
     maj=`echo $v.0.0.0 | cut -d '.' -f 1`
     min=`echo $v.0.0.0 | cut -d '.' -f 2`
     sub=`echo $v.0.0.0 | cut -d '.' -f 3`
 
-    modver=`data_from_file Version $2`
+    modver=`data_from_file Version $f`
     modmaj=`echo $modver.0.0.0 | cut -d '.' -f 1`
     modmin=`echo $modver.0.0.0 | cut -d '.' -f 2`
     modsub=`echo $modver.0.0.0 | cut -d '.' -f 3`
@@ -391,7 +404,7 @@ if test "$_exists" = "yes" ; then
         mod=`eval echo \\$_mod_$n`
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
-        ret=`check_constraints $n $file`
+        ret=`check_constraint_n $n $file`
         test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
@@ -405,7 +418,7 @@ if test "$_modversion" = "yes" ; then
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
         _MODVERSIONS="$_MODVERSIONS `data_from_file Version $file`"
-        ret=`check_constraints $n $file`
+        ret=`check_constraint_n $n $file`
         test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
@@ -421,7 +434,7 @@ if test -n "$_variable" ; then
         file=`find_file $mod`
         test "$file" != "notfound" || exit 2
         _VARIABLES="$_VARIABLES `var_from_file $_variable $file`"
-        ret=`check_constraints $n $file`
+        ret=`check_constraint_n $n $file`
         test "$ret" = "ok" || exit 2
         n=`expr $n + 1`
     done
