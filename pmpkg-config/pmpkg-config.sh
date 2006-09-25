@@ -225,7 +225,6 @@ all_requires() {
 }
 
 add_quotes() {
-#    cat
     sed -e 's/\(.*\)=\(.*\)/\1="\2"/'
 }
 
@@ -239,7 +238,6 @@ remove_defined() {
 data_from_file() {
     field=$1
     file=$2
-#    env=`cat $file | sed -e '/^[ ]*$/q'`
     env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file | remove_defined | add_quotes`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
     output=`eval "eval $_defenv; $env "; eval echo $flags`
