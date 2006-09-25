@@ -202,7 +202,7 @@ data_from_file() {
     field=$1
     file=$2
 #    env=`cat $file | sed -e '/^[ ]*$/q'`
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]\+:/d' $file`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
     flags=`cat $file | grep "^$field:" | cut -d ':' -f 2`
     output=`eval "eval $env"; eval echo $flags`
     echo $output
@@ -211,7 +211,7 @@ data_from_file() {
 var_from_file() {
     var=$1
     file=$2
-    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]\+:/d' $file`
+    env=`sed -e '/^#.*$/d' -e '/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ][ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\.]*:/d' $file`
     output=`eval "eval $env"; eval echo \$\{$var\}`
     echo $output
 }
