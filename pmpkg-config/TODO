@@ -1,3 +1,5 @@
+* check constraints for all requirements. currently i only check those
+  for --exists and --modversion. i almost forgot it :)
 * change default search path(s) to directories relative to where pmpkg-config
   was installed (pkg-config behaviour)
 * obey most pkg-config environment variables
