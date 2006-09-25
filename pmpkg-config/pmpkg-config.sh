@@ -194,38 +194,36 @@ remove_doubles() {
     done
 }
 
-recurse_requires() {
-    test "$#" = "0" && return
+add_mods() {
     while test "$#" != "0" ; do
-        echo $1
-        file=`find_file $1`
-        get_requires $1 $file
+        case "$2" in
+            \<*|\=*|\>*|\!*)
+                parse_modname $1 $2 $3
+                shift 2
+                ;;
+            *)
+                parse_modname $1
+        esac
         shift 1
     done
 }
 
-get_requires() {
-    if test "$2" = "notfound" ; then echo "notfound"; exit ; fi
-    if test "$_plus_private" = "yes" ; then
-        t="`grep '^Requires:' $2 | cut -d ':' -f 2` `cat $2 | grep '^Requires.private:' | cut -d ':' -f 2`"
-        t=`remove_doubles $t`
-        recurse_requires $t
-    else
-        recurse_requires `grep '^Requires:' $2 | cut -d ':' -f 2`
-    fi
-}
-
-all_requires() {
-    n=0
-    while test "$n" != "$nmod" ; do
-        mod=`eval echo \\$_mod_$n`
-        recurse_requires $mod
-        n=`expr $n + 1`
-    done
-}
-
 all_requires2() {
-    :
+    N=0
+    while test "$N" != "$nmod" ; do
+        mod=`eval echo \\$_mod_$N`
+        echo $mod
+        file=`find_file $mod`
+        if test "$file" = "notfound" ; then echo "notfound"; exit ; fi
+        if test "$_plus_private" = "yes" ; then
+            t="`grep '^Requires:' $file | cut -d ':' -f 2` `cat $file | grep '^Requires.private:' | cut -d ':' -f 2`"
+            t=`remove_doubles $t`
+        else
+            t=`grep '^Requires:' $file | cut -d ':' -f 2`
+        fi
+        add_mods $t
+        N=`expr $N + 1`
+    done
 }
 
 add_quotes() {
@@ -442,7 +440,7 @@ if test -n "$_variable" ; then
     exit 0
 fi
 
-requires="`all_requires`"
+requires="`all_requires2`"
 case "$requires" in
     *notfound*)     exit 2 ;;
 esac
