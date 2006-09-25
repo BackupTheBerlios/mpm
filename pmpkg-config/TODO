@@ -1,16 +1,19 @@
 * implement --atleast-version=VERSION, --exact-version=VERSION and
   --max-version=VERSION
-* implement --variable=VARIABLE
-* implement --define-variable=VARIABLENAME=VARIABLEVALUE
 * change default search path(s) to directories relative to where pmpkg-config
   was installed (pkg-config behaviour)
 * obey all pkg-config environment variables
 
-after that, it's almost an exact copy
+After that, it's almost an exact copy
 
-still missing:
+Still missing:
 
-Report on Confict: fields in .pc files  (I have no packages on my system
-with that field set, so I cannot test it)
---uninstalled is unsupported
+* Report on Confict: fields in .pc files  (I have no packages on my system
+  with that field set, so I cannot test it)
 
+Known limitations:
+
+* Spaces in pathnames (e.g. --define-variable=prefix="/c/Program Files") do
+  not work. So, this will probably not work very well on Windows, except
+  for locales where "Program Files" is one word :)
+* --uninstalled is unsupported
