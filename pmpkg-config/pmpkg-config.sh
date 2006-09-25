@@ -85,6 +85,9 @@ _modversion=no
 _variable=""
 _defenv=""
 _defvars=""
+_atleastv=""
+_exactv=""
+_maxv=""
 
 _CFLAGS=""
 _LIBSl=""
@@ -119,6 +122,9 @@ parse_cmd_line() {
     while test "$#" != "0" ; do
         case "$1" in
             --exists)               _exists=yes ;;
+            --atleast-version=*)    _atleastv=`echo $1 | cut -d '=' -f 2` ;;
+            --exact-version=*)      _exactv=`echo $1 | cut -d '=' -f 2` ;;
+            --max-version=*)        _maxv=`echo $1 | cut -d '=' -f 2` ;;
             --cflags)               _cflagsI=yes _cflagso=yes ;;
             --cflags-only-I)        _cflagsI=yes _cflagso=no ;;
             --cflags-only-other)    _cflagsI=no  _cflagso=yes ;;
@@ -328,6 +334,19 @@ if test "$_tostdout" = "yes" ; then
 fi
 if test "$_verbose" = "none" ; then
     exec 1>/dev/null 2>&1
+fi
+
+if test -n "$_atleastv" -o -n "$_exactv" -o -n "$_maxv" ; then
+    _exists=yes
+    test -n "$_atleastv" && c=gteq && ver="$_atleastv"
+    test -n "$_exactv"   && c=eq   && ver="$_exactv"
+    test -n "$_maxv"     && c=lteq && ver="$_maxv"
+    n=0
+    while test "$n" != "$nmod" ; do
+        eval _mod_${n}_c=$c
+        eval _mod_${n}_v=$ver
+        n=`expr $n + 1`
+    done
 fi
 
 test "$_cflagsI$_cflagso$_libsl$_libsL$_libso$_modversion" = "nononononono" \
