@@ -84,6 +84,7 @@ _plus_private=no
 _verbose=normal
 _tostdout=no
 
+_listall=no
 _exists=no
 _cflagsI=no
 _cflagso=no
@@ -130,6 +131,7 @@ parse_modname() {
 parse_cmd_line() {
     while test "$#" != "0" ; do
         case "$1" in
+            --list-all)             _listall=yes ;;
             --exists)               _exists=yes ;;
             --atleast-version=*)    _atleastv=`echo $1 | cut -d '=' -f 2` ;;
             --exact-version=*)      _exactv=`echo $1 | cut -d '=' -f 2` ;;
@@ -337,6 +339,18 @@ check_constraints() {
 }
 
 parse_cmd_line $@
+
+if test "$_listall" = "yes" ; then
+    for i in /usr/lib/pkgconfig /usr/local/lib/pkgconfig `IFS=":"; echo $PKG_CONFIG_PATH` ; do
+        for j in $i/*.pc ; do
+            test -f "$j" || continue
+            k=`basename $j .pc`
+            m=`grep "^Description:" $j | cut -d ':' -f 2`
+            printf '%-19s %s\n' "$k" "$m"
+        done
+    done
+    exit 0
+fi
 
 if test "$_tostdout" = "yes" ; then
     exec 2>&1
