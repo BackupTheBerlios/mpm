@@ -1,13 +1,10 @@
-* obey most pkg-config environment variables
-
-After that, it's almost an exact copy
-
 Still missing:
 
 * Report on Confict: fields in .pc files  (I have no packages on my system
   with that field set, so I cannot test it)
 
 Known limitations:
+(which will probably stay that way unless somebody sends a patch)
 
 * Spaces in pathnames (e.g. --define-variable=prefix="/c/Program Files") do
   not work. So, this will probably not work very well on Windows, except
