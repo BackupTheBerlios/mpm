@@ -105,7 +105,20 @@ _LIBSl=""
 _LIBSL=""
 _MODVERSIONS=""
 
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH-" "}
+# do not change the next line without changing the sed "script" in the
+# Makefile
+MYPREFIX="/usr/local"
+
+PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-"$MYPREFIX/lib/pkgconfig"}
+PKG_CONFIG_PATH="$PKG_CONFIG_LIBDIR:$PKG_CONFIG_PATH"
+
+# ignore PKG_CONFIG_DEBUG_SPEW as we do not print any debug information
+# ignore PKG_CONFIG_TOP_BUILD_DIR as we do not support -uninstalled
+# ignore PKG_CONFIG_DISABLE_UNINSTALLED as we do not support -uninstalled
+
+# to be implemented:
+# PKG_CONFIG_ALLOW_SYSTEM_CFLAGS
+# PKG_CONFIG_ALLOW_SYSTEM_LIBS
 
 nmod=0
 
@@ -369,7 +382,7 @@ check_all_constraints() {
 parse_cmd_line $@
 
 if test "$_listall" = "yes" ; then
-    for i in /usr/lib/pkgconfig /usr/local/lib/pkgconfig `IFS=":"; echo $PKG_CONFIG_PATH` ; do
+    for i in `IFS=":"; echo $PKG_CONFIG_PATH` ; do
         for j in $i/*.pc ; do
             test -f "$j" || continue
             k=`basename $j .pc`
