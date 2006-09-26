@@ -116,9 +116,12 @@ PKG_CONFIG_PATH="$PKG_CONFIG_LIBDIR:$PKG_CONFIG_PATH"
 # ignore PKG_CONFIG_TOP_BUILD_DIR as we do not support -uninstalled
 # ignore PKG_CONFIG_DISABLE_UNINSTALLED as we do not support -uninstalled
 
-# to be implemented:
-# PKG_CONFIG_ALLOW_SYSTEM_CFLAGS
-# PKG_CONFIG_ALLOW_SYSTEM_LIBS
+_allow_system_cflags=no
+test -n "`set | grep "PKG_CONFIG_ALLOW_SYSTEM_CFLAGS"`" && \
+    _allow_system_cflags=yes
+_allow_system_libs=no
+test -n "`set | grep "PKG_CONFIG_ALLOW_SYSTEM_LIBS"`" && \
+    _allow_system_libs=yes
 
 nmod=0
 
@@ -204,6 +207,18 @@ remove_doubles() {
             *\ $me\ *)    ;;
             *)          echo "$me" ;;
         esac
+    done
+}
+
+remove_system() {
+    while test "$#" != "0" ; do
+        me=$1
+        shift 1
+        test "$me" = "-I/usr/include" -a "$_allow_system_cflags" != "yes" \
+            && continue
+        test "$me" = "-L/usr/lib" -a "$_allow_system_libs" != "yes" \
+            && continue
+        echo $me
     done
 }
 
@@ -476,6 +491,7 @@ requires=`remove_doubles $requires`
 if test "$_cflagsI" = "yes" -o "$_cflagso" = "yes"; then
     _CFLAGS=`collect_data Cflags $requires`
     _CFLAGS=`remove_doubles $_CFLAGS`
+    _CFLAGS=`remove_system $_CFLAGS`
     test "$_cflagsI" = "yes" && _CFLAGSI=`extract I $_CFLAGS`
     test "$_cflagso" = "yes" && _CFLAGSo=`extract D $_CFLAGS`
 fi
@@ -488,6 +504,7 @@ if test "$_libsl" = "yes" -o "$_libsL" = "yes" -o "$_libso" = "yes" ; then
     fi
     _LIBS="$_LIBS $_LIBSP"
     _LIBS=`remove_doubles $_LIBS`
+    _LIBS=`remove_system $_LIBS`
     test "$_libsL" = "yes" && _LIBSL=`extract L $_LIBS`
     test "$_libsl" = "yes" && _LIBSl=`extract l $_LIBS`
     test "$_libso" = "yes" && _LIBSo=`extract lo $_LIBS`
