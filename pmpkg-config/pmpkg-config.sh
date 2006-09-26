@@ -15,6 +15,8 @@
 
 # set -v
 
+# do not change the next two lines. a sed script in the Makefile depends on it
+MYPREFIX="/usr/local"
 VERSION=0.90
 
 test "$#" = "0" && echo "Must specify package names on the command line" &&
@@ -104,10 +106,6 @@ _CFLAGS=""
 _LIBSl=""
 _LIBSL=""
 _MODVERSIONS=""
-
-# do not change the next line without changing the sed "script" in the
-# Makefile
-MYPREFIX="/usr/local"
 
 PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-"$MYPREFIX/lib/pkgconfig"}
 PKG_CONFIG_PATH="$PKG_CONFIG_LIBDIR:$PKG_CONFIG_PATH"

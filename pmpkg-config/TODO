@@ -1,3 +1,7 @@
+* have Makefile adjust pmpkg-config.sh before installation:
+    - replace version number with contents of VERSION
+    - replace MYPREFIX with specified prefix=
+
 Still missing:
 
 * Report on Confict: fields in .pc files  (I have no packages on my system
