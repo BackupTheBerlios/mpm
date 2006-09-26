@@ -9,9 +9,9 @@ of options. Included in this package is a slightly modified version of
 pkg-config's original manual page. Most of it applies to pmpkg-config
 too.
 
-pmpkg-config should work on most Unix or Unix-like. It has been tested
-on Linux 2.6.17.5 with bash 3.1.17, Minix 3.1.2a with bash 3.1.17 and
-Minix 3.1.2a with its own /bin/sh, which is ash. If it does not work
+pmpkg-config should work on most Unix or Unix-like operating systems. It
+has been tested on Linux 2.6.17.5 with bash 3.1.17 and on Minix 3.1.2a
+with bash 3.1.17 and with its own /bin/sh, which is ash. If it does not work
 for you, please send a detailed bug-report to <mpm-devel@lists.berlios.de>.
 Please include at least the following:
 
@@ -24,4 +24,5 @@ Optionally you could include:
 
 * Proper output of the real pkg-config
 * The .pc file(s) it fails to handle correctly
+* Everything else you think matters
 
