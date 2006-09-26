@@ -24,7 +24,7 @@ all:
 	@echo "Environment variables can be given on the command line:"
 	@echo "    prefix=<directory>          [current: ${prefix}]"
 	@echo '    bindir=$${prefix}/bin        [current: ${bindir}]'
-	@echo '    mandir=$${prefix}/man        [current: ${mandir}]
+	@echo '    mandir=$${prefix}/man        [current: ${mandir}]'
 	@echo "    owner=<username>            [current: ${owner}]"
 	@echo "    group=<groupname>           [current: ${group}]"
 	@echo "    mode=<mode>                 [current: ${mode}]"
