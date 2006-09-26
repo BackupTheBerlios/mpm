@@ -326,14 +326,7 @@ check_constraint_n() {
         exit 0
     fi
 
-    check_constraint $mod $c $v $file
-}
-
-check_constraint() {
-    mod=$1
-    c=$2
-    v=$3
-    f=$4
+    f=$2
 
     maj=`echo $v.0.0.0 | cut -d '.' -f 1`
     min=`echo $v.0.0.0 | cut -d '.' -f 2`
