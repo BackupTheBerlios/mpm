@@ -354,6 +354,18 @@ check_constraint_n() {
     echo ok
 }
 
+check_all_constraints() {
+    n=0
+    while test "$n" != "$nmod" ; do
+        mod=`eval echo \\$_mod_$n`
+        file=`find_file $mod`
+        test "$file" != "notfound" || exit 2
+        ret=`check_constraint_n $n $file`
+        test "$ret" = "ok" || exit 2
+        n=`expr $n + 1`
+    done
+}
+
 parse_cmd_line $@
 
 if test "$_listall" = "yes" ; then
@@ -441,10 +453,12 @@ if test -n "$_variable" ; then
     exit 0
 fi
 
+check_all_constraints || exit 2
 requires="`all_requires2`"
 case "$requires" in
     *notfound*)     exit 2 ;;
 esac
+check_all_constraints || exit 2
 requires=`remove_doubles $requires`
 if test "$_cflagsI" = "yes" -o "$_cflagso" = "yes"; then
     _CFLAGS=`collect_data Cflags $requires`
