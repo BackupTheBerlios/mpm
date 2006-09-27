@@ -12,4 +12,7 @@ for i in `cat "$SMPM_FILES/proto-7.1.list"` ; do
     echo    "ok"
 done
 
+cd "$SMPM_BUILDROOT/trapproto-3.4.3"
+patch -p1 < "$SMPM_PATCHES/trapproto-3.4.3-minix3.patch"
+
 exit 0
