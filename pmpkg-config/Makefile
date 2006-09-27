@@ -73,7 +73,7 @@ clean:
 distclean:	clean
 	rm -f ${DISTDIR}.tar.bz2
 
-dist:
+dist:	distclean
 	mkdir ${DISTDIR}
 	cp -p ${DISTFILES} ${DISTDIR}
 	tar cf ${DISTDIR}.tar ${DISTDIR}
