@@ -7,7 +7,7 @@ export PATH
 
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
 export PKG_CONFIG_PATH
-PKG_CONFIG=/usr/local/bin/pkg-config
+PKG_CONFIG="/usr/local/bin/pmpkg-config --static"
 export PKG_CONFIG
 
 XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
