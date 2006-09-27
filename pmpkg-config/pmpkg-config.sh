@@ -2,7 +2,7 @@
 
 # Poor Man's Package Config
 #
-# Copyright (c) 2006 by Ivo van Poorten
+# Copyright (c) 2006 by Ivo van Poorten <ivop@euronet.nl>
 # All rights reserved.
 #
 # License: GNU General Public License version 2.0
