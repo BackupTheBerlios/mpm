@@ -1,0 +1,4 @@
+Poor Man's pkg-config
+
+pmpkg-config is a Bourne Shell script that mimics the behaviour of pkg-config
+

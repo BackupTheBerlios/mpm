@@ -25,7 +25,7 @@ PACKAGES=\
 	mawk \
 	minix-world \
 	minix-world-source \
-	pkg-config \
+	pmpkg-config \
 	putty \
 	vim \
 	xorg-lib \

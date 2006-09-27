@@ -1,0 +1,12 @@
+set -e
+
+cd "$SMPM_BUILDROOT/pmpkg-config-0.90"
+
+PATH=/bin:/usr/bin
+export PATH
+
+make prefix=/usr/local owner=bin group=operator \
+     DESTDIR="$SMPM_INSTALLROOT" \
+     install
+
+exit 0

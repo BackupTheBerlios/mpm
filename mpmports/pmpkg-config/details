@@ -1,0 +1,10 @@
+name:       pmpkg-config
+version:    0.90
+release:    1
+source:     http://download.berlios.de/mpm/pmpkg-config-0.90.tar.bz2
+filesize:   16647
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Poor Man's pkg-config
+os:         yes
+arch:       no
