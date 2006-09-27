@@ -44,5 +44,11 @@ install-as-pkgconfig:	install
 	ln -s pmpkg-config ${DESTDIR}${bindir}/pkg-config
 	ln -s pmpkg-config.1 ${DESTDIR}${mandir}/man1/pkg-config.1
 
+uninstall:
+	rm -f ${DESTDIR}${bindir}/pmpkg-config
+	rm -f ${DESTDIR}${mandir}/man1/pmpkg-config.1
+	test -L ${DESTDIR}${bindir}/pkg-config && rm -f ${DESTDIR}${bindir}/pkg-config
+	test -L ${DESTDIR}${mandir}/man1/pkg-config.1 && rm -f ${DESTDIR}${mandir}/man1/pkg-config.1
+
 clean:
 	rm -f *~
