@@ -19,6 +19,7 @@ all:
 	@echo "all                     print this message"
 	@echo 'install                 install pmpkg-config in $${prefix}'
 	@echo "install-as-pkgconfig    same as install and make pkg-config symlink"
+	@echo 'uninstall               uninstall pmpkg-config from $${prefix}'
 	@echo "clean                   delete ~-backup files"
 	@echo ""
 	@echo "Environment variables can be given on the command line:"
