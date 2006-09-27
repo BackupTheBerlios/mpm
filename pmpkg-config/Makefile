@@ -1,5 +1,5 @@
 
-VERSION     =  0.90
+VERSION     =  `cat VERSION`
 
 DESTDIR     ?=
 prefix      ?= /usr/local
@@ -37,7 +37,7 @@ all:
 
 intermediate:	pmpkg-config.sh
 	sed -e "s@MYPREFIX=\"/usr/local\"@MYPREFIX=\"${prefix}\"@" \
-		-e "s@VERSION=0.90@VERSION=`cat VERSION`@" pmpkg-config.sh \
+		-e "s@VERSION=0.90@VERSION=${VERSION}@" pmpkg-config.sh \
 		> intermediate
 
 install:	intermediate
