@@ -1,6 +1,17 @@
 
 VERSION      =  `cat VERSION`
 
+DISTFILES    = AUTHORS \
+			   LICENSE \
+			   Makefile \
+			   README \
+			   TODO \
+			   VERSION \
+			   pmpkg-config.1 \
+			   pmpkg-config.sh \
+
+DISTDIR      = pmpkg-config-${VERSION}
+
 DESTDIR     ?=
 prefix      ?= /usr/local
 bindir      ?= ${prefix}/bin
@@ -58,3 +69,13 @@ uninstall:
 
 clean:
 	rm -f *~ intermediate
+
+distclean:	clean
+	rm -f ${DISTDIR}.tar.bz2
+
+dist:
+	mkdir ${DISTDIR}
+	cp -p ${DISTFILES} ${DISTDIR}
+	tar cf ${DISTDIR}.tar ${DISTDIR}
+	bzip2 -9 ${DISTDIR}.tar
+	rm -rf ${DISTDIR}
