@@ -1,0 +1,14 @@
+libdummywc is meant for Minix 3.1.2a and perhaps later versions.
+
+This is a dummy library that "implements" a few wc* functions through
+their non-wc counterparts, i.e. wcsncpy --> strncpy
+
+This only works if you are SURE that no wide character strings are used
+throughout the application, i.e. the application was configured with
+--disable-nls but nevertheless still calls wc* functions on 7-bit ASCII
+strings. One example of such application/library is libXaw from Xorg 7.1.
+
+Not sure if this even validates for having a license, so consider this
+"code" public domain.
+
+September 2006, Ivo van Poorten
