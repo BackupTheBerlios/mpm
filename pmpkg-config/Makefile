@@ -35,10 +35,15 @@ all:
 	@echo "Use DESTDIR=<directory> to install relative to a directory other than /"
 	@echo ""
 
-install:
+intermediate:	pmpkg-config.sh
+	sed -e "s@MYPREFIX=\"/usr/local\"@MYPREFIX=\"${prefix}\"@" \
+		-e "s@VERSION=0.90@VERSION=`cat VERSION`@" pmpkg-config.sh \
+		> intermediate
+
+install:	intermediate
 	install -d -o ${owner} -g ${group} -m ${mode} ${DESTDIR}${bindir}
 	install -d -o ${owner} -g ${group} -m ${mode} ${DESTDIR}${mandir}/man1
-	install -c -o ${owner} -g ${group} -m ${mode} pmpkg-config.sh ${DESTDIR}${bindir}/pmpkg-config
+	install -c -o ${owner} -g ${group} -m ${mode} intermediate ${DESTDIR}${bindir}/pmpkg-config
 	install -c -o ${owner} -g ${group} -m ${manmode} pmpkg-config.1 ${DESTDIR}${mandir}/man1/pmpkg-config.1
 
 install-as-pkgconfig:	install
@@ -52,4 +57,4 @@ uninstall:
 	( test -L ${DESTDIR}${mandir}/man1/pkg-config.1 && rm -f ${DESTDIR}${mandir}/man1/pkg-config.1 ) || true
 
 clean:
-	rm -f *~
+	rm -f *~ intermediate
