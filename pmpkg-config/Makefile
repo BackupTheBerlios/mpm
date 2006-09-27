@@ -48,8 +48,8 @@ install-as-pkgconfig:	install
 uninstall:
 	rm -f ${DESTDIR}${bindir}/pmpkg-config
 	rm -f ${DESTDIR}${mandir}/man1/pmpkg-config.1
-	test -L ${DESTDIR}${bindir}/pkg-config && rm -f ${DESTDIR}${bindir}/pkg-config
-	test -L ${DESTDIR}${mandir}/man1/pkg-config.1 && rm -f ${DESTDIR}${mandir}/man1/pkg-config.1
+	( test -L ${DESTDIR}${bindir}/pkg-config && rm -f ${DESTDIR}${bindir}/pkg-config ) || true
+	( test -L ${DESTDIR}${mandir}/man1/pkg-config.1 && rm -f ${DESTDIR}${mandir}/man1/pkg-config.1 ) || true
 
 clean:
 	rm -f *~
