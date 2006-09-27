@@ -358,13 +358,13 @@ check_details() {
             1)  ;;
             *)  error "$i is specified multiple times in $1" ;;
         esac
-        j=`grep "$i" "$1" | cut -d ':' -f 2 | stripws`
+        j=`grep "$i:" "$1" | cut -d ':' -f 2 | stripws`
         test -n "$j" || error "$i is present but empty"
         case "$i" in
             arch|os)
                 case "$j" in
                     yes|no)     ;;
-                    *)      error "$i field only allows yes or no"  ;;
+                    *)      error "$i field only allows yes or no ($j)"  ;;
                 esac
                 ;;
             *) ;;
