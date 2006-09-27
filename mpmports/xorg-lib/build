@@ -7,7 +7,7 @@ export PATH
 
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:"$SMPM_INSTALLROOT/usr/lib/pkgconfig"
 export PKG_CONFIG_PATH
-PKG_CONFIG=/usr/local/bin/pkg-config
+PKG_CONFIG="/usr/local/bin/pmpkg-config --static"
 export PKG_CONFIG
 
 XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
@@ -29,10 +29,6 @@ for i in `cat "$SMPM_FILES/lib-7.1.list"` ; do
     j=`basename $i .tar.bz2`
     echo "*** $j"
     cd "$SMPM_BUILDROOT/$j"
-
-    # "fix" configure
-    sed -e 's/--atleast-pkgconfig-version/--version/' configure > configure.minix.fixed
-    mv configure.minix.fixed configure
 
     # "fix" Makefile.in to avoid unsupported linker options
     sed -e 's/_la_LDFLAGS\ =/_XXX_do_NoThInG\ =/' Makefile.in > Makefile.in.minix.fixed
