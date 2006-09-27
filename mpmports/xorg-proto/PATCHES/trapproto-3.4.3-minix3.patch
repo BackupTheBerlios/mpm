@@ -1,0 +1,20 @@
+diff -c trapproto-3.4.3/xtraplibp.h trapproto-3.4.3-patched/xtraplibp.h
+*** trapproto-3.4.3/xtraplibp.h Sat Sep 23 20:48:33 2006
+--- trapproto-3.4.3-patched/xtraplibp.h Sat Sep 23 20:48:56 2006
+***************
+*** 100,106 ****
+  void XETrapAppMainLoop (XtAppContext app , XETC *tc );
+  int XETrapAppWhileLoop (XtAppContext app , XETC *tc , Bool *done );
+  int XETrapWaitForSomething (XtAppContext app );
+! Boolean (*XETrapSetEventHandler(XETC *tc, CARD32 id, Boolean (*pfunc)(XETrapDataEvent *event, XETC *tc))) (XETrapDataEvent *event, XETC *tc);
+  
+  /* XEPrInfo.c */
+  void XEPrintRelease (FILE *ofp , XETrapGetAvailRep *pavail );
+--- 100,106 ----
+  void XETrapAppMainLoop (XtAppContext app , XETC *tc );
+  int XETrapAppWhileLoop (XtAppContext app , XETC *tc , Bool *done );
+  int XETrapWaitForSomething (XtAppContext app );
+! Boolean (*XETrapSetEventHandler(XETC *tc, CARD32 id, Boolean (*pfunc)(XETrapDataEvent *event, XETC *tc2))) (XETrapDataEvent *event, XETC *tc3);
+  
+  /* XEPrInfo.c */
+  void XEPrintRelease (FILE *ofp , XETrapGetAvailRep *pavail );
