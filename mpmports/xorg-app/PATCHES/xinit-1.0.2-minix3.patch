@@ -1,0 +1,15 @@
+diff -c xinit-1.0.2/xinit.c xinit-1.0.2-patched/xinit.c
+*** xinit-1.0.2/xinit.c Tue Oct  4 01:27:34 2005
+--- xinit-1.0.2-patched/xinit.c Fri Sep 29 00:58:25 2006
+***************
+*** 73,78 ****
+--- 73,81 ----
+  char **envsave;	/* to circumvent an UNIXOS2 problem */
+  #define environ envsave
+  #endif
++ #ifdef _MINIX
++ #define setpgid(a,b)
++ #endif
+  
+  #include <stdlib.h>
+  extern char **environ;
