@@ -249,7 +249,7 @@ all_requires2() {
         mod=`eval echo \\$_mod_$N`
         echo $mod
         file=`find_file $mod`
-        if test "$file" = "notfound" ; then echo "notfound"; exit ; fi
+        if test "$file" = "notfound" ; then echo "notfound"; exit 2; fi
         if test "$_plus_private" = "yes" ; then
             t="`grep '^Requires:' $file | cut -d ':' -f 2` `cat $file | grep '^Requires.private:' | cut -d ':' -f 2`"
 #            t=`remove_doubles $t`
