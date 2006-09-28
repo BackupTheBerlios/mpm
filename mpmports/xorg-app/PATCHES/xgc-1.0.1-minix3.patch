@@ -1,0 +1,98 @@
+diff -c xgc-1.0.1/tests.c xgc-1.0.1-patched/tests.c
+*** xgc-1.0.1/tests.c Fri Apr 23 19:54:48 2004
+--- xgc-1.0.1-patched/tests.c Fri Sep 29 00:49:52 2006
+***************
+*** 15,21 ****
+  #ifdef SVR4
+  #define SYSV
+  #endif
+! #if !defined(SYSV) && !defined(QNX4)
+  #include <sys/timeb.h>
+  #include <sys/resource.h>
+  #endif
+--- 15,21 ----
+  #ifdef SVR4
+  #define SYSV
+  #endif
+! #if !defined(SYSV) && !defined(QNX4) && !defined(_MINIX)
+  #include <sys/timeb.h>
+  #include <sys/resource.h>
+  #endif
+***************
+*** 28,33 ****
+--- 28,39 ----
+  #define random lrand48
+  #endif
+  
++ #ifdef _MINIX
++ struct timezone {
++     int tz_minuteswest;
++     int tz_dsttime;
++ };
++ #endif
+  
+  /* timer(flag)
+  ** -----------
+***************
+*** 45,51 ****
+  #if !defined(SYSV)
+    static struct timeval starttime;  /* starting time for gettimeofday() */
+    struct timeval endtime;           /* ending time for gettimeofday() */
+! #if !defined(__UNIXOS2__) && !defined(QNX4)
+    static struct rusage startusage;  /* starting time for getrusage() */
+    struct rusage endusage;           /* ending time for getrusage() */
+  #endif
+--- 51,57 ----
+  #if !defined(SYSV)
+    static struct timeval starttime;  /* starting time for gettimeofday() */
+    struct timeval endtime;           /* ending time for gettimeofday() */
+! #if !defined(__UNIXOS2__) && !defined(QNX4) && !defined(_MINIX)
+    static struct rusage startusage;  /* starting time for getrusage() */
+    struct rusage endusage;           /* ending time for getrusage() */
+  #endif
+***************
+*** 56,68 ****
+    switch (flag) {
+      case StartTimer:                       /* store initial values */
+        gettimeofday(&starttime,&tz);       
+! #if !defined(__UNIXOS2__) && !defined(QNX4)
+        getrusage(RUSAGE_SELF,&startusage);
+  #endif
+        return((long) NULL);
+      case EndTimer:
+        gettimeofday(&endtime,&tz);          /* store final values */
+! #if !defined(__UNIXOS2__) && !defined(QNX4)
+        getrusage(RUSAGE_SELF,&endusage);
+  #endif
+  
+--- 62,74 ----
+    switch (flag) {
+      case StartTimer:                       /* store initial values */
+        gettimeofday(&starttime,&tz);       
+! #if !defined(__UNIXOS2__) && !defined(QNX4) && !defined(_MINIX)
+        getrusage(RUSAGE_SELF,&startusage);
+  #endif
+        return((long) NULL);
+      case EndTimer:
+        gettimeofday(&endtime,&tz);          /* store final values */
+! #if !defined(__UNIXOS2__) && !defined(QNX4) && !defined(_MINIX)
+        getrusage(RUSAGE_SELF,&endusage);
+  #endif
+  
+***************
+*** 70,76 ****
+       elapsed time = ending time - starting time, but there are three 
+       different timers and two different units of time, ack... */
+  
+! #if !defined(__UNIXOS2__) && !defined(QNX4)
+        elapsedtime = (long) ((long)
+  	((endtime.tv_sec - endusage.ru_utime.tv_sec - endusage.ru_stime.tv_sec
+  	 - starttime.tv_sec + startusage.ru_utime.tv_sec
+--- 76,82 ----
+       elapsed time = ending time - starting time, but there are three 
+       different timers and two different units of time, ack... */
+  
+! #if !defined(__UNIXOS2__) && !defined(QNX4) && !defined(_MINIX)
+        elapsedtime = (long) ((long)
+  	((endtime.tv_sec - endusage.ru_utime.tv_sec - endusage.ru_stime.tv_sec
+  	 - starttime.tv_sec + startusage.ru_utime.tv_sec
