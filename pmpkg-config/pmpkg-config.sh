@@ -17,7 +17,7 @@
 
 # do not change the next two lines. a sed script in the Makefile depends on it
 MYPREFIX="/usr/local"
-VERSION=0.90
+VERSION=0.00
 
 test "$#" = "0" && echo "Must specify package names on the command line" &&
     exit 2
