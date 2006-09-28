@@ -124,7 +124,8 @@ test -n "`set | grep "PKG_CONFIG_ALLOW_SYSTEM_LIBS"`" && \
 nmod=0
 
 parse_modname() {
-    eval _mod_$nmod=$1
+    name=`echo $1 | sed 's/,//'`
+    eval _mod_$nmod=$name
     if test -n "$2" ; then
         case "$2" in
             \<\=)   c=lteq  ;;
