@@ -1,0 +1,19 @@
+diff -c xfwp-1.0.1/xfwp.h xfwp-1.0.1-patched/xfwp.h
+*** xfwp-1.0.1/xfwp.h Fri Apr 23 19:54:48 2004
+--- xfwp-1.0.1-patched/xfwp.h Fri Sep 29 00:39:14 2006
+***************
+*** 31,36 ****
+--- 31,43 ----
+  #define _XFWP_H
+  
+  #include <X11/Xos.h> /* struct timeval */
++ #ifdef _MINIX
++ #include <sys/select.h>
++ struct timezone {
++     int tz_minuteswest;
++     int tz_dsttime;
++ };
++ #endif
+  
+  #define FALSE		0
+  #define TRUE		1

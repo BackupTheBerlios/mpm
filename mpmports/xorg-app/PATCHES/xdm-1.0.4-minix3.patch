@@ -1,0 +1,138 @@
+diff -c xdm-1.0.4/Makefile.in xdm-1.0.4-patched/Makefile.in
+*** xdm-1.0.4/Makefile.in Thu Apr 27 21:24:27 2006
+--- xdm-1.0.4-patched/Makefile.in Thu Sep 28 21:59:40 2006
+***************
+*** 113,119 ****
+  	genauth.c access.c choose.c dm_auth.h dm_error.h dm.h \
+  	dm_socket.h greet.h xdmauth.c prngc.c rpcauth.c krb5auth.c \
+  	greeter/greet.c greeter/Login.c greeter/Login.h \
+! 	greeter/LoginP.h greeter/verify.c
+  @HAS_XDM_AUTH_TRUE@am__objects_1 = xdm-xdmauth.$(OBJEXT)
+  @HAS_ARC4_RANDOM_FALSE@am__objects_2 = xdm-prngc.$(OBJEXT)
+  @HAS_SECURE_RPC_TRUE@am__objects_3 = xdm-rpcauth.$(OBJEXT)
+--- 113,119 ----
+  	genauth.c access.c choose.c dm_auth.h dm_error.h dm.h \
+  	dm_socket.h greet.h xdmauth.c prngc.c rpcauth.c krb5auth.c \
+  	greeter/greet.c greeter/Login.c greeter/Login.h \
+! 	greeter/LoginP.h greeter/verify.c _longjmp.c
+  @HAS_XDM_AUTH_TRUE@am__objects_1 = xdm-xdmauth.$(OBJEXT)
+  @HAS_ARC4_RANDOM_FALSE@am__objects_2 = xdm-prngc.$(OBJEXT)
+  @HAS_SECURE_RPC_TRUE@am__objects_3 = xdm-rpcauth.$(OBJEXT)
+***************
+*** 131,137 ****
+  	xdm-mitauth.$(OBJEXT) xdm-genauth.$(OBJEXT) \
+  	xdm-access.$(OBJEXT) xdm-choose.$(OBJEXT) $(am__objects_1) \
+  	$(am__objects_2) $(am__objects_3) $(am__objects_4) \
+! 	$(am__objects_5)
+  xdm_OBJECTS = $(am_xdm_OBJECTS)
+  xdm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+  am_xdmshell_OBJECTS = xdmshell-xdmshell.$(OBJEXT)
+--- 131,137 ----
+  	xdm-mitauth.$(OBJEXT) xdm-genauth.$(OBJEXT) \
+  	xdm-access.$(OBJEXT) xdm-choose.$(OBJEXT) $(am__objects_1) \
+  	$(am__objects_2) $(am__objects_3) $(am__objects_4) \
+! 	$(am__objects_5) _longjmp.o
+  xdm_OBJECTS = $(am_xdm_OBJECTS)
+  xdm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+  am_xdmshell_OBJECTS = xdmshell-xdmshell.$(OBJEXT)
+***************
+*** 416,421 ****
+--- 416,422 ----
+          genauth.c \
+          access.c \
+          choose.c \
++ 		_longjmp.c \
+          dm_auth.h \
+          dm_error.h \
+          dm.h \
+diff -c xdm-1.0.4/chooser.c xdm-1.0.4-patched/chooser.c
+*** xdm-1.0.4/chooser.c Sat Mar 11 04:07:00 2006
+--- xdm-1.0.4-patched/chooser.c Thu Sep 28 21:57:40 2006
+***************
+*** 590,596 ****
+      struct hostent	*hostent;
+  #endif
+      struct sockaddr_in	in_addr;
+!     struct ifconf	ifc;
+      register struct ifreq *ifr;
+      struct sockaddr	broad_addr;
+      char		buf[2048], *cp, *cplim;
+--- 590,598 ----
+      struct hostent	*hostent;
+  #endif
+      struct sockaddr_in	in_addr;
+! #ifndef _MINIX
+!     struct ifconf	ifc;
+! #endif
+      register struct ifreq *ifr;
+      struct sockaddr	broad_addr;
+      char		buf[2048], *cp, *cplim;
+***************
+*** 628,633 ****
+--- 630,637 ----
+  	for (ifr = ifcp->ifc_req, n = ifcp->ifc_len / sizeof (struct ifreq);
+  	    --n >= 0;
+  	    ifr++)
++ #elif defined(_MINIX)
++         abort(); /* FIXME: */
+  #else /* WINTCP */
+  	ifc.ifc_len = sizeof (buf);
+  	ifc.ifc_buf = buf;
+***************
+*** 648,653 ****
+--- 652,658 ----
+  #ifndef WINTCP
+  	    ifr = (struct ifreq *) cp;
+  #endif
++ #ifndef _MINIX
+  	    if (ifr->ifr_addr.sa_family != AF_INET)
+  		continue;
+  
+***************
+*** 699,704 ****
+--- 704,712 ----
+  #endif
+  	    RegisterHostaddr ((struct sockaddr *)&in_addr, sizeof (in_addr),
+  			      BROADCAST_QUERY);
++ #else
++         abort(); /* FIXME: */
++ #endif
+  	}
+      }
+      else
+diff -c xdm-1.0.4/dm.h xdm-1.0.4-patched/dm.h
+*** xdm-1.0.4/dm.h Tue Nov  8 06:33:31 2005
+--- xdm-1.0.4-patched/dm.h Thu Sep 28 17:59:23 2006
+***************
+*** 121,126 ****
+--- 121,130 ----
+  #endif
+  #endif
+  
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
++ 
+  # define waitCompose(sig,core,code) ((sig) * 256 + (core) * 128 + (code))
+  # define waitVal(w)	waitCompose(waitSig(w), waitCore(w), waitCode(w))
+  
+diff -c xdm-1.0.4/xdmshell.c xdm-1.0.4-patched/xdmshell.c
+*** xdm-1.0.4/xdmshell.c Thu Jul 14 22:58:25 2005
+--- xdm-1.0.4-patched/xdmshell.c Thu Sep 28 21:51:38 2006
+***************
+*** 61,67 ****
+  # define HAS_VFORK
+  #endif
+  
+! #ifndef HAS_VFORK
+  #define vfork() fork()
+  #endif
+  
+--- 61,67 ----
+  # define HAS_VFORK
+  #endif
+  
+! #if !defined(HAS_VFORK) && !defined(__ACK__)
+  #define vfork() fork()
+  #endif
+  

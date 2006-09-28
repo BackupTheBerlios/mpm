@@ -1,0 +1,35 @@
+diff -c lbxproxy-1.0.1/include/os.h lbxproxy-1.0.1-patched/include/os.h
+*** lbxproxy-1.0.1/include/os.h Thu Jun  9 15:52:02 2005
+--- lbxproxy-1.0.1-patched/include/os.h Thu Sep 28 13:57:20 2006
+***************
+*** 33,38 ****
+--- 33,41 ----
+  #define OS_H
+  
+  #include <X11/Xtrans/Xtrans.h>
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
+  
+  extern fd_set AllSockets;
+  extern fd_set AllClients;
+diff -c lbxproxy-1.0.1/os/osdep.h lbxproxy-1.0.1-patched/os/osdep.h
+*** lbxproxy-1.0.1/os/osdep.h Fri Apr 23 19:54:35 2004
+--- lbxproxy-1.0.1-patched/os/osdep.h Thu Sep 28 14:11:41 2006
+***************
+*** 101,107 ****
+  /* MAXSELECT is the number of fds that select() can handle */
+  #define MAXSELECT (sizeof(fd_set) * NBBY)
+  
+! #if !defined(hpux) && !defined(SVR4) && !defined(SYSV)
+  #define HAS_GETDTABLESIZE
+  #endif
+  
+--- 101,107 ----
+  /* MAXSELECT is the number of fds that select() can handle */
+  #define MAXSELECT (sizeof(fd_set) * NBBY)
+  
+! #if !defined(hpux) && !defined(SVR4) && !defined(SYSV) && !defined(_MINIX)
+  #define HAS_GETDTABLESIZE
+  #endif
+  
