@@ -25,18 +25,12 @@ set -e
 
 cd "$SMPM_BUILDROOT/some-directory"
 
-if test "$_os" = "minix" ; then
-    PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
-    export PATH
+PATH=/bin:/usr/bin
+export PATH
 
-    CC="cc"
-    LD="cc"
-    CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1"
-
-    PREFIX="/usr/gnu"
-else
-    PREFIX="/usr"
-fi
+CC="cc"
+LD="cc"
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1"
 
 CC="$CC" LD="$LD" CFLAGS="$CFLAGS" sh \
 configure --prefix="$PREFIX" \
