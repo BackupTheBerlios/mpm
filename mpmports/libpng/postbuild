@@ -1,3 +1,6 @@
 set -e
 
+echo "Libs.private: -lz" >> "$SMPM_INSTALLROOT/usr/local/lib/pkgconfig/libpng12.pc"
+rm "$SMPM_INSTALLROOT/usr/local/lib/libpng.so"
+
 exit 0
