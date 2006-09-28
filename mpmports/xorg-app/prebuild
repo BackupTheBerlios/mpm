@@ -25,5 +25,7 @@ done
 # cp "$SMPM_FILES/_longjmp.c" .
 # cd "$SMPM_BUILDROOT/xfwp-1.0.1"
 # patch -p1 < "$SMPM_PATCHES/xfwp-1.0.1-minix3.patch"
+# cd "$SMPM_BUILDROOT/xgc-1.0.1"
+# patch -p1 < "$SMPM_PATCHES/xgc-1.0.1-minix3.patch"
 
 exit 0
