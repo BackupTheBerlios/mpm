@@ -1,0 +1,25 @@
+set -e
+
+cd "$SMPM_BUILDROOT/libpng-1.2.12"
+
+PATH=/bin:/usr/bin
+export PATH
+
+ac_cv_func_malloc_0_nonnull=yes \
+CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
+CXX=true CXXCPP="cc -E" \
+lt_cv_path_SED=/usr/gnu/bin/sed \
+lt_cv_sys_max_cmd_len=4096 \
+CC="cc" LD="cc" \
+LDFLAGS="-L/usr/local/lib" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -I/usr/local/include" sh \
+configure --prefix=/usr/local \
+          --disable-dependency-tracking \
+          --disable-nls \
+
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

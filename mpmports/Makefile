@@ -20,6 +20,7 @@ PACKAGES=\
 	gnu-shutils \
 	gnu-tar \
 	gnu-textutils \
+	libpng \
 	lynx \
 	mawk \
 	minix-world \
