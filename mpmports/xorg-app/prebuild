@@ -16,4 +16,14 @@ for i in `cat "$SMPM_FILES/app-7.1.list"` ; do
     echo    "ok"
 done
 
+# temporarily disabled
+# cp "$SMPM_FILES/configure.fonttosfnt" fonttosfnt-1.0.1/configure
+# cd "$SMPM_BUILDROOT/lbxproxy-1.0.1"
+# patch -p1 < "$SMPM_PATCHES/lbxproxy-1.0.1-minix3.patch"
+# cd "$SMPM_BUILDROOT/xdm-1.0.4"
+# patch -p1 < "$SMPM_PATCHES/xdm-1.0.4-minix3.patch"
+# cp "$SMPM_FILES/_longjmp.c" .
+# cd "$SMPM_BUILDROOT/xfwp-1.0.1"
+# patch -p1 < "$SMPM_PATCHES/xfwp-1.0.1-minix3.patch"
+
 exit 0
