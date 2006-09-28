@@ -1,3 +1,13 @@
 set -e
 
+cd "$SMPM_INSTALLROOT/usr/lib"
+
+rm -f libXaw.so*
+
+cd "$SMPM_FILES"
+make -f Makefile.libdummywc libdummywc.o
+ar r "$SMPM_INSTALLROOT/usr/lib/libXaw6.a" libdummywc.o
+ar r "$SMPM_INSTALLROOT/usr/lib/libXaw7.a" libdummywc.o
+ar r "$SMPM_INSTALLROOT/usr/lib/libXaw8.a" libdummywc.o
+
 exit 0
