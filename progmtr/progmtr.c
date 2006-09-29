@@ -37,6 +37,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#define __STDC_LIMIT_MACROS
+#include <stdint.h>
 
 #include "version.h"
 
@@ -45,12 +47,18 @@
 #define CURSOR_LEFT     "\033[1D"
 #define CURSOR_4LEFT    "\033[4D"
 
+#ifndef __UINT64_C
+typedef uint32_t INTTYPE;
+#else
+typedef uint64_t INTTYPE;
+#endif
+
 static char *buf[BUFSIZE];
 
 typedef enum type_e { TYPE_PERC, TYPE_BAR } type_t;
 
 type_t type = TYPE_PERC;
-unsigned long total = 0L, length = 77;
+INTTYPE total = 0L, length = 77;
 int clear = 0;
 
 int help(char *name) {
@@ -114,7 +122,7 @@ int parse_cmdline(int argc, char **argv) {
 }
 
 void print_bar(int p, char open, char done, char notdone, char close) {
-    int i, j;
+    INTTYPE i, j;
     i = p * length / 100;
     fputc(open, stderr);
     for (j=0; j<i; j++)             fputc(done, stderr);
@@ -126,7 +134,7 @@ void print_bar(int p, char open, char done, char notdone, char close) {
 
 int main(int argc, char **argv) {
     size_t x;
-    unsigned long t, counter = 0L, p = 0L, pp = 0L;
+    INTTYPE t, counter = 0, p = 0, pp = 0;
     int r;
 
     r = parse_cmdline(argc, argv);
@@ -143,7 +151,7 @@ int main(int argc, char **argv) {
         if (p == pp)    continue;
         pp = p;
         if (type == TYPE_PERC) {
-            fprintf(stderr, "%3ld%%%s", p, CURSOR_4LEFT);
+            fprintf(stderr, "%3d%%%s", (unsigned int) p, CURSOR_4LEFT);
             fflush(stderr);
         } else {
             print_bar(p, '[', '*', '-', ']');
