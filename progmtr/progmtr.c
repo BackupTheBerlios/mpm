@@ -38,6 +38,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "version.h"
+
 #define BUFSIZE 8192
 
 #define CURSOR_LEFT     "\033[1D"
@@ -49,6 +51,25 @@ typedef enum type_e { TYPE_PERC, TYPE_BAR } type_t;
 
 type_t type = TYPE_PERC;
 unsigned long total = 0L, length = 77;
+
+int help(char *name) {
+    fprintf(stderr,
+        "progress meter %s -- Copyright (c) 2006, Ivo van Poorten\n"
+        "usage: %s [options] <amount>\n\n"
+        "<amount>            amount of data coming from stdin\n\n"
+        "-b                  print a progress bar\n"
+        "-p                  print percentages (default)\n"
+        "--length=LENGTH     specify length of progress bar (default: 77)\n"
+        "--usage             print short usage description\n"
+        "-?|-help|--help     print this help message\n\n", version, name);
+    return 2;
+}
+
+int usage(char *name) {
+    fprintf(stderr, "usage: %s [-b] [-p] [--length=LENGTH] [--usage] ", name);
+    fprintf(stderr, "[--help] <amount>\n");
+    return 2;
+}
 
 int parse_cmdline(int argc, char **argv) {
     int c = 1;
@@ -64,6 +85,14 @@ int parse_cmdline(int argc, char **argv) {
             type = TYPE_BAR;
         else if (!strncmp(argv[c], "--length=", 9))
             length = strtoul(&argv[c][9], NULL, 10);
+        else if (!strcmp(argv[c], "--usage"))
+            return usage(argv[0]);
+        else if (!strcmp(argv[c], "--help"))
+            return help(argv[0]);
+        else if (!strcmp(argv[c], "-help"))
+            return help(argv[0]);
+        else if (!strcmp(argv[c], "-?"))
+            return help(argv[0]);
         else if (!strncmp(argv[c], "-", 1)) {
             fprintf(stderr, "%s: unknown command line option %s\n",
                     argv[0], argv[c]);
