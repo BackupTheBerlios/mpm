@@ -109,10 +109,21 @@ int parse_cmdline(int argc, char **argv) {
     return 0;
 }
 
+void print_bar(int p, char open, char done, char notdone, char close) {
+    int i, j;
+    i = p * length / 100;
+    fputc(open, stderr);
+    for (j=0; j<i; j++)             fputc(done, stderr);
+    for (j=0; j<(length-i); j++)    fputc(notdone, stderr);
+    fputc(close, stderr);
+    for (j=0; j<(length+2); j++)    fprintf(stderr, CURSOR_LEFT);
+    fflush(stderr);
+}
+
 int main(int argc, char **argv) {
     size_t x;
     unsigned long t, counter = 0L, p = 0L, pp = 0L;
-    int r, i, j;
+    int r;
 
     r = parse_cmdline(argc, argv);
     if (r != 0) exit(r);
@@ -131,13 +142,7 @@ int main(int argc, char **argv) {
             fprintf(stderr, "%3ld%%%s", p, CURSOR_4LEFT);
             fflush(stderr);
         } else {
-            i = p * length / 100;
-            fputc('[', stderr);
-            for (j=0; j<i; j++)             fputc('*', stderr);
-            for (j=0; j<(length-i); j++)    fputc('-', stderr);
-            fputc(']', stderr);
-            for (j=0; j<(length+2); j++)    fprintf(stderr, CURSOR_LEFT);
-            fflush(stderr);
+            print_bar(p, '[', '*', '-', ']');
         }
     }
 }
