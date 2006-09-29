@@ -39,13 +39,12 @@ for i in `cat "$SMPM_FILES/app-7.1.list"` ; do
     INSTALL=/bin/install \
     lt_cv_sys_max_cmd_len=4096 \
     CXX=true CXXCPP="cc -E" \
-    CC=cc LD=cc CFLAGS="$CFLAGS $SOMEEXTRA" LDFLAGS="$LDFLAGS" \
+    CC="cc -stack 512k -s" LD="cc -stack 512k -s" \
+    CFLAGS="$CFLAGS $SOMEEXTRA" LDFLAGS="$LDFLAGS" \
     /usr/gnu/bin/bash \
     ./configure $XORG_CONFIG --disable-dependency-tracking --disable-xthreads \
         --disable-loadable-i18n --disable-loadable-xcursor \
         --disable-dynamic-greeter
-
-    make
 
     DESTDIR="$SMPM_INSTALLROOT" \
     make DESTDIR="$SMPM_INSTALLROOT" install
