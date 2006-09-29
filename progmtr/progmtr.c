@@ -51,6 +51,7 @@ typedef enum type_e { TYPE_PERC, TYPE_BAR } type_t;
 
 type_t type = TYPE_PERC;
 unsigned long total = 0L, length = 77;
+int clear = 0;
 
 int help(char *name) {
     fprintf(stderr,
@@ -59,6 +60,7 @@ int help(char *name) {
         "<amount>            amount of data coming from stdin\n\n"
         "-b                  print a progress bar\n"
         "-p                  print percentages (default)\n"
+        "-c                  clear line when done\n"
         "--length=LENGTH     specify length of progress bar (default: 77)\n"
         "--usage             print short usage description\n"
         "-?|-help|--help     print this help message\n\n", version, name);
@@ -83,6 +85,8 @@ int parse_cmdline(int argc, char **argv) {
             type = TYPE_PERC;
         else if (!strcmp(argv[c],  "-b"))
             type = TYPE_BAR;
+        else if (!strcmp(argv[c],  "-c"))
+            clear = 1;
         else if (!strncmp(argv[c], "--length=", 9))
             length = strtoul(&argv[c][9], NULL, 10);
         else if (!strcmp(argv[c], "--usage"))
@@ -145,4 +149,9 @@ int main(int argc, char **argv) {
             print_bar(p, '[', '*', '-', ']');
         }
     }
+
+    if (!clear) exit(0);
+
+    if (type == TYPE_PERC)  fprintf(stderr, "    %s", CURSOR_4LEFT);
+    else                    print_bar(100, ' ', ' ', ' ', ' ');
 }
