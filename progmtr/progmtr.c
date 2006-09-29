@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
     int r;
 
     r = parse_cmdline(argc, argv);
-    if (r != 0) exit(r);
+    if (r != 0) return r;
     t = total;
 
     while(1) {
@@ -150,8 +150,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (!clear) exit(0);
+    if (!clear) return 0;
 
     if (type == TYPE_PERC)  fprintf(stderr, "    %s", CURSOR_4LEFT);
     else                    print_bar(100, ' ', ' ', ' ', ' ');
+    return 0;
 }
