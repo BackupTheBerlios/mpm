@@ -140,6 +140,4 @@ int main(int argc, char **argv) {
             fflush(stderr);
         }
     }
-    fputc('\n', stderr);
 }
-
