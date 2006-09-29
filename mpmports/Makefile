@@ -28,6 +28,7 @@ PACKAGES=\
 	pmpkg-config \
 	putty \
 	vim \
+	xorg-app \
 	xorg-lib \
 	xorg-lib-pt2 \
 	xorg-lib-pt3 \
