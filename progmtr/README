@@ -9,5 +9,6 @@ Minix 3:
 
 Linux:
 
-    make CC=gcc LD=gcc CFLAGS="-O3 -Wall" owner=root group=root install
+    make CC=gcc LD=gcc CFLAGS="-O3 -Wall" LDFLAGS="" \
+            owner=root group=root install
 

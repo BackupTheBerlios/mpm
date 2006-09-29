@@ -4,9 +4,9 @@ DISTDIR   = progmtr-${VERSION}
 DISTFILES = progmtr.c progmtr.1 LICENSE VERSION Makefile AUTHORS README
 
 CC       ?= cc
-LD       ?= cc -stack 24k -s
+LD       ?= cc
 CFLAGS   ?= -O
-LDFLAGS  ?=
+LDFLAGS  ?= -stack 24k -s
 
 DESTDIR  ?=
 prefix   ?= /usr/local
