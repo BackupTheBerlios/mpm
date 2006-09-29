@@ -17,6 +17,8 @@ It reads from standard input and writes to standard output.
 Meanwhile, it displays a progress meter on standard error.
 The amount of progress is the amount of data passed through the filter
 relative to the amount specified on the command line.
+Cursor movement relies on VT100 escape sequences, which are correctly
+executed by e.g. the Minix console, the Linux console and xterms.
 
 .SH OPTIONS
 The following options are supported:
