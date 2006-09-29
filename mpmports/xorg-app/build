@@ -45,6 +45,8 @@ for i in `cat "$SMPM_FILES/app-7.1.list"` ; do
         --disable-loadable-i18n --disable-loadable-xcursor \
         --disable-dynamic-greeter
 
+    make
+
     DESTDIR="$SMPM_INSTALLROOT" \
     make DESTDIR="$SMPM_INSTALLROOT" install
 done
