@@ -122,7 +122,7 @@ int parse_cmdline(int argc, char **argv) {
 }
 
 void print_bar(int p, char open, char done, char notdone, char close) {
-    INTTYPE i, j;
+    int i, j;
     i = p * length / 100;
     fputc(open, stderr);
     for (j=0; j<i; j++)             fputc(done, stderr);
