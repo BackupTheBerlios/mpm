@@ -62,8 +62,8 @@ int parse_cmdline(int argc, char **argv) {
             type = TYPE_PERC;
         else if (!strcmp(argv[c],  "-b"))
             type = TYPE_BAR;
-        else if (!strncmp(argv[c], "-length=", 8))
-            length = strtoul(&argv[c][8], NULL, 10);
+        else if (!strncmp(argv[c], "--length=", 9))
+            length = strtoul(&argv[c][9], NULL, 10);
         else if (!strncmp(argv[c], "-", 1)) {
             fprintf(stderr, "%s: unknown command line option %s\n",
                     argv[0], argv[c]);
