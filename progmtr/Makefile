@@ -1,5 +1,8 @@
 VERSION = `cat VERSION`
 
+DISTDIR   = progmtr-${VERSION}
+DISTFILES = progmtr.c progmtr.1 LICENSE VERSION Makefile AUTHORS README
+
 CC       ?= cc
 LD       ?= cc -stack 24k -s
 CFLAGS   ?= -O
@@ -10,8 +13,8 @@ prefix   ?= /usr/local
 bindir   ?= ${prefix}/bin
 mandir   ?= ${prefix}/man
 install  ?= /usr/bin/install
-owner    ?= root
-group    ?= root
+owner    ?= bin
+group    ?= operator
 dirmode  ?= 755
 execmode ?= 755
 manmode  ?= 644
@@ -69,4 +72,12 @@ clean:
 	rm -f *~ *.o progmtr version.h
 
 distclean:	clean
+	rm -f ${DISTDIR}.tar.bz2
+
+dist:	distclean
+	mkdir ${DISTDIR}
+	cp ${DISTFILES} ${DISTDIR}
+	tar cf ${DISTDIR}.tar ${DISTDIR}
+	bzip2 -9 ${DISTDIR}.tar
+	rm -rf ${DISTDIR}
 
