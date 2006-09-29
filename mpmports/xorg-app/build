@@ -2,7 +2,14 @@ set -e
 
 cd "$SMPM_BUILDROOT"
 
-PATH=/bin:/usr/bin:"$SMPM_INSTALLROOT/usr/bin"
+# setup bin directory with symlink to pmpkg-config
+# some packages query .pc files for appdefaultdir and call pkg-config
+# directly, bypassing $PKG_CONFIG (that is a bug in those configure
+# scripts)
+mkdir bin
+ln -s /usr/local/bin/pmpkg-config bin/pkg-config
+
+PATH=/bin:/usr/bin:"$SMPM_INSTALLROOT/usr/bin":"$SMPM_BUILDROOT/bin"
 export PATH
 
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig
