@@ -1,0 +1,20 @@
+diff -c xtrap-1.0.2/chparse.c xtrap-1.0.2-patched/chparse.c
+*** xtrap-1.0.2/chparse.c Fri Apr 23 19:55:08 2004
+--- xtrap-1.0.2-patched/chparse.c Fri Sep 29 11:11:02 2006
+***************
+*** 63,69 ****
+  #include	<unistd.h>
+  #include	"chparse.h"
+  
+! #ifdef __QNX__
+  #include <sys/select.h>
+  #endif
+  
+--- 63,69 ----
+  #include	<unistd.h>
+  #include	"chparse.h"
+  
+! #if defined(__QNX__) || defined(_MINIX)
+  #include <sys/select.h>
+  #endif
+  

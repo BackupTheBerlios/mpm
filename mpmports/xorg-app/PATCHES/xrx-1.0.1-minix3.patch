@@ -1,0 +1,20 @@
+diff -c xrx-1.0.1/rx/XUrls.c xrx-1.0.1-patched/rx/XUrls.c
+*** xrx-1.0.1/rx/XUrls.c Fri Apr 23 19:55:03 2004
+--- xrx-1.0.1-patched/rx/XUrls.c Fri Sep 29 01:58:18 2006
+***************
+*** 100,106 ****
+        local.sin_len = sizeof remote;
+  #endif
+  
+!       s = socket(PF_INET, SOCK_DGRAM, 0);
+        if (s != -1) {
+  	do {
+  	  rv = bind (s, (struct sockaddr*) &local, sizeof local);
+--- 100,106 ----
+        local.sin_len = sizeof remote;
+  #endif
+  
+!       s = socket(AF_INET, SOCK_DGRAM, 0);
+        if (s != -1) {
+  	do {
+  	  rv = bind (s, (struct sockaddr*) &local, sizeof local);
