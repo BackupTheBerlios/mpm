@@ -1,0 +1,13 @@
+progmtr - progress meter
+
+type 'make' to see a list of possible targets and influental environment
+variables, like prefix and DESTDIR.
+
+Minix 3:
+
+    make install
+
+Linux:
+
+    make CC=gcc LD=gcc CFLAGS="-O3 -Wall" owner=root group=root install
+
