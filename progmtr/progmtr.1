@@ -1,0 +1,60 @@
+.\" 
+.\" progmtr manual page.
+.\" Copyright (c) 2006, Ivo van Poorten
+.\"
+.TH progmtr 1
+.SH NAME
+progmtr \- progress meter
+.SH SYNOPSIS
+.PP
+.B progmtr
+[\-?] [\-\-help] [\-\-usage] [\-b] [\-p] [\-\-length=LENGTH] <amount>
+.SH DESCRIPTION
+The \fIprogmtr\fP program can be used to display a progress meter during
+a time consuming operation.
+\fIprogmtr\fP functions as a standard Unix filter.
+It reads from standard input and writes to standard output.
+Meanwhile, it displays a progress meter on standard error.
+The amount of progress is the amount of data passed through the filter
+relative to the amount specified on the command line.
+
+.SH OPTIONS
+The following options are supported:
+
+.TP
+.I "-b"
+Display a progress bar instead of a percentage.
+
+.TP
+.I "-p"
+Display a percentage.
+This is the default behaviour when only the amount is specified.
+
+.TP
+.I "--length=LENGTH"
+Specify the length of the progress bar.
+Only has an effect when -b is specified.
+The length excludes the opening and closing bracket.
+(default: 77)
+
+.TP
+.I "--usage"
+display a short usage message
+
+.TP
+.I "-?|-help|--help"
+display a long help message
+
+.SH EXAMPLE
+.nf
+cat fubar.tgz | progmtr `expr -s fubar.tgz` | gzip -dc | tar -xf -
+.fi
+.PP
+
+.SH COPYRIGHT
+Copyright (c) 2006, Ivo van Poorten.
+
+.SH BUGS
+
+Probably.
+
