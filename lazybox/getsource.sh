@@ -15,6 +15,7 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void \*xrealloc(/static void \*xrealloc(/' \
                \
                -e 's/^int copy(/static int copy(/' \
+               -e 's/^int find/static int find/' \
                -e 's/^void usage(/static void usage(/' \
                -e 's/^void report(/static void report(/' \
                -e 's/^void calendar(/static void calendar(/' \
@@ -30,8 +31,15 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void addpath/static void addpath/' \
                -e 's/^void warn/static void warn/' \
                -e 's/^void dumphunk/static void dumphunk/' \
+               -e 's/^void range(/static void range(/' \
+               -e 's/^void deallocate(/static void deallocate(/' \
+               -e 's/^void compress(/static void compress(/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
                -e 's/^int plen/static int plen/' \
+               -e 's/^int version/static int version/' \
+               -e 's/^int column/static int column/' \
+               -e 's/^int table/static int table/' \
+               -e 's/^int debug/static int debug/' \
                > $dst
 
