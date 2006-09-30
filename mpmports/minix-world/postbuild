@@ -73,4 +73,13 @@ for i in [ cd echo expr false getopts read test true umask wait ; do
     ln -s "command" "$SMPM_INSTALLROOT/bin/$i"
 done
 
+for i in ln mv rm ; do
+    rm -f "$SMPM_INSTALLROOT/bin/$i"
+    ln -s "cp" "$SMPM_INSTALLROOT/bin/$i"
+done
+
+for i in clone cp cpdir ln mv rm ; do
+    link_from_usrbin_to_bin "$i" "cp"
+done
+
 exit 0
