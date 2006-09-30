@@ -1,11 +1,5 @@
 #! /bin/sh
 
-# missing because they need kernel headers:
-# badblocks cdprobe
-
-# missing because of multiline function declarations:
-# chroot
-
 . sources.sh
 
 > gen.mak
