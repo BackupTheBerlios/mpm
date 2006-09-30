@@ -9,6 +9,10 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void \*allocate/static void \*allocate/' \
                -e 's/^char \*whoami(/static char \*whoami(/' \
                -e 's/^char \*basename(/static char \*basename(/' \
+               -e 's/^char \*getold(/static char \*getold(/' \
+               -e 's/^char \*getnew(/static char \*getnew(/' \
+               -e 's/^void \*xmalloc(/static void \*xmalloc(/' \
+               -e 's/^void \*xrealloc(/static void \*xrealloc(/' \
                \
                -e 's/^int copy(/static int copy(/' \
                -e 's/^void usage(/static void usage(/' \
@@ -24,6 +28,8 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void onintr/static void onintr/' \
                -e 's/^void crc/static void crc/' \
                -e 's/^void addpath/static void addpath/' \
+               -e 's/^void warn/static void warn/' \
+               -e 's/^void dumphunk/static void dumphunk/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
                -e 's/^int plen/static int plen/' \
