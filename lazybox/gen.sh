@@ -1,6 +1,13 @@
 #! /bin/sh
 
-SOURCES="add_route arp at backup banner basename cp ls"
+# missing because they need kernel headers:
+# badblocks cdprobe
+
+# missing because of multiline function declarations:
+# chroot
+
+. sources.sh
+
 CPLINKS="ln rm mv cpdir clone"
 
 > gen.mak
