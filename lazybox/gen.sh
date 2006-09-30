@@ -8,8 +8,6 @@
 
 . sources.sh
 
-CPLINKS="ln rm mv cpdir clone"
-
 > gen.mak
 > register.h
 > elseif.h
