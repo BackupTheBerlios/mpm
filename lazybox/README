@@ -1,0 +1,12 @@
+To build:
+
+Have the Minix sources installed somewhere. Edit Makefile and have SOURCEPATH
+point to the directory where src/commands/simple is located.
+
+./gen.sh
+make
+make testlinks
+
+./lazybox
+./ls
+
