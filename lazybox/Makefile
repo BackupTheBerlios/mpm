@@ -21,7 +21,7 @@ testlinks:
 	for i in ${LINKS} ; do ln -s lazybox $$i ; done
 
 clean:
-	rm -f *.o *~ lazybox ${LINKS} gen.mak register.h elseif.h
+	rm -f *.o *~ lazybox ${LINKS} gen.mak register.h elseif.h allnames.h
 	for i in ${LINKS} ; do rm -f $$i.c ; done
 
 distclean:	clean
