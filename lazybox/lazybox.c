@@ -15,6 +15,8 @@
 #include <pwd.h>
 #include <grp.h>
 
+#include "allnames.h"
+
 #define REGISTER(a) int main_##a(int argc, char **argv)
 
 #include "register.h"
@@ -64,6 +66,7 @@ int main(int argc, char **argv) {
     if (0) x=x;
 #include "elseif.h"
 
+    fprintf(stderr, "%s can be called as: %s\n", argv[0], ALLNAMES);
     return 1;
 }
 

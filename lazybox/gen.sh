@@ -11,6 +11,7 @@
 > gen.mak
 > register.h
 > elseif.h
+> allnames.h
 
 echo "LINKS = \\" >> gen.mak
 for i in $SOURCES ; do
@@ -37,4 +38,6 @@ done
 for i in $CPLINKS ; do
     echo "ELSEIF2($i, cp);" >> elseif.h
 done
+
+echo "#define" ALLNAMES \"$SOURCES $CPLINKS\" >> allnames.h
 
