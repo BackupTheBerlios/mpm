@@ -17,7 +17,7 @@ for i in $SOURCES; do
 done
 
 lb=`expr -s lazybox`
-lbp=`expr $lb \* 100 / $sum`
+lbp=`expr \( $lb \* 1000 / $sum + 5 \) / 10`
 
 echo "sum of all separate binaries: $sum (100%)"
 echo "size of lazybox:              $lb ($lbp%)"
