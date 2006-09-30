@@ -2,6 +2,7 @@
 VERSION      =  `cat VERSION`
 
 DISTFILES    = AUTHORS \
+			   ChangeLog \
 			   LICENSE \
 			   Makefile \
 			   README \

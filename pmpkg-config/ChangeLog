@@ -1,0 +1,4 @@
+0.91
+- allow comma's in Require fields
+- added missing exit status
+
