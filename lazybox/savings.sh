@@ -9,6 +9,8 @@ for i in $SOURCES; do
         val=`expr -s /usr/bin/$i`
     elif test -f "/bin/$i" ; then
         val=`expr -s /bin/$i`
+    elif test -f "/usr/lib/$i" ; then   # pwdauth
+        val=`expr -s /usr/lib/$i`
     else
         echo "cannot find $i" >&2
         exit 2

@@ -16,6 +16,7 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                \
                -e 's/^int copy(/static int copy(/' \
                -e 's/^int find/static int find/' \
+               -e 's/^int compare/static int compare/' \
                -e 's/^void usage(/static void usage(/' \
                -e 's/^void report(/static void report(/' \
                -e 's/^void calendar(/static void calendar(/' \
@@ -34,12 +35,28 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void range(/static void range(/' \
                -e 's/^void deallocate(/static void deallocate(/' \
                -e 's/^void compress(/static void compress(/' \
+               -e 's/^void print(/static void print(/' \
+               -e 's/^void execute(/static void execute(/' \
+               -e 's/^void makedir(/static void makedir(/' \
+               -e 's/^void number(/static void number(/' \
+               -e 's/^void timeout(/static void timeout(/' \
+               -e 's/^void path_init(/static void path_init(/' \
+               -e 's/^void path_add(/static void path_add(/' \
+               -e 's/^void path_trunc(/static void path_trunc(/' \
+               -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
+               -e 's/^prettyprog/static prettyprog/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
+               -e 's/^\(int all[^_]\)/static \1/' \
                -e 's/^int plen/static int plen/' \
                -e 's/^int version/static int version/' \
                -e 's/^int column/static int column/' \
                -e 's/^int table/static int table/' \
                -e 's/^int debug/static int debug/' \
+               -e 's/^int ncols/static int ncols/' \
+               -e 's/^int quiet/static int quiet/' \
+               -e 's/^int done/static int done/' \
+               -e 's/^int xdev=/static int xdev=/' \
+               -e 's/^int excode/static int excode/' \
                > $dst
 

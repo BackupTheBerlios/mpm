@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
     if (0) x=x;
 #include "elseif.h"
 
-    fprintf(stderr, "%s can be called as: %s\n", argv[0], ALLNAMES);
+    fprintf(stderr, "%s can be called as:\n\n%s\n", argv[0], ALLNAMES);
     return 1;
 }
 
