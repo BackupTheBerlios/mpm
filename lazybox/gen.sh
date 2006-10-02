@@ -22,7 +22,7 @@ echo "" >> gen.mak
 for i in $SOURCES ; do
     cat >> gen.mak <<__EOF__
 $i.c:
-	./getsource.sh \${SOURCEPATH}/$i.c
+	@./getsource.sh \${SOURCEPATH}/$i.c
 
 __EOF__
     echo "REGISTER($i);" >> register.h

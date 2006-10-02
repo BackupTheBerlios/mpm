@@ -27,6 +27,7 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int newfile(/static int newfile(/' \
                -e 's/^int read_header(/static int read_header(/' \
                -e 's/^int match/static int match/' \
+               -e 's/^int uniq(/static int uniq(/' \
                -e 's/^void usage(/static void usage(/' \
                -e 's/^void report(/static void report(/' \
                -e 's/^void calendar(/static void calendar(/' \
@@ -67,6 +68,22 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void check_file(/static void check_file(/' \
                -e 's/^void strip(/static void strip(/' \
                -e 's/^void copy(/static void copy(/' \
+               -e 's/^void extract(/static void extract(/' \
+               -e 's/^void delete(/static void delete(/' \
+               -e 's/^void do_chown(/static void do_chown(/' \
+               -e 's/^void mread(/static void mread(/' \
+               -e 's/^void mwrite(/static void mwrite(/' \
+               -e 's/^void print_time(/static void print_time(/' \
+               -e 's/^void convert(/static void convert(/' \
+               -e 's/^void expand(/static void expand(/' \
+               -e 's/^void compare(/static void compare(/' \
+               -e 's/^void err(/static void err(/' \
+               -e 's/^void show(/static void show(/' \
+               -e 's/^void format(/static void format(/' \
+               -e 's/^void doprnt(/static void doprnt(/' \
+               -e 's/^void intr(/static void intr(/' \
+               -e 's/^int getline(/static int getline(/' \
+               -e 's/^void gettable/static void gettable/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
                -e 's/^block_t sizeup(/static block_t sizeup(/' \
                -e 's/^prettyprog/static prettyprog/' \
@@ -88,6 +105,15 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int inode_offset/static int inode_offset/' \
                -e 's/^int verbose/static int verbose/' \
                -e 's/^int override/static int override/' \
+               -e 's/^int dflag/static int dflag/' \
+               -e 's/^int cflag/static int cflag/' \
+               -e 's/^int fields/static int fields/' \
+               -e 's/^int part /static int part /' \
+               -e 's/^int rflag/static int rflag/' \
+               -e 's/^short int verbose/static short int verbose/' \
                -e 's/^char table/static char table/' \
+               -e 's/^char usage/static char usage/' \
+               -e 's/^char PATH_UTMP/static char PATH_UTMP/' \
+               -e 's/^char copyright/static char copyright/' \
                > $dst
 
