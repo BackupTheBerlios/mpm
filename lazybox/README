@@ -6,6 +6,11 @@ where src is located. Or, you could just mount the 3.1.2a CDROM on /mnt.
 
 If you do not want to include all applications, edit sources.sh.
 
+The default stack/heap size is 4096kB. fsck needs at least that. It's also
+comfortable for applications like diff, grep and sed but not strictly needed.
+If you do not include fsck, you can decrease the value to 256kw by editting
+the Makefile.
+
 ./gen.sh
 make
 make testlinks
