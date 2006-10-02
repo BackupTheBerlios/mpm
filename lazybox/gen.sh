@@ -25,8 +25,14 @@ $i.c:
 	@./getsource.sh \${SOURCEPATH}/$i.c
 
 __EOF__
-    echo "REGISTER($i);" >> register.h
-    echo "ELSEIF($i);" >> elseif.h
+    j=`echo $i | tr '.' '_'`
+    if test "$i" = "$j" ; then
+        echo "REGISTER($i);" >> register.h
+        echo "ELSEIF($i);" >> elseif.h
+    else
+        echo "REGISTER($j);" >> register.h
+        echo "ELSEIF2($i, $j);" >> elseif.h
+    fi
 done
 
 for i in $CPLINKS ; do

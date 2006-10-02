@@ -1,7 +1,7 @@
 #! /bin/sh
 
 dst=`basename "$1"`
-base=`basename $dst .c`
+base=`basename $dst .c | tr '.' '_'`
 
 cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e "s/^void main/void main_$base/" \
@@ -90,6 +90,8 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void update(/static void update(/' \
                -e 's/^void draw(/static void draw(/' \
                -e 's/^void outc(/static void outc(/' \
+               -e 's/^void shell(/static void shell(/' \
+               -e 's/^void getstr(/static void getstr(/' \
                -e 's/^int getline(/static int getline(/' \
                -e 's/^void gettable/static void gettable/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \

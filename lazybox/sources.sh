@@ -1,6 +1,3 @@
-# because of dots in filename:
-# in.fingerd in.rshd
-
 SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          cgrep chmem chmod chown ci cksum cleantmp cmp co comm \
          compress cp crc cut date dd decomp16 devsize dhrystone \
@@ -18,6 +15,6 @@ SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          update uud uue vol wc which who whoami write xargs \
          yes fsck chroot dev2name finger host ifconfig modem nice ping \
          rcp rev rsh ramdisk synctree truncate writeisofs gomoku life top \
-         ttt"
+         ttt in.fingerd in.rshd"
 
 CPLINKS="ln rm mv cpdir clone"
