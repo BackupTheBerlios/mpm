@@ -2,7 +2,7 @@
 CC         ?= cc
 LD         ?= cc
 CFLAGS     ?= -O -D_MINIX -I${SRCPATH} -I ${SRVSRCPATH} -I${FSSRCPATH} -w
-LDFLAGS    ?= -stack 256kw -s
+LDFLAGS    ?= -stack 4096k -s
 
 SOURCEPATH = /mnt/src.commands/simple
 SRCPATH    = /mnt/src
