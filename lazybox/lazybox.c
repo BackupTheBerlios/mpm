@@ -30,8 +30,25 @@ typedef struct aug_s {  /* applications, user, group */
 } aug_t;
 
 static aug_t sugidbins[] = {
-    { "arp", "root", "operator" },
-    { "at",  "root", "operator" },
+    { "arp",            "root",     NULL    },   
+    { "at",             "root",     NULL    },
+    { "hostaddr",       "root",     NULL    },
+    { "install",        "root",     NULL    },
+    { "lpd",            "daemon",   NULL    },
+    { "mail",           "root",     NULL    },
+    { "passwd",         "root",     NULL    },
+    { "pr_routes",      "root",     NULL    },
+    { "progressbar",    "root",     NULL    },
+    { "df",             "root",     NULL    },
+    { "mount",          "root",     NULL    },
+    { "su",             "root",     NULL    },
+    { "umount",         "root",     NULL    },
+    { "ifconfig",       "root",     NULL    },
+    { "ping",           "root",     NULL    },
+    { "pwdauth",        "root",     NULL    },
+    { "install",        "root",     NULL    },
+    { "term",           NULL,       "uucp"  },
+    { "write",          NULL,       "tty"   },
     { NULL, NULL, NULL }
 };
 
@@ -54,10 +71,14 @@ int main(int argc, char **argv) {
         if (!strcmp(sugidbins[n].a, &argv[0][x])) sugid = n;
 
     if (sugid >= 0) { /* drop to listed privileges */
+        if (sugidbins[sugid].u) {
         pwd = getpwnam(sugidbins[sugid].u);
         uid = pwd->pw_uid;
+        }
+        if (sugidbins[sugid].g) {
         grp = getgrnam(sugidbins[sugid].g);
         gid = grp->gr_gid;
+        }
     }
 
     setegid(gid);
