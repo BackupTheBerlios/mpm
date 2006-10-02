@@ -11,6 +11,8 @@ FSSRCPATH  = ${SRVSRCPATH}/fs
 
 LIBS       = -lcurses
 
+INSTALL    = /usr/bin/install
+
 all:	lazybox
 
 include gen.mak
@@ -33,4 +35,16 @@ clean:
 	@for i in ${LINKS} ; do rm -f $$i.c ; done
 
 distclean:	clean
+
+install-exec:
+	${INSTALL} -d -m 755 -o bin -g operator ${DESTDIR}/bin
+	${INSTALL} -m 6755 -o root -g operator lazybox ${DESTDIR}/bin/lazybox
+
+install-sym:	install-exec
+	@for i in ${LINKS} ; do ln -s lazybox ${DESTDIR}/bin/$$i ; done
+
+install-hard:	install-exec
+	@for i in ${LINKS} ; do ln lazybox ${DESTDIR}/bin/$$i ; done
+
+install:	install-sym
 

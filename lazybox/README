@@ -4,10 +4,34 @@ Have the Minix sources installed somewhere. Edit Makefile and have SOURCEPATH
 point to the directory where src/commands/simple is located and SRCPATH to
 where src is located. Or, you could just mount the 3.1.2a CDROM on /mnt.
 
+If you do not want to include all applications, edit sources.sh.
+
 ./gen.sh
 make
 make testlinks
 
 ./lazybox
 ./ls
+
+
+To install:
+
+It is not advised to install lazybox on a running system. The Makefile supports
+DESTDIR which should be used instead. The destination directory can either be
+a directory tree that will be used to build a floppy image, or just a temporary
+directory which can be used to manually replace current system utilities. There
+are two install targets, install-sym and install-hard. The first one will
+create symbolic links, the second one will create hard links. When you call
+make install, the default is to create symbolic links. If you compile in only a
+few applications, creating hard links might use less disk space.
+
+make DESTDIR=/some/directory install
+or
+make DESTDIR=/some/directory install-sym
+or
+make DESTDIR=/some/directory install-hard
+
+Currently, it does not differentiate between /bin, /usr/bin and /usr/lib (where
+pwdauth is normally located). lazybox is installed in /bin (relative to
+DESTDIR) and all links are placed in /bin too.
 
