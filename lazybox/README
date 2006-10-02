@@ -1,7 +1,8 @@
 To build:
 
 Have the Minix sources installed somewhere. Edit Makefile and have SOURCEPATH
-point to the directory where src/commands/simple is located.
+point to the directory where src/commands/simple is located and SRCPATH to
+where src is located.
 
 ./gen.sh
 make

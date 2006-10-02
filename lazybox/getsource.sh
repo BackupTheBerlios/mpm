@@ -17,6 +17,7 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int copy(/static int copy(/' \
                -e 's/^int find/static int find/' \
                -e 's/^int compare/static int compare/' \
+               -e 's/^int eat_dir(/static int eat_dir(/' \
                -e 's/^void usage(/static void usage(/' \
                -e 's/^void report(/static void report(/' \
                -e 's/^void calendar(/static void calendar(/' \
@@ -43,7 +44,14 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void path_init(/static void path_init(/' \
                -e 's/^void path_add(/static void path_add(/' \
                -e 's/^void path_trunc(/static void path_trunc(/' \
+               -e 's/^void get_inode(/static void get_inode(/' \
+               -e 's/^void get_block(/static void get_block(/' \
+               -e 's/^void getline(/static void getline(/' \
+               -e 's/^void flush(/static void flush(/' \
+               -e 's/^void tell(/static void tell(/' \
+               -e 's/^void done(/static void done(/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
+               -e 's/^block_t sizeup(/static block_t sizeup(/' \
                -e 's/^prettyprog/static prettyprog/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
@@ -58,5 +66,9 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int done/static int done/' \
                -e 's/^int xdev=/static int xdev=/' \
                -e 's/^int excode/static int excode/' \
+               -e 's/^int iflag/static int iflag/' \
+               -e 's/^int inode_offset/static int inode_offset/' \
+               -e 's/^int verbose/static int verbose/' \
+               -e 's/^int override/static int override/' \
                > $dst
 

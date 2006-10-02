@@ -1,7 +1,4 @@
 
-# missing because they need kernel or server headers:
-# badblocks cdprobe df mkfs mkswap mount readfs
-
 # missing because of multiline function declarations: (mainly main)
 # chroot dev2name finger host ifconfig modem nice ping rcp rev rsh ramdisk
 
@@ -13,6 +10,7 @@
 
 # what's up with fsck and fsck1?
 
+
 SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          cgrep chmem chmod chown ci cksum cleantmp cmp co comm \
          compress cp crc cut date dd decomp16 devsize dhrystone \
@@ -22,7 +20,7 @@ SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          login look lp lpd ls mail man mesg mkdir mkfifo mknod \
          mkproto mt newroot nm nonamed od passwd paste pr \
          pr_routes prep printenv printf printroot progressbar proto \
-         pwd pwdauth rarpd rawspeed rdate readall \
-         remsync rget rlogin rmdir"
+         pwd pwdauth rarpd rawspeed rdate readall remsync rget rlogin \
+         rmdir badblocks cdprobe df mkfs mkswap mount readfs"
 
 CPLINKS="ln rm mv cpdir clone"

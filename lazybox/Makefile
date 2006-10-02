@@ -1,10 +1,12 @@
 
 CC         ?= cc
 LD         ?= cc
-CFLAGS     ?= -O -D_MINIX
+CFLAGS     ?= -O -D_MINIX -I${SRCPATH} -I${FSSRCPATH}
 LDFLAGS    ?= -stack 256kw -s
 
 SOURCEPATH = /mnt/src.commands/simple
+SRCPATH    = /mnt/src
+FSSRCPATH  = ${SRCPATH}/servers/fs
 
 all:	lazybox
 
