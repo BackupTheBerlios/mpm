@@ -9,6 +9,8 @@ SRCPATH    = /mnt/src
 SRVSRCPATH = ${SRCPATH}/servers
 FSSRCPATH  = ${SRVSRCPATH}/fs
 
+LIBS       = -lcurses
+
 all:	lazybox
 
 include gen.mak
@@ -16,7 +18,7 @@ include gen.mak
 lazybox:	lazybox.o ${OBJS}
 	@echo ""
 	@echo "LINK $@"
-	@${LD} ${LDFLAGS} -o $@ lazybox.o ${OBJS}
+	@${LD} ${LDFLAGS} -o $@ lazybox.o ${OBJS} ${LIBS}
 	chmod 6755 $@
 
 .c.o:

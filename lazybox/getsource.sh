@@ -87,6 +87,9 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void usage /static void usage /' \
                -e 's/^void printname(/static void printname(/' \
                -e 's/^void list(/static void list(/' \
+               -e 's/^void update(/static void update(/' \
+               -e 's/^void draw(/static void draw(/' \
+               -e 's/^void outc(/static void outc(/' \
                -e 's/^int getline(/static int getline(/' \
                -e 's/^void gettable/static void gettable/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
@@ -123,5 +126,6 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^char PATH_UTMP/static char PATH_UTMP/' \
                -e 's/^char copyright/static char copyright/' \
                -e 's/^unsigned int /static unsigned int /' \
+               -e 's/^short int cbreak/static short int cbreak/' \
                > $dst
 

@@ -1,6 +1,3 @@
-# because of curses:
-# gomoku life top ttt
-
 # because of dots in filename:
 # in.fingerd in.rshd
 
@@ -20,6 +17,7 @@ SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          touch tr treecmp tsort tty udpstat umount uname unexpand uniq \
          update uud uue vol wc which who whoami write xargs \
          yes fsck chroot dev2name finger host ifconfig modem nice ping \
-         rcp rev rsh ramdisk synctree truncate writeisofs"
+         rcp rev rsh ramdisk synctree truncate writeisofs gomoku life top \
+         ttt"
 
 CPLINKS="ln rm mv cpdir clone"
