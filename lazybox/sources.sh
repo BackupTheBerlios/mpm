@@ -1,16 +1,8 @@
-
-# missing because of multiline function declarations: (mainly main)
-# chroot dev2name finger host ifconfig modem nice ping rcp rev rsh ramdisk
-# synctree truncate writeisofs
-
 # because of curses:
 # gomoku life top ttt
 
 # because of dots in filename:
 # in.fingerd in.rshd
-
-# what's up with fsck and fsck1?
-
 
 SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          cgrep chmem chmod chown ci cksum cleantmp cmp co comm \
@@ -27,6 +19,7 @@ SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          sync sysenv tail tar tcpd tcpstat tee term termcap tget time \
          touch tr treecmp tsort tty udpstat umount uname unexpand uniq \
          update uud uue vol wc which who whoami write xargs \
-         yes"
+         yes fsck chroot dev2name finger host ifconfig modem nice ping \
+         rcp rev rsh ramdisk synctree truncate writeisofs"
 
 CPLINKS="ln rm mv cpdir clone"

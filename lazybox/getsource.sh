@@ -5,12 +5,14 @@ base=`basename $dst .c`
 
 cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e "s/^void main/void main_$base/" \
+               -e "s/^main(/main_$base(/" \
                \
                -e 's/^void \*allocate/static void \*allocate/' \
                -e 's/^char \*whoami(/static char \*whoami(/' \
                -e 's/^char \*basename(/static char \*basename(/' \
                -e 's/^char \*getold(/static char \*getold(/' \
                -e 's/^char \*getnew(/static char \*getnew(/' \
+               -e 's/^char \*alloc(/static char \*alloc(/' \
                -e 's/^void \*xmalloc(/static void \*xmalloc(/' \
                -e 's/^void \*xrealloc(/static void \*xrealloc(/' \
                \
@@ -82,11 +84,15 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void format(/static void format(/' \
                -e 's/^void doprnt(/static void doprnt(/' \
                -e 's/^void intr(/static void intr(/' \
+               -e 's/^void usage /static void usage /' \
+               -e 's/^void printname(/static void printname(/' \
+               -e 's/^void list(/static void list(/' \
                -e 's/^int getline(/static int getline(/' \
                -e 's/^void gettable/static void gettable/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
                -e 's/^block_t sizeup(/static block_t sizeup(/' \
                -e 's/^prettyprog/static prettyprog/' \
+               -e 's/^source(/static source(/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
                -e 's/^\(int all[^_;]\)/static \1/' \
@@ -110,10 +116,12 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int fields/static int fields/' \
                -e 's/^int part /static int part /' \
                -e 's/^int rflag/static int rflag/' \
+               -e 's/^int list/static int list/' \
                -e 's/^short int verbose/static short int verbose/' \
                -e 's/^char table/static char table/' \
                -e 's/^char usage/static char usage/' \
                -e 's/^char PATH_UTMP/static char PATH_UTMP/' \
                -e 's/^char copyright/static char copyright/' \
+               -e 's/^unsigned int /static unsigned int /' \
                > $dst
 
