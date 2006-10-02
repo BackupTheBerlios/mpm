@@ -72,12 +72,12 @@ int main(int argc, char **argv) {
 
     if (sugid >= 0) { /* drop to listed privileges */
         if (sugidbins[sugid].u) {
-        pwd = getpwnam(sugidbins[sugid].u);
-        uid = pwd->pw_uid;
+            pwd = getpwnam(sugidbins[sugid].u);
+            uid = pwd->pw_uid;
         }
         if (sugidbins[sugid].g) {
-        grp = getgrnam(sugidbins[sugid].g);
-        gid = grp->gr_gid;
+            grp = getgrnam(sugidbins[sugid].g);
+            gid = grp->gr_gid;
         }
     }
 
