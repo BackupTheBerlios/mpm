@@ -2,7 +2,7 @@ To build:
 
 Have the Minix sources installed somewhere. Edit Makefile and have SOURCEPATH
 point to the directory where src/commands/simple is located and SRCPATH to
-where src is located.
+where src is located. Or, you could just mount the 3.1.2a CDROM on /mnt.
 
 ./gen.sh
 make
