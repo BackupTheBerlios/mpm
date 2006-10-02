@@ -1,3 +1,7 @@
+# If you want to build a smaller lazybox with only a few applications,
+# you can edit SOURCES below. If you do not include 'cp', you should
+# comment out CPLINKS as well!
+
 SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          cgrep chmem chmod chown ci cksum cleantmp cmp co comm \
          compress cp crc cut date dd decomp16 devsize dhrystone \
