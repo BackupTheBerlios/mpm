@@ -1,6 +1,7 @@
 
 # missing because of multiline function declarations: (mainly main)
 # chroot dev2name finger host ifconfig modem nice ping rcp rev rsh ramdisk
+# synctree
 
 # because of curses:
 # gomoku life
@@ -21,6 +22,8 @@ SOURCES="add_route arp at backup banner basename cal calendar cat cdiff \
          mkproto mt newroot nm nonamed od passwd paste pr \
          pr_routes prep printenv printf printroot progressbar proto \
          pwd pwdauth rarpd rawspeed rdate readall remsync rget rlogin \
-         rmdir badblocks cdprobe df mkfs mkswap mount readfs"
+         rmdir badblocks cdprobe df mkfs mkswap mount readfs sed shar \
+         size sleep slip sort split stat strings strip stty su sum swapfs \
+         sync sysenv"
 
 CPLINKS="ln rm mv cpdir clone"

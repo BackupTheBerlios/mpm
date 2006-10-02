@@ -18,6 +18,15 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int find/static int find/' \
                -e 's/^int compare/static int compare/' \
                -e 's/^int eat_dir(/static int eat_dir(/' \
+               -e 's/^int cmp(/static int cmp(/' \
+               -e 's/^int check(/static int check(/' \
+               -e 's/^int print(/static int print(/' \
+               -e 's/^int read_line(/static int read_line(/' \
+               -e 's/^int length(/static int length(/' \
+               -e 's/^int split/static int split/' \
+               -e 's/^int newfile(/static int newfile(/' \
+               -e 's/^int read_header(/static int read_header(/' \
+               -e 's/^int match/static int match/' \
                -e 's/^void usage(/static void usage(/' \
                -e 's/^void report(/static void report(/' \
                -e 's/^void calendar(/static void calendar(/' \
@@ -50,14 +59,23 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^void flush(/static void flush(/' \
                -e 's/^void tell(/static void tell(/' \
                -e 's/^void done(/static void done(/' \
+               -e 's/^void quit(/static void quit(/' \
+               -e 's/^void sort(/static void sort(/' \
+               -e 's/^void check(/static void check(/' \
+               -e 's/^void open_outfile(/static void open_outfile(/' \
+               -e 's/^void print_table(/static void print_table(/' \
+               -e 's/^void check_file(/static void check_file(/' \
+               -e 's/^void strip(/static void strip(/' \
+               -e 's/^void copy(/static void copy(/' \
                -e 's/^mode_t parsemode(/static mode_t parsemode(/' \
                -e 's/^block_t sizeup(/static block_t sizeup(/' \
                -e 's/^prettyprog/static prettyprog/' \
                \
                -e 's/^\(int force[^_]\)/static \1/' \
-               -e 's/^\(int all[^_]\)/static \1/' \
+               -e 's/^\(int all[^_;]\)/static \1/' \
+               -e 's/^\(int copy[^_]\)/static \1/' \
                -e 's/^int plen/static int plen/' \
-               -e 's/^int version/static int version/' \
+               -e 's/^int version /static int version /' \
                -e 's/^int column/static int column/' \
                -e 's/^int table/static int table/' \
                -e 's/^int debug/static int debug/' \
@@ -70,5 +88,6 @@ cat "$1" | sed -e "s/^int main/int main_$base/" \
                -e 's/^int inode_offset/static int inode_offset/' \
                -e 's/^int verbose/static int verbose/' \
                -e 's/^int override/static int override/' \
+               -e 's/^char table/static char table/' \
                > $dst
 
