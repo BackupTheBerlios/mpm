@@ -36,6 +36,7 @@
 #include <pwd.h>
 #include <grp.h>
 
+#include "version.h"
 #include "allnames.h"
 
 #define REGISTER(a) int main_##a(int argc, char **argv)
@@ -108,7 +109,7 @@ int main(int argc, char **argv) {
     if (0) x=x;
 #include "elseif.h"
 
-    fprintf(stderr, "%s can be called as:\n%s\n", argv[0], ALLNAMES);
+    fprintf(stderr, "%s %d can be called as:\n%s\n", argv[0], VERSION, ALLNAMES);
     return 1;
 }
 

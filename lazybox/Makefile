@@ -13,6 +13,8 @@ LIBS       = -lcurses
 
 INSTALL    = /usr/bin/install
 
+VERSION    = `cat VERSION`
+
 all:	lazybox
 
 include gen.mak
@@ -27,11 +29,20 @@ lazybox:	lazybox.o ${OBJS}
 	@echo -n "`basename $< .c` "
 	@${CC} ${CFLAGS} -c -o $@ $<
 
+lazybox.o:	lazybox.c version.h
+	@echo -n "`basename $< .c` "
+	@${CC} ${CFLAGS} -c -o $@ $<
+
+version.h:
+	@echo -n "version.h "
+	@echo "#define VERSION ${VERSION}" > version.h
+
 testlinks:
 	@for i in ${LINKS} ; do ln -s lazybox $$i ; done
 
 clean:
 	@rm -f *.o *~ lazybox ${LINKS} gen.mak register.h elseif.h allnames.h
+	@rm -f version.h
 	@for i in ${LINKS} ; do rm -f $$i.c ; done
 
 distclean:	clean
