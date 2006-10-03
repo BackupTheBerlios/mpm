@@ -59,7 +59,7 @@ static char start='[', end=']', done='*', todo='-';
 typedef enum type_e { TYPE_PERC, TYPE_BAR } type_t;
 
 type_t type = TYPE_PERC;
-INTTYPE total = 0L, length = 77;
+INTTYPE total = 0L, length = 38;
 int clear = 0;
 
 int help(char *name) {
@@ -70,7 +70,7 @@ int help(char *name) {
         "-b                  print a progress bar\n"
         "-p                  print percentages (default)\n"
         "-c                  clear line when done\n"
-        "--length=LENGTH     specify length of progress bar (default: 77)\n"
+        "--length=LENGTH     specify length of progress bar (default: 38)\n"
         "--start=CHAR        start character (default: '[')\n"
         "--end=CHAR          end character (default: ']')\n"
         "--done=CHAR         done character (default: '*')\n"
