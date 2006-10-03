@@ -1,0 +1,12 @@
+VERSION   = `cat VERSION`
+DISTFILES = AUTHORS LICENSE Makefile README VERSION gen.sh getsource.sh \
+			lazybox.c savings.sh sources.sh
+DISTDIR   = lazybox-${VERSION}
+
+dist:
+	mkdir ${DISTDIR}
+	cp ${DISTFILES} ${DISTDIR}
+	tar cvf ${DISTDIR}.tar ${DISTDIR}
+	bzip2 -9 ${DISTDIR}.tar
+	rm -rf ${DISTDIR}
+
