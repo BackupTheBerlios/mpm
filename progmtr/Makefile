@@ -1,7 +1,8 @@
 VERSION = `cat VERSION`
 
 DISTDIR   = progmtr-${VERSION}
-DISTFILES = progmtr.c progmtr.1 LICENSE VERSION Makefile AUTHORS README
+DISTFILES = progmtr.c progmtr.1 LICENSE VERSION Makefile AUTHORS README \
+			ChangeLog
 
 CC       ?= cc
 LD       ?= cc

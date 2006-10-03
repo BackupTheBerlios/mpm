@@ -1,6 +1,6 @@
 VERSION   = `cat VERSION`
 DISTFILES = AUTHORS LICENSE Makefile README VERSION gen.sh getsource.sh \
-			lazybox.c savings.sh sources.sh
+			lazybox.c savings.sh sources.sh ChangeLog Makefile.dist
 DISTDIR   = lazybox-${VERSION}
 
 dist:
