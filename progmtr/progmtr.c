@@ -81,8 +81,9 @@ int help(char *name) {
 }
 
 int usage(char *name) {
-    fprintf(stderr, "usage: %s [-b] [-p] [--length=LENGTH] [--usage] ", name);
-    fprintf(stderr, "[--help] [--start=CHAR] [--end=CHAR] [--done=CHAR] [--todo=CHAR] <amount>\n");
+    fprintf(stderr, "usage: %s [-b|-p] [--length=LENGTH]\n"
+        "        [--usage] [--help] [--start=CHAR] [--end=CHAR] [--done=CHAR]\n"
+        "        [--todo=CHAR] <amount>\n", name);
     return 2;
 }
 
