@@ -54,6 +54,7 @@ typedef uint64_t INTTYPE;
 #endif
 
 static char *buf[BUFSIZE];
+static char start='[', end=']', done='*', todo='-';
 
 typedef enum type_e { TYPE_PERC, TYPE_BAR } type_t;
 
@@ -70,6 +71,10 @@ int help(char *name) {
         "-p                  print percentages (default)\n"
         "-c                  clear line when done\n"
         "--length=LENGTH     specify length of progress bar (default: 77)\n"
+        "--start=CHAR        start character (default: '[')\n"
+        "--end=CHAR          end character (default: ']')\n"
+        "--done=CHAR         done character (default: '*')\n"
+        "--todo=CHAR         todo character (default: '-')\n"
         "--usage             print short usage description\n"
         "-?|-help|--help     print this help message\n\n", version, name);
     return 2;
@@ -77,7 +82,7 @@ int help(char *name) {
 
 int usage(char *name) {
     fprintf(stderr, "usage: %s [-b] [-p] [--length=LENGTH] [--usage] ", name);
-    fprintf(stderr, "[--help] <amount>\n");
+    fprintf(stderr, "[--help] [--start=CHAR] [--end=CHAR] [--done=CHAR] [--todo=CHAR] <amount>\n");
     return 2;
 }
 
@@ -97,6 +102,14 @@ int parse_cmdline(int argc, char **argv) {
             clear = 1;
         else if (!strncmp(argv[c], "--length=", 9))
             length = strtoul(&argv[c][9], NULL, 10);
+        else if (!strncmp(argv[c], "--start=", 8))
+            start = argv[c][8];
+        else if (!strncmp(argv[c], "--end=", 6))
+            end = argv[c][6];
+        else if (!strncmp(argv[c], "--done=", 7))
+            done = argv[c][7];
+        else if (!strncmp(argv[c], "--todo=", 7))
+            todo = argv[c][7];
         else if (!strcmp(argv[c], "--usage"))
             return usage(argv[0]);
         else if (!strcmp(argv[c], "--help"))
@@ -121,13 +134,13 @@ int parse_cmdline(int argc, char **argv) {
     return 0;
 }
 
-void print_bar(int p, char open, char done, char notdone, char close) {
+void print_bar(int p, char start, char done, char todo, char end) {
     int i, j;
     i = p * length / 100;
-    fputc(open, stderr);
+    fputc(start, stderr);
     for (j=0; j<i; j++)             fputc(done, stderr);
-    for (j=0; j<(length-i); j++)    fputc(notdone, stderr);
-    fputc(close, stderr);
+    for (j=0; j<(length-i); j++)    fputc(todo, stderr);
+    fputc(end, stderr);
     for (j=0; j<(length+2); j++)    fprintf(stderr, CURSOR_LEFT);
     fflush(stderr);
 }
@@ -154,7 +167,7 @@ int main(int argc, char **argv) {
             fprintf(stderr, "%3d%%%s", (unsigned int) p, CURSOR_4LEFT);
             fflush(stderr);
         } else {
-            print_bar(p, '[', '*', '-', ']');
+            print_bar(p, start, done, todo, end);
         }
     }
 
