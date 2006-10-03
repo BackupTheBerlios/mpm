@@ -18,6 +18,10 @@ make testlinks
 ./lazybox
 ./ls
 
+You can check the amount of space saved by running ./savings.sh. It calculates
+the sum of the currently installed binaries and compares it with the size of
+lazybox. It seems to converge to 75% savings when you add more applications.
+
 
 To install:
 
