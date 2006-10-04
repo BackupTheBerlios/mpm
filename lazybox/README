@@ -1,3 +1,15 @@
+lazybox is a multi-call binary wrapper for all 'simple' utilities that are
+bundled with the Minix 3.1.2a Operating System. Basically, it compiles a
+configurable set of utilities and this wrapper and links them together to
+form a single binary. Depending on how the binary is called, it performs
+different actions, similar to busybox. The resulting binary is always smaller
+than the separate tools, so this can be very useful for creating boot floppies
+where one has limited disk space. The build system uses a script that copies
+the original sources and uses sed to make some variables and functions static
+in order to avoid link problems. For build and installation instructions, see
+below.
+
+
 To build:
 
 Have the Minix sources installed somewhere. Edit Makefile and have SOURCEPATH
