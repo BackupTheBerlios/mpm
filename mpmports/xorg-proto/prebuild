@@ -8,7 +8,7 @@ for i in `cat "$SMPM_FILES/proto-7.1.list"` ; do
     urlget ftp://ftp.gwdg.de/pub/x11/x.org/pub/individual/proto/$i > $i
     echo    "ok"
     echo -n "    unpacking: "
-    bzip2 -dc "$i" | tar xf -
+    bzip2 -dc "$i" | tar opxf -
     echo    "ok"
 done
 

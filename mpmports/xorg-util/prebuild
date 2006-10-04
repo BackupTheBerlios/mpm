@@ -8,7 +8,7 @@ for i in `cat "$SMPM_FILES/util-7.1.list"` ; do
     urlget ftp://ftp.fu-berlin.de/unix/X11/FTP.X.ORG/pub/individual/util/$i > $i
     echo    "ok"
     echo -n "    unpacking: "
-    bzip2 -dc "$i" | tar xf -
+    bzip2 -dc "$i" | tar opxf -
     echo    "ok"
 done
 
