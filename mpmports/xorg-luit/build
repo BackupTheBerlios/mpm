@@ -1,0 +1,49 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+# setup bin directory with symlink to pmpkg-config
+# some packages query .pc files for appdefaultdir and call pkg-config
+# directly, bypassing $PKG_CONFIG (that is a bug in those configure
+# scripts)
+mkdir bin
+ln -s /usr/local/bin/pmpkg-config bin/pkg-config
+
+PATH=/bin:/usr/bin:"$SMPM_INSTALLROOT/usr/bin":"$SMPM_BUILDROOT/bin"
+export PATH
+
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:"$SMPM_INSTALLROOT/usr/lib/pkgconfig"
+export PKG_CONFIG_PATH
+PKG_CONFIG="/usr/local/bin/pmpkg-config --static"
+export PKG_CONFIG
+
+XORG_CONFIG="--prefix=/usr --sysconfdir=/usr/etc --localstatedir=/usr/var --datadir=/usr/lib"
+
+MINIX_FLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo"
+EXTRA_INC="-I/usr/include -I/usr/local/include"
+EXTRA_LIB="-L/usr/lib -L/usr/local/lib"
+CFLAGS="$MINIX_FLAGS $EXTRA_INC"
+LDFLAGS="$EXTRA_LIB"
+
+binsizes xxl
+
+cd "$SMPM_BUILDROOT/luit-1.0.1"
+
+ac_cv_path_FCCACHE=/usr/local/bin/fc-cache \
+ac_cv_path_GZIP=/usr/gnu/bin/gzip \
+lt_cv_path_SED=/usr/gnu/bin/sed \
+CONFIG_SHELL=/usr/gnu/bin/bash SHELL=/usr/gnu/bin/bash \
+INSTALL=/bin/install \
+lt_cv_sys_max_cmd_len=4096 \
+CXX=true CXXCPP="cc -E" \
+CC="cc -stack 512k -s" LD="cc -stack 512k -s" \
+CFLAGS="$CFLAGS $SOMEEXTRA" LDFLAGS="$LDFLAGS" \
+/usr/gnu/bin/bash \
+./configure $XORG_CONFIG --disable-dependency-tracking --disable-xthreads \
+        --disable-loadable-i18n --disable-loadable-xcursor \
+        --disable-dynamic-greeter
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

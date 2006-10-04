@@ -37,6 +37,7 @@ PACKAGES=\
 	xorg-lib-pt4 \
 	xorg-lib-pt5 \
 	xorg-lib-pt6 \
+	xorg-luit \
 	xorg-proto \
 	xorg-util \
 	xorg-xbitmaps \
