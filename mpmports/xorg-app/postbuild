@@ -1,3 +1,6 @@
 set -e
 
+# perhaps i should give all applications more memory during build?
+chmem =`expr 1024 \* 1024` "$SMPM_INSTALLROOT/usr/bin/xkbcomp"
+
 exit 0
