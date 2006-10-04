@@ -29,6 +29,7 @@ PACKAGES=\
 	putty \
 	vim \
 	xorg-app \
+	xorg-data \
 	xorg-lib \
 	xorg-lib-pt2 \
 	xorg-lib-pt3 \
