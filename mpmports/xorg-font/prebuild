@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+for i in `cat "$SMPM_FILES/font-7.1.list"` ; do
+    case $i in
+    \#*)    continue    ;; 
+    esac
+
+    echo    "*** $i: "
+    echo -n "    downloading: "
+    urlget ftp://ftp.fu-berlin.de/unix/X11/FTP.X.ORG/pub/individual/font/$i > $i
+    echo    "ok"
+    echo -n "    unpacking: "
+    bzip2 -dc "$i" | tar opxf -
+    echo    "ok"
+done
+
+exit 0

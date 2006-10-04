@@ -30,6 +30,7 @@ PACKAGES=\
 	vim \
 	xorg-app \
 	xorg-data \
+	xorg-font \
 	xorg-lib \
 	xorg-lib-pt2 \
 	xorg-lib-pt3 \
