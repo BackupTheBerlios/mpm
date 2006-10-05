@@ -11,7 +11,7 @@ install    -o bin -g operator -m 644 doc/builtins.1 "$P/man/man1/builtins.1"
 install -d -o bin -g operator -m 755 "$P/etc"
 install    -o bin -g operator -m 644 "$SMPM_FILES/bashrc" "$P/etc/bashrc"
 
-chmem =`expr 4 \* 1024 \* 1024` "$P/bin/bash"
+chmem =`expr 8 \* 1024 \* 1024` "$P/bin/bash"
 ln -s bash "$P/bin/rbash"
 
 exit 0
