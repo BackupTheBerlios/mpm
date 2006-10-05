@@ -6,7 +6,7 @@ cd "$P/bin"
 strip *
 
 for i in cmp diff diff3 sdiff ; do
-    chmem =`expr 4 \* 1024 \* 1024` $i
+    chmem =`expr 32 \* 1024 \* 1024` $i
 done
 
 exit 0
