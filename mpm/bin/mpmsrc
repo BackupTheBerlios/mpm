@@ -102,7 +102,7 @@ action_verify_smpm() {
     echostart "unpacking archive: "
     cd "$MPM_WORK"
     rm-rf "$MPM_WORK/$_smpm_basename"
-    bzcat "$1" | tar xf - || error "error unpacking $1"
+    bzcat "$1" | tar oxf - || error "error unpacking $1"
     _dotmpmdir="$MPM_WORK/$_smpm_basename/.mpm"
     echoend "ok"
 
@@ -156,9 +156,9 @@ action_build_smpm() {
         echostart "unpacking sources: "
         cd $SMPM_BUILDROOT
         case "$_src_tarball" in
-            *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar xf -    ;;
-            *.tar.gz|*.tgz)         gzip -dc "$_src_tarball" | tar xf - ;;
-            *.tar)                  tar xf "$_src_tarball"              ;;
+            *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar oxf -    ;;
+            *.tar.gz|*.tgz)         gzip -dc "$_src_tarball" | tar oxf - ;;
+            *.tar)                  tar oxf "$_src_tarball"              ;;
             *)  error "don't know how to unpack $_src_tarball"          ;;
         esac
         echoend "ok"
