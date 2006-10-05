@@ -25,6 +25,7 @@ PACKAGES=\
 	mawk \
 	minix-world \
 	minix-world-source \
+	perl \
 	pmpkg-config \
 	putty \
 	vim \

@@ -1,0 +1,844 @@
+diff -c perl-5.8.8/Makefile.SH perl-5.8.8-patched//Makefile.SH
+*** perl-5.8.8/Makefile.SH Tue Jan 24 12:49:44 2006
+--- perl-5.8.8-patched//Makefile.SH Thu Oct  5 14:50:31 2006
+***************
+*** 629,634 ****
+--- 629,635 ----
+  	-@rm -f miniperl.xok
+  	$(LDLIBPTH) $(CC) $(CLDFLAGS) -o miniperl \
+  	    miniperlmain$(OBJ_EXT) opmini$(OBJ_EXT) $(LLIBPERL) $(libs)
++ 	install -S40m miniperl
+  	$(LDLIBPTH) ./miniperl -w -Ilib -MExporter -e '<?>' || $(MAKE) minitest
+  !NO!SUBS!
+  		;;
+***************
+*** 639,644 ****
+--- 640,646 ----
+  perl$(EXE_EXT): $& perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+  	-@rm -f miniperl.xok
+  	$(SHRPENV) $(LDLIBPTH) $(CC) -o perl$(PERL_SUFFIX) $(PERL_PROFILE_LDFLAGS) $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
++ 	install -S40m perl$(PERL_SUFFIX)
+  
+  # Purify/Quantify Perls.
+  
+diff -c perl-5.8.8/configure.com perl-5.8.8-patched//configure.com
+*** perl-5.8.8/configure.com Sun Jan  8 22:27:45 2006
+--- perl-5.8.8-patched//configure.com Thu Oct  5 14:50:32 2006
+***************
+*** 97,108 ****
+  $!: Extra object files, if any, needed on this platform. !sfn
+  $!: Possible local include directories to search.      !sfn
+  $!: Set locincpth to "" in a hint file to defeat local include searches. !sfn
+! $!locincpth="/usr/local/include /opt/local/include /usr/gnu/include" !sfn
+  $!locincpth="$locincpth /opt/gnu/include /usr/GNU/include /opt/GNU/include"
+  $!: no include file wanted by default                  !sfn
+  $!inclwanted=''                                        !sfn
+  $!: Possible local library directories to search.      !sfn
+! $!loclibpth="/usr/local/lib /opt/local/lib /usr/gnu/lib" !sfn
+  $!loclibpth="$loclibpth /opt/gnu/lib /usr/GNU/lib /opt/GNU/lib" !sfn
+  $!: general looking path for locating libraries        !sfn
+  $!glibpth="/lib/pa1.1 /usr/shlib /usr/lib/large /lib /usr/lib" !sfn
+--- 97,108 ----
+  $!: Extra object files, if any, needed on this platform. !sfn
+  $!: Possible local include directories to search.      !sfn
+  $!: Set locincpth to "" in a hint file to defeat local include searches. !sfn
+! $!locincpth="/usr/local/include /opt/local/include" !sfn
+  $!locincpth="$locincpth /opt/gnu/include /usr/GNU/include /opt/GNU/include"
+  $!: no include file wanted by default                  !sfn
+  $!inclwanted=''                                        !sfn
+  $!: Possible local library directories to search.      !sfn
+! $!loclibpth="/usr/local/lib /opt/local/lib" !sfn
+  $!loclibpth="$loclibpth /opt/gnu/lib /usr/GNU/lib /opt/GNU/lib" !sfn
+  $!: general looking path for locating libraries        !sfn
+  $!glibpth="/lib/pa1.1 /usr/shlib /usr/lib/large /lib /usr/lib" !sfn
+diff -c perl-5.8.8/doio.c perl-5.8.8-patched//doio.c
+*** perl-5.8.8/doio.c Wed Jan 11 16:55:50 2006
+--- perl-5.8.8-patched//doio.c Thu Oct  5 14:50:33 2006
+***************
+*** 58,67 ****
+--- 58,70 ----
+  
+  #include <signal.h>
+  
++ float ohyes = 34.0, _ohno;
++ 
+  bool
+  Perl_do_open(pTHX_ GV *gv, register char *name, I32 len, int as_raw,
+  	     int rawmode, int rawperm, PerlIO *supplied_fp)
+  {
++ 	ohyes = _ohno / 7.0;
+      return do_openn(gv, name, len, as_raw, rawmode, rawperm,
+  		    supplied_fp, (SV **) NULL, 0);
+  }
+diff -c perl-5.8.8/embed.h perl-5.8.8-patched//embed.h
+*** perl-5.8.8/embed.h Tue Jan 31 15:50:34 2006
+--- perl-5.8.8-patched//embed.h Thu Oct  5 14:50:44 2006
+***************
+*** 1713,1718 ****
+--- 1713,1722 ----
+  #ifdef PERL_CORE
+  #define my_clearenv		Perl_my_clearenv
+  #endif
++ 
++ #ifndef PERL_IN_PP_SYS_C
++ #ifndef PERL_IN_PP_CTL_C
++ 
+  #define ck_anoncode		Perl_ck_anoncode
+  #define ck_bitop		Perl_ck_bitop
+  #define ck_concat		Perl_ck_concat
+***************
+*** 2100,2105 ****
+--- 2104,2112 ----
+  #define pp_warn			Perl_pp_warn
+  #define pp_xor			Perl_pp_xor
+  
++ #endif
++ #endif
++ 
+  #else	/* PERL_IMPLICIT_CONTEXT */
+  
+  #if defined(PERL_IMPLICIT_SYS)
+***************
+*** 3755,3760 ****
+--- 3762,3768 ----
+  #ifdef PERL_CORE
+  #define my_clearenv()		Perl_my_clearenv(aTHX)
+  #endif
++ 
+  #define ck_anoncode(a)		Perl_ck_anoncode(aTHX_ a)
+  #define ck_bitop(a)		Perl_ck_bitop(aTHX_ a)
+  #define ck_concat(a)		Perl_ck_concat(aTHX_ a)
+diff -c perl-5.8.8/miniperlmain.c perl-5.8.8-patched//miniperlmain.c
+*** perl-5.8.8/miniperlmain.c Sun Sep 18 15:56:39 2005
+--- perl-5.8.8-patched//miniperlmain.c Thu Oct  5 14:50:44 2006
+***************
+*** 44,49 ****
+--- 44,51 ----
+  long _stksize = 64 * 1024;
+  #endif
+  
++ float yes_use_float_yep = 1.0;
++ 
+  int
+  main(int argc, char **argv, char **env)
+  {
+diff -c perl-5.8.8/perl.c perl-5.8.8-patched//perl.c
+*** perl-5.8.8/perl.c Tue Jan 31 12:34:47 2006
+--- perl-5.8.8-patched//perl.c Thu Oct  5 14:50:45 2006
+***************
+*** 531,536 ****
+--- 531,538 ----
+  =cut
+  */
+  
++ float use_float_yep = 1.0;
++ 
+  int
+  perl_destruct(pTHXx)
+  {
+***************
+*** 3646,3652 ****
+              quote = "'";
+  #       endif
+  
+! #       ifdef VMS
+              cpp_discard_flag = "";
+  #       else
+              cpp_discard_flag = "-C";
+--- 3648,3654 ----
+              quote = "'";
+  #       endif
+  
+! #       if defined(VMS) || defined(__ACK__)
+              cpp_discard_flag = "";
+  #       else
+              cpp_discard_flag = "-C";
+diff -c perl-5.8.8/pp.h perl-5.8.8-patched//pp.h
+*** perl-5.8.8/pp.h Fri Sep 23 14:37:47 2005
+--- perl-5.8.8-patched//pp.h Thu Oct  5 14:50:45 2006
+***************
+*** 442,447 ****
+--- 442,459 ----
+  	       set(tmpsv); ret; } \
+  	  } \
+  	} STMT_END
++ #define tryAMAGICunW2(meth,set,shift) STMT_START { \
++           if (PL_amagic_generation) { \
++ 	    SV* tmpsv; \
++ 	    SV* arg= sp[shift]; \
++           if(0) goto am_again;  /* shut up unused warning */ \
++ 	  am_again: \
++ 	    if ((SvAMAGIC(arg))&&\
++ 		(tmpsv=AMG_CALLun(arg,meth))) {\
++ 	       SPAGAIN; if (shift) sp += shift; \
++ 	       set(tmpsv); RETURN; } \
++ 	  } \
++ 	} STMT_END
+  
+  #define FORCE_SETs(sv) STMT_START { sv_setsv(TARG, (sv)); SETTARG; } STMT_END
+  
+***************
+*** 450,456 ****
+  #define tryAMAGICunTARGET(meth, shift)					\
+  	STMT_START { dSP; sp--; 	/* get TARGET from below PL_stack_sp */		\
+  	    { dTARGETSTACKED; 						\
+! 		{ dSP; tryAMAGICunW(meth,FORCE_SETs,shift,RETURN);}}} STMT_END
+  
+  #define setAGAIN(ref)	\
+      STMT_START {					\
+--- 462,468 ----
+  #define tryAMAGICunTARGET(meth, shift)					\
+  	STMT_START { dSP; sp--; 	/* get TARGET from below PL_stack_sp */		\
+  	    { dTARGETSTACKED; 						\
+! 		{ dSP; tryAMAGICunW2(meth,FORCE_SETs,shift);}}} STMT_END
+  
+  #define setAGAIN(ref)	\
+      STMT_START {					\
+diff -c perl-5.8.8/pp_ctl.c perl-5.8.8-patched//pp_ctl.c
+*** perl-5.8.8/pp_ctl.c Fri Jan  6 23:23:55 2006
+--- perl-5.8.8-patched//pp_ctl.c Thu Oct  5 14:50:46 2006
+***************
+*** 861,868 ****
+  	RETURNOP(PL_op->op_next->op_next);
+      }
+      PL_stack_sp = PL_stack_base + *PL_markstack_ptr + 1;
+!     pp_pushmark();				/* push dst */
+!     pp_pushmark();				/* push src */
+      ENTER;					/* enter outer scope */
+  
+      SAVETMPS;
+--- 861,868 ----
+  	RETURNOP(PL_op->op_next->op_next);
+      }
+      PL_stack_sp = PL_stack_base + *PL_markstack_ptr + 1;
+!     Perl_pp_pushmark();				/* push dst */
+!     Perl_pp_pushmark();				/* push src */
+      ENTER;					/* enter outer scope */
+  
+      SAVETMPS;
+***************
+*** 877,883 ****
+  
+      PUTBACK;
+      if (PL_op->op_type == OP_MAPSTART)
+! 	pp_pushmark();			/* push top */
+      return ((LOGOP*)PL_op->op_next)->op_other;
+  }
+  
+--- 877,883 ----
+  
+      PUTBACK;
+      if (PL_op->op_type == OP_MAPSTART)
+! 	Perl_pp_pushmark();			/* push top */
+      return ((LOGOP*)PL_op->op_next)->op_other;
+  }
+  
+***************
+*** 2153,2159 ****
+  
+  PP(pp_dump)
+  {
+!     return pp_goto();
+      /*NOTREACHED*/
+  }
+  
+--- 2153,2159 ----
+  
+  PP(pp_dump)
+  {
+!     return Perl_pp_goto();
+      /*NOTREACHED*/
+  }
+  
+***************
+*** 3436,3442 ****
+  
+  PP(pp_dofile)
+  {
+!     return pp_require();
+  }
+  
+  PP(pp_entereval)
+--- 3436,3442 ----
+  
+  PP(pp_dofile)
+  {
+!     return Perl_pp_require();
+  }
+  
+  PP(pp_entereval)
+diff -c perl-5.8.8/pp_sys.c perl-5.8.8-patched//pp_sys.c
+*** perl-5.8.8/pp_sys.c Fri Jan 13 18:15:15 2006
+--- perl-5.8.8-patched//pp_sys.c Thu Oct  5 15:01:53 2006
+***************
+*** 1000,1006 ****
+  
+  PP(pp_dbmclose)
+  {
+!     return pp_untie();
+  }
+  
+  PP(pp_sselect)
+--- 1000,1006 ----
+  
+  PP(pp_dbmclose)
+  {
+!     return Perl_pp_untie();
+  }
+  
+  PP(pp_sselect)
+***************
+*** 1260,1266 ****
+  
+  PP(pp_read)
+  {
+!     return pp_sysread();
+  }
+  
+  STATIC OP *
+--- 1260,1266 ----
+  
+  PP(pp_read)
+  {
+!     return Perl_pp_sysread();
+  }
+  
+  STATIC OP *
+***************
+*** 1814,1820 ****
+  	PUSHs(sv);
+          PUTBACK;
+      }
+!     return pp_send();
+  }
+  
+  PP(pp_send)
+--- 1814,1820 ----
+  	PUSHs(sv);
+          PUTBACK;
+      }
+!     return Perl_pp_send();
+  }
+  
+  PP(pp_send)
+***************
+*** 1955,1961 ****
+  
+  PP(pp_recv)
+  {
+!     return pp_sysread();
+  }
+  
+  PP(pp_eof)
+--- 1955,1961 ----
+  
+  PP(pp_recv)
+  {
+!     return Perl_pp_sysread();
+  }
+  
+  PP(pp_eof)
+***************
+*** 2040,2046 ****
+  
+  PP(pp_seek)
+  {
+!     return pp_sysseek();
+  }
+  
+  PP(pp_sysseek)
+--- 2040,2046 ----
+  
+  PP(pp_seek)
+  {
+!     return Perl_pp_sysseek();
+  }
+  
+  PP(pp_sysseek)
+***************
+*** 2193,2199 ****
+  
+  PP(pp_fcntl)
+  {
+!     return pp_ioctl();
+  }
+  
+  PP(pp_ioctl)
+--- 2193,2199 ----
+  
+  PP(pp_fcntl)
+  {
+!     return Perl_pp_ioctl();
+  }
+  
+  PP(pp_ioctl)
+***************
+*** 2620,2626 ****
+  PP(pp_gsockopt)
+  {
+  #ifdef HAS_SOCKET
+!     return pp_ssockopt();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getsockopt");
+  #endif
+--- 2620,2626 ----
+  PP(pp_gsockopt)
+  {
+  #ifdef HAS_SOCKET
+!     return Perl_pp_ssockopt();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getsockopt");
+  #endif
+***************
+*** 2701,2707 ****
+  PP(pp_getsockname)
+  {
+  #ifdef HAS_SOCKET
+!     return pp_getpeername();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getsockname");
+  #endif
+--- 2701,2707 ----
+  PP(pp_getsockname)
+  {
+  #ifdef HAS_SOCKET
+!     return Perl_pp_getpeername();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getsockname");
+  #endif
+***************
+*** 2775,2781 ****
+  
+  PP(pp_lstat)
+  {
+!     return pp_stat();
+  }
+  
+  PP(pp_stat)
+--- 2775,2781 ----
+  
+  PP(pp_lstat)
+  {
+!     return Perl_pp_stat();
+  }
+  
+  PP(pp_stat)
+***************
+*** 3065,3071 ****
+  
+  PP(pp_fteowned)
+  {
+!     return pp_ftrowned();
+  }
+  
+  PP(pp_ftrowned)
+--- 3065,3071 ----
+  
+  PP(pp_fteowned)
+  {
+!     return Perl_pp_ftrowned();
+  }
+  
+  PP(pp_ftrowned)
+***************
+*** 3445,3451 ****
+  
+  PP(pp_ftbinary)
+  {
+!     return pp_fttext();
+  }
+  
+  /* File calls. */
+--- 3445,3451 ----
+  
+  PP(pp_ftbinary)
+  {
+!     return Perl_pp_fttext();
+  }
+  
+  /* File calls. */
+***************
+*** 4453,4459 ****
+  
+  PP(pp_localtime)
+  {
+!     return pp_gmtime();
+  }
+  
+  #ifdef LOCALTIME_EDGECASE_BROKEN
+--- 4453,4459 ----
+  
+  PP(pp_localtime)
+  {
+!     return Perl_pp_gmtime();
+  }
+  
+  #ifdef LOCALTIME_EDGECASE_BROKEN
+***************
+*** 4597,4613 ****
+  
+  PP(pp_shmget)
+  {
+!     return pp_semget();
+  }
+  
+  PP(pp_shmctl)
+  {
+!     return pp_semctl();
+  }
+  
+  PP(pp_shmread)
+  {
+!     return pp_shmwrite();
+  }
+  
+  PP(pp_shmwrite)
+--- 4597,4613 ----
+  
+  PP(pp_shmget)
+  {
+!     return Perl_pp_semget();
+  }
+  
+  PP(pp_shmctl)
+  {
+!     return Perl_pp_semctl();
+  }
+  
+  PP(pp_shmread)
+  {
+!     return Perl_pp_shmwrite();
+  }
+  
+  PP(pp_shmwrite)
+***************
+*** 4619,4625 ****
+      PUSHi(value);
+      RETURN;
+  #else
+!     return pp_semget();
+  #endif
+  }
+  
+--- 4619,4625 ----
+      PUSHi(value);
+      RETURN;
+  #else
+!     return Perl_pp_semget();
+  #endif
+  }
+  
+***************
+*** 4627,4638 ****
+  
+  PP(pp_msgget)
+  {
+!     return pp_semget();
+  }
+  
+  PP(pp_msgctl)
+  {
+!     return pp_semctl();
+  }
+  
+  PP(pp_msgsnd)
+--- 4627,4638 ----
+  
+  PP(pp_msgget)
+  {
+!     return Perl_pp_semget();
+  }
+  
+  PP(pp_msgctl)
+  {
+!     return Perl_pp_semctl();
+  }
+  
+  PP(pp_msgsnd)
+***************
+*** 4644,4651 ****
+      PUSHi(value);
+      RETURN;
+  #else
+!     return pp_semget();
+! #endif
+  }
+  
+  PP(pp_msgrcv)
+--- 4644,4651 ----
+      PUSHi(value);
+      RETURN;
+  #else
+!     return Perl_pp_semget();
+!     return Perl_pp_semget();
+  }
+  
+  PP(pp_msgrcv)
+***************
+*** 4657,4663 ****
+      PUSHi(value);
+      RETURN;
+  #else
+!     return pp_semget();
+  #endif
+  }
+  
+--- 4657,4663 ----
+      PUSHi(value);
+      RETURN;
+  #else
+!     return Perl_pp_semget();
+  #endif
+  }
+  
+***************
+*** 4694,4700 ****
+      }
+      RETURN;
+  #else
+!     return pp_semget();
+  #endif
+  }
+  
+--- 4694,4700 ----
+      }
+      RETURN;
+  #else
+!     return Perl_pp_semget();
+  #endif
+  }
+  
+***************
+*** 4707,4713 ****
+      PUSHi(value);
+      RETURN;
+  #else
+!     return pp_semget();
+  #endif
+  }
+  
+--- 4707,4713 ----
+      PUSHi(value);
+      RETURN;
+  #else
+!     return Perl_pp_semget();
+  #endif
+  }
+  
+***************
+*** 4716,4722 ****
+  PP(pp_ghbyname)
+  {
+  #ifdef HAS_GETHOSTBYNAME
+!     return pp_ghostent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "gethostbyname");
+  #endif
+--- 4716,4722 ----
+  PP(pp_ghbyname)
+  {
+  #ifdef HAS_GETHOSTBYNAME
+!     return Perl_pp_ghostent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "gethostbyname");
+  #endif
+***************
+*** 4725,4731 ****
+  PP(pp_ghbyaddr)
+  {
+  #ifdef HAS_GETHOSTBYADDR
+!     return pp_ghostent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "gethostbyaddr");
+  #endif
+--- 4725,4731 ----
+  PP(pp_ghbyaddr)
+  {
+  #ifdef HAS_GETHOSTBYADDR
+!     return Perl_pp_ghostent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "gethostbyaddr");
+  #endif
+***************
+*** 4832,4838 ****
+  PP(pp_gnbyname)
+  {
+  #ifdef HAS_GETNETBYNAME
+!     return pp_gnetent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getnetbyname");
+  #endif
+--- 4832,4838 ----
+  PP(pp_gnbyname)
+  {
+  #ifdef HAS_GETNETBYNAME
+!     return Perl_pp_gnetent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getnetbyname");
+  #endif
+***************
+*** 4841,4847 ****
+  PP(pp_gnbyaddr)
+  {
+  #ifdef HAS_GETNETBYADDR
+!     return pp_gnetent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getnetbyaddr");
+  #endif
+--- 4841,4847 ----
+  PP(pp_gnbyaddr)
+  {
+  #ifdef HAS_GETNETBYADDR
+!     return Perl_pp_gnetent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getnetbyaddr");
+  #endif
+***************
+*** 4932,4938 ****
+  PP(pp_gpbyname)
+  {
+  #ifdef HAS_GETPROTOBYNAME
+!     return pp_gprotoent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getprotobyname");
+  #endif
+--- 4932,4938 ----
+  PP(pp_gpbyname)
+  {
+  #ifdef HAS_GETPROTOBYNAME
+!     return Perl_pp_gprotoent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getprotobyname");
+  #endif
+***************
+*** 4941,4947 ****
+  PP(pp_gpbynumber)
+  {
+  #ifdef HAS_GETPROTOBYNUMBER
+!     return pp_gprotoent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getprotobynumber");
+  #endif
+--- 4941,4947 ----
+  PP(pp_gpbynumber)
+  {
+  #ifdef HAS_GETPROTOBYNUMBER
+!     return Perl_pp_gprotoent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getprotobynumber");
+  #endif
+***************
+*** 5018,5024 ****
+  PP(pp_gsbyname)
+  {
+  #ifdef HAS_GETSERVBYNAME
+!     return pp_gservent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getservbyname");
+  #endif
+--- 5018,5024 ----
+  PP(pp_gsbyname)
+  {
+  #ifdef HAS_GETSERVBYNAME
+!     return Perl_pp_gservent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getservbyname");
+  #endif
+***************
+*** 5027,5033 ****
+  PP(pp_gsbyport)
+  {
+  #ifdef HAS_GETSERVBYPORT
+!     return pp_gservent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getservbyport");
+  #endif
+--- 5027,5033 ----
+  PP(pp_gsbyport)
+  {
+  #ifdef HAS_GETSERVBYPORT
+!     return Perl_pp_gservent();
+  #else
+      DIE(aTHX_ PL_no_sock_func, "getservbyport");
+  #endif
+***************
+*** 5220,5226 ****
+  PP(pp_gpwnam)
+  {
+  #ifdef HAS_PASSWD
+!     return pp_gpwent();
+  #else
+      DIE(aTHX_ PL_no_func, "getpwnam");
+  #endif
+--- 5220,5226 ----
+  PP(pp_gpwnam)
+  {
+  #ifdef HAS_PASSWD
+!     return Perl_pp_gpwent();
+  #else
+      DIE(aTHX_ PL_no_func, "getpwnam");
+  #endif
+***************
+*** 5229,5235 ****
+  PP(pp_gpwuid)
+  {
+  #ifdef HAS_PASSWD
+!     return pp_gpwent();
+  #else
+      DIE(aTHX_ PL_no_func, "getpwuid");
+  #endif
+--- 5229,5235 ----
+  PP(pp_gpwuid)
+  {
+  #ifdef HAS_PASSWD
+!     return Perl_pp_gpwent();
+  #else
+      DIE(aTHX_ PL_no_func, "getpwuid");
+  #endif
+***************
+*** 5496,5502 ****
+  PP(pp_ggrnam)
+  {
+  #ifdef HAS_GROUP
+!     return pp_ggrent();
+  #else
+      DIE(aTHX_ PL_no_func, "getgrnam");
+  #endif
+--- 5496,5502 ----
+  PP(pp_ggrnam)
+  {
+  #ifdef HAS_GROUP
+!     return Perl_pp_ggrent();
+  #else
+      DIE(aTHX_ PL_no_func, "getgrnam");
+  #endif
+***************
+*** 5505,5511 ****
+  PP(pp_ggrgid)
+  {
+  #ifdef HAS_GROUP
+!     return pp_ggrent();
+  #else
+      DIE(aTHX_ PL_no_func, "getgrgid");
+  #endif
+--- 5505,5511 ----
+  PP(pp_ggrgid)
+  {
+  #ifdef HAS_GROUP
+!     return Perl_pp_ggrent();
+  #else
+      DIE(aTHX_ PL_no_func, "getgrgid");
+  #endif
+diff -c perl-5.8.8/proto.h perl-5.8.8-patched//proto.h
+*** perl-5.8.8/proto.h Tue Jan 31 15:50:34 2006
+--- perl-5.8.8-patched//proto.h Thu Oct  5 14:51:47 2006
+***************
+*** 1870,1876 ****
+  STATIC I32	S_expect_number(pTHX_ char** pattern)
+  			__attribute__warn_unused_result__;
+  
+- #
+  STATIC bool	S_utf8_mg_pos(pTHX_ SV *sv, MAGIC **mgp, STRLEN **cachep, I32 i, I32 *offsetp, I32 uoff, const U8 **sp, const U8 *start, const U8 *send);
+  STATIC bool	S_utf8_mg_pos_init(pTHX_ SV *sv, MAGIC **mgp, STRLEN **cachep, I32 i, I32 offsetp, const U8 *s, const U8 *start);
+  #endif
+--- 1870,1875 ----

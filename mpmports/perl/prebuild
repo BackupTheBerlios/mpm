@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/perl-5.8.8"
+patch -p1 < "$SMPM_PATCHES/perl-5.8.8-minix3.patch"
+
+exit 0

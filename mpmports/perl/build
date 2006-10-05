@@ -1,0 +1,21 @@
+set -e
+
+cd "$SMPM_BUILDROOT/perl-5.8.8"
+
+PATH=/bin:/usr/bin
+export PATH
+
+rm -f config.sh Policy.sh
+/usr/gnu/bin/bash Configure -de \
+    -Uusenm \
+    -Accflags="-D_MINIX=1 -D_POSIX_SOURCE=1" \
+    -Alibs="-ld -lc -lutil" \
+    prefix=/usr/local \
+
+binsizes xxl
+make
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

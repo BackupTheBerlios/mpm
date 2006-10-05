@@ -1,0 +1,10 @@
+name:       perl
+version:    5.8.8
+release:    1
+source:     http://www.perl.com/CPAN/src/perl-5.8.8.tar.gz
+filesize:   12829188
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    perl
+os:         yes
+arch:       yes
