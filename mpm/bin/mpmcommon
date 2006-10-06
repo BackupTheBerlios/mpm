@@ -421,3 +421,33 @@ relpath_to_abs() {
     p="`cd \"$p\"; pwd`"
     echo "$p/$b"
 }
+
+filesize() {
+    if test "$os" = "minix" ; then
+        expr -s "$1"
+    else
+        ls -l "$1" | { read a b c d e f; echo $e; }
+    fi
+}
+
+# overloaded:
+# progress <filename>
+# progress NULL <size>
+progress() {
+    r=`( /usr/local/bin/progmtr --help 2>&1 ) 2>/dev/null`
+    if test -z "$r" ; then
+        cat
+    else
+        if test -z "$2" ; then
+            s=`filesize "$1"`
+        else
+            s="$2"
+        fi
+        /usr/local/bin/progmtr -c -b --length=20 "$2"
+    fi
+}
+
+progress2() {
+    progress NULL "$1"
+}
+

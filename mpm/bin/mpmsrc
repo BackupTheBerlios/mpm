@@ -145,7 +145,7 @@ action_build_smpm() {
         cd $SMPM_BUILDROOT
         test -z "$download" && error "this shouldn't happen; there is no download client"
         _src_tarball=`basename $_d_source`
-        r=`$download "$_d_source" 2>&1 > "$SMPM_BUILDROOT/$_src_tarball"` || error "could not download pristine sources: $r"
+        r=`$download "$_d_source" 2>&1 | progress2 "$_d_filesize" > "$SMPM_BUILDROOT/$_src_tarball"` || error "could not download pristine sources: $r"
         echoend "ok"
 
         echostart "checking filesize: "
@@ -156,9 +156,12 @@ action_build_smpm() {
         echostart "unpacking sources: "
         cd $SMPM_BUILDROOT
         case "$_src_tarball" in
-            *.tar.bz2|*.tbz2|*.tbz) bzcat "$_src_tarball" | tar oxf -    ;;
-            *.tar.gz|*.tgz)         gzip -dc "$_src_tarball" | tar oxf - ;;
-            *.tar)                  tar oxf "$_src_tarball"              ;;
+            *.tar.bz2|*.tbz2|*.tbz)
+                cat "$_src_tarball" | progress2 "$_d_filesize" | bzcat | tar oxf - ;;
+            *.tar.gz|*.tgz)
+                cat "$_src_tarball" | progress2 "$_d_filesize" | gzip -dc | tar oxf - ;;
+            *.tar)
+                cat "$_src_tarball" | progress2 "$_d_filesize" | tar oxf - ;;
             *)  error "don't know how to unpack $_src_tarball"          ;;
         esac
         echoend "ok"
