@@ -27,6 +27,7 @@ PACKAGES=\
 	minix-world-source \
 	perl \
 	pmpkg-config \
+	progmtr \
 	putty \
 	vim \
 	xorg-app \

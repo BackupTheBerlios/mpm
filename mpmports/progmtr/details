@@ -1,0 +1,10 @@
+name:       progmtr
+version:    0.90
+release:    1
+source:     http://download.berlios.de/mpm/progmtr-0.90.tar.bz2
+filesize:   4699
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    progmtr - progress meter
+os:         yes
+arch:       yes

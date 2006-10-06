@@ -1,0 +1,10 @@
+set -e
+
+cd "$SMPM_BUILDROOT/progmtr-0.90"
+
+PATH=/bin:/usr/bin
+export PATH
+
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0
