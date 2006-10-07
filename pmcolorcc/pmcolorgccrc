@@ -1,0 +1,23 @@
+# poor man's colorgcc rc file
+
+# If you want different colors, you can override them here. Always
+# specify whether you mean a bold or normal character! Tags to choose
+# from are: _black, _red, _green, _yellow, _blue, _purple, _cyan,
+# _white, _normal and _bold
+#
+# Uncomment any or all of the next few lines:
+#_warn="$_bold$_red"
+#_lineno="$_bold$_purple"
+#_src="$_bold$_green"
+#_error="$_normal$_blue"
+
+# To override the default compilers, uncomment the following function:
+#compilers() {
+#    case "$1" in
+#        gcc)    echo "/usr/local/bin/gcc"   ;;
+#        g++)    echo "/usr/local/bin/g++"   ;;
+#        cc)     echo "/usr/local/bin/gcc"   ;;
+#        CC)     echo "/usr/local/bin/g++"   ;;
+#    esac
+#}
+
