@@ -5,7 +5,7 @@
 # from are: _black, _red, _green, _yellow, _blue, _purple, _cyan,
 # _white, _normal and _bold
 #
-# Uncomment any or all of the next few lines:
+# Uncomment and edit any or all of the next few lines:
 #_warn="$_bold$_red"
 #_lineno="$_bold$_purple"
 #_src="$_bold$_green"
