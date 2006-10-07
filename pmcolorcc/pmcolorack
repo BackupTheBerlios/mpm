@@ -1,0 +1,35 @@
+#! /bin/sh
+# Copyright (C) 2006, Ivo van Poorten. See LICENSE for details!
+
+_black="[30m" _red="[31m" _green="[32m" _yellow="[33m" _blue="[34m"
+_purple="[35m" _cyan="[36m" _white="[37m" _bold="[1m" _normal="[0m"
+_reset="$_normal[39m"
+
+me=`echo "$0" | sed -e 's@.*/\(.*\)@\1@'`
+test -n "$me" || me="$0"
+
+compilers() { echo "/usr/bin/$1" ; }
+
+if test -f "$HOME/.pmcolorackrc" ; then . "$HOME/.pmcolorackrc" ; fi
+
+_compiler=`compilers "$me"`
+
+test -t 1 || exec $_compiler "$@" # stdout != tty
+
+_strict=${_strict-"$_normal$_yellow"}
+_warn=${_warn-"$_bold$_yellow"}
+_lineno=${_lineno-"$_bold$_blue"}
+_src=${_src-"$_bold$_cyan"}
+_error=${_error-"$_bold$_red"}
+
+_colorize_ack() {
+    sed \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*strict.*\)'\(.*\)'\(.*\)/\1$_lineno\2$_strict\3'$_src\4$_strict'\5$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*strict.*\)/\1$_lineno\2$_strict\3$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*warning.*\)'\(.*\)'\(.*\)/\1$_lineno\2$_warn\3'$_src\4$_warn'\5$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*warning.*\)/\1$_lineno\2$_warn\3$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*\)\"\(.*\)\"\(.*\)/\1$_lineno\2$_error\3\"$_src\4$_error\"\5$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line[ 0-9]*:\)\(.*\)/\1$_lineno\2$_error\3$_reset/"
+}
+
+{ $_compiler "$@" 3>&1 1>&2 2>&3 | _colorize_ack ; } 3>&1 1>&2 2>&3
