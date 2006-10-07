@@ -29,4 +29,12 @@ _colorize_gnu() {
     -e "s/^\([^:]*:\)\([0-9]*:\)\(.*warning:.*\)/\1$_lineno\2$_warn\3$_reset/"
 }
 
-{ $_compiler "$@" 3>&1 1>&2 2>&3 | _colorize_gnu ; } 3>&1 1>&2 2>&3
+{ { $_compiler "$@" ; echo "EXITCODE:$?" >&2 ; } 3>&1 1>&2 2>&3 | \
+    _colorize_gnu | \
+    while true; do
+        read line
+        case "$line" in
+            EXITCODE:*) exit `echo $line | cut -d ':' -f 2` ;;
+            *)          echo "$line" ;;
+        esac
+    done ; } 3>&1 1>&2 2>&3
