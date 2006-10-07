@@ -1,0 +1,5 @@
+* colorize icc, suncc, et cetera
+* perhaps merge all colorizers as they share quite a lot of code
+    - problem with that is that cc can be anything, so it is impossible
+      to distinguish between compilers when multiple compilers are
+      installed
