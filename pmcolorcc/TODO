@@ -1,3 +1,7 @@
+* exit with exit code of _compiler!
+    - preferably without the use of a temporary file to store the exit code
+    - PIPESTATUS is bash only so that's out of the question
+
 * colorize icc, suncc, et cetera
 * perhaps merge all colorizers as they share quite a lot of code
     - problem with that is that cc can be anything, so it is impossible
