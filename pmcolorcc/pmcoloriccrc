@@ -1,4 +1,4 @@
-# poor man's colorgcc rc file
+# poor man's coloricc rc file
 
 # If you want different colors, you can override them here. Always
 # specify whether you mean a bold or normal character! Tags to choose
@@ -14,10 +14,7 @@
 # To override the default compilers, uncomment the following function:
 #compilers() {
 #    case "$1" in
-#        gcc)    echo "/usr/local/bin/gcc"   ;;
-#        g++)    echo "/usr/local/bin/g++"   ;;
-#        cc)     echo "/usr/local/bin/gcc"   ;;
-#        CC)     echo "/usr/local/bin/g++"   ;;
+#        icc)    echo "/opt/intel/cc/9.1.042/bin/icc"    ;;
 #    esac
 #}
 
