@@ -10,3 +10,14 @@ icc             Intel C/C++ Compiler
 
 Adding additional compilers is pretty easy. Just copy one of the other
 colorizers and adjust the sed-rules.
+
+
+Requirements:
+
+A terminal capable of ANSI colors
+
+
+Installation:
+
+Type 'make' and follow the instructions
+
