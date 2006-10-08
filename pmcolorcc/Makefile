@@ -3,6 +3,7 @@ VERSION=`cat VERSION`
 
 prefix    += /usr/local
 bindir    += ${prefix}/bin
+etcdir    += ${prefix}/etc
 owner     += root
 group     += root
 mode      += 755
@@ -26,6 +27,7 @@ all:
 	@echo ""
 	@echo "prefix          installation prefix           [current: ${prefix}]"
 	@echo "bindir          install binaries here         [current: ${bindir}]"
+	@echo "etcdir          install sample rc files here  [current: ${etcdir}]"
 	@echo "owner           owner of files/directories    [current: ${owner}]"
 	@echo "group           group of files/directories    [current: ${group}]"
 	@echo "mode            mode for files                [current: ${mode}]"
@@ -37,17 +39,24 @@ all:
 install-bindir:
 	${install} -d -m ${dirmode} -o ${owner} -g ${group} ${DESTDIR}${bindir}
 
-install-gcc:	install-bindir
+install-etcdir:
+	${install} -d -m ${dirmode} -o ${owner} -g ${group} ${DESTDIR}${etcdir}
+
+install-gcc:	install-bindir install-etcdir
 	${install} -m ${mode} -o ${owner} -g ${group} pmcolorgcc ${DESTDIR}${bindir}/pmcolorgcc
+	${install} -m ${mode} -o ${owner} -g ${group} pmcolorgccrc ${DESTDIR}${etcdir}/pmcolorgccrc
 
-install-ack:	install-bindir
+install-ack:	install-bindir install-etcdir
 	${install} -m ${mode} -o ${owner} -g ${group} pmcolorack ${DESTDIR}${bindir}/pmcolorack
+	${install} -m ${mode} -o ${owner} -g ${group} pmcolorackrc ${DESTDIR}${etcdir}/pmcolorackrc
 
-install-suncc:	install-bindir
+install-suncc:	install-bindir install-etcdir
 	${install} -m ${mode} -o ${owner} -g ${group} pmcolorsuncc ${DESTDIR}${bindir}/pmcolorsuncc
+	${install} -m ${mode} -o ${owner} -g ${group} pmcolorsunccrc ${DESTDIR}${etcdir}/pmcolorsunccrc
 
-install-icc:	install-bindir
+install-icc:	install-bindir install-etcdir
 	${install} -m ${mode} -o ${owner} -g ${group} pmcoloricc ${DESTDIR}${bindir}/pmcoloricc
+	${install} -m ${mode} -o ${owner} -g ${group} pmcoloriccrc ${DESTDIR}${etcdir}/pmcoloriccrc
 
 install-all:	install-gcc install-ack install-suncc install-icc
 
