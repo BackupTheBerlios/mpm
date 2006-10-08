@@ -21,3 +21,19 @@ Installation:
 
 Type 'make' and follow the instructions
 
+
+Usage:
+
+Make symbolic links in $HOME/bin and be sure that $HOME/bin is first in your
+PATH. For example:
+
+ln -s /usr/local/bin/pmcolorgcc $HOME/bin/gcc
+export PATH=$HOME/bin:$PATH
+which gcc
+
+If you want to override the default settings (compiler paths, colors, ...) you
+can create an rc file in your home directory:
+
+cp /usr/local/etc/pmcolorgccrc $HOME/.pmcolorgccrc
+vi $HOME/.pmcolorgccrc
+
