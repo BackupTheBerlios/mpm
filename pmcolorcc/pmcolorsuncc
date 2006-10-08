@@ -1,0 +1,43 @@
+#! /bin/sh
+# Copyright (C) 2006, Ivo van Poorten. See LICENSE for details!
+
+_black="[30m" _red="[31m" _green="[32m" _yellow="[33m" _blue="[34m"
+_purple="[35m" _cyan="[36m" _white="[37m" _bold="[1m" _normal="[0m"
+_reset="$_normal[39m"
+
+me=`echo "$0" | sed -e 's@.*/\(.*\)@\1@'`
+test -n "$me" || me="$0"
+
+compilers() { echo "/opt/sun/bin/$1" ; }
+
+if test -f "$HOME/.pmcolorsunccrc" ; then . "$HOME/.pmcolorsunccrc" ; fi
+
+_compiler=`compilers "$me"`
+
+test -t 1 || exec $_compiler "$@" # stdout != tty
+
+_warn=${_warn-"$_normal$_yellow"}
+_lineno=${_lineno-"$_normal$_white"}
+_src=${_src-"$_bold$_cyan"}
+_error=${_error-"$_bold$_red"}
+
+_colorize_sun() {
+    sed \
+    -e "s/^\([^,]*,\)\(.*line [0-9]*:\)\(.*warning.*\)\"\(.*\)\"\(.*\)/\1$_lineno\2$_warn\3\"$_src\4$_warn\"\5$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line [0-9]*:\)\(.*warning.*\)/\1$_lineno\2$_warn\3$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line [0-9]*:\)\(.*error.*:\)\(.*\)/\1$_lineno\2$_error\3$_src\4$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line [0-9]*:\)\(.*error.*\)/\1$_lineno\2$_error\3$_reset/" \
+    -e "s/^\(.*prototype:\)\(.*,\)\(.*line [0-9]*\)/$_warn\1\2$_lineno\3$_reset/" \
+    -e "s/^\(.*argument :\)\(.*\)/$_warn\1\2$_reset/" \
+    -e "s/^\([^,]*,\)\(.*line [0-9]*:\)\(.*\)/\1$_lineno\2$_warn\3$_reset/"
+}
+
+{ { $_compiler "$@" ; echo "EXITCODE:$?" >&2 ; } 3>&1 1>&2 2>&3 | \
+    _colorize_sun | \
+    while true; do
+        read line
+        case "$line" in
+            EXITCODE:*) exit `echo $line | cut -d ':' -f 2` ;;
+            *)          echo "$line" ;;
+        esac
+    done ; } 3>&1 1>&2 2>&3
