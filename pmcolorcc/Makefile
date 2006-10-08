@@ -1,5 +1,10 @@
 
-VERSION=`cat VERSION`
+VERSION    = `cat VERSION`
+DISTDIR    = pmcolorcc-${VERSION}
+
+DISTFILES  = AUTHORS LICENSE Makefile README TODO VERSION pmcolorack \
+             pmcolorackrc pmcolorgcc pmcolorgccrc pmcoloricc pmcoloriccrc \
+             pmcolorsuncc pmcolorsunccrc
 
 prefix    += /usr/local
 bindir    += ${prefix}/bin
@@ -62,3 +67,14 @@ install-all:	install-gcc install-ack install-suncc install-icc
 
 clean:
 	rm -f *~
+
+distclean:	clean
+	rm -rf ${DISTDIR}.tar.bz2 ${DISTDIR}.tar ${DISTDIR}
+
+dist:	distclean
+	mkdir ${DISTDIR}
+	cp ${DISTFILES} ${DISTDIR}
+	tar cvf ${DISTDIR}.tar ${DISTDIR}
+	bzip2 -9 ${DISTDIR}.tar
+	rm -rf ${DISTDIR}
+
