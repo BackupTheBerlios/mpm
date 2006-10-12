@@ -443,7 +443,7 @@ progress() {
         else
             s="$2"
         fi
-        /usr/local/bin/progmtr -c "$2"
+        /usr/local/bin/progmtr -c "$s"
     fi
 }
 
