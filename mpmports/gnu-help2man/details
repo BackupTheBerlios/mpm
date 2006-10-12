@@ -1,0 +1,10 @@
+name:       gnu-help2man
+version:    1.36.4
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/help2man/help2man-1.36.4.tar.gz
+filesize:   85630
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU help2man
+os:         yes
+arch:       no

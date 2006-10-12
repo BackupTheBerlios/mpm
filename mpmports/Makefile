@@ -12,6 +12,7 @@ PACKAGES=\
 	gnu-findutils \
 	gnu-grep \
 	gnu-gzip \
+	gnu-help2man \
 	gnu-inetutils \
 	gnu-less \
 	gnu-m4 \
