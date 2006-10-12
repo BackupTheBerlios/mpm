@@ -1,0 +1,14 @@
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+cd "$SMPM_BUILDROOT/flex-2.5.33"
+
+sed -e 's/ *\/\/.*//' main.c >main.c.new
+sed -e 's/ *\/\/.*//' tables.c >tables.c.new
+mv tables.c.new tables.c
+mv main.c.new main.c
+patch < "$SMPM_PATCHES/scan.c.patch"
+
+exit 0

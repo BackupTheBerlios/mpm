@@ -3,6 +3,7 @@ PACKAGES=\
 	cvs \
 	dialog \
 	expat \
+	flex \
 	fontconfig \
 	freetype \
 	gnu-bash \
