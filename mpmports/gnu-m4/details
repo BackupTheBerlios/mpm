@@ -1,0 +1,10 @@
+name:       gnu-m4
+version:    1.4.3
+release:    1
+source:     http://ftp.gnu.org/pub/gnu/m4/m4-1.4.3.tar.bz2
+filesize:   305598
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GNU m4
+os:         yes
+arch:       yes

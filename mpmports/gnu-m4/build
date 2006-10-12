@@ -1,0 +1,17 @@
+set -e
+
+cd "$SMPM_BUILDROOT/m4-1.4.3"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC=cc LD="cc -stack 1024k -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+configure --prefix=/usr/gnu \
+          --disable-dependency-tracking \
+          --disable-nls \
+
+make
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

@@ -14,6 +14,7 @@ PACKAGES=\
 	gnu-gzip \
 	gnu-inetutils \
 	gnu-less \
+	gnu-m4 \
 	gnu-make \
 	gnu-ncurses \
 	gnu-sed \
