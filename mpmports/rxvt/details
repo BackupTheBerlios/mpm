@@ -1,0 +1,10 @@
+name:       rxvt
+version:    2.6.4
+release:    1
+source:     http://surfnet.dl.sourceforge.net/sourceforge/rxvt/rxvt-2.6.4.tar.gz
+filesize:   307334
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    rxvt - small and fast xterm replacement
+os:         yes
+arch:       yes

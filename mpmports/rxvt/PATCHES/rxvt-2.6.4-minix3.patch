@@ -1,0 +1,48 @@
+diff -c rxvt-2.6.4/src/command.c rxvt-2.6.4-patched/src/command.c
+*** rxvt-2.6.4/src/command.c Fri Nov  2 00:18:57 2001
+--- rxvt-2.6.4-patched/src/command.c Fri Oct 13 21:52:43 2006
+***************
+*** 45,50 ****
+--- 45,52 ----
+  #include "version.h"
+  #include "command.h"
+  #include "X11/keysymdef.h"
++ #define O_NDELAY O_NONBLOCK
++ #define tcsetpgrp(a,b) ioctl(a, TIOCSPGRP, &(b))
+  
+  /*{{{ local variables */
+  static char    *ttydev = NULL;	/* pty/tty name */
+***************
+*** 411,417 ****
+  	    }
+  	}
+  #endif				/* TTY_GID_SUPPORT */
+! #ifndef __CYGWIN32__
+  	privileges(RESTORE);
+  	fchown(fd, getuid(), gid);	/* fail silently */
+  	fchmod(fd, mode);
+--- 413,419 ----
+  	    }
+  	}
+  #endif				/* TTY_GID_SUPPORT */
+! #if !defined(__CYGWIN32__) && !defined(_MINIX)
+  	privileges(RESTORE);
+  	fchown(fd, getuid(), gid);	/* fail silently */
+  	fchmod(fd, mode);
+diff -c rxvt-2.6.4/src/command.h rxvt-2.6.4-patched/src/command.h
+*** rxvt-2.6.4/src/command.h Tue Jun 22 07:49:05 1999
+--- rxvt-2.6.4-patched/src/command.h Fri Oct 13 21:51:02 2006
+***************
+*** 53,61 ****
+--- 53,63 ----
+  
+  #include <X11/keysym.h>
+  #ifndef NO_XLOCALE
++ /*
+  # if (XtSpecificationRelease < 6)
+  #  define NO_XLOCALE
+  # endif
++ */
+  #endif
+  
+  #ifndef NO_XSETLOCALE

@@ -29,6 +29,7 @@ PACKAGES=\
 	pmpkg-config \
 	progmtr \
 	putty \
+	rxvt \
 	xorg6 \
 	vim \
 	zlib \

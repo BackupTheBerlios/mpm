@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/rxvt-2.6.4"
+patch -p1 < "$SMPM_PATCHES/rxvt-2.6.4-minix3.patch"
+
+exit 0
