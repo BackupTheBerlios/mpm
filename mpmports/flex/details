@@ -1,8 +1,8 @@
 name:       flex
-version:    2.5.33
+version:    2.5.4
 release:    1
-source:     http://surfnet.dl.sourceforge.net/sourceforge/flex/flex-2.5.33.tar.bz2
-filesize:   695464
+source:     http://surfnet.dl.sourceforge.net/sourceforge/flex/flex-2.5.4a.tar.bz2
+filesize:   284328
 md5sum:     0123456789abcdef0123456789abcdef
 license:    BSD
 summary:    flex lexical analyzer

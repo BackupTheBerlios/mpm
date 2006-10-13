@@ -1,19 +1,17 @@
 set -e
 
-cd "$SMPM_BUILDROOT/flex-2.5.33"
+cd "$SMPM_BUILDROOT/flex-2.5.4"
 
 PATH=/bin:/usr/bin
 export PATH
 
-HELP2MAN=/usr/gnu/bin/help2man M4=/usr/gnu/bin/m4 \
 CC="cc -stack 4096k -s" LD="cc -stack 4096k -s" \
 CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
-configure --prefix=/usr/local \
+configure --prefix="$SMPM_INSTALLROOT/usr/local" \
           --disable-dependency-tracking \
           --disable-nls \
 
 make
-DESTDIR="$SMPM_INSTALLROOT" \
-make DESTDIR="$SMPM_INSTALLROOT" install
+make install
 
 exit 0
