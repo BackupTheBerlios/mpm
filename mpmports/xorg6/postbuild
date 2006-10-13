@@ -6,4 +6,6 @@ mv X11/* "$SMPM_INSTALLROOT/usr/X11R6/etc"
 rm -rf X11
 ln -s ../usr/X11R6/etc X11
 
+chmem =`expr 40 \* 1024 \* 1024` "$SMPM_INSTALLROOT/usr/X11R6/bin/X"
+
 exit 0
