@@ -2,10 +2,7 @@ PACKAGES=\
 	bwk \
 	cvs \
 	dialog \
-	expat \
 	flex \
-	fontconfig \
-	freetype \
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \
@@ -33,19 +30,6 @@ PACKAGES=\
 	progmtr \
 	putty \
 	vim \
-	xorg-app \
-	xorg-data \
-	xorg-font \
-	xorg-lib \
-	xorg-lib-pt2 \
-	xorg-lib-pt3 \
-	xorg-lib-pt4 \
-	xorg-lib-pt5 \
-	xorg-lib-pt6 \
-	xorg-luit \
-	xorg-proto \
-	xorg-util \
-	xorg-xbitmaps \
 	zlib \
 
 all:
