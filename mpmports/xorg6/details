@@ -1,0 +1,10 @@
+name:       xorg6
+version:    6.8.2
+release:    1
+source:     ftp://ftp.fu-berlin.de/unix/X11/FTP.X.ORG/pub/X11R6.8.2/src-single/X11R6.8.2-src.tar.bz2
+filesize:   44371402
+md5sum:     0123456789abcdef0123456789abcdef
+license:    MIT
+summary:    Xorg 6.8.2
+os:         yes
+arch:       yes

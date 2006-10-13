@@ -1,0 +1,18 @@
+set -e
+
+cd "$SMPM_BUILDROOT/xc"
+
+mkdir "$SMPM_BUILDROOT/bin"
+cp /usr/gnu/bin/gzip "$SMPM_BUILDROOT/bin"
+
+PATH=/bin:/usr/bin:"$SMPM_BUILDROOT/bin":/usr/local/bin
+export PATH
+
+make World
+
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install.man
+
+exit 0

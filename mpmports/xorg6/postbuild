@@ -1,0 +1,9 @@
+set -e
+
+test -d "$SMPM_INSTALLROOT/usr/X11R6/etc" || mkdir "$SMPM_INSTALLROOT/usr/X11R6/etc"
+cd "$SMPM_INSTALLROOT/etc"
+mv X11/* "$SMPM_INSTALLROOT/usr/X11R6/etc"
+rm -rf X11
+ln -s ../usr/X11R6/etc X11
+
+exit 0
