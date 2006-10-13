@@ -1,0 +1,10 @@
+name:       pdksh
+version:    5.2.14
+release:    1
+source:     ftp://ftp.cs.mun.ca/pub/pdksh/pdksh-5.2.14.tar.gz
+filesize:   480107
+md5sum:     0123456789abcdef0123456789abcdef
+license:    PD
+summary:    public domain Korn SHell
+os:         yes
+arch:       yes

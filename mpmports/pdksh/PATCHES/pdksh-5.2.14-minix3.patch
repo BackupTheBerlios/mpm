@@ -1,0 +1,34 @@
+diff -c pdksh-5.2.14/expr.c pdksh-5.2.14-patched/expr.c
+*** pdksh-5.2.14/expr.c Thu Apr 22 19:54:15 1999
+--- pdksh-5.2.14-patched/expr.c Fri Oct 13 23:06:43 2006
+***************
+*** 568,580 ****
+  tempvar()
+  {
+  	register struct tbl *vp;
+  
+  	vp = (struct tbl*) alloc(sizeof(struct tbl), ATEMP);
+  	vp->flag = ISSET|INTEGER;
+  	vp->type = 0;
+  	vp->areap = ATEMP;
+  	vp->val.i = 0;
+! 	vp->name[0] = '\0';
+  	return vp;
+  }
+  
+--- 568,582 ----
+  tempvar()
+  {
+  	register struct tbl *vp;
++ 	char *c;
+  
+  	vp = (struct tbl*) alloc(sizeof(struct tbl), ATEMP);
+  	vp->flag = ISSET|INTEGER;
+  	vp->type = 0;
+  	vp->areap = ATEMP;
+  	vp->val.i = 0;
+! 	c=(char *)&(vp->name[0]);
+! 	*c='\0';
+  	return vp;
+  }
+  

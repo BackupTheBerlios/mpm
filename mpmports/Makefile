@@ -25,6 +25,7 @@ PACKAGES=\
 	mawk \
 	minix-world \
 	minix-world-source \
+	pdksh \
 	perl \
 	pmpkg-config \
 	progmtr \

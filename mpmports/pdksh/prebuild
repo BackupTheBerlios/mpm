@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/pdksh-5.2.14"
+patch -p1 < "$SMPM_PATCHES/pdksh-5.2.14-minix3.patch"
+
+exit 0
