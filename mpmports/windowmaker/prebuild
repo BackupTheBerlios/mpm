@@ -20,4 +20,9 @@ do
     mv $i.new $i
 done
 
+# run wmaker.inst with korn shell
+cd "$SMPM_BUILDROOT/WindowMaker-0.92.0/util"
+sed -e 's@#!/bin/sh@#! /usr/local/bin/ksh@' wmaker.inst.in > wmaker.inst.in.new
+mv wmaker.inst.in.new wmaker.inst.in
+
 exit 0
