@@ -20,6 +20,7 @@ PACKAGES=\
 	gnu-shutils \
 	gnu-tar \
 	gnu-textutils \
+	libjpeg \
 	libpng \
 	lynx \
 	mawk \

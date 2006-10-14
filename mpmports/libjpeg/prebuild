@@ -1,0 +1,8 @@
+set -e
+
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/local/bin"
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/local/lib"
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/local/include"
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/local/man/man1"
+
+exit 0

@@ -1,0 +1,10 @@
+name:       libjpeg
+version:    6b
+release:    1
+source:     http://www.ijg.org/files/jpegsrc.v6b.tar.gz
+filesize:   613261
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    IJG JPEG Library
+os:         yes
+arch:       yes

@@ -1,0 +1,14 @@
+set -e
+
+cd "$SMPM_BUILDROOT/jpeg-6b"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc -stack 1m -s" LD="cc -stack 1m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+configure --prefix="$SMPM_INSTALLROOT/usr/local" \
+
+make install install-lib
+
+exit 0
