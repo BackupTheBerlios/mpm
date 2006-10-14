@@ -1,0 +1,11 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+PATH=/bin:/usr/bin
+export PATH
+
+install -d -o bin -g operator -m 755 "$SMPM_INSTALLROOT/usr/local/share/WindowMaker/Themes"
+mv -v * "$SMPM_INSTALLROOT/usr/local/share/WindowMaker/Themes"
+
+exit 0

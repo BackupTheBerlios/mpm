@@ -1,0 +1,10 @@
+name:       windowmaker-themes
+version:    1.0
+release:    1
+source:     http://ivop.free.fr/minix3/3.1.2a/src/windowmaker-themes-1.0.tar.bz2
+filesize:   436925
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Window Maker themes
+os:         yes
+arch:       yes

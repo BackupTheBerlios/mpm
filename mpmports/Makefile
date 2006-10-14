@@ -36,6 +36,7 @@ PACKAGES=\
 	xorg6 \
 	vim \
 	windowmaker \
+	windowmaker-themes \
 	zlib \
 
 all:
