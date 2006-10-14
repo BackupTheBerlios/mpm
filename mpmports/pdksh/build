@@ -6,7 +6,7 @@ PATH=/bin:/usr/bin
 export PATH
 
 ksh_cv_c_prototypes=yes \
-CC="cc -stack 1m -s" LD="cc -stack 1m -s" \
+CC="cc -stack 2m -s" LD="cc -stack 2m -s" \
 CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
 configure --prefix="$SMPM_INSTALLROOT/usr/local" \
 
