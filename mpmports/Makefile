@@ -34,6 +34,7 @@ PACKAGES=\
 	rxvt \
 	xorg6 \
 	vim \
+	windowmaker \
 	zlib \
 
 all:

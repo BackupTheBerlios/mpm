@@ -1,0 +1,23 @@
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+cd "$SMPM_BUILDROOT/WindowMaker-0.92.0"
+
+cp "$SMPM_FILES/configure" .
+cp "$SMPM_FILES/rint.c" .
+cp "$SMPM_FILES/nice.c" .
+cc -c -o rint.o rint.c
+cc -c -o nice.o nice.c
+
+patch -p1 < "$SMPM_PATCHES/WindowMaker-0.92.0-minix3.patch"
+
+# fix Makefile.in's so DESTDIR works with plain make
+for i in Makefile.in */Makefile.in */*/Makefile.in
+do
+    sed -e 's/DESTDIR =//' $i > $i.new
+    mv $i.new $i
+done
+
+exit 0

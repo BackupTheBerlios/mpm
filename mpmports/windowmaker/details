@@ -1,0 +1,10 @@
+name:       windowmaker
+version:    0.92.0
+release:    1
+source:     ftp://windowmaker.info/pub/source/release/WindowMaker-0.92.0.tar.bz2
+filesize:   2202748
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Window Maker, X11 Window Manager
+os:         yes
+arch:       yes

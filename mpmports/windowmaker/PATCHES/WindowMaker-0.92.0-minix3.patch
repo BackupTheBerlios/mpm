@@ -1,0 +1,166 @@
+diff -c WindowMaker-0.92.0/WINGs/winputmethod.c WindowMaker-0.92.0-patched/WINGs/winputmethod.c
+*** WindowMaker-0.92.0/WINGs/winputmethod.c Thu Oct 28 04:16:15 2004
+--- WindowMaker-0.92.0-patched/WINGs/winputmethod.c Sat Oct 14 02:06:23 2006
+***************
+*** 111,118 ****
+          spot.x = rect.x;
+          spot.y = rect.y + rect.height;
+  
+!         // this really needs to be changed, but I don't know how yet -Dan
+!         // it used to be like this with fontsets, but no longer applies to xft
+          preedit_attr = XVaCreateNestedList(0, XNSpotLocation, &spot,
+                                             XNArea, &rect, XNFontInfo,
+                                             scr->normalFont->font, NULL);
+--- 111,119 ----
+          spot.x = rect.x;
+          spot.y = rect.y + rect.height;
+  
+!         /* this really needs to be changed, but I don't know how yet -Dan
+!         // it used to be like this with fontsets, but no longer applies to xft
+!          */
+          preedit_attr = XVaCreateNestedList(0, XNSpotLocation, &spot,
+                                             XNArea, &rect, XNFontInfo,
+                                             scr->normalFont->font, NULL);
+diff -c WindowMaker-0.92.0/WINGs/wscroller.c WindowMaker-0.92.0-patched/WINGs/wscroller.c
+*** WindowMaker-0.92.0/WINGs/wscroller.c Thu Oct 28 03:14:40 2004
+--- WindowMaker-0.92.0-patched/WINGs/wscroller.c Sat Oct 14 10:54:51 2006
+***************
+*** 177,183 ****
+  {
+      CHECK_CLASS(sPtr, WC_Scroller);
+  
+!     assert(!isnan(floatValue));
+  
+      if (floatValue < 0.0)
+          sPtr->floatValue = 0.0;
+--- 177,185 ----
+  {
+      CHECK_CLASS(sPtr, WC_Scroller);
+  
+! #if defined(DEBUG) && !defined(_MINIX)
+!     assert(!isnan(floatValue));
+! #endif
+  
+      if (floatValue < 0.0)
+          sPtr->floatValue = 0.0;
+***************
+*** 732,738 ****
+      floatValue = (position-(float)slotOfs) / (float)(slotLength-knobL);
+  #endif
+  
+!     assert(!isnan(floatValue));
+      return floatValue;
+  }
+  
+--- 734,742 ----
+      floatValue = (position-(float)slotOfs) / (float)(slotLength-knobL);
+  #endif
+  
+! #if defined(DEBUG) && !defined(_MINIX)
+!     assert(!isnan(floatValue));
+! #endif
+      return floatValue;
+  }
+  
+diff -c WindowMaker-0.92.0/WINGs/wtextfield.c WindowMaker-0.92.0-patched/WINGs/wtextfield.c
+*** WindowMaker-0.92.0/WINGs/wtextfield.c Thu Oct 28 03:06:58 2004
+--- WindowMaker-0.92.0-patched/WINGs/wtextfield.c Sat Oct 14 02:06:57 2006
+***************
+*** 1035,1041 ****
+      modified = shifted || controled;
+  
+      count = W_LookupString(tPtr->view, &event->xkey, buffer, 63, &ksym, NULL);
+!     //count = XLookupString(&event->xkey, buffer, 63, &ksym, NULL);
+      buffer[count] = '\0';
+  
+      switch (ksym) {
+--- 1035,1041 ----
+      modified = shifted || controled;
+  
+      count = W_LookupString(tPtr->view, &event->xkey, buffer, 63, &ksym, NULL);
+!     /*count = XLookupString(&event->xkey, buffer, 63, &ksym, NULL);*/
+      buffer[count] = '\0';
+  
+      switch (ksym) {
+diff -c WindowMaker-0.92.0/src/defaults.c WindowMaker-0.92.0-patched/src/defaults.c
+*** WindowMaker-0.92.0/src/defaults.c Fri Apr  8 10:59:16 2005
+--- WindowMaker-0.92.0-patched/src/defaults.c Sat Oct 14 10:50:14 2006
+***************
+*** 3652,3658 ****
+                      prefs->swbackImage[8]= chopOffImage(bgimage, swidth+cwidth, theight+cheight,
+                                                          swidth, theight);
+  
+!                     // check if anything failed
+                      for (i= 0; i < 9; i++) {
+                          if (!prefs->swbackImage[i]) {
+                              for (; i>=0; --i) {
+--- 3652,3658 ----
+                      prefs->swbackImage[8]= chopOffImage(bgimage, swidth+cwidth, theight+cheight,
+                                                          swidth, theight);
+  
+!                     /* check if anything failed */
+                      for (i= 0; i < 9; i++) {
+                          if (!prefs->swbackImage[i]) {
+                              for (; i>=0; --i) {
+diff -c WindowMaker-0.92.0/src/switchpanel.c WindowMaker-0.92.0-patched/src/switchpanel.c
+*** WindowMaker-0.92.0/src/switchpanel.c Sat Oct 30 07:16:04 2004
+--- WindowMaker-0.92.0-patched/src/switchpanel.c Sat Oct 14 10:57:32 2006
+***************
+*** 181,189 ****
+      if (!WFLAGP(wwin, always_user_icon) && wwin->net_icon_image)
+        image = RRetainImage(wwin->net_icon_image);
+      
+!     // Make this use a caching thing. When there are many windows,
+!     // it's very likely that most of them are instances of the same thing,
+!     // so caching them should get performance acceptable in these cases.
+      if (!image)
+        image = wDefaultGetImage(panel->scr, wwin->wm_instance, wwin->wm_class);
+      
+--- 181,190 ----
+      if (!WFLAGP(wwin, always_user_icon) && wwin->net_icon_image)
+        image = RRetainImage(wwin->net_icon_image);
+      
+!     /* Make this use a caching thing. When there are many windows,
+!     // it's very likely that most of them are instances of the same thing,
+!     // so caching them should get performance acceptable in these cases.
+!     */
+      if (!image)
+        image = wDefaultGetImage(panel->scr, wwin->wm_instance, wwin->wm_class);
+      
+***************
+*** 215,222 ****
+      int nfirst= panel->firstVisible + delta;
+      int i;
+      int count= WMGetArrayItemCount(panel->windows);
+! //    int nx, ox;
+! //    struct timeval tv1, tv2;
+  
+      if (count <= panel->visibleCount)
+        return;
+--- 216,224 ----
+      int nfirst= panel->firstVisible + delta;
+      int i;
+      int count= WMGetArrayItemCount(panel->windows);
+! /*    int nx, ox;
+! //    struct timeval tv1, tv2;
+! */
+  
+      if (count <= panel->visibleCount)
+        return;
+***************
+*** 277,283 ****
+      th= height-images[0]->height-images[6]->height;
+  
+      if (tw <= 0 || th <= 0) {
+!         //XXX
+          return NULL;
+      }
+  
+--- 279,285 ----
+      th= height-images[0]->height-images[6]->height;
+  
+      if (tw <= 0 || th <= 0) {
+!         /*XXX*/
+          return NULL;
+      }
+  
