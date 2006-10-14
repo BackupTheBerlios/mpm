@@ -22,6 +22,7 @@ PACKAGES=\
 	gnu-textutils \
 	libjpeg \
 	libpng \
+	libtiff \
 	lynx \
 	mawk \
 	minix-world \

@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/tiff-3.8.2"
+patch -p1 < "$SMPM_PATCHES/tiff-3.8.2-minix3.patch"
+
+exit 0

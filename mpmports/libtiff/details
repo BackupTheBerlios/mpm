@@ -1,0 +1,10 @@
+name:       libtiff
+version:    3.8.2
+release:    1
+source:     ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.8.2.tar.gz
+filesize:   1336295
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    TIFF library and tools
+os:         yes
+arch:       yes

@@ -1,0 +1,27 @@
+set -e
+
+cd "$SMPM_BUILDROOT/tiff-3.8.2"
+
+PATH=/bin:/usr/bin
+export PATH
+
+SHELL=/usr/local/bin/ksh CONFIG_SHELL=/usr/local/bin/ksh \
+lt_cv_sys_max_cmd_len=4096 \
+lt_cv_path_SED=/usr/gnu/bin/sed \
+CC="cc -stack 1m -s" LD="cc -stack 1m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" \
+/usr/local/bin/ksh \
+configure --prefix=/usr/local \
+          --disable-cxx \
+          --disable-dependency-tracking \
+          --disable-nls \
+          --with-zlib-include-dir=/usr/local/include \
+          --with-zlib-lib-dir=/usr/local/lib \
+          --with-jpeg-include-dir=/usr/local/include \
+          --with-jpeg-lib-dir=/usr/local/lib \
+
+make
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0
