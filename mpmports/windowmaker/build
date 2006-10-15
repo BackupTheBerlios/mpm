@@ -13,6 +13,7 @@ CXX=true CXXCPP="cc -E" \
 CC="cc -fsoft -stack 8m -s" LD="cc -fsoft -stack 8m -s" \
 CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo -DPF_INET=AF_INET" sh \
 configure --prefix=/usr/local \
+          --with-gnustepdir=/usr/local/lib/GNUstep \
           --disable-dependency-tracking \
           --disable-nls \
           --enable-usermenu \

@@ -1,3 +1,6 @@
 set -e
 
+cd "$SMPM_INSTALLROOT/usr/local/bin"
+ln -s ../lib/GNUstep/Applications/WPrefs.app/WPrefs WPrefs
+
 exit 0
