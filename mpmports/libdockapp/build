@@ -1,0 +1,18 @@
+set -e
+
+cd "$SMPM_BUILDROOT/libdockapp-0.4.0"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls \
+            --host=i386-pc-minix \
+
+make
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

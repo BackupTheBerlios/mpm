@@ -1,0 +1,10 @@
+name:       libdockapp
+version:    0.4.0
+release:    1
+source:     ftp://truffula.com/pub/libdockapp.tgz
+filesize:   109178
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    library for Window Maker dockapps
+os:         yes
+arch:       yes

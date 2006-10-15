@@ -20,6 +20,7 @@ PACKAGES=\
 	gnu-shutils \
 	gnu-tar \
 	gnu-textutils \
+	libdockapp \
 	libjpeg \
 	libpng \
 	libtiff \

@@ -1,0 +1,22 @@
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+cd "$SMPM_BUILDROOT/libdockapp-0.4.0"
+
+# fix Makefile.in's so DESTDIR works with plain make
+for i in Makefile.in */Makefile.in
+do
+    sed -e 's/DESTDIR =//' $i > $i.new
+    mv $i.new $i
+done
+
+cd "$SMPM_BUILDROOT/libdockapp-0.4.0/src"
+
+# add minix specific include
+echo "#include <sys/select.h>" > daevent.c.new
+cat daevent.c >> daevent.c.new
+mv daevent.c.new daevent.c
+
+exit 0
