@@ -1,6 +1,10 @@
 set -e
 
 cd "$SMPM_INSTALLROOT/usr/local/bin"
-ln -s ../lib/GNUstep/Applications/WPrefs.app/WPrefs WPrefs
+cat >WPrefs <<__EOF__
+#! /bin/sh
+exec /usr/local/lib/GNUstep/Applications/WPrefs.app/WPrefs
+__EOF__
+chmod 755 WPrefs
 
 exit 0
