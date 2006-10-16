@@ -1,0 +1,39 @@
+diff -c w3c-libwww-5.4.0/Library/src/HTTCP.c w3c-libwww-5.4.0-patched/Library/src/HTTCP.c
+*** w3c-libwww-5.4.0/Library/src/HTTCP.c Wed Aug  2 10:48:12 2000
+--- w3c-libwww-5.4.0-patched/Library/src/HTTCP.c Mon Oct 16 12:55:25 2006
+***************
+*** 76,81 ****
+--- 76,88 ----
+  #endif /* !(EAGAIN && EALREADY) */
+  #endif /* !_WINSOCKAPI_ 				   done */
+  
++ #ifdef _MINIX
++ #define ENETDOWN     100
++ #define ENETUNREACH  101
++ #define EHOSTDOWN    112
++ #define EHOSTUNREACH 113
++ #endif
++ 
+  #if defined(__svr4__) || defined (_WINSOCKAPI_)
+  #define HT_HOSTUNREACHABLE(e)	((e)==ECONNREFUSED || (e)==ETIMEDOUT || \
+  				 (e)==ENETUNREACH || (e)==EHOSTUNREACH || \
+diff -c w3c-libwww-5.4.0/config/ltmain.sh w3c-libwww-5.4.0-patched/config/ltmain.sh
+*** w3c-libwww-5.4.0/config/ltmain.sh Thu Jun  6 15:12:37 2002
+--- w3c-libwww-5.4.0-patched/config/ltmain.sh Mon Oct 16 12:57:52 2006
+***************
+*** 469,475 ****
+        pic_mode=default
+        ;;
+      esac
+!     if test $pic_mode = no && test "$deplibs_check_method" != pass_all; then
+        # non-PIC code in shared libraries is not supported
+        pic_mode=default
+      fi
+--- 469,475 ----
+        pic_mode=default
+        ;;
+      esac
+!     if test "$pic_mode" = no && test "$deplibs_check_method" != pass_all; then
+        # non-PIC code in shared libraries is not supported
+        pic_mode=default
+      fi

@@ -25,6 +25,7 @@ PACKAGES=\
 	libpcre \
 	libpng \
 	libtiff \
+	libwww \
 	lynx \
 	mawk \
 	minix-world \

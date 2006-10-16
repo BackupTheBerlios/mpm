@@ -1,0 +1,20 @@
+set -e
+
+cd "$SMPM_BUILDROOT/w3c-libwww-5.4.0"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CC="cc -s" LD="cc -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo -I/usr/local/include" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls \
+            --without-expat \
+            --with-zlib=/usr/local/lib/libz.a \
+
+/usr/gnu/bin/make
+DESTDIR="$SMPM_INSTALLROOT" \
+/usr/gnu/bin/make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

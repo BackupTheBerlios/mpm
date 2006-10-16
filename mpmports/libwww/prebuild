@@ -1,0 +1,13 @@
+set -e
+
+cd "$SMPM_BUILDROOT/w3c-libwww-5.4.0"
+patch -p1 < "$SMPM_PATCHES/w3c-libwww-5.4.0-minix3.patch"
+
+# fix Makefile.in's so DESTDIR works with plain make
+for i in Makefile.in */Makefile.in */*/Makefile.in */*/*/Makefile.in */*/*/*/Makefile.in
+do
+    sed -e 's/DESTDIR =//' $i > $i.new
+    mv $i.new $i
+done
+
+exit 0
