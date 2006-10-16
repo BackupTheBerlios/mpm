@@ -1,0 +1,10 @@
+name:       libpcre
+version:    6.7
+release:    1
+source:     ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-6.7.tar.bz2
+filesize:   570867
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    Perl-compatible regular expression library
+os:         yes
+arch:       yes

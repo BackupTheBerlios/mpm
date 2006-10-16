@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/pcre-6.7"
+patch -p1 < "$SMPM_PATCHES/pcre-6.7-minix3.patch"
+
+exit 0

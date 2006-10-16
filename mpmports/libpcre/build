@@ -1,0 +1,20 @@
+set -e
+
+cd "$SMPM_BUILDROOT/pcre-6.7"
+
+PATH=/bin:/usr/bin
+export PATH
+
+lt_cv_path_SED=/usr/gnu/bin/sed \
+lt_cv_sys_max_cmd_len=4096 \
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls \
+            --disable-cpp \
+
+make
+DESTDIR="$SMPM_INSTALLROOT" \
+make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

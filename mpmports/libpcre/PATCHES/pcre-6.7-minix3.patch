@@ -1,0 +1,20 @@
+diff -c pcre-6.7/pcretest.c pcre-6.7-patched/pcretest.c
+*** pcre-6.7/pcretest.c Wed Jul  5 11:28:01 2006
+--- pcre-6.7-patched/pcretest.c Mon Oct 16 11:11:43 2006
+***************
+*** 717,723 ****
+        ((stack_size = get_value((unsigned char *)argv[op+1], &endptr)),
+          *endptr == 0))
+      {
+! #ifdef _WIN32
+      printf("PCRE: -S not supported on this OS\n");
+      exit(1);
+  #else
+--- 717,723 ----
+        ((stack_size = get_value((unsigned char *)argv[op+1], &endptr)),
+          *endptr == 0))
+      {
+! #if defined(_WIN32) || defined(_MINIX)
+      printf("PCRE: -S not supported on this OS\n");
+      exit(1);
+  #else
