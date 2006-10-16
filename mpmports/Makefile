@@ -62,3 +62,15 @@ allsrcmpm:
 
 clean:
 	rm -f *~ */*~ */*/*~
+
+cvs-add:	clean
+	test -n "${CVSADDDIR}" || exit 2
+	cvs add ${CVSADDDIR} ${CVSADDDIR}/FILES ${CVSADDDIR}/PATCHES
+	cvs add ${CVSADDDIR}/b* ${CVSADDDIR}/d* ${CVSADDDIR}/p*
+	for i in ${CVSADDDIR}/FILES/* ; do \
+		test "$$i" = "CVS" || cvs add $$i ; \
+	done
+	for i in ${CVSADDDIR}/PATCHES/* ; do \
+		test "$$i" = "CVS" || cvs add $$i ; \
+	done
+	@echo "you can now run cvs ci Makefile ${CVSADDDIR}"
