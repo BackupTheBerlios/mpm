@@ -22,6 +22,7 @@ PACKAGES=\
 	gnu-textutils \
 	libdockapp \
 	libjpeg \
+	libpcre \
 	libpng \
 	libtiff \
 	lynx \
