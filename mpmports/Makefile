@@ -67,10 +67,8 @@ cvs-add:	clean
 	test -n "${CVSADDDIR}" || exit 2
 	cvs add ${CVSADDDIR} ${CVSADDDIR}/FILES ${CVSADDDIR}/PATCHES
 	cvs add ${CVSADDDIR}/b* ${CVSADDDIR}/d* ${CVSADDDIR}/p*
-	for i in ${CVSADDDIR}/FILES/* ; do \
-		test "$$i" = "CVS" || cvs add $$i ; \
+	for i in ${CVSADDDIR}/FILES/* ${CVSADDDIR}/PATCHES/* ; do \
+		j=`echo "$$i" | grep "CVS"` ; \
+		test -n "$$j" || echo $$i ; \
 	done
-	for i in ${CVSADDDIR}/PATCHES/* ; do \
-		test "$$i" = "CVS" || cvs add $$i ; \
-	done
-	@echo "you can now run cvs ci Makefile ${CVSADDDIR}"
+	@echo "Files and directories added. Use cvs ci to commit."
