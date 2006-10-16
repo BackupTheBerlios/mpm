@@ -70,6 +70,6 @@ cvs-add:	clean
 	cvs add ${CVSADDDIR}/b* ${CVSADDDIR}/d* ${CVSADDDIR}/p*
 	for i in ${CVSADDDIR}/FILES/* ${CVSADDDIR}/PATCHES/* ; do \
 		j=`echo "$$i" | grep "CVS"` ; \
-		test -n "$$j" || echo $$i ; \
+		test -n "$$j" || cvs add $$i ; \
 	done
 	@echo "Files and directories added. Use cvs ci to commit."
