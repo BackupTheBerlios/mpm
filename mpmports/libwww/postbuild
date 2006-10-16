@@ -1,3 +1,5 @@
 set -e
 
+chmod 755 "$SMPM_INSTALLROOT/usr/local/bin/libwww-config"
+
 exit 0
