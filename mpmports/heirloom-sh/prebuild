@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/heirloom-sh-050706"
+patch -p1 < "$SMPM_PATCHES/heirloom-sh-050706-minix3.patch"
+
+exit 0

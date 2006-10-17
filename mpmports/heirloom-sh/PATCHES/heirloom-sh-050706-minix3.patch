@@ -1,0 +1,511 @@
+diff -c heirloom-sh-050706/defs.h heirloom-sh-050706-patched/defs.h
+*** heirloom-sh-050706/defs.h Sun Jul  3 19:25:46 2005
+--- heirloom-sh-050706-patched/defs.h Tue Oct 17 13:22:51 2006
+***************
+*** 43,48 ****
+--- 43,54 ----
+  extern "C" {
+  #endif
+  
++ #ifdef _MINIX
++ #define LONGLONG long
++ #else
++ #define LONGLONG long long
++ #endif
++ 
+  /*
+   *	UNIX shell
+   */
+***************
+*** 147,154 ****
+  /* arg list terminator */
+  #define		ENDARGS		0
+  
+! /* enable shell accounting */
+! #define		ACCT
+  
+  #include	<unistd.h>
+  #include	"mac.h"
+--- 153,162 ----
+  /* arg list terminator */
+  #define		ENDARGS		0
+  
+! #ifndef _MINIX
+! /* enable shell accounting */
+! #define		ACCT
+! #endif
+  
+  #include	<unistd.h>
+  #include	"mac.h"
+***************
+*** 178,183 ****
+--- 186,195 ----
+  
+  /* getopt */
+  
++ #ifdef _MINIX
++ #define getopt mygetopt
++ #endif
++ 
+  extern int		optind;
+  extern int		opterr;
+  extern int 		getopt_sp;
+***************
+*** 230,236 ****
+  int systrap(int, char **);
+  #define	sleep(a)	sh_sleep(a)
+  void sleep(unsigned int);
+! void sigsegv(int, siginfo_t *);
+  void init_sigval(void);
+  /* func.c */
+  void freefunc(struct namnod *);
+--- 242,252 ----
+  int systrap(int, char **);
+  #define	sleep(a)	sh_sleep(a)
+  void sleep(unsigned int);
+! #ifdef _MINIX
+! void sigsegv(int);
+! #else
+! void sigsegv(int, siginfo_t *);
+! #endif
+  void init_sigval(void);
+  /* func.c */
+  void freefunc(struct namnod *);
+***************
+*** 338,355 ****
+  void prn(int);
+  void itos(int);
+  int stoi(const unsigned char *);
+! long long stoifll(const unsigned char *);
+! int ltos(long);
+! void prl(long);
+! int ulltos(unsigned long long);
+! void prull(unsigned long long);
+  void flushb(void);
+  void prc_buff(unsigned char);
+  void prs_buff(const unsigned char *);
+  unsigned char *octal(unsigned char, unsigned char *);
+  void prs_cntl(const unsigned char *);
+  void prl_buff(long);
+! void prull_buff(unsigned long long);
+  void prn_buff(int);
+  void prsp_buff(int);
+  int setb(int);
+--- 354,371 ----
+  void prn(int);
+  void itos(int);
+  int stoi(const unsigned char *);
+! LONGLONG stoifll(const unsigned char *);
+! int ltos(long);
+! void prl(long);
+! int ulltos(unsigned LONGLONG);
+! void prull(unsigned LONGLONG);
+  void flushb(void);
+  void prc_buff(unsigned char);
+  void prs_buff(const unsigned char *);
+  unsigned char *octal(unsigned char, unsigned char *);
+  void prs_cntl(const unsigned char *);
+  void prl_buff(long);
+! void prull_buff(unsigned LONGLONG);
+  void prn_buff(int);
+  void prsp_buff(int);
+  int setb(int);
+***************
+*** 679,684 ****
+--- 695,708 ----
+  
+  #define		exitset()	retval = exitval
+  
++ #ifdef _MINIX
++ /* XXX */
++ #define getpgid(a) getpgrp()
++ #define setpgid(a,b) setsid()
++ #define getsid(a) getpgrp()
++ #define tcgetpgrp(a) getpgrp()
++ #define tcsetpgrp(a,b) setpgid(a,b)
++ #endif
+  
+  #ifdef	__cplusplus
+  }
+diff -c heirloom-sh-050706/fault.c heirloom-sh-050706-patched/fault.c
+*** heirloom-sh-050706/fault.c Sat Jul  2 15:54:01 2005
+--- heirloom-sh-050706-patched/fault.c Tue Oct 17 12:26:32 2006
+***************
+*** 39,50 ****
+   */
+  
+  #include	"defs.h"
+! #include	<ucontext.h>
+  #include	<errno.h>
+  #include	<string.h>
+  
+  static	void (*psig0_func)() = SIG_ERR;	/* previous signal handler for signal 0 */
+! static	char sigsegv_stack[SIGSTKSZ];
+  
+  static BOOL sleeping = 0;
+  static unsigned char *trapcom[MAXTRAP]; /* array of actions, one per signal */
+--- 39,54 ----
+   */
+  
+  #include	"defs.h"
+! #ifndef _MINIX
+! #include	<ucontext.h>
+! #endif
+  #include	<errno.h>
+  #include	<string.h>
+  
+  static	void (*psig0_func)() = SIG_ERR;	/* previous signal handler for signal 0 */
+! #ifndef _MINIX
+! static	char sigsegv_stack[SIGSTKSZ];
+! #endif
+  
+  static BOOL sleeping = 0;
+  static unsigned char *trapcom[MAXTRAP]; /* array of actions, one per signal */
+***************
+*** 279,285 ****
+  stdsigs(void)
+  {
+  	register int	i;
+- 	stack_t	ss;
+  	int	err = 0;
+  #ifdef	SIGRTMIN
+  	int rtmin = (int)SIGRTMIN;
+--- 283,288 ----
+***************
+*** 288,293 ****
+--- 291,298 ----
+  	int rtmin = 0;
+  	int rtmax = -1;
+  #endif
++ #ifndef _MINIX
++ 	stack_t	ss;
+  
+  	ss.ss_size = SIGSTKSZ;
+  	ss.ss_sp = sigsegv_stack;
+***************
+*** 297,302 ****
+--- 302,308 ----
+  		err = errno;
+  		failure("sigaltstack(2) failed with", strerror(err));
+  	}
++ #endif
+  
+  	for (i = 1; i < MAXTRAP; i++) {
+  		if (i == rtmin) {
+***************
+*** 473,478 ****
+--- 479,489 ----
+  
+  }
+  
++ #ifdef _MINIX
++ void sigsegv(int sig) {
++     exit(ERROR);                /* XXX */
++ }
++ #else
+  void
+  sigsegv(int sig, siginfo_t *sip)
+  {
+***************
+*** 509,514 ****
+--- 520,526 ----
+  		}
+  	}
+  }
++ #endif
+  
+  void 
+  init_sigval(void)
+diff -c heirloom-sh-050706/getopt.c heirloom-sh-050706-patched/getopt.c
+*** heirloom-sh-050706/getopt.c Wed Jun 22 03:18:54 2005
+--- heirloom-sh-050706-patched/getopt.c Tue Oct 17 12:48:57 2006
+***************
+*** 96,102 ****
+   * External function entry point.
+   */
+  int
+! getopt(int argc, char *const *argv, const char *optstring)
+  {
+  	char	c;
+  	char	*cp;
+--- 96,106 ----
+   * External function entry point.
+   */
+  int
+! #ifdef _MINIX
+! mygetopt(int argc, char *const *argv, const char *optstring)
+! #else
+! getopt(int argc, char *const *argv, const char *optstring)
+! #endif
+  {
+  	char	c;
+  	char	*cp;
+diff -c heirloom-sh-050706/main.c heirloom-sh-050706-patched/main.c
+*** heirloom-sh-050706/main.c Sun Jul  3 19:25:46 2005
+--- heirloom-sh-050706-patched/main.c Tue Oct 17 13:11:16 2006
+***************
+*** 107,114 ****
+  	 * (ex. -sh, or /bin/-sh), this is a login shell
+  	 */
+  	if (*simple(v[0]) == '-') {
+! 		signal(SIGXCPU, SIG_DFL);
+! 		signal(SIGXFSZ, SIG_DFL);
+  
+  		/*
+  		 * As the previous comment states, this is a login shell.
+--- 107,116 ----
+  	 * (ex. -sh, or /bin/-sh), this is a login shell
+  	 */
+  	if (*simple(v[0]) == '-') {
+! #ifndef _MINIX
+! 		signal(SIGXCPU, SIG_DFL);
+! 		signal(SIGXFSZ, SIG_DFL);
+! #endif
+  
+  		/*
+  		 * As the previous comment states, this is a login shell.
+diff -c heirloom-sh-050706/makefile heirloom-sh-050706-patched/makefile
+*** heirloom-sh-050706/makefile Wed Jul  6 10:59:57 2005
+--- heirloom-sh-050706-patched/makefile Tue Oct 17 13:27:31 2006
+***************
+*** 2,8 ****
+  # Root directory. Mainly useful for package building; leave empty for
+  # normal installation.
+  #
+! ROOT=
+  
+  #
+  # The destination directory for the "sh" and "jsh" binaries.
+--- 2,8 ----
+  # Root directory. Mainly useful for package building; leave empty for
+  # normal installation.
+  #
+! ROOT=${DESTDIR}
+  
+  #
+  # The destination directory for the "sh" and "jsh" binaries.
+***************
+*** 23,29 ****
+  #
+  # A BSD-compatible install command.
+  #
+! UCBINST=/usr/ucb/install
+  
+  #
+  # The strip command that is used at installation time.
+--- 23,31 ----
+  #
+  # A BSD-compatible install command.
+  #
+! #
+! #
+! UCBINST=/usr/bin/install
+  
+  #
+  # The strip command that is used at installation time.
+***************
+*** 49,55 ****
+  #
+  # Flags for the C preprocessor.
+  #
+! CFLAGS=-D_GNU_SOURCE
+  
+  #
+  # A define for large file support, if necessary.
+--- 51,58 ----
+  #
+  # Flags for the C preprocessor.
+  #
+! #CFLAGS=-D_GNU_SOURCE
+! CPPFLAGS=-D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws -Ifakewchar
+  
+  #
+  # A define for large file support, if necessary.
+***************
+*** 59,69 ****
+  #
+  # The compiler warning options.
+  #
+! WERROR=-Werror
+! WARN = -Wchar-subscripts -Wformat -Wno-format-y2k -Wimplicit \
+! 	-Wmissing-braces -Wsequence-point -Wreturn-type -Wtrigraphs \
+! 	-Wunused-function -Wunused-label -Wunused-variable -Wunused-value \
+! 	-Wuninitialized -Wmultichar -Wpointer-arith $(WERROR)
+  WARN=
+  
+  #
+--- 62,72 ----
+  #
+  # The compiler warning options.
+  #
+! WERROR=
+! #WARN = -Wchar-subscripts -Wformat -Wno-format-y2k -Wimplicit \
+! #	-Wmissing-braces -Wsequence-point -Wreturn-type -Wtrigraphs \
+! #	-Wunused-function -Wunused-label -Wunused-variable -Wunused-value \
+! #	-Wuninitialized -Wmultichar -Wpointer-arith $(WERROR)
+  WARN=
+  
+  #
+diff -c heirloom-sh-050706/mapmalloc.c heirloom-sh-050706-patched/mapmalloc.c
+*** heirloom-sh-050706/mapmalloc.c Sun Jun 19 11:49:34 2005
+--- heirloom-sh-050706-patched/mapmalloc.c Tue Oct 17 12:42:58 2006
+***************
+*** 39,44 ****
+--- 39,46 ----
+   *	Sccsid @(#)mapmalloc.c	1.4 (gritter) 2/20/05
+   */
+  
++ #ifndef _MINIX
++ 
+  #include <sys/types.h>
+  #include <unistd.h>
+  #include <errno.h>
+***************
+*** 393,395 ****
+--- 395,399 ----
+  		*q++ = 0;
+  	return(mp);
+  }
++ 
++ #endif
+diff -c heirloom-sh-050706/print.c heirloom-sh-050706-patched/print.c
+*** heirloom-sh-050706/print.c Wed Jun 22 03:18:01 2005
+--- heirloom-sh-050706-patched/print.c Tue Oct 17 12:28:51 2006
+***************
+*** 167,177 ****
+  	return (r);
+  }
+  
+! long long
+  stoifll(const unsigned char *icp)
+  {
+  	const unsigned char	*cp;
+! 	long long	r = 0;
+  	int		sign = 1;
+  	unsigned char	c;
+  
+--- 167,177 ----
+  	return (r);
+  }
+  
+! LONGLONG
+  stoifll(const unsigned char *icp)
+  {
+  	const unsigned char	*cp;
+! 	LONGLONG	r = 0;
+  	int		sign = 1;
+  	unsigned char	c;
+  
+***************
+*** 213,219 ****
+  
+  
+  int
+! ulltos(unsigned long long n)
+  {
+  	int i;
+  
+--- 213,219 ----
+  
+  
+  int
+! ulltos(unsigned LONGLONG n)
+  {
+  	int i;
+  
+***************
+*** 229,235 ****
+  }
+  
+  void
+! prull(unsigned long long n)
+  {
+  	int i;
+  	i = ulltos(n);
+--- 229,235 ----
+  }
+  
+  void
+! prull(unsigned LONGLONG n)
+  {
+  	int i;
+  	i = ulltos(n);
+***************
+*** 355,361 ****
+  }
+  
+  void
+! prull_buff(unsigned long long lc)
+  {
+  	prs_buff(&numbuf[ulltos(lc)]);
+  }
+--- 355,361 ----
+  }
+  
+  void
+! prull_buff(unsigned LONGLONG lc)
+  {
+  	prs_buff(&numbuf[ulltos(lc)]);
+  }
+diff -c heirloom-sh-050706/test.c heirloom-sh-050706-patched/test.c
+*** heirloom-sh-050706/test.c Wed Jun 29 18:39:27 2005
+--- heirloom-sh-050706-patched/test.c Tue Oct 17 12:31:29 2006
+***************
+*** 146,152 ****
+  	int	p1;
+  	register unsigned char	*a;
+  	unsigned char	*p2;
+! 	long long	ll_1, ll_2;
+  
+  	a = nxtarg(0);
+  	if (eq(a, "("))
+--- 146,152 ----
+  	int	p1;
+  	register unsigned char	*a;
+  	unsigned char	*p2;
+! 	LONGLONG	ll_1, ll_2;
+  
+  	a = nxtarg(0);
+  	if (eq(a, "("))
+diff -c heirloom-sh-050706/ulimit.c heirloom-sh-050706-patched/ulimit.c
+*** heirloom-sh-050706/ulimit.c Mon Jun 20 21:36:12 2005
+--- heirloom-sh-050706-patched/ulimit.c Tue Oct 17 12:35:26 2006
+***************
+*** 43,48 ****
+--- 43,54 ----
+  #include <stdlib.h>
+  #include "defs.h"
+  
++ #ifdef _MINIX
++ 
++ void sysulimit(int argc, char **argv) { }
++ 
++ #else
++ 
+  static const struct rlimtab {
+  	int	resource;
+  	char	*name;
+***************
+*** 282,284 ****
+--- 288,292 ----
+  	getopt_sp = savsp;
+  	optarg = savoptarg;
+  }
++ 
++ #endif
+diff -c heirloom-sh-050706/word.c heirloom-sh-050706-patched/word.c
+*** heirloom-sh-050706/word.c Wed Jun 22 03:18:54 2005
+--- heirloom-sh-050706-patched/word.c Tue Oct 17 12:36:59 2006
+***************
+*** 43,48 ****
+--- 43,52 ----
+  #include	<errno.h>
+  #include	<fcntl.h>
+  
++ #ifdef _MINIX
++ #define O_NDELAY O_NONBLOCK
++ #endif
++ 
+  static int	readb(struct fileblk *, int, int);
+  
+  /* ========	character handling for command lines	======== */

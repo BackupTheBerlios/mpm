@@ -1,0 +1,10 @@
+name:       heirloom-sh
+version:    050706
+release:    1
+source:     http://surfnet.dl.sourceforge.net/sourceforge/heirloom/heirloom-sh-050706.tar.bz2
+filesize:   82725
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    heirloom project's bourne shell
+os:         yes
+arch:       yes
