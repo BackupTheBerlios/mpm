@@ -1,0 +1,41 @@
+General:
+
+All long long types are converted to long. Printf statements therefore
+contain %ld and friends, instead of %lld. All binaries are statically linked
+with -stack 4m. That should be enough for most applications. In fact, a
+lot of them could do with a lot less (i.e. yes, true, false, et cetera). You
+can decrease the stack size by using chmem =<size-in-bytes> <binary>. In some
+cases, you might need a larger stack, e.g. for sed or awk scripts processing
+huge amounts of data.
+
+ps      - not all fields are known. it tries to collect as much data
+          as possible.
+
+
+The following subdirectories are skipped on Minix 3. It is considered too
+much work at the moment to properly port them.
+
+cpio    - either implement a (u)int64_t/long long emulation or
+          strip out all formats that need those types (zip64, cray, etc),
+          which seems unwanted to me.
+
+
+The following commands are known to be crippled or non-working:
+
+df      - either fix Minix' libc to have a proper statfs or borrow the
+          nasty raw device reader from Minix' df
+          didn't bother yet to rewrite the getmntent part by using load_mtab
+          and get_mtab_entry. that should be fairly trivial though.
+          also note that libcommon has utmpx.c, but lacks utmpx.h(!)
+
+shl     - compiles as a command-not-available stub, like on the BSD's, AIX
+          and Mac OSX.
+
+Other weirdness:
+
+du      - GNU du doesn't seem to know how to add up numbers correctly. It is
+          off by one, but if you add the numbers it reports for * manually,
+          it _does_ have all the information, so it is just plain wrong.
+          Our du == GNU du +1. Minix du reports totally different numbers and
+          I do not know why.
+

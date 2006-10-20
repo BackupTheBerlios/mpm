@@ -21,6 +21,7 @@ PACKAGES=\
 	gnu-tar \
 	gnu-textutils \
 	heirloom-sh \
+	heirloom-toolchest \
 	libdockapp \
 	libjpeg \
 	libpcre \

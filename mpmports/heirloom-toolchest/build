@@ -1,0 +1,11 @@
+set -e
+
+cd "$SMPM_BUILDROOT/heirloom-060122"
+
+PATH=/bin:/usr/bin
+export PATH
+
+/usr/gnu/bin/make
+/usr/gnu/bin/make install DESTDIR="$SMPM_INSTALLROOT"
+
+exit 0

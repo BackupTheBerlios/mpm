@@ -1,0 +1,12 @@
+set -e
+
+cd "$SMPM_BUILDROOT/heirloom-060122"
+patch -p1 < "$SMPM_PATCHES/heirloom-060122-minix3.patch"
+
+cd "$SMPM_FILES"
+cp dirname.c dirname.h fnmatch.c fnmatch.h realpath.c realpath.h \
+    "$SMPM_BUILDROOT/heirloom-060122/libcommon"
+
+cp fake_langinfo.h "$SMPM_BUILDROOT/heirloom-060122/cal"
+
+exit 0

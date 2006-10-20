@@ -1,0 +1,10 @@
+name:       heirloom-toolchest
+version:    060122
+release:    1
+source:     http://surfnet.dl.sourceforge.net/sourceforge/heirloom/heirloom-060122.tar.bz2
+filesize:   991655
+md5sum:     0123456789abcdef0123456789abcdef
+license:    VAR
+summary:    heirloom project toolchest (traditional unix utilities)
+os:         yes
+arch:       yes
