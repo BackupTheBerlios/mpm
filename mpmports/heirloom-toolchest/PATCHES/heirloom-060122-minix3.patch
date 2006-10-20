@@ -1,11 +1,8 @@
 Common subdirectories: heirloom-060122/LICENSE and heirloom-060122-patched/LICENSE
-Only in heirloom-060122-patched: Makefile
-Only in heirloom-060122-patched: NOTES.minix
 Common subdirectories: heirloom-060122/_install and heirloom-060122-patched/_install
-Only in heirloom-060122-patched/_install: Makefile
 diff -c heirloom-060122/_install/install_ucb.c heirloom-060122-patched/_install/install_ucb.c
 *** heirloom-060122/_install/install_ucb.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/_install/install_ucb.c Tue Oct 17 14:49:36 2006
+--- heirloom-060122-patched/_install/install_ucb.c Sat Oct 21 00:32:34 2006
 ***************
 *** 151,158 ****
   	size_t	bufsize;
@@ -39,15 +36,13 @@ diff -c heirloom-060122/_install/install_ucb.c heirloom-060122-patched/_install/
   	if ((dfd = creat(tgt, 0700)) < 0 || fchmod(dfd, 0700) < 0 ||
   			fstat(dfd, &nst) < 0) {
   		fprintf(stderr, "%s: %s: %s\n", progname, src,
+Only in heirloom-060122-patched/_install: install_ucb.c~
 Common subdirectories: heirloom-060122/banner and heirloom-060122-patched/banner
-Only in heirloom-060122-patched/banner: Makefile
 Common subdirectories: heirloom-060122/basename and heirloom-060122-patched/basename
-Only in heirloom-060122-patched/basename: Makefile
 Common subdirectories: heirloom-060122/bc and heirloom-060122-patched/bc
-Only in heirloom-060122-patched/bc: Makefile
 diff -c heirloom-060122/bc/bc.y heirloom-060122-patched/bc/bc.y
 *** heirloom-060122/bc/bc.y Sun Jul  3 01:05:49 2005
---- heirloom-060122-patched/bc/bc.y Tue Oct 17 14:52:16 2006
+--- heirloom-060122-patched/bc/bc.y Sat Oct 21 00:32:34 2006
 ***************
 *** 80,85 ****
 --- 80,88 ----
@@ -60,11 +55,11 @@ diff -c heirloom-060122/bc/bc.y heirloom-060122-patched/bc/bc.y
   %}
   %right '='
   %left '+' '-'
+Only in heirloom-060122-patched/bc: bc.y~
 Common subdirectories: heirloom-060122/bdiff and heirloom-060122-patched/bdiff
-Only in heirloom-060122-patched/bdiff: Makefile
 diff -c heirloom-060122/bdiff/bdiff.c heirloom-060122-patched/bdiff/bdiff.c
 *** heirloom-060122/bdiff/bdiff.c Sat Jul  2 13:50:31 2005
---- heirloom-060122-patched/bdiff/bdiff.c Tue Oct 17 15:01:07 2006
+--- heirloom-060122-patched/bdiff/bdiff.c Sat Oct 21 00:32:34 2006
 ***************
 *** 56,61 ****
 --- 56,70 ----
@@ -166,11 +161,11 @@ diff -c heirloom-060122/bdiff/bdiff.c heirloom-060122-patched/bdiff/bdiff.c
   
   	/* Output saved lines, as 'diff' would.  */
   	putsave(lpp, bufsizp, buflenp, '<');
+Only in heirloom-060122-patched/bdiff: bdiff.c~
 Common subdirectories: heirloom-060122/bfs and heirloom-060122-patched/bfs
-Only in heirloom-060122-patched/bfs: Makefile
 diff -c heirloom-060122/bfs/bfs.c heirloom-060122-patched/bfs/bfs.c
 *** heirloom-060122/bfs/bfs.c Sat Jul  2 13:50:54 2005
---- heirloom-060122-patched/bfs/bfs.c Tue Oct 17 16:11:20 2006
+--- heirloom-060122-patched/bfs/bfs.c Sat Oct 21 00:32:34 2006
 ***************
 *** 68,73 ****
 --- 68,81 ----
@@ -262,11 +257,11 @@ diff -c heirloom-060122/bfs/bfs.c heirloom-060122-patched/bfs/bfs.c
   	close(fd);
   
   	outfildes = savefd;
+Only in heirloom-060122-patched/bfs: bfs.c~
 Common subdirectories: heirloom-060122/build and heirloom-060122-patched/build
-Only in heirloom-060122-patched/build: Makefile
 diff -c heirloom-060122/build/Makefile.mk heirloom-060122-patched/build/Makefile.mk
 *** heirloom-060122/build/Makefile.mk Thu Mar 10 16:11:29 2005
---- heirloom-060122-patched/build/Makefile.mk Tue Oct 17 15:41:10 2006
+--- heirloom-060122-patched/build/Makefile.mk Sat Oct 21 00:32:34 2006
 ***************
 *** 1,17 ****
   all: maninst crossln genintro
@@ -294,12 +289,10 @@ diff -c heirloom-060122/build/Makefile.mk heirloom-060122-patched/build/Makefile
   	chmod 755 maninst
   
   crossln: crossln.sh
-Only in heirloom-060122-patched/build: crossln
-Only in heirloom-060122-patched/build: genintro
-Only in heirloom-060122-patched/build: maninst
+Only in heirloom-060122-patched/build: Makefile.mk~
 diff -c heirloom-060122/build/mk.config heirloom-060122-patched/build/mk.config
 *** heirloom-060122/build/mk.config Sun Jan 22 21:48:04 2006
---- heirloom-060122-patched/build/mk.config Fri Oct 20 22:52:09 2006
+--- heirloom-060122-patched/build/mk.config Sat Oct 21 00:32:34 2006
 ***************
 *** 19,25 ****
   # Root directory. Mainly useful for package building; leave empty for
@@ -579,11 +572,11 @@ diff -c heirloom-060122/build/mk.config heirloom-060122-patched/build/mk.config
   
   #
   # Don't change the rest of this file unless you really know what you are
+Only in heirloom-060122-patched/build: mk.config~
 Common subdirectories: heirloom-060122/cal and heirloom-060122-patched/cal
-Only in heirloom-060122-patched/cal: Makefile
 diff -c heirloom-060122/cal/cal.c heirloom-060122-patched/cal/cal.c
 *** heirloom-060122/cal/cal.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/cal/cal.c Tue Oct 17 15:34:51 2006
+--- heirloom-060122-patched/cal/cal.c Sat Oct 21 00:32:35 2006
 ***************
 *** 48,54 ****
   #include	<libgen.h>
@@ -605,12 +598,11 @@ diff -c heirloom-060122/cal/cal.c heirloom-060122-patched/cal/cal.c
   #include	<string.h>
   #include	<wchar.h>
   #include	<limits.h>
-Only in heirloom-060122-patched/cal: fake_langinfo.h
+Only in heirloom-060122-patched/cal: cal.c~
 Common subdirectories: heirloom-060122/calendar and heirloom-060122-patched/calendar
-Only in heirloom-060122-patched/calendar: Makefile
 diff -c heirloom-060122/calendar/Makefile.mk heirloom-060122-patched/calendar/Makefile.mk
 *** heirloom-060122/calendar/Makefile.mk Sat May  1 16:58:02 2004
---- heirloom-060122-patched/calendar/Makefile.mk Tue Oct 17 15:40:27 2006
+--- heirloom-060122-patched/calendar/Makefile.mk Sat Oct 21 00:32:35 2006
 ***************
 *** 1,10 ****
   all: calendar calprog
@@ -631,9 +623,10 @@ diff -c heirloom-060122/calendar/Makefile.mk heirloom-060122-patched/calendar/Ma
   	chmod 755 calendar
   
   calprog: calprog.o
+Only in heirloom-060122-patched/calendar: Makefile.mk~
 diff -c heirloom-060122/calendar/calprog.c heirloom-060122-patched/calendar/calprog.c
 *** heirloom-060122/calendar/calprog.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/calendar/calprog.c Tue Oct 17 15:42:13 2006
+--- heirloom-060122-patched/calendar/calprog.c Sat Oct 21 00:32:35 2006
 ***************
 *** 53,59 ****
   #include <stdlib.h>
@@ -655,15 +648,13 @@ diff -c heirloom-060122/calendar/calprog.c heirloom-060122-patched/calendar/calp
   #include <wctype.h>
   #include <wchar.h>
   
+Only in heirloom-060122-patched/calendar: calprog.c~
 Common subdirectories: heirloom-060122/cat and heirloom-060122-patched/cat
-Only in heirloom-060122-patched/cat: Makefile
 Common subdirectories: heirloom-060122/chmod and heirloom-060122-patched/chmod
-Only in heirloom-060122-patched/chmod: Makefile
 Common subdirectories: heirloom-060122/chown and heirloom-060122-patched/chown
-Only in heirloom-060122-patched/chown: Makefile
 diff -c heirloom-060122/chown/chown.c heirloom-060122-patched/chown/chown.c
 *** heirloom-060122/chown/chown.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/chown/chown.c Tue Oct 17 16:03:32 2006
+--- heirloom-060122-patched/chown/chown.c Sat Oct 21 00:32:35 2006
 ***************
 *** 143,148 ****
 --- 143,152 ----
@@ -677,11 +668,11 @@ diff -c heirloom-060122/chown/chown.c heirloom-060122-patched/chown/chown.c
   	chownfn = hflag || Rflag && HLPflag == 'P' ? lchown : chown;
   	statfn = hflag || Rflag && HLPflag == 'P' ? lstat : stat;
   	if (statfn(path, &ost) < 0) {
+Only in heirloom-060122-patched/chown: chown.c~
 Common subdirectories: heirloom-060122/cksum and heirloom-060122-patched/cksum
-Only in heirloom-060122-patched/cksum: Makefile
 diff -c heirloom-060122/cksum/cksum.c heirloom-060122-patched/cksum/cksum.c
 *** heirloom-060122/cksum/cksum.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/cksum/cksum.c Tue Oct 17 16:08:02 2006
+--- heirloom-060122-patched/cksum/cksum.c Sat Oct 21 00:32:35 2006
 ***************
 *** 57,62 ****
 --- 57,70 ----
@@ -733,11 +724,11 @@ diff -c heirloom-060122/cksum/cksum.c heirloom-060122-patched/cksum/cksum.c
   	if(name)
   		printf(" %s", name);
   	printf("\n");
+Only in heirloom-060122-patched/cksum: cksum.c~
 Common subdirectories: heirloom-060122/cmp and heirloom-060122-patched/cmp
-Only in heirloom-060122-patched/cmp: Makefile
 diff -c heirloom-060122/cmp/cmp.c heirloom-060122-patched/cmp/cmp.c
 *** heirloom-060122/cmp/cmp.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/cmp/cmp.c Tue Oct 17 17:23:32 2006
+--- heirloom-060122-patched/cmp/cmp.c Sat Oct 21 00:32:35 2006
 ***************
 *** 41,47 ****
   #include	<stdio.h>
@@ -921,11 +912,11 @@ diff -c heirloom-060122/cmp/cmp.c heirloom-060122-patched/cmp/cmp.c
   	ssize_t	rsz;
   
   	skip = strtoll(skipstring, NULL, *skipstring == '0' ? 8 : 10);
+Only in heirloom-060122-patched/cmp: cmp.c~
 Common subdirectories: heirloom-060122/col and heirloom-060122-patched/col
-Only in heirloom-060122-patched/col: Makefile
 diff -c heirloom-060122/col/col.c heirloom-060122-patched/col/col.c
 *** heirloom-060122/col/col.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/col/col.c Tue Oct 17 17:39:45 2006
+--- heirloom-060122-patched/col/col.c Sat Oct 21 00:32:35 2006
 ***************
 *** 64,69 ****
 --- 64,70 ----
@@ -1234,13 +1225,12 @@ diff -c heirloom-060122/col/col.c heirloom-060122-patched/col/col.c
   growsbuff(size_t n)
   {
   	if ((lbuff = realloc(lbuff, (line+n) * sizeof *lbuff)) == NULL) {
+Only in heirloom-060122-patched/col: col.c~
 Common subdirectories: heirloom-060122/comm and heirloom-060122-patched/comm
-Only in heirloom-060122-patched/comm: Makefile
 Common subdirectories: heirloom-060122/copy and heirloom-060122-patched/copy
-Only in heirloom-060122-patched/copy: Makefile
 diff -c heirloom-060122/copy/copy.c heirloom-060122-patched/copy/copy.c
 *** heirloom-060122/copy/copy.c Sun May 29 12:55:38 2005
---- heirloom-060122-patched/copy/copy.c Tue Oct 17 22:15:30 2006
+--- heirloom-060122-patched/copy/copy.c Sat Oct 21 00:32:36 2006
 ***************
 *** 41,47 ****
   #include <stdio.h>
@@ -1337,11 +1327,11 @@ diff -c heirloom-060122/copy/copy.c heirloom-060122-patched/copy/copy.c
   	if (read(0, &c, 1) == 1) {
   		yes = (c == 'y' || c == 'Y') ? OKAY : STOP;
   		while (c != '\n' && read(0, &c, 1) == 1);
+Only in heirloom-060122-patched/copy: copy.c~
 Common subdirectories: heirloom-060122/cp and heirloom-060122-patched/cp
-Only in heirloom-060122-patched/cp: Makefile
 diff -c heirloom-060122/cp/cp.c heirloom-060122-patched/cp/cp.c
 *** heirloom-060122/cp/cp.c Sun Jan 22 18:37:59 2006
---- heirloom-060122-patched/cp/cp.c Tue Oct 17 22:12:32 2006
+--- heirloom-060122-patched/cp/cp.c Sat Oct 21 00:32:36 2006
 ***************
 *** 51,57 ****
   #include	<stdio.h>
@@ -1525,11 +1515,11 @@ diff -c heirloom-060122/cp/cp.c heirloom-060122-patched/cp/cp.c
   		       progname, src, tgt,
   		       f,
   		       tv2f(ru2.ru_utime) - tv2f(ru1.ru_utime),
+Only in heirloom-060122-patched/cp: cp.c~
 Common subdirectories: heirloom-060122/cpio and heirloom-060122-patched/cpio
-Only in heirloom-060122-patched/cpio: Makefile
 diff -c heirloom-060122/cpio/cpio.c heirloom-060122-patched/cpio/cpio.c
 *** heirloom-060122/cpio/cpio.c Sun Jan 22 18:38:45 2006
---- heirloom-060122-patched/cpio/cpio.c Tue Oct 17 22:57:51 2006
+--- heirloom-060122-patched/cpio/cpio.c Sat Oct 21 00:32:37 2006
 ***************
 *** 46,52 ****
   #include <sys/wait.h>
@@ -2455,7 +2445,7 @@ diff -c heirloom-060122/cpio/cpio.c heirloom-060122-patched/cpio/cpio.c
 Only in heirloom-060122-patched/cpio: cpio.c~
 diff -c heirloom-060122/cpio/cpio.h heirloom-060122-patched/cpio/cpio.h
 *** heirloom-060122/cpio/cpio.h Sun Feb  6 11:58:52 2005
---- heirloom-060122-patched/cpio/cpio.h Tue Oct 17 23:00:13 2006
+--- heirloom-060122-patched/cpio/cpio.h Sat Oct 21 00:32:37 2006
 ***************
 *** 31,36 ****
 --- 31,48 ----
@@ -2542,10 +2532,9 @@ diff -c heirloom-060122/cpio/cpio.h heirloom-060122-patched/cpio/cpio.h
   extern int		printsev;
 Only in heirloom-060122-patched/cpio: cpio.h~
 Common subdirectories: heirloom-060122/csplit and heirloom-060122-patched/csplit
-Only in heirloom-060122-patched/csplit: Makefile
 diff -c heirloom-060122/csplit/csplit.c heirloom-060122-patched/csplit/csplit.c
 *** heirloom-060122/csplit/csplit.c Sun May 29 12:55:39 2005
---- heirloom-060122-patched/csplit/csplit.c Wed Oct 18 01:13:10 2006
+--- heirloom-060122-patched/csplit/csplit.c Sat Oct 21 00:32:38 2006
 ***************
 *** 71,81 ****
   
@@ -2665,13 +2654,12 @@ diff -c heirloom-060122/csplit/csplit.c heirloom-060122-patched/csplit/csplit.c
   {
   	static int	ncur = -1;
   
+Only in heirloom-060122-patched/csplit: csplit.c~
 Common subdirectories: heirloom-060122/cut and heirloom-060122-patched/cut
-Only in heirloom-060122-patched/cut: Makefile
 Common subdirectories: heirloom-060122/date and heirloom-060122-patched/date
-Only in heirloom-060122-patched/date: Makefile
 diff -c heirloom-060122/date/date.c heirloom-060122-patched/date/date.c
 *** heirloom-060122/date/date.c Sun Jan 22 18:39:39 2006
---- heirloom-060122-patched/date/date.c Wed Oct 18 01:56:33 2006
+--- heirloom-060122-patched/date/date.c Sat Oct 21 00:32:38 2006
 ***************
 *** 46,53 ****
   #include	<libgen.h>
@@ -2842,13 +2830,12 @@ diff -c heirloom-060122/date/date.c heirloom-060122-patched/date/date.c
   	return;
   }
   
+Only in heirloom-060122-patched/date: date.c~
 Common subdirectories: heirloom-060122/dc and heirloom-060122-patched/dc
-Only in heirloom-060122-patched/dc: Makefile
 Common subdirectories: heirloom-060122/dd and heirloom-060122-patched/dd
-Only in heirloom-060122-patched/dd: Makefile
 diff -c heirloom-060122/dd/dd.c heirloom-060122-patched/dd/dd.c
 *** heirloom-060122/dd/dd.c Sun Jan 22 18:40:04 2006
---- heirloom-060122-patched/dd/dd.c Wed Oct 18 02:06:12 2006
+--- heirloom-060122-patched/dd/dd.c Sat Oct 21 00:32:38 2006
 ***************
 *** 41,47 ****
   #include	<stdio.h>
@@ -2971,13 +2958,12 @@ diff -c heirloom-060122/dd/dd.c heirloom-060122-patched/dd/dd.c
   		struct mtget	mg;
   		yes = (istat.st_mode&S_IFMT) == S_IFCHR &&
   			ioctl(iffd, MTIOCGET, &mg) == 0;
+Only in heirloom-060122-patched/dd: dd.c~
 Common subdirectories: heirloom-060122/deroff and heirloom-060122-patched/deroff
-Only in heirloom-060122-patched/deroff: Makefile
 Common subdirectories: heirloom-060122/df and heirloom-060122-patched/df
-Only in heirloom-060122-patched/df: Makefile
 diff -c heirloom-060122/df/df.c heirloom-060122-patched/df/df.c
 *** heirloom-060122/df/df.c Sun Jan 22 18:42:39 2006
---- heirloom-060122-patched/df/df.c Wed Oct 18 02:57:16 2006
+--- heirloom-060122-patched/df/df.c Sat Oct 21 00:32:38 2006
 ***************
 *** 45,56 ****
    * - the use of getmntent(), which is Linux-specific.
@@ -3076,9 +3062,10 @@ diff -c heirloom-060122/df/df.c heirloom-060122-patched/df/df.c
   #else	/* SVR4 */
   	fclose(fp);
   #endif	/* SVR4 */
+Only in heirloom-060122-patched/df: df.c~
 diff -c heirloom-060122/df/statvfs.c heirloom-060122-patched/df/statvfs.c
 *** heirloom-060122/df/statvfs.c Sun Jan 22 18:42:39 2006
---- heirloom-060122-patched/df/statvfs.c Wed Oct 18 02:59:07 2006
+--- heirloom-060122-patched/df/statvfs.c Sat Oct 21 00:32:38 2006
 ***************
 *** 21,28 ****
    */
@@ -3153,11 +3140,11 @@ diff -c heirloom-060122/df/statvfs.c heirloom-060122-patched/df/statvfs.c
   	buf->f_namemax = sf.f_namelen;
   #else	/* __NetBSD__, __FreeBSD__, __OpenBSD__, __APPLE__ */
   	buf->f_namemax = PATH_MAX;
+Only in heirloom-060122-patched/df: statvfs.c~
 Common subdirectories: heirloom-060122/diff and heirloom-060122-patched/diff
-Only in heirloom-060122-patched/diff: Makefile
 diff -c heirloom-060122/diff/diffdir.c heirloom-060122-patched/diff/diffdir.c
 *** heirloom-060122/diff/diffdir.c Sun Jan 22 18:43:07 2006
---- heirloom-060122-patched/diff/diffdir.c Wed Oct 18 02:17:25 2006
+--- heirloom-060122-patched/diff/diffdir.c Sat Oct 21 00:32:39 2006
 ***************
 *** 93,98 ****
 --- 93,106 ----
@@ -3433,9 +3420,10 @@ diff -c heirloom-060122/diff/diffdir.c heirloom-060122-patched/diff/diffdir.c
   
   	while ((c = getc(fp)) != EOF) {
   		if (c == '\n')
+Only in heirloom-060122-patched/diff: diffdir.c~
 diff -c heirloom-060122/diff/diffh.c heirloom-060122-patched/diff/diffh.c
 *** heirloom-060122/diff/diffh.c Sun May 29 12:55:39 2005
---- heirloom-060122-patched/diff/diffh.c Wed Oct 18 02:27:34 2006
+--- heirloom-060122-patched/diff/diffh.c Sat Oct 21 00:32:39 2006
 ***************
 *** 97,102 ****
 --- 97,110 ----
@@ -3586,9 +3574,10 @@ diff -c heirloom-060122/diff/diffh.c heirloom-060122-patched/diff/diffh.c
   }
   
   static int
+Only in heirloom-060122-patched/diff: diffh.c~
 diff -c heirloom-060122/diff/diffreg.c heirloom-060122-patched/diff/diffreg.c
 *** heirloom-060122/diff/diffreg.c Sun Mar 27 10:02:01 2005
---- heirloom-060122-patched/diff/diffreg.c Wed Oct 18 02:22:43 2006
+--- heirloom-060122-patched/diff/diffreg.c Sat Oct 21 00:32:39 2006
 ***************
 *** 86,91 ****
 --- 86,95 ----
@@ -3602,11 +3591,11 @@ diff -c heirloom-060122/diff/diffreg.c heirloom-060122-patched/diff/diffreg.c
   /*
    * diff - compare two files.
    */
+Only in heirloom-060122-patched/diff: diffreg.c~
 Common subdirectories: heirloom-060122/diff3 and heirloom-060122-patched/diff3
-Only in heirloom-060122-patched/diff3: Makefile
 diff -c heirloom-060122/diff3/Makefile.mk heirloom-060122-patched/diff3/Makefile.mk
 *** heirloom-060122/diff3/Makefile.mk Thu May 29 19:35:23 2003
---- heirloom-060122-patched/diff3/Makefile.mk Wed Oct 18 02:30:46 2006
+--- heirloom-060122-patched/diff3/Makefile.mk Sat Oct 21 00:32:39 2006
 ***************
 *** 1,10 ****
   all: diff3 diff3prog
@@ -3627,11 +3616,11 @@ diff -c heirloom-060122/diff3/Makefile.mk heirloom-060122-patched/diff3/Makefile
   	chmod 755 diff3
   
   diff3prog: diff3prog.o
+Only in heirloom-060122-patched/diff3: Makefile.mk~
 Common subdirectories: heirloom-060122/dircmp and heirloom-060122-patched/dircmp
-Only in heirloom-060122-patched/dircmp: Makefile
 diff -c heirloom-060122/dircmp/Makefile.mk heirloom-060122-patched/dircmp/Makefile.mk
 *** heirloom-060122/dircmp/Makefile.mk Sat Jun 25 16:48:53 2005
---- heirloom-060122-patched/dircmp/Makefile.mk Wed Oct 18 02:31:40 2006
+--- heirloom-060122-patched/dircmp/Makefile.mk Sat Oct 21 00:32:39 2006
 ***************
 *** 1,10 ****
   all: dircmp
@@ -3652,13 +3641,12 @@ diff -c heirloom-060122/dircmp/Makefile.mk heirloom-060122-patched/dircmp/Makefi
   	chmod 755 dircmp
   
   install: all
+Only in heirloom-060122-patched/dircmp: Makefile.mk~
 Common subdirectories: heirloom-060122/dirname and heirloom-060122-patched/dirname
-Only in heirloom-060122-patched/dirname: Makefile
 Common subdirectories: heirloom-060122/du and heirloom-060122-patched/du
-Only in heirloom-060122-patched/du: Makefile
 diff -c heirloom-060122/du/du.c heirloom-060122-patched/du/du.c
 *** heirloom-060122/du/du.c Sun May 29 12:55:40 2005
---- heirloom-060122-patched/du/du.c Wed Oct 18 12:21:48 2006
+--- heirloom-060122-patched/du/du.c Sat Oct 21 00:32:39 2006
 ***************
 *** 64,69 ****
 --- 64,77 ----
@@ -3814,11 +3802,11 @@ diff -c heirloom-060122/du/du.c heirloom-060122-patched/du/du.c
   	}
   }
   
+Only in heirloom-060122-patched/du: du.c~
 Common subdirectories: heirloom-060122/echo and heirloom-060122-patched/echo
-Only in heirloom-060122-patched/echo: Makefile
 diff -c heirloom-060122/echo/defs.h heirloom-060122-patched/echo/defs.h
 *** heirloom-060122/echo/defs.h Sat Jul  2 12:36:39 2005
---- heirloom-060122-patched/echo/defs.h Wed Oct 18 13:42:20 2006
+--- heirloom-060122-patched/echo/defs.h Sat Oct 21 00:32:40 2006
 ***************
 *** 73,79 ****
   #define	prp()		fputs("test: ", stdout)
@@ -3838,15 +3826,13 @@ diff -c heirloom-060122/echo/defs.h heirloom-060122-patched/echo/defs.h
   
   extern int	mb_cur_max;
   #define	nextc(wc, sp)	(mb_cur_max > 1 && *(sp) & 0200 ? \
+Only in heirloom-060122-patched/echo: defs.h~
 Common subdirectories: heirloom-060122/ed and heirloom-060122-patched/ed
-Only in heirloom-060122-patched/ed: Makefile
 Common subdirectories: heirloom-060122/env and heirloom-060122-patched/env
-Only in heirloom-060122-patched/env: Makefile
 Common subdirectories: heirloom-060122/expand and heirloom-060122-patched/expand
-Only in heirloom-060122-patched/expand: Makefile
 diff -c heirloom-060122/expand/expand.c heirloom-060122-patched/expand/expand.c
 *** heirloom-060122/expand/expand.c Sun May 29 12:55:40 2005
---- heirloom-060122-patched/expand/expand.c Wed Oct 18 13:45:46 2006
+--- heirloom-060122-patched/expand/expand.c Sat Oct 21 00:32:40 2006
 ***************
 *** 93,99 ****
   	char	b;
@@ -3864,9 +3850,10 @@ diff -c heirloom-060122/expand/expand.c heirloom-060122-patched/expand/expand.c
   
   	if ((ip = fn ? ib_open(fn, 0) : ib_alloc(0, 0)) == NULL) {
   		perror(fn ? fn : "stdin");
+Only in heirloom-060122-patched/expand: expand.c~
 diff -c heirloom-060122/expand/tablist.c heirloom-060122-patched/expand/tablist.c
 *** heirloom-060122/expand/tablist.c Fri Jul 16 16:58:15 2004
---- heirloom-060122-patched/expand/tablist.c Wed Oct 18 13:46:10 2006
+--- heirloom-060122-patched/expand/tablist.c Sat Oct 21 00:32:40 2006
 ***************
 *** 42,48 ****
   settab(const char *s)
@@ -3901,9 +3888,10 @@ diff -c heirloom-060122/expand/tablist.c heirloom-060122-patched/expand/tablist.
   {
   	struct tab	*tp, *tq;
   
+Only in heirloom-060122-patched/expand: tablist.c~
 diff -c heirloom-060122/expand/tablist.h heirloom-060122-patched/expand/tablist.h
 *** heirloom-060122/expand/tablist.h Mon May  5 20:59:29 2003
---- heirloom-060122-patched/expand/tablist.h Wed Oct 18 13:47:06 2006
+--- heirloom-060122-patched/expand/tablist.h Sat Oct 21 00:32:40 2006
 ***************
 *** 27,40 ****
   
@@ -3942,9 +3930,10 @@ diff -c heirloom-060122/expand/tablist.h heirloom-060122-patched/expand/tablist.
 ! extern void	addtab(LONGLONG);
   extern void	badts(void);
   extern void	*scalloc(size_t, size_t);
+Only in heirloom-060122-patched/expand: tablist.h~
 diff -c heirloom-060122/expand/unexpand.c heirloom-060122-patched/expand/unexpand.c
 *** heirloom-060122/expand/unexpand.c Sun May 29 12:55:40 2005
---- heirloom-060122-patched/expand/unexpand.c Wed Oct 18 13:48:05 2006
+--- heirloom-060122-patched/expand/unexpand.c Sat Oct 21 00:32:40 2006
 ***************
 *** 60,66 ****
   
@@ -4002,11 +3991,11 @@ diff -c heirloom-060122/expand/unexpand.c heirloom-060122-patched/expand/unexpan
   
   	bol = *cp == 0;
   	if (tablist) {
+Only in heirloom-060122-patched/expand: unexpand.c~
 Common subdirectories: heirloom-060122/expr and heirloom-060122-patched/expr
-Only in heirloom-060122-patched/expr: Makefile
 diff -c heirloom-060122/expr/expr.y heirloom-060122-patched/expr/expr.y
 *** heirloom-060122/expr/expr.y Sun May 29 12:55:40 2005
---- heirloom-060122-patched/expr/expr.y Wed Oct 18 13:53:30 2006
+--- heirloom-060122-patched/expr/expr.y Sat Oct 21 00:34:23 2006
 ***************
 *** 72,77 ****
 --- 72,87 ----
@@ -4026,6 +4015,23 @@ diff -c heirloom-060122/expr/expr.y heirloom-060122-patched/expr/expr.y
   #define EQL(x,y) !strcmp(x,y)
   
   #define	NUMSZ	25
+***************
+*** 140,146 ****
+  			if (sus && numeric($1)) {
+  				int64_t	n;
+  				n = atoll($1);
+! 				printf("%lld\n", n);
+  				exit(n == 0);
+  			} else
+  				puts($1);
+--- 150,156 ----
+  			if (sus && numeric($1)) {
+  				int64_t	n;
+  				n = atoll($1);
+! 				printf(P_LLD "\n", n);
+  				exit(n == 0);
+  			} else
+  				puts($1);
 ***************
 *** 447,456 ****
   	int	ret;
@@ -4049,13 +4055,12 @@ diff -c heirloom-060122/expr/expr.y heirloom-060122-patched/expr/expr.y
   		if (ret < 0)
   			yyerror("illegal number");
   	}
+Only in heirloom-060122-patched/expr: expr.y~
 Common subdirectories: heirloom-060122/factor and heirloom-060122-patched/factor
-Only in heirloom-060122-patched/factor: Makefile
 Common subdirectories: heirloom-060122/file and heirloom-060122-patched/file
-Only in heirloom-060122-patched/file: Makefile
 diff -c heirloom-060122/file/file.c heirloom-060122-patched/file/file.c
 *** heirloom-060122/file/file.c Sun May 29 12:55:40 2005
---- heirloom-060122-patched/file/file.c Wed Oct 18 13:59:47 2006
+--- heirloom-060122-patched/file/file.c Sat Oct 21 00:32:40 2006
 ***************
 *** 86,91 ****
 --- 86,94 ----
@@ -4068,11 +4073,11 @@ diff -c heirloom-060122/file/file.c heirloom-060122-patched/file/file.c
   static int in;
   static int i  = 0;
   static char buf[512];
+Only in heirloom-060122-patched/file: file.c~
 Common subdirectories: heirloom-060122/find and heirloom-060122-patched/find
-Only in heirloom-060122-patched/find: Makefile
 diff -c heirloom-060122/find/find.c heirloom-060122-patched/find/find.c
 *** heirloom-060122/find/find.c Sun Jan 22 18:44:03 2006
---- heirloom-060122-patched/find/find.c Wed Oct 18 14:06:17 2006
+--- heirloom-060122-patched/find/find.c Sat Oct 21 00:32:40 2006
 ***************
 *** 103,111 ****
 --- 103,122 ----
@@ -4179,11 +4184,11 @@ diff -c heirloom-060122/find/find.c heirloom-060122-patched/find/find.c
   			raise(WTERMSIG(i));
   			pause();
   		}
+Only in heirloom-060122-patched/find: find.c~
 Common subdirectories: heirloom-060122/fmt and heirloom-060122-patched/fmt
-Only in heirloom-060122-patched/fmt: Makefile
 diff -c heirloom-060122/fmt/fmt.c heirloom-060122-patched/fmt/fmt.c
 *** heirloom-060122/fmt/fmt.c Sun May 29 12:55:40 2005
---- heirloom-060122-patched/fmt/fmt.c Wed Oct 18 14:32:25 2006
+--- heirloom-060122-patched/fmt/fmt.c Sat Oct 21 00:32:41 2006
 ***************
 *** 72,77 ****
 --- 72,83 ----
@@ -4216,15 +4221,13 @@ diff -c heirloom-060122/fmt/fmt.c heirloom-060122-patched/fmt/fmt.c
   static int	mark;			/* we saw a head line */
   static long	width = 72;		/* Width that we will not exceed */
   static int	cflag;			/* crown margin mode */
+Only in heirloom-060122-patched/fmt: fmt.c~
 Common subdirectories: heirloom-060122/fmtmsg and heirloom-060122-patched/fmtmsg
-Only in heirloom-060122-patched/fmtmsg: Makefile
 Common subdirectories: heirloom-060122/fold and heirloom-060122-patched/fold
-Only in heirloom-060122-patched/fold: Makefile
 Common subdirectories: heirloom-060122/getconf and heirloom-060122-patched/getconf
-Only in heirloom-060122-patched/getconf: Makefile
 diff -c heirloom-060122/getconf/getconf.c heirloom-060122-patched/getconf/getconf.c
 *** heirloom-060122/getconf/getconf.c Fri Sep  2 16:09:17 2005
---- heirloom-060122-patched/getconf/getconf.c Wed Oct 18 14:46:45 2006
+--- heirloom-060122-patched/getconf/getconf.c Sat Oct 21 00:32:41 2006
 ***************
 *** 2124,2129 ****
 --- 2124,2133 ----
@@ -4248,13 +4251,12 @@ diff -c heirloom-060122/getconf/getconf.c heirloom-060122-patched/getconf/getcon
   		break;
   
   	case PATHCONF:
+Only in heirloom-060122-patched/getconf: getconf.c~
 Common subdirectories: heirloom-060122/getopt and heirloom-060122-patched/getopt
-Only in heirloom-060122-patched/getopt: Makefile
 Common subdirectories: heirloom-060122/grep and heirloom-060122-patched/grep
-Only in heirloom-060122-patched/grep: Makefile
 diff -c heirloom-060122/grep/grep.c heirloom-060122-patched/grep/grep.c
 *** heirloom-060122/grep/grep.c Sat Feb  5 00:53:55 2005
---- heirloom-060122-patched/grep/grep.c Wed Oct 18 15:38:47 2006
+--- heirloom-060122-patched/grep/grep.c Sat Oct 21 00:32:41 2006
 ***************
 *** 33,39 ****
   
@@ -4287,13 +4289,12 @@ diff -c heirloom-060122/grep/grep.c heirloom-060122-patched/grep/grep.c
   /*
    * Generic flags and the like.
    */
+Only in heirloom-060122-patched/grep: grep.c~
 Common subdirectories: heirloom-060122/groups and heirloom-060122-patched/groups
-Only in heirloom-060122-patched/groups: Makefile
 Common subdirectories: heirloom-060122/hd and heirloom-060122-patched/hd
-Only in heirloom-060122-patched/hd: Makefile
 diff -c heirloom-060122/hd/hd.c heirloom-060122-patched/hd/hd.c
 *** heirloom-060122/hd/hd.c Sun May 29 12:55:41 2005
---- heirloom-060122-patched/hd/hd.c Wed Oct 18 15:51:03 2006
+--- heirloom-060122-patched/hd/hd.c Sat Oct 21 00:32:41 2006
 ***************
 *** 50,55 ****
 --- 50,64 ----
@@ -4507,11 +4508,11 @@ diff -c heirloom-060122/hd/hd.c heirloom-060122-patched/hd/hd.c
   
   	while ((nflag == 0 || rd < nflag)) {
   		if (mb_cur_max > 1) {
+Only in heirloom-060122-patched/hd: hd.c~
 Common subdirectories: heirloom-060122/head and heirloom-060122-patched/head
-Only in heirloom-060122-patched/head: Makefile
 diff -c heirloom-060122/head/head.c heirloom-060122-patched/head/head.c
 *** heirloom-060122/head/head.c Sun May 29 12:55:41 2005
---- heirloom-060122-patched/head/head.c Wed Oct 18 15:55:34 2006
+--- heirloom-060122-patched/head/head.c Sat Oct 21 00:32:41 2006
 ***************
 *** 47,54 ****
   
@@ -4580,11 +4581,11 @@ diff -c heirloom-060122/head/head.c heirloom-060122-patched/head/head.c
   
   	if (arg == NULL || *arg == '\0') {
   		fprintf(stderr, "%s: missing number\n", progname);
+Only in heirloom-060122-patched/head: head.c~
 Common subdirectories: heirloom-060122/hostname and heirloom-060122-patched/hostname
-Only in heirloom-060122-patched/hostname: Makefile
 diff -c heirloom-060122/hostname/hostname.c heirloom-060122-patched/hostname/hostname.c
 *** heirloom-060122/hostname/hostname.c Sun May 29 12:55:41 2005
---- heirloom-060122-patched/hostname/hostname.c Wed Oct 18 16:08:33 2006
+--- heirloom-060122-patched/hostname/hostname.c Sat Oct 21 00:32:41 2006
 ***************
 *** 42,47 ****
 --- 42,62 ----
@@ -4609,17 +4610,14 @@ diff -c heirloom-060122/hostname/hostname.c heirloom-060122-patched/hostname/hos
   int
   main(int argc, char **argv)
   {
+Only in heirloom-060122-patched/hostname: hostname.c~
 Common subdirectories: heirloom-060122/id and heirloom-060122-patched/id
-Only in heirloom-060122-patched/id: Makefile
 Common subdirectories: heirloom-060122/join and heirloom-060122-patched/join
-Only in heirloom-060122-patched/join: Makefile
 Common subdirectories: heirloom-060122/kill and heirloom-060122-patched/kill
-Only in heirloom-060122-patched/kill: Makefile
 Common subdirectories: heirloom-060122/libcommon and heirloom-060122-patched/libcommon
-Only in heirloom-060122-patched/libcommon: Makefile
 diff -c heirloom-060122/libcommon/Makefile.mk heirloom-060122-patched/libcommon/Makefile.mk
 *** heirloom-060122/libcommon/Makefile.mk Sun Jan 22 18:33:32 2006
---- heirloom-060122-patched/libcommon/Makefile.mk Thu Oct 19 01:38:54 2006
+--- heirloom-060122-patched/libcommon/Makefile.mk Sat Oct 21 00:32:41 2006
 ***************
 *** 4,12 ****
   	ib_open.o ib_popen.o ib_read.o ib_seek.o oblok.o sfile.o strtol.o \
@@ -4660,13 +4658,10 @@ diff -c heirloom-060122/libcommon/Makefile.mk heirloom-060122-patched/libcommon/
   asciitype.o: asciitype.h
   ib_alloc.o: iblok.h
   ib_close.o: iblok.h
-Only in heirloom-060122-patched/libcommon: dirname.c
-Only in heirloom-060122-patched/libcommon: dirname.h
-Only in heirloom-060122-patched/libcommon: fnmatch.c
-Only in heirloom-060122-patched/libcommon: fnmatch.h
+Only in heirloom-060122-patched/libcommon: Makefile.mk~
 diff -c heirloom-060122/libcommon/getdir.c heirloom-060122-patched/libcommon/getdir.c
 *** heirloom-060122/libcommon/getdir.c Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/getdir.c Wed Oct 18 14:15:25 2006
+--- heirloom-060122-patched/libcommon/getdir.c Sat Oct 21 00:32:42 2006
 ***************
 *** 1,4 ****
 --- 1,8 ----
@@ -4805,9 +4800,10 @@ diff -c heirloom-060122/libcommon/getdir.c heirloom-060122-patched/libcommon/get
 + 
 + #endif /* _MINIX */
 + 
+Only in heirloom-060122-patched/libcommon: getdir.c~
 diff -c heirloom-060122/libcommon/getdir.h heirloom-060122-patched/libcommon/getdir.h
 *** heirloom-060122/libcommon/getdir.h Sun Oct 19 14:52:52 2003
---- heirloom-060122-patched/libcommon/getdir.h Tue Oct 17 02:09:25 2006
+--- heirloom-060122-patched/libcommon/getdir.h Sat Oct 21 00:32:42 2006
 ***************
 *** 23,30 ****
   
@@ -4833,9 +4829,10 @@ diff -c heirloom-060122/libcommon/getdir.h heirloom-060122-patched/libcommon/get
   	char	*d_name;
   };
   
+Only in heirloom-060122-patched/libcommon: getdir.h~
 diff -c heirloom-060122/libcommon/ib_alloc.c heirloom-060122-patched/libcommon/ib_alloc.c
 *** heirloom-060122/libcommon/ib_alloc.c Sat Mar 12 15:42:02 2005
---- heirloom-060122-patched/libcommon/ib_alloc.c Tue Oct 17 02:05:23 2006
+--- heirloom-060122-patched/libcommon/ib_alloc.c Sat Oct 21 00:32:42 2006
 ***************
 *** 28,34 ****
   #include	<string.h>
@@ -4876,9 +4873,10 @@ diff -c heirloom-060122/libcommon/ib_alloc.c heirloom-060122-patched/libcommon/i
   	}
   	if ((ip = calloc(1, sizeof *ip)) == NULL)
   		return NULL;
+Only in heirloom-060122-patched/libcommon: ib_alloc.c~
 diff -c heirloom-060122/libcommon/iblok.h heirloom-060122-patched/libcommon/iblok.h
 *** heirloom-060122/libcommon/iblok.h Fri Dec 10 01:27:14 2004
---- heirloom-060122-patched/libcommon/iblok.h Tue Oct 17 02:03:43 2006
+--- heirloom-060122-patched/libcommon/iblok.h Sat Oct 21 00:32:42 2006
 ***************
 *** 29,37 ****
   #include	<stdio.h>		/* for EOF */
@@ -4905,10 +4903,10 @@ diff -c heirloom-060122/libcommon/iblok.h heirloom-060122-patched/libcommon/iblo
   	char	ib_mbuf[MB_LEN_MAX+1];	/* multibyte overflow buffer */
   	char	*ib_mcur;		/* next byte to read in ib_mbuf */
   	char	*ib_mend;		/* one beyond last byte in ib_mbuf */
-Only in heirloom-060122-patched/libcommon: libcommon.a
+Only in heirloom-060122-patched/libcommon: iblok.h~
 diff -c heirloom-060122/libcommon/memalign.c heirloom-060122-patched/libcommon/memalign.c
 *** heirloom-060122/libcommon/memalign.c Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/memalign.c Tue Oct 17 15:54:53 2006
+--- heirloom-060122-patched/libcommon/memalign.c Sat Oct 21 00:32:42 2006
 ***************
 *** 23,29 ****
   
@@ -4926,9 +4924,10 @@ diff -c heirloom-060122/libcommon/memalign.c heirloom-060122-patched/libcommon/m
   /*
    * FreeBSD malloc(3) promises to page-align the return of malloc() calls
    * if size is at least a page. This serves for a poor man's memalign() 
+Only in heirloom-060122-patched/libcommon: memalign.c~
 diff -c heirloom-060122/libcommon/memalign.h heirloom-060122-patched/libcommon/memalign.h
 *** heirloom-060122/libcommon/memalign.h Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/memalign.h Tue Oct 17 22:51:35 2006
+--- heirloom-060122-patched/libcommon/memalign.h Sat Oct 21 00:32:42 2006
 ***************
 *** 26,32 ****
   
@@ -4946,9 +4945,10 @@ diff -c heirloom-060122/libcommon/memalign.h heirloom-060122-patched/libcommon/m
   #include	<stdlib.h>
   
   extern void	*memalign(size_t, size_t);
+Only in heirloom-060122-patched/libcommon: memalign.h~
 diff -c heirloom-060122/libcommon/oblok.c heirloom-060122-patched/libcommon/oblok.c
 *** heirloom-060122/libcommon/oblok.c Fri Jul 16 15:38:21 2004
---- heirloom-060122-patched/libcommon/oblok.c Tue Oct 17 02:05:47 2006
+--- heirloom-060122-patched/libcommon/oblok.c Sat Oct 21 00:32:42 2006
 ***************
 *** 27,33 ****
   #include	<errno.h>
@@ -4968,9 +4968,10 @@ diff -c heirloom-060122/libcommon/oblok.c heirloom-060122-patched/libcommon/oblo
   
   #include	"memalign.h"
   #include	"oblok.h"
+Only in heirloom-060122-patched/libcommon: oblok.c~
 diff -c heirloom-060122/libcommon/oblok.h heirloom-060122-patched/libcommon/oblok.h
 *** heirloom-060122/libcommon/oblok.h Thu Apr 17 20:34:53 2003
---- heirloom-060122-patched/libcommon/oblok.h Tue Oct 17 02:06:31 2006
+--- heirloom-060122-patched/libcommon/oblok.h Sat Oct 21 00:32:42 2006
 ***************
 *** 22,27 ****
 --- 22,32 ----
@@ -5002,12 +5003,10 @@ diff -c heirloom-060122/libcommon/oblok.h heirloom-060122-patched/libcommon/oblo
   	int	ob_pos;			/* position of first empty date byte */
   	int	ob_fd;			/* file descriptor to write to */
   	enum ob_mode	ob_bf;		/* buffering mode */
-Only in heirloom-060122-patched/libcommon: realpath.c
-Only in heirloom-060122-patched/libcommon: realpath.h
-Only in heirloom-060122-patched/libcommon: savethis
+Only in heirloom-060122-patched/libcommon: oblok.h~
 diff -c heirloom-060122/libcommon/sfile.c heirloom-060122-patched/libcommon/sfile.c
 *** heirloom-060122/libcommon/sfile.c Mon Jun  7 00:15:06 2004
---- heirloom-060122-patched/libcommon/sfile.c Tue Oct 17 02:07:29 2006
+--- heirloom-060122-patched/libcommon/sfile.c Sat Oct 21 00:32:42 2006
 ***************
 *** 91,98 ****
   #include	<sys/types.h>
@@ -5032,9 +5031,10 @@ diff -c heirloom-060122/libcommon/sfile.c heirloom-060122-patched/libcommon/sfil
   {
   	return 0;
   }
+Only in heirloom-060122-patched/libcommon: sfile.c~
 diff -c heirloom-060122/libcommon/sfile.h heirloom-060122-patched/libcommon/sfile.h
 *** heirloom-060122/libcommon/sfile.h Thu Apr 17 20:34:53 2003
---- heirloom-060122-patched/libcommon/sfile.h Tue Oct 17 15:52:45 2006
+--- heirloom-060122-patched/libcommon/sfile.h Sat Oct 21 00:32:42 2006
 ***************
 *** 21,26 ****
 --- 21,32 ----
@@ -5063,9 +5063,10 @@ diff -c heirloom-060122/libcommon/sfile.h heirloom-060122-patched/libcommon/sfil
    */
 ! extern LONGLONG	sfile(int dst_fd, int src_fd, mode_t src_mode,
 ! 				LONGLONG src_size);
+Only in heirloom-060122-patched/libcommon: sfile.h~
 diff -c heirloom-060122/libcommon/sighold.c heirloom-060122-patched/libcommon/sighold.c
 *** heirloom-060122/libcommon/sighold.c Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/sighold.c Wed Oct 18 20:55:59 2006
+--- heirloom-060122-patched/libcommon/sighold.c Sat Oct 21 00:32:42 2006
 ***************
 *** 22,28 ****
   /*	Sccsid @(#)sighold.c	1.7 (gritter) 1/22/06	*/
@@ -5084,9 +5085,10 @@ diff -c heirloom-060122/libcommon/sighold.c heirloom-060122-patched/libcommon/si
   #include <signal.h>
   #include "sigset.h"
   
+Only in heirloom-060122-patched/libcommon: sighold.c~
 diff -c heirloom-060122/libcommon/sigrelse.c heirloom-060122-patched/libcommon/sigrelse.c
 *** heirloom-060122/libcommon/sigrelse.c Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/sigrelse.c Tue Oct 17 15:59:53 2006
+--- heirloom-060122-patched/libcommon/sigrelse.c Sat Oct 21 00:32:42 2006
 ***************
 *** 22,28 ****
   /*	Sccsid @(#)sigrelse.c	1.8 (gritter) 1/22/06	*/
@@ -5105,9 +5107,10 @@ diff -c heirloom-060122/libcommon/sigrelse.c heirloom-060122-patched/libcommon/s
   #include <signal.h>
   #include "sigset.h"
   
+Only in heirloom-060122-patched/libcommon: sigrelse.c~
 diff -c heirloom-060122/libcommon/sigset.c heirloom-060122-patched/libcommon/sigset.c
 *** heirloom-060122/libcommon/sigset.c Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/sigset.c Tue Oct 17 16:00:59 2006
+--- heirloom-060122-patched/libcommon/sigset.c Sat Oct 21 00:32:42 2006
 ***************
 *** 22,28 ****
   /*	Sccsid @(#)sigset.c	1.7 (gritter) 1/22/06	*/
@@ -5126,9 +5129,10 @@ diff -c heirloom-060122/libcommon/sigset.c heirloom-060122-patched/libcommon/sig
   #include <signal.h>
   #include "sigset.h"
   
+Only in heirloom-060122-patched/libcommon: sigset.c~
 diff -c heirloom-060122/libcommon/sigset.h heirloom-060122-patched/libcommon/sigset.h
 *** heirloom-060122/libcommon/sigset.h Sun Jan 22 19:06:14 2006
---- heirloom-060122-patched/libcommon/sigset.h Tue Oct 17 22:52:59 2006
+--- heirloom-060122-patched/libcommon/sigset.h Sat Oct 21 00:32:42 2006
 ***************
 *** 22,28 ****
   /*	Sccsid @(#)sigset.h	1.9 (gritter) 1/22/06	*/
@@ -5147,11 +5151,11 @@ diff -c heirloom-060122/libcommon/sigset.h heirloom-060122-patched/libcommon/sig
   
   #ifndef	SIG_HOLD
   #define	SIG_HOLD	((void (*)(int))2)
+Only in heirloom-060122-patched/libcommon: sigset.h~
 Common subdirectories: heirloom-060122/libuxre and heirloom-060122-patched/libuxre
-Only in heirloom-060122-patched/libuxre: Makefile
 diff -c heirloom-060122/libuxre/Makefile.mk heirloom-060122-patched/libuxre/Makefile.mk
 *** heirloom-060122/libuxre/Makefile.mk Sun Jan 22 18:33:50 2006
---- heirloom-060122-patched/libuxre/Makefile.mk Tue Oct 17 02:15:35 2006
+--- heirloom-060122-patched/libuxre/Makefile.mk Sat Oct 21 00:32:42 2006
 ***************
 *** 6,12 ****
   OBJ = onefile.o regfree.o regerror.o
@@ -5169,9 +5173,10 @@ diff -c heirloom-060122/libuxre/Makefile.mk heirloom-060122-patched/libuxre/Make
   	$(RANLIB) $@
   
   onefile.o: onefile.c
+Only in heirloom-060122-patched/libuxre: Makefile.mk~
 diff -c heirloom-060122/libuxre/_collelem.c heirloom-060122-patched/libuxre/_collelem.c
 *** heirloom-060122/libuxre/_collelem.c Sat Oct 18 19:16:46 2003
---- heirloom-060122-patched/libuxre/_collelem.c Tue Oct 17 02:51:05 2006
+--- heirloom-060122-patched/libuxre/_collelem.c Sat Oct 21 00:32:43 2006
 ***************
 *** 105,111 ****
   					{
@@ -5196,12 +5201,11 @@ diff -c heirloom-060122/libuxre/_collelem.c heirloom-060122-patched/libuxre/_col
   				}
   				return spare;
   			}
-Only in heirloom-060122-patched/libuxre: libuxre.a
+Only in heirloom-060122-patched/libuxre: _collelem.c~
 Common subdirectories: heirloom-060122/libwchar and heirloom-060122-patched/libwchar
-Only in heirloom-060122-patched/libwchar: Makefile
 diff -c heirloom-060122/libwchar/Makefile.mk heirloom-060122-patched/libwchar/Makefile.mk
 *** heirloom-060122/libwchar/Makefile.mk Sun Jan 22 18:34:02 2006
---- heirloom-060122-patched/libwchar/Makefile.mk Tue Oct 17 02:15:35 2006
+--- heirloom-060122-patched/libwchar/Makefile.mk Sat Oct 21 00:32:43 2006
 ***************
 *** 3,9 ****
   OBJ = mbtowc.o wctomb.o wctype.o mbstowcs.o wcwidth.o wcslen.o wcsncmp.o \
@@ -5219,10 +5223,10 @@ diff -c heirloom-060122/libwchar/Makefile.mk heirloom-060122-patched/libwchar/Ma
   	$(RANLIB) $@
   
   fake:
-Only in heirloom-060122-patched/libwchar: libwchar.a
+Only in heirloom-060122-patched/libwchar: Makefile.mk~
 diff -c heirloom-060122/libwchar/wchar.h heirloom-060122-patched/libwchar/wchar.h
 *** heirloom-060122/libwchar/wchar.h Tue Aug  2 23:29:17 2005
---- heirloom-060122-patched/libwchar/wchar.h Tue Oct 17 01:47:37 2006
+--- heirloom-060122-patched/libwchar/wchar.h Sat Oct 21 00:32:43 2006
 ***************
 *** 100,108 ****
   wchar_t		*wcstok(wchar_t *, const wchar_t *, wchar_t **);
@@ -5249,9 +5253,10 @@ diff -c heirloom-060122/libwchar/wchar.h heirloom-060122-patched/libwchar/wchar.
   wchar_t		*wcswcs(const wchar_t *, const wchar_t *);
   int		wcswidth(const wchar_t *, size_t);
   size_t		wcsxfrm(wchar_t *, const wchar_t *, size_t);
+Only in heirloom-060122-patched/libwchar: wchar.h~
 diff -c heirloom-060122/libwchar/wctype.c heirloom-060122-patched/libwchar/wctype.c
 *** heirloom-060122/libwchar/wctype.c Tue Sep 28 18:53:28 2004
---- heirloom-060122-patched/libwchar/wctype.c Tue Oct 17 02:37:17 2006
+--- heirloom-060122-patched/libwchar/wctype.c Sat Oct 21 00:32:43 2006
 ***************
 *** 25,30 ****
 --- 25,36 ----
@@ -5267,9 +5272,10 @@ diff -c heirloom-060122/libwchar/wctype.c heirloom-060122-patched/libwchar/wctyp
   #define	thistype(s)	if (strcmp((#s), property) == 0) { \
   				func = is ##s; \
   				goto found; \
+Only in heirloom-060122-patched/libwchar: wctype.c~
 diff -c heirloom-060122/libwchar/wctype.h heirloom-060122-patched/libwchar/wctype.h
 *** heirloom-060122/libwchar/wctype.h Sat May  1 17:01:02 2004
---- heirloom-060122-patched/libwchar/wctype.h Tue Oct 17 02:34:24 2006
+--- heirloom-060122-patched/libwchar/wctype.h Sat Oct 21 00:32:43 2006
 ***************
 *** 30,35 ****
 --- 30,40 ----
@@ -5284,21 +5290,16 @@ diff -c heirloom-060122/libwchar/wctype.h heirloom-060122-patched/libwchar/wctyp
   #define	iswalnum(c)	isalnum(c)
   #define	iswalpha(c)	isalpha(c)
   #define	iswblank(c)	isblank(c)
+Only in heirloom-060122-patched/libwchar: wctype.h~
 Common subdirectories: heirloom-060122/line and heirloom-060122-patched/line
-Only in heirloom-060122-patched/line: Makefile
 Common subdirectories: heirloom-060122/listusers and heirloom-060122-patched/listusers
-Only in heirloom-060122-patched/listusers: Makefile
 Common subdirectories: heirloom-060122/ln and heirloom-060122-patched/ln
-Only in heirloom-060122-patched/ln: Makefile
 Common subdirectories: heirloom-060122/logins and heirloom-060122-patched/logins
-Only in heirloom-060122-patched/logins: Makefile
 Common subdirectories: heirloom-060122/logname and heirloom-060122-patched/logname
-Only in heirloom-060122-patched/logname: Makefile
 Common subdirectories: heirloom-060122/ls and heirloom-060122-patched/ls
-Only in heirloom-060122-patched/ls: Makefile
 diff -c heirloom-060122/ls/ls.c heirloom-060122-patched/ls/ls.c
 *** heirloom-060122/ls/ls.c Sun May 29 12:55:42 2005
---- heirloom-060122-patched/ls/ls.c Tue Oct 17 02:01:32 2006
+--- heirloom-060122-patched/ls/ls.c Sat Oct 21 00:32:43 2006
 ***************
 *** 155,160 ****
 --- 155,166 ----
@@ -5382,11 +5383,11 @@ diff -c heirloom-060122/ls/ls.c heirloom-060122-patched/ls/ls.c
   #endif
   		}
   	}
+Only in heirloom-060122-patched/ls: ls.c~
 Common subdirectories: heirloom-060122/mail and heirloom-060122-patched/mail
-Only in heirloom-060122-patched/mail: Makefile
 diff -c heirloom-060122/mail/done.c heirloom-060122-patched/mail/done.c
 *** heirloom-060122/mail/done.c Wed Jun 22 01:42:38 2005
---- heirloom-060122-patched/mail/done.c Wed Oct 18 16:19:49 2006
+--- heirloom-060122-patched/mail/done.c Sat Oct 21 00:32:43 2006
 ***************
 *** 53,59 ****
   	case EPERM:
@@ -5404,9 +5405,10 @@ diff -c heirloom-060122/mail/done.c heirloom-060122-patched/mail/done.c
   		rc = 73;	/* EX_CANTCREAT */
   		break;
   	case EAGAIN:
+Only in heirloom-060122-patched/mail: done.c~
 diff -c heirloom-060122/mail/islocal.c heirloom-060122-patched/mail/islocal.c
 *** heirloom-060122/mail/islocal.c Wed Jun 22 03:15:14 2005
---- heirloom-060122-patched/mail/islocal.c Wed Oct 18 16:20:20 2006
+--- heirloom-060122-patched/mail/islocal.c Sat Oct 21 00:32:43 2006
 ***************
 *** 32,38 ****
   
@@ -5417,9 +5419,10 @@ diff -c heirloom-060122/mail/islocal.c heirloom-060122-patched/mail/islocal.c
    * islocal (char *user, uid_t *puid) - see if user exists on this system
    */
 --- 32,37 ----
+Only in heirloom-060122-patched/mail: islocal.c~
 diff -c heirloom-060122/mail/mail.h heirloom-060122-patched/mail/mail.h
 *** heirloom-060122/mail/mail.h Sat Jul  2 23:11:41 2005
---- heirloom-060122-patched/mail/mail.h Wed Oct 18 16:22:15 2006
+--- heirloom-060122-patched/mail/mail.h Sat Oct 21 00:32:43 2006
 ***************
 *** 492,495 ****
   			*(to) = srealloc(*(to), *(tosize) += 32); \
@@ -5438,9 +5441,10 @@ diff -c heirloom-060122/mail/mail.h heirloom-060122-patched/mail/mail.h
 ! #endif
 ! 
 ! #endif /* _MAIL_H */
+Only in heirloom-060122-patched/mail: mail.h~
 diff -c heirloom-060122/makefile heirloom-060122-patched/makefile
 *** heirloom-060122/makefile Sun Jan 22 21:48:04 2006
---- heirloom-060122-patched/makefile Wed Oct 18 17:12:49 2006
+--- heirloom-060122-patched/makefile Sat Oct 21 00:32:43 2006
 ***************
 *** 1,19 ****
   SHELL = /bin/sh
@@ -5551,11 +5555,11 @@ diff -c heirloom-060122/makefile heirloom-060122-patched/makefile
   		LCRYPT= \
   		IWCHAR=-I../libwchar LWCHAR="-L../libwchar -lwchar" \
   		WARN="-Wchar-subscripts -Wimplicit \
+Only in heirloom-060122-patched: makefile~
 Common subdirectories: heirloom-060122/man and heirloom-060122-patched/man
-Only in heirloom-060122-patched/man: Makefile
 diff -c heirloom-060122/man/Makefile.mk heirloom-060122-patched/man/Makefile.mk
 *** heirloom-060122/man/Makefile.mk Sun Jul 18 13:15:48 2004
---- heirloom-060122-patched/man/Makefile.mk Fri Oct 20 23:56:22 2006
+--- heirloom-060122-patched/man/Makefile.mk Sat Oct 21 00:32:44 2006
 ***************
 *** 10,15 ****
 --- 10,22 ----
@@ -5572,19 +5576,15 @@ diff -c heirloom-060122/man/Makefile.mk heirloom-060122-patched/man/Makefile.mk
   	if test "`uname`" = HP-UX ;\
   	then \
   		order='bash ksh';\
+Only in heirloom-060122-patched/man: Makefile.mk~
 Common subdirectories: heirloom-060122/mesg and heirloom-060122-patched/mesg
-Only in heirloom-060122-patched/mesg: Makefile
 Common subdirectories: heirloom-060122/mkdir and heirloom-060122-patched/mkdir
-Only in heirloom-060122-patched/mkdir: Makefile
 Common subdirectories: heirloom-060122/mkfifo and heirloom-060122-patched/mkfifo
-Only in heirloom-060122-patched/mkfifo: Makefile
 Common subdirectories: heirloom-060122/mknod and heirloom-060122-patched/mknod
-Only in heirloom-060122-patched/mknod: Makefile
 Common subdirectories: heirloom-060122/more and heirloom-060122-patched/more
-Only in heirloom-060122-patched/more: Makefile
 diff -c heirloom-060122/more/more.c heirloom-060122-patched/more/more.c
 *** heirloom-060122/more/more.c Sun May 29 12:55:43 2005
---- heirloom-060122-patched/more/more.c Wed Oct 18 16:35:43 2006
+--- heirloom-060122-patched/more/more.c Sat Oct 21 00:32:44 2006
 ***************
 *** 96,101 ****
 --- 96,108 ----
@@ -5668,11 +5668,11 @@ diff -c heirloom-060122/more/more.c heirloom-060122-patched/more/more.c
   	    kill(0, SIGTTOU);
   	    goto retry;
   	}
+Only in heirloom-060122-patched/more: more.c~
 Common subdirectories: heirloom-060122/mvdir and heirloom-060122-patched/mvdir
-Only in heirloom-060122-patched/mvdir: Makefile
 diff -c heirloom-060122/mvdir/Makefile.mk heirloom-060122-patched/mvdir/Makefile.mk
 *** heirloom-060122/mvdir/Makefile.mk Sat Jun 25 17:03:27 2005
---- heirloom-060122-patched/mvdir/Makefile.mk Wed Oct 18 16:37:39 2006
+--- heirloom-060122-patched/mvdir/Makefile.mk Sat Oct 21 00:32:44 2006
 ***************
 *** 1,10 ****
   all: mvdir
@@ -5693,11 +5693,11 @@ diff -c heirloom-060122/mvdir/Makefile.mk heirloom-060122-patched/mvdir/Makefile
   	chmod 755 mvdir
   
   install: all
+Only in heirloom-060122-patched/mvdir: Makefile.mk~
 Common subdirectories: heirloom-060122/nawk and heirloom-060122-patched/nawk
-Only in heirloom-060122-patched/nawk: Makefile
 diff -c heirloom-060122/nawk/main.c heirloom-060122-patched/nawk/main.c
 *** heirloom-060122/nawk/main.c Sun Dec 19 02:23:10 2004
---- heirloom-060122-patched/nawk/main.c Wed Oct 18 16:39:11 2006
+--- heirloom-060122-patched/nawk/main.c Sat Oct 21 00:32:44 2006
 ***************
 *** 35,41 ****
   #include <errno.h>
@@ -5717,13 +5717,12 @@ diff -c heirloom-060122/nawk/main.c heirloom-060122-patched/nawk/main.c
   #include <libgen.h>
   
   #define	CMDCLASS	""/*"UX:"*/	/* Command classification */
+Only in heirloom-060122-patched/nawk: main.c~
 Common subdirectories: heirloom-060122/news and heirloom-060122-patched/news
-Only in heirloom-060122-patched/news: Makefile
 Common subdirectories: heirloom-060122/nice and heirloom-060122-patched/nice
-Only in heirloom-060122-patched/nice: Makefile
 diff -c heirloom-060122/nice/nice.c heirloom-060122-patched/nice/nice.c
 *** heirloom-060122/nice/nice.c Sun May 29 12:55:43 2005
---- heirloom-060122-patched/nice/nice.c Wed Oct 18 16:52:48 2006
+--- heirloom-060122-patched/nice/nice.c Sat Oct 21 00:32:44 2006
 ***************
 *** 41,46 ****
 --- 41,50 ----
@@ -5766,11 +5765,11 @@ diff -c heirloom-060122/nice/nice.c heirloom-060122-patched/nice/nice.c
   	execvp(argv[i], &argv[i]);
   	e = errno;
   	pnerror(e, argv[i]);
+Only in heirloom-060122-patched/nice: nice.c~
 Common subdirectories: heirloom-060122/nl and heirloom-060122-patched/nl
-Only in heirloom-060122-patched/nl: Makefile
 diff -c heirloom-060122/nl/nl.c heirloom-060122-patched/nl/nl.c
 *** heirloom-060122/nl/nl.c Sun May 29 12:55:43 2005
---- heirloom-060122-patched/nl/nl.c Wed Oct 18 16:57:51 2006
+--- heirloom-060122-patched/nl/nl.c Sat Oct 21 00:32:44 2006
 ***************
 *** 58,63 ****
 --- 58,69 ----
@@ -5820,13 +5819,12 @@ diff -c heirloom-060122/nl/nl.c heirloom-060122-patched/nl/nl.c
   {
   	char	*cp;
   
+Only in heirloom-060122-patched/nl: nl.c~
 Common subdirectories: heirloom-060122/nohup and heirloom-060122-patched/nohup
-Only in heirloom-060122-patched/nohup: Makefile
 Common subdirectories: heirloom-060122/oawk and heirloom-060122-patched/oawk
-Only in heirloom-060122-patched/oawk: Makefile
 diff -c heirloom-060122/oawk/Makefile.mk heirloom-060122-patched/oawk/Makefile.mk
 *** heirloom-060122/oawk/Makefile.mk Sat Oct  2 18:23:20 2004
---- heirloom-060122-patched/oawk/Makefile.mk Fri Oct 20 23:06:46 2006
+--- heirloom-060122-patched/oawk/Makefile.mk Sat Oct 21 00:32:44 2006
 ***************
 *** 14,20 ****
   	echo '{ char *tnm;' >> $@
@@ -5844,9 +5842,10 @@ diff -c heirloom-060122/oawk/Makefile.mk heirloom-060122-patched/oawk/Makefile.m
   	    < awk.h >> $@
   	echo '};' >> $@
   	echo 'char *tokname(int n)' >> $@
+Only in heirloom-060122-patched/oawk: Makefile.mk~
 diff -c heirloom-060122/oawk/awk.def heirloom-060122-patched/oawk/awk.def
 *** heirloom-060122/oawk/awk.def Mon Oct  4 22:36:53 2004
---- heirloom-060122-patched/oawk/awk.def Wed Oct 18 17:19:07 2006
+--- heirloom-060122-patched/oawk/awk.def Sat Oct 21 00:32:44 2006
 ***************
 *** 78,83 ****
 --- 78,91 ----
@@ -5881,9 +5880,10 @@ diff -c heirloom-060122/oawk/awk.def heirloom-060122-patched/oawk/awk.def
   extern int	errorflag;
   extern const char	*radixchar;
   extern int	radixcharlen;
+Only in heirloom-060122-patched/oawk: awk.def~
 diff -c heirloom-060122/oawk/awk.lx.l heirloom-060122-patched/oawk/awk.lx.l
 *** heirloom-060122/oawk/awk.lx.l Sat Jun 18 21:46:58 2005
---- heirloom-060122-patched/oawk/awk.lx.l Wed Oct 18 17:01:29 2006
+--- heirloom-060122-patched/oawk/awk.lx.l Sat Oct 21 00:32:44 2006
 ***************
 *** 130,136 ****
   }
@@ -5901,9 +5901,10 @@ diff -c heirloom-060122/oawk/awk.lx.l heirloom-060122-patched/oawk/awk.lx.l
   #define	RETURN(x)	{if (ldbg) ptoken(x); return(x); }
   #define	CADD	cbuf[clen++]=yytext[0]; if(clen>=CBUFLEN-1) {yyerror("string too long"); BEGIN INITIAL;}
   #define	CBUFLEN	800
+Only in heirloom-060122-patched/oawk: awk.lx.l~
 diff -c heirloom-060122/oawk/lib.c heirloom-060122-patched/oawk/lib.c
 *** heirloom-060122/oawk/lib.c Fri Jul 16 15:38:22 2004
---- heirloom-060122-patched/oawk/lib.c Wed Oct 18 17:19:28 2006
+--- heirloom-060122-patched/oawk/lib.c Sat Oct 21 00:32:45 2006
 ***************
 *** 371,377 ****
   
@@ -5921,9 +5922,10 @@ diff -c heirloom-060122/oawk/lib.c heirloom-060122-patched/oawk/lib.c
   	errorflag = 2;
   }
   
+Only in heirloom-060122-patched/oawk: lib.c~
 diff -c heirloom-060122/oawk/main.c heirloom-060122-patched/oawk/main.c
 *** heirloom-060122/oawk/main.c Sun Dec 12 16:05:00 2004
---- heirloom-060122-patched/oawk/main.c Wed Oct 18 17:06:51 2006
+--- heirloom-060122-patched/oawk/main.c Sat Oct 21 00:32:45 2006
 ***************
 *** 86,92 ****
   #include "awk.h"
@@ -5945,9 +5947,10 @@ diff -c heirloom-060122/oawk/main.c heirloom-060122-patched/oawk/main.c
   
   int	dbg	= 0;
   int	ldbg	= 0;
+Only in heirloom-060122-patched/oawk: main.c~
 diff -c heirloom-060122/oawk/tran.c heirloom-060122-patched/oawk/tran.c
 *** heirloom-060122/oawk/tran.c Mon Mar 31 16:41:56 2003
---- heirloom-060122-patched/oawk/tran.c Wed Oct 18 17:18:08 2006
+--- heirloom-060122-patched/oawk/tran.c Sat Oct 21 00:32:45 2006
 ***************
 *** 259,265 ****
   	if ((vp->tval & STR) == 0) {
@@ -5965,11 +5968,11 @@ diff -c heirloom-060122/oawk/tran.c heirloom-060122-patched/oawk/tran.c
   			(void)snprintf(s, sizeof s, "%.20g", vp->fval);
   		else
   			(void)snprintf(s, sizeof s, *OFMT, vp->fval);
+Only in heirloom-060122-patched/oawk: tran.c~
 Common subdirectories: heirloom-060122/od and heirloom-060122-patched/od
-Only in heirloom-060122-patched/od: Makefile
 diff -c heirloom-060122/od/od.c heirloom-060122-patched/od/od.c
 *** heirloom-060122/od/od.c Sun May 29 12:55:43 2005
---- heirloom-060122-patched/od/od.c Wed Oct 18 20:46:49 2006
+--- heirloom-060122-patched/od/od.c Sat Oct 21 00:32:45 2006
 ***************
 *** 64,69 ****
 --- 64,77 ----
@@ -6159,15 +6162,13 @@ diff -c heirloom-060122/od/od.c heirloom-060122-patched/od/od.c
   	char	*x;
   	int	base = 10;
   
+Only in heirloom-060122-patched/od: od.c~
 Common subdirectories: heirloom-060122/paste and heirloom-060122-patched/paste
-Only in heirloom-060122-patched/paste: Makefile
 Common subdirectories: heirloom-060122/pathchk and heirloom-060122-patched/pathchk
-Only in heirloom-060122-patched/pathchk: Makefile
 Common subdirectories: heirloom-060122/pg and heirloom-060122-patched/pg
-Only in heirloom-060122-patched/pg: Makefile
 diff -c heirloom-060122/pg/pg.c heirloom-060122-patched/pg/pg.c
 *** heirloom-060122/pg/pg.c Sun Aug 14 15:15:20 2005
---- heirloom-060122-patched/pg/pg.c Wed Oct 18 20:55:37 2006
+--- heirloom-060122-patched/pg/pg.c Sat Oct 21 00:32:45 2006
 ***************
 *** 67,73 ****
   #include "sigset.h"
@@ -6275,11 +6276,11 @@ diff -c heirloom-060122/pg/pg.c heirloom-060122-patched/pg/pg.c
   	} else
   		abort();	/* need to fill in values for your off_t here */
   	progname = basename(argv[0]);
+Only in heirloom-060122-patched/pg: pg.c~
 Common subdirectories: heirloom-060122/pgrep and heirloom-060122-patched/pgrep
-Only in heirloom-060122-patched/pgrep: Makefile
 diff -c heirloom-060122/pgrep/pgrep.c heirloom-060122-patched/pgrep/pgrep.c
 *** heirloom-060122/pgrep/pgrep.c Sun Jan 22 18:50:51 2006
---- heirloom-060122-patched/pgrep/pgrep.c Thu Oct 19 16:12:19 2006
+--- heirloom-060122-patched/pgrep/pgrep.c Sat Oct 21 00:32:46 2006
 ***************
 *** 1,4 ****
 --- 1,8 ----
@@ -6987,11 +6988,11 @@ diff -c heirloom-060122/pgrep/pgrep.c heirloom-060122-patched/pgrep/pgrep.c
   	chdir_to_proc();
   #endif	/* !__hpux, !_AIX, !__NetBSD__, !__OpenBSD__, !__APPLE__ */
   	collectprocs();
+Only in heirloom-060122-patched/pgrep: pgrep.c~
 Common subdirectories: heirloom-060122/pr and heirloom-060122-patched/pr
-Only in heirloom-060122-patched/pr: Makefile
 diff -c heirloom-060122/pr/pr.c heirloom-060122-patched/pr/pr.c
 *** heirloom-060122/pr/pr.c Sun May 29 12:55:43 2005
---- heirloom-060122-patched/pr/pr.c Thu Oct 19 01:16:43 2006
+--- heirloom-060122-patched/pr/pr.c Sat Oct 21 00:32:46 2006
 ***************
 *** 85,90 ****
 --- 85,99 ----
@@ -7135,17 +7136,14 @@ diff -c heirloom-060122/pr/pr.c heirloom-060122-patched/pr/pr.c
   	for (bp = buf; *bp; bp++)
   		put(*bp);
   	put(nflg.c_c);
+Only in heirloom-060122-patched/pr: pr.c~
 Common subdirectories: heirloom-060122/printenv and heirloom-060122-patched/printenv
-Only in heirloom-060122-patched/printenv: Makefile
 Common subdirectories: heirloom-060122/printf and heirloom-060122-patched/printf
-Only in heirloom-060122-patched/printf: Makefile
 Common subdirectories: heirloom-060122/priocntl and heirloom-060122-patched/priocntl
-Only in heirloom-060122-patched/priocntl: Makefile
 Common subdirectories: heirloom-060122/ps and heirloom-060122-patched/ps
-Only in heirloom-060122-patched/ps: Makefile
 diff -c heirloom-060122/ps/Makefile.mk heirloom-060122-patched/ps/Makefile.mk
 *** heirloom-060122/ps/Makefile.mk Sat May  1 16:58:02 2004
---- heirloom-060122-patched/ps/Makefile.mk Thu Oct 19 13:07:14 2006
+--- heirloom-060122-patched/ps/Makefile.mk Sat Oct 21 00:32:47 2006
 ***************
 *** 1,28 ****
   all: ps ps_sus ps_s42 ps_ucb
@@ -7208,9 +7206,10 @@ diff -c heirloom-060122/ps/Makefile.mk heirloom-060122-patched/ps/Makefile.mk
   
   install: all
   	$(UCBINST) -c -m 4755 ps $(ROOT)$(SV3BIN)/ps
+Only in heirloom-060122-patched/ps: Makefile.mk~
 diff -c heirloom-060122/ps/ps.c heirloom-060122-patched/ps/ps.c
 *** heirloom-060122/ps/ps.c Sun Jan 22 18:54:07 2006
---- heirloom-060122-patched/ps/ps.c Fri Oct 20 00:51:55 2006
+--- heirloom-060122-patched/ps/ps.c Sat Oct 21 00:32:48 2006
 ***************
 *** 45,51 ****
   static const char cacheid[] = "@(#)/tmp/ps_cache	2.110 (gritter) 1/22/06";
@@ -8833,11 +8832,11 @@ diff -c heirloom-060122/ps/ps.c heirloom-060122-patched/ps/ps.c
   #else	/* SVR4 */
   	{
   		/*
+Only in heirloom-060122-patched/ps: ps.c~
 Common subdirectories: heirloom-060122/psrinfo and heirloom-060122-patched/psrinfo
-Only in heirloom-060122-patched/psrinfo: Makefile
 diff -c heirloom-060122/psrinfo/psrinfo.c heirloom-060122-patched/psrinfo/psrinfo.c
 *** heirloom-060122/psrinfo/psrinfo.c Sun May 29 12:55:44 2005
---- heirloom-060122-patched/psrinfo/psrinfo.c Fri Oct 20 02:31:20 2006
+--- heirloom-060122-patched/psrinfo/psrinfo.c Sat Oct 21 00:32:49 2006
 ***************
 *** 25,31 ****
    * 3. This notice may not be removed or altered from any source distribution.
@@ -9035,17 +9034,14 @@ diff -c heirloom-060122/psrinfo/psrinfo.c heirloom-060122-patched/psrinfo/psrinf
   }
   
 ! #endif	/* !__linux__ !_MINIX */
+Only in heirloom-060122-patched/psrinfo: psrinfo.c~
 Common subdirectories: heirloom-060122/pwd and heirloom-060122-patched/pwd
-Only in heirloom-060122-patched/pwd: Makefile
 Common subdirectories: heirloom-060122/random and heirloom-060122-patched/random
-Only in heirloom-060122-patched/random: Makefile
 Common subdirectories: heirloom-060122/renice and heirloom-060122-patched/renice
-Only in heirloom-060122-patched/renice: Makefile
 Common subdirectories: heirloom-060122/rm and heirloom-060122-patched/rm
-Only in heirloom-060122-patched/rm: Makefile
 diff -c heirloom-060122/rm/rm.c heirloom-060122-patched/rm/rm.c
 *** heirloom-060122/rm/rm.c Thu Nov 17 01:21:36 2005
---- heirloom-060122-patched/rm/rm.c Fri Oct 20 02:38:03 2006
+--- heirloom-060122-patched/rm/rm.c Sat Oct 21 00:32:49 2006
 ***************
 *** 119,124 ****
 --- 119,127 ----
@@ -9073,13 +9069,12 @@ diff -c heirloom-060122/rm/rm.c heirloom-060122-patched/rm/rm.c
   			raise(WTERMSIG(status));
   			pause();
   		}
+Only in heirloom-060122-patched/rm: rm.c~
 Common subdirectories: heirloom-060122/rmdir and heirloom-060122-patched/rmdir
-Only in heirloom-060122-patched/rmdir: Makefile
 Common subdirectories: heirloom-060122/sdiff and heirloom-060122-patched/sdiff
-Only in heirloom-060122-patched/sdiff: Makefile
 diff -c heirloom-060122/sdiff/sdiff.c heirloom-060122-patched/sdiff/sdiff.c
 *** heirloom-060122/sdiff/sdiff.c Sun May 29 12:55:44 2005
---- heirloom-060122-patched/sdiff/sdiff.c Fri Oct 20 12:02:59 2006
+--- heirloom-060122-patched/sdiff/sdiff.c Sat Oct 21 00:32:49 2006
 ***************
 *** 55,63 ****
 --- 55,70 ----
@@ -9231,11 +9226,11 @@ diff -c heirloom-060122/sdiff/sdiff.c heirloom-060122-patched/sdiff/sdiff.c
   
   	c = cnt = dp->d_lbot - cur + (dp->d_type == D_A);
   	while (c-- > 0) {
+Only in heirloom-060122-patched/sdiff: sdiff.c~
 Common subdirectories: heirloom-060122/sed and heirloom-060122-patched/sed
-Only in heirloom-060122-patched/sed: Makefile
 diff -c heirloom-060122/sed/sed.h heirloom-060122-patched/sed/sed.h
 *** heirloom-060122/sed/sed.h Sun Feb  6 14:47:16 2005
---- heirloom-060122-patched/sed/sed.h Tue Oct 17 02:39:23 2006
+--- heirloom-060122-patched/sed/sed.h Sat Oct 21 00:32:49 2006
 ***************
 *** 72,77 ****
 --- 72,83 ----
@@ -9268,9 +9263,10 @@ diff -c heirloom-060122/sed/sed.h heirloom-060122-patched/sed/sed.h
   
   enum cmd {
   	ACOM	= 01,
+Only in heirloom-060122-patched/sed: sed.h~
 diff -c heirloom-060122/sed/sed0.c heirloom-060122-patched/sed/sed0.c
 *** heirloom-060122/sed/sed0.c Sat Mar 12 22:00:09 2005
---- heirloom-060122-patched/sed/sed0.c Tue Oct 17 02:39:50 2006
+--- heirloom-060122-patched/sed/sed0.c Sat Oct 21 00:32:49 2006
 ***************
 *** 51,57 ****
   char	*linebuf;
@@ -9305,9 +9301,10 @@ diff -c heirloom-060122/sed/sed0.c heirloom-060122-patched/sed/sed0.c
   
   	*expbuf = NULL;
   	if(*cp == '$') {
+Only in heirloom-060122-patched/sed: sed0.c~
 diff -c heirloom-060122/sed/sed1.c heirloom-060122-patched/sed/sed1.c
 *** heirloom-060122/sed/sed1.c Sun Feb  6 14:47:16 2005
---- heirloom-060122-patched/sed/sed1.c Tue Oct 17 02:40:05 2006
+--- heirloom-060122-patched/sed/sed1.c Sat Oct 21 00:32:49 2006
 ***************
 *** 110,116 ****
   static int	sflag;
@@ -9325,12 +9322,12 @@ diff -c heirloom-060122/sed/sed1.c heirloom-060122-patched/sed/sed1.c
   static char	ibuf[512];
   static int	ibrd;
   static int	mflag;
+Only in heirloom-060122-patched/sed: sed1.c~
 Common subdirectories: heirloom-060122/sed/test and heirloom-060122-patched/sed/test
 Common subdirectories: heirloom-060122/setpgrp and heirloom-060122-patched/setpgrp
-Only in heirloom-060122-patched/setpgrp: Makefile
 diff -c heirloom-060122/setpgrp/setpgrp.c heirloom-060122-patched/setpgrp/setpgrp.c
 *** heirloom-060122/setpgrp/setpgrp.c Sun May 29 12:55:44 2005
---- heirloom-060122-patched/setpgrp/setpgrp.c Fri Oct 20 12:13:11 2006
+--- heirloom-060122-patched/setpgrp/setpgrp.c Sat Oct 21 00:32:49 2006
 ***************
 *** 30,35 ****
 --- 30,42 ----
@@ -9347,11 +9344,11 @@ diff -c heirloom-060122/setpgrp/setpgrp.c heirloom-060122-patched/setpgrp/setpgr
   #if __GNUC__ >= 3 && __GNUC_MINOR__ >= 4 || __GNUC__ >= 4
   #define	USED	__attribute__ ((used))
   #elif defined __GNUC__
+Only in heirloom-060122-patched/setpgrp: setpgrp.c~
 Common subdirectories: heirloom-060122/shl and heirloom-060122-patched/shl
-Only in heirloom-060122-patched/shl: Makefile
 diff -c heirloom-060122/shl/Makefile.mk heirloom-060122-patched/shl/Makefile.mk
 *** heirloom-060122/shl/Makefile.mk Mon Nov 21 23:25:46 2005
---- heirloom-060122-patched/shl/Makefile.mk Fri Oct 20 22:46:12 2006
+--- heirloom-060122-patched/shl/Makefile.mk Sat Oct 21 00:32:50 2006
 ***************
 *** 10,20 ****
   	u=`uname`; \
@@ -9382,9 +9379,10 @@ diff -c heirloom-060122/shl/Makefile.mk heirloom-060122-patched/shl/Makefile.mk
   	else \
   		exit 0; \
   	fi
+Only in heirloom-060122-patched/shl: Makefile.mk~
 diff -c heirloom-060122/shl/shl.c heirloom-060122-patched/shl/shl.c
 *** heirloom-060122/shl/shl.c Sun Jan 22 18:54:50 2006
---- heirloom-060122-patched/shl/shl.c Fri Oct 20 12:18:13 2006
+--- heirloom-060122-patched/shl/shl.c Sat Oct 21 00:32:50 2006
 ***************
 *** 34,40 ****
   
@@ -9402,13 +9400,12 @@ diff -c heirloom-060122/shl/shl.c heirloom-060122-patched/shl/shl.c
   
   /*
    * UnixWare 2.1 needs _KMEMUSER to access some flags for STREAMS. Maybe other
+Only in heirloom-060122-patched/shl: shl.c~
 Common subdirectories: heirloom-060122/sleep and heirloom-060122-patched/sleep
-Only in heirloom-060122-patched/sleep: Makefile
 Common subdirectories: heirloom-060122/sort and heirloom-060122-patched/sort
-Only in heirloom-060122-patched/sort: Makefile
 diff -c heirloom-060122/sort/sort.c heirloom-060122-patched/sort/sort.c
 *** heirloom-060122/sort/sort.c Sun May 29 12:55:44 2005
---- heirloom-060122-patched/sort/sort.c Fri Oct 20 12:20:51 2006
+--- heirloom-060122-patched/sort/sort.c Sat Oct 21 00:32:50 2006
 ***************
 *** 63,69 ****
   #include <locale.h>
@@ -9430,11 +9427,11 @@ diff -c heirloom-060122/sort/sort.c heirloom-060122-patched/sort/sort.c
   #include <inttypes.h>
   #include <errno.h>
   
+Only in heirloom-060122-patched/sort: sort.c~
 Common subdirectories: heirloom-060122/spell and heirloom-060122-patched/spell
-Only in heirloom-060122-patched/spell: Makefile
 diff -c heirloom-060122/spell/Makefile.mk heirloom-060122-patched/spell/Makefile.mk
 *** heirloom-060122/spell/Makefile.mk Sun Jul 17 11:24:27 2005
---- heirloom-060122-patched/spell/Makefile.mk Fri Oct 20 12:26:08 2006
+--- heirloom-060122-patched/spell/Makefile.mk Sat Oct 21 00:32:50 2006
 ***************
 *** 36,54 ****
   		hlista hlistb hstop hashmake hashcheck
@@ -9502,11 +9499,11 @@ diff -c heirloom-060122/spell/Makefile.mk heirloom-060122-patched/spell/Makefile
   
   htemp1: list local extra host_hashmake
   	rm -f $@; cat list local extra | ./host_hashmake > $@
+Only in heirloom-060122-patched/spell: Makefile.mk~
 Common subdirectories: heirloom-060122/split and heirloom-060122-patched/split
-Only in heirloom-060122-patched/split: Makefile
 diff -c heirloom-060122/split/split.c heirloom-060122-patched/split/split.c
 *** heirloom-060122/split/split.c Sun May 29 12:55:44 2005
---- heirloom-060122-patched/split/split.c Fri Oct 20 12:29:30 2006
+--- heirloom-060122-patched/split/split.c Sat Oct 21 00:32:50 2006
 ***************
 *** 52,60 ****
   #endif
@@ -9574,11 +9571,11 @@ diff -c heirloom-060122/split/split.c heirloom-060122-patched/split/split.c
   	const char	*cp;
   	char	*sp;
   	FILE	*fp;
+Only in heirloom-060122-patched/split: split.c~
 Common subdirectories: heirloom-060122/stty and heirloom-060122-patched/stty
-Only in heirloom-060122-patched/stty: Makefile
 diff -c heirloom-060122/stty/stty.c heirloom-060122-patched/stty/stty.c
 *** heirloom-060122/stty/stty.c Sun Jan 22 18:55:11 2006
---- heirloom-060122-patched/stty/stty.c Fri Oct 20 12:49:16 2006
+--- heirloom-060122-patched/stty/stty.c Sat Oct 21 00:32:51 2006
 ***************
 *** 145,151 ****
   	{ "\n",		0,	0,	0,	04,	M_NSEPAR },
@@ -9905,11 +9902,11 @@ diff -c heirloom-060122/stty/stty.c heirloom-060122-patched/stty/stty.c
   }
   
   static void
+Only in heirloom-060122-patched/stty: stty.c~
 Common subdirectories: heirloom-060122/su and heirloom-060122-patched/su
-Only in heirloom-060122-patched/su: Makefile
 diff -c heirloom-060122/su/su.c heirloom-060122-patched/su/su.c
 *** heirloom-060122/su/su.c Sun May 29 12:55:45 2005
---- heirloom-060122-patched/su/su.c Fri Oct 20 12:52:08 2006
+--- heirloom-060122-patched/su/su.c Sat Oct 21 00:32:51 2006
 ***************
 *** 61,66 ****
 --- 61,69 ----
@@ -9922,11 +9919,11 @@ diff -c heirloom-060122/su/su.c heirloom-060122-patched/su/su.c
   
   enum logtype {
   	LT_NONE,
+Only in heirloom-060122-patched/su: su.c~
 Common subdirectories: heirloom-060122/sum and heirloom-060122-patched/sum
-Only in heirloom-060122-patched/sum: Makefile
 diff -c heirloom-060122/sum/sum.c heirloom-060122-patched/sum/sum.c
 *** heirloom-060122/sum/sum.c Sun May 29 12:55:45 2005
---- heirloom-060122-patched/sum/sum.c Fri Oct 20 12:54:45 2006
+--- heirloom-060122-patched/sum/sum.c Sat Oct 21 00:32:51 2006
 ***************
 *** 65,70 ****
 --- 65,78 ----
@@ -9990,13 +9987,12 @@ diff -c heirloom-060122/sum/sum.c heirloom-060122-patched/sum/sum.c
   	}
   	if(name)
   		printf(" %s", name);
+Only in heirloom-060122-patched/sum: sum.c~
 Common subdirectories: heirloom-060122/sync and heirloom-060122-patched/sync
-Only in heirloom-060122-patched/sync: Makefile
 Common subdirectories: heirloom-060122/tabs and heirloom-060122-patched/tabs
-Only in heirloom-060122-patched/tabs: Makefile
 diff -c heirloom-060122/tabs/tabs.c heirloom-060122-patched/tabs/tabs.c
 *** heirloom-060122/tabs/tabs.c Sun May 29 12:55:45 2005
---- heirloom-060122-patched/tabs/tabs.c Fri Oct 20 12:58:31 2006
+--- heirloom-060122-patched/tabs/tabs.c Sat Oct 21 00:32:51 2006
 ***************
 *** 76,82 ****
   {
@@ -10043,11 +10039,11 @@ diff -c heirloom-060122/tabs/tabs.c heirloom-060122-patched/tabs/tabs.c
   			tcsetattr(1, TCSADRAIN, &nts);
   		}
   	}
+Only in heirloom-060122-patched/tabs: tabs.c~
 Common subdirectories: heirloom-060122/tail and heirloom-060122-patched/tail
-Only in heirloom-060122-patched/tail: Makefile
 diff -c heirloom-060122/tail/tail.c heirloom-060122-patched/tail/tail.c
 *** heirloom-060122/tail/tail.c Fri Jun  3 14:44:31 2005
---- heirloom-060122-patched/tail/tail.c Fri Oct 20 13:57:12 2006
+--- heirloom-060122-patched/tail/tail.c Sat Oct 21 00:32:51 2006
 ***************
 *** 49,59 ****
   
@@ -10311,11 +10307,11 @@ diff -c heirloom-060122/tail/tail.c heirloom-060122-patched/tail/tail.c
   	if (optind < argc) {
   		if ((fd = open(argv[optind], O_RDONLY)) < 0) {
   			fprintf(stderr, "%s: cannot open input\n", progname);
+Only in heirloom-060122-patched/tail: tail.c~
 Common subdirectories: heirloom-060122/tapecntl and heirloom-060122-patched/tapecntl
-Only in heirloom-060122-patched/tapecntl: Makefile
 diff -c heirloom-060122/tapecntl/tapecntl.c heirloom-060122-patched/tapecntl/tapecntl.c
 *** heirloom-060122/tapecntl/tapecntl.c Sun Jan 22 18:55:40 2006
---- heirloom-060122-patched/tapecntl/tapecntl.c Fri Oct 20 14:04:55 2006
+--- heirloom-060122-patched/tapecntl/tapecntl.c Sat Oct 21 00:32:51 2006
 ***************
 *** 46,52 ****
   #if defined (__linux__) || defined (__sun) || defined (__FreeBSD__) \
@@ -10393,11 +10389,11 @@ diff -c heirloom-060122/tapecntl/tapecntl.c heirloom-060122-patched/tapecntl/tap
   	return 0;
   }
   #elif defined (__hpux) || defined (_AIX)
+Only in heirloom-060122-patched/tapecntl: tapecntl.c~
 Common subdirectories: heirloom-060122/tar and heirloom-060122-patched/tar
-Only in heirloom-060122-patched/tar: Makefile
 diff -c heirloom-060122/tar/tar.c heirloom-060122-patched/tar/tar.c
 *** heirloom-060122/tar/tar.c Sun Jan 22 18:56:47 2006
---- heirloom-060122-patched/tar/tar.c Fri Oct 20 14:37:30 2006
+--- heirloom-060122-patched/tar/tar.c Sat Oct 21 00:32:53 2006
 ***************
 *** 70,76 ****
   #include "sigset.h"
@@ -11052,11 +11048,11 @@ diff -c heirloom-060122/tar/tar.c heirloom-060122-patched/tar/tar.c
   	return buf;
   }
   
+Only in heirloom-060122-patched/tar: tar.c~
 Common subdirectories: heirloom-060122/tcopy and heirloom-060122-patched/tcopy
-Only in heirloom-060122-patched/tcopy: Makefile
 diff -c heirloom-060122/tcopy/tcopy.c heirloom-060122-patched/tcopy/tcopy.c
 *** heirloom-060122/tcopy/tcopy.c Sun Jan 22 18:57:13 2006
---- heirloom-060122-patched/tcopy/tcopy.c Fri Oct 20 14:49:17 2006
+--- heirloom-060122-patched/tcopy/tcopy.c Sat Oct 21 00:32:53 2006
 ***************
 *** 65,83 ****
   #include <sys/ioctl.h>
@@ -11233,11 +11229,11 @@ diff -c heirloom-060122/tcopy/tcopy.c heirloom-060122-patched/tcopy/tcopy.c
 ! 	printf("total length: " P_LLD " bytes\n", tsize+size);
   	exit(1);
   }
+Only in heirloom-060122-patched/tcopy: tcopy.c~
 Common subdirectories: heirloom-060122/tee and heirloom-060122-patched/tee
-Only in heirloom-060122-patched/tee: Makefile
 diff -c heirloom-060122/tee/tee.c heirloom-060122-patched/tee/tee.c
 *** heirloom-060122/tee/tee.c Sun May 29 12:55:45 2005
---- heirloom-060122-patched/tee/tee.c Fri Oct 20 16:08:25 2006
+--- heirloom-060122-patched/tee/tee.c Sat Oct 21 00:32:53 2006
 ***************
 *** 113,120 ****
   		errcnt |= 010;
@@ -11261,11 +11257,11 @@ diff -c heirloom-060122/tee/tee.c heirloom-060122-patched/tee/tee.c
   	buf = smalloc(bufsize);
   	while ((rsz = read(0, buf, bufsize)) > 0)
   		for (f = f0; f; f = f->f_nxt)
+Only in heirloom-060122-patched/tee: tee.c~
 Common subdirectories: heirloom-060122/test and heirloom-060122-patched/test
-Only in heirloom-060122-patched/test: Makefile
 diff -c heirloom-060122/test/defs.h heirloom-060122-patched/test/defs.h
 *** heirloom-060122/test/defs.h Sat Jul  2 12:36:39 2005
---- heirloom-060122-patched/test/defs.h Fri Oct 20 16:11:14 2006
+--- heirloom-060122-patched/test/defs.h Sat Oct 21 00:32:53 2006
 ***************
 *** 32,37 ****
 --- 32,43 ----
@@ -11298,9 +11294,10 @@ diff -c heirloom-060122/test/defs.h heirloom-060122-patched/test/defs.h
   
   extern int	mb_cur_max;
   #define	nextc(wc, sp)	(mb_cur_max > 1 && *(sp) & 0200 ? \
+Only in heirloom-060122-patched/test: defs.h~
 diff -c heirloom-060122/test/helper.c heirloom-060122-patched/test/helper.c
 *** heirloom-060122/test/helper.c Wed Jun 29 18:39:45 2005
---- heirloom-060122-patched/test/helper.c Fri Oct 20 16:11:58 2006
+--- heirloom-060122-patched/test/helper.c Sat Oct 21 00:32:53 2006
 ***************
 *** 82,92 ****
   	return(errno == EACCES ? 3 : 1);
@@ -11326,9 +11323,10 @@ diff -c heirloom-060122/test/helper.c heirloom-060122-patched/test/helper.c
   	int		sign = 1;
   	unsigned char	c;
   
+Only in heirloom-060122-patched/test: helper.c~
 diff -c heirloom-060122/test/test.c heirloom-060122-patched/test/test.c
 *** heirloom-060122/test/test.c Wed Jun 29 18:39:27 2005
---- heirloom-060122-patched/test/test.c Fri Oct 20 16:17:00 2006
+--- heirloom-060122-patched/test/test.c Sat Oct 21 00:32:53 2006
 ***************
 *** 43,48 ****
 --- 43,56 ----
@@ -11363,21 +11361,16 @@ diff -c heirloom-060122/test/test.c heirloom-060122-patched/test/test.c
   
   	a = nxtarg(0);
   	if (eq(a, "("))
+Only in heirloom-060122-patched/test: test.c~
 Common subdirectories: heirloom-060122/time and heirloom-060122-patched/time
-Only in heirloom-060122-patched/time: Makefile
 Common subdirectories: heirloom-060122/touch and heirloom-060122-patched/touch
-Only in heirloom-060122-patched/touch: Makefile
 Common subdirectories: heirloom-060122/tr and heirloom-060122-patched/tr
-Only in heirloom-060122-patched/tr: Makefile
 Common subdirectories: heirloom-060122/true and heirloom-060122-patched/true
-Only in heirloom-060122-patched/true: Makefile
 Common subdirectories: heirloom-060122/tsort and heirloom-060122-patched/tsort
-Only in heirloom-060122-patched/tsort: Makefile
 Common subdirectories: heirloom-060122/tty and heirloom-060122-patched/tty
-Only in heirloom-060122-patched/tty: Makefile
 diff -c heirloom-060122/tty/tty.c heirloom-060122-patched/tty/tty.c
 *** heirloom-060122/tty/tty.c Sun Jan 22 18:57:37 2006
---- heirloom-060122-patched/tty/tty.c Fri Oct 20 16:22:42 2006
+--- heirloom-060122-patched/tty/tty.c Sat Oct 21 00:32:53 2006
 ***************
 *** 40,46 ****
   #include <stdlib.h>
@@ -11395,13 +11388,12 @@ diff -c heirloom-060122/tty/tty.c heirloom-060122-patched/tty/tty.c
   #include <sys/stermio.h>
   #endif	/* !__linux__, !__FreeBSD__, !__hpux, !_AIX, !__NetBSD__,
   	   !__OpenBSD__, !__DragonFly__, !__APPLE__ */
+Only in heirloom-060122-patched/tty: tty.c~
 Common subdirectories: heirloom-060122/ul and heirloom-060122-patched/ul
-Only in heirloom-060122-patched/ul: Makefile
 Common subdirectories: heirloom-060122/uname and heirloom-060122-patched/uname
-Only in heirloom-060122-patched/uname: Makefile
 diff -c heirloom-060122/uname/uname.c heirloom-060122-patched/uname/uname.c
 *** heirloom-060122/uname/uname.c Sun May 29 12:55:46 2005
---- heirloom-060122-patched/uname/uname.c Fri Oct 20 16:34:20 2006
+--- heirloom-060122-patched/uname/uname.c Sat Oct 21 00:32:53 2006
 ***************
 *** 42,48 ****
   #include	<errno.h>
@@ -11443,13 +11435,12 @@ diff -c heirloom-060122/uname/uname.c heirloom-060122-patched/uname/uname.c
   static void
   usage(void)
   {
+Only in heirloom-060122-patched/uname: uname.c~
 Common subdirectories: heirloom-060122/uniq and heirloom-060122-patched/uniq
-Only in heirloom-060122-patched/uniq: Makefile
 Common subdirectories: heirloom-060122/units and heirloom-060122-patched/units
-Only in heirloom-060122-patched/units: Makefile
 diff -c heirloom-060122/units/units.c heirloom-060122-patched/units/units.c
 *** heirloom-060122/units/units.c Sun May 29 12:55:46 2005
---- heirloom-060122-patched/units/units.c Fri Oct 20 16:37:59 2006
+--- heirloom-060122-patched/units/units.c Sat Oct 21 00:32:53 2006
 ***************
 *** 47,52 ****
 --- 47,56 ----
@@ -11463,11 +11454,11 @@ diff -c heirloom-060122/units/units.c heirloom-060122-patched/units/units.c
   #ifdef	__GLIBC__
   #ifdef	_IO_getc_unlocked
   #undef	getc
+Only in heirloom-060122-patched/units: units.c~
 Common subdirectories: heirloom-060122/users and heirloom-060122-patched/users
-Only in heirloom-060122-patched/users: Makefile
 diff -c heirloom-060122/users/users.c heirloom-060122-patched/users/users.c
 *** heirloom-060122/users/users.c Sun May 29 12:55:46 2005
---- heirloom-060122-patched/users/users.c Fri Oct 20 16:57:43 2006
+--- heirloom-060122-patched/users/users.c Sat Oct 21 00:32:53 2006
 ***************
 *** 40,57 ****
   #include <stdio.h>
@@ -11566,11 +11557,11 @@ diff -c heirloom-060122/users/users.c heirloom-060122-patched/users/users.c
 + #endif
   	return 0;
   }
+Only in heirloom-060122-patched/users: users.c~
 Common subdirectories: heirloom-060122/wc and heirloom-060122-patched/wc
-Only in heirloom-060122-patched/wc: Makefile
 diff -c heirloom-060122/wc/wc.c heirloom-060122-patched/wc/wc.c
 *** heirloom-060122/wc/wc.c Sun May 29 12:55:46 2005
---- heirloom-060122-patched/wc/wc.c Fri Oct 20 17:02:18 2006
+--- heirloom-060122-patched/wc/wc.c Sat Oct 21 00:32:54 2006
 ***************
 *** 58,77 ****
   #include	<blank.h>
@@ -11687,13 +11678,12 @@ diff -c heirloom-060122/wc/wc.c heirloom-060122-patched/wc/wc.c
   	char	mb[MB_LEN_MAX];
   	wint_t	c;
   	int	i, k, n;
+Only in heirloom-060122-patched/wc: wc.c~
 Common subdirectories: heirloom-060122/what and heirloom-060122-patched/what
-Only in heirloom-060122-patched/what: Makefile
 Common subdirectories: heirloom-060122/who and heirloom-060122-patched/who
-Only in heirloom-060122-patched/who: Makefile
 diff -c heirloom-060122/who/who.c heirloom-060122-patched/who/who.c
 *** heirloom-060122/who/who.c Sun Jan 22 19:02:55 2006
---- heirloom-060122-patched/who/who.c Fri Oct 20 18:34:38 2006
+--- heirloom-060122-patched/who/who.c Sat Oct 21 00:32:54 2006
 ***************
 *** 49,56 ****
   #include	<errno.h>
@@ -11949,13 +11939,12 @@ diff -c heirloom-060122/who/who.c heirloom-060122-patched/who/who.c
   #else	/* __hpux, _AIX */
   		fprintf(stderr, "%s: %s\n", progname, strerror(errno));
   		exit(1);
+Only in heirloom-060122-patched/who: who.c~
 Common subdirectories: heirloom-060122/whoami and heirloom-060122-patched/whoami
-Only in heirloom-060122-patched/whoami: Makefile
 Common subdirectories: heirloom-060122/whodo and heirloom-060122-patched/whodo
-Only in heirloom-060122-patched/whodo: Makefile
 diff -c heirloom-060122/whodo/whodo.c heirloom-060122-patched/whodo/whodo.c
 *** heirloom-060122/whodo/whodo.c Sun Jan 22 19:02:10 2006
---- heirloom-060122-patched/whodo/whodo.c Fri Oct 20 21:56:59 2006
+--- heirloom-060122-patched/whodo/whodo.c Sat Oct 21 00:32:54 2006
 ***************
 *** 48,54 ****
   #include	<stdlib.h>
@@ -12370,11 +12359,11 @@ diff -c heirloom-060122/whodo/whodo.c heirloom-060122-patched/whodo/whodo.c
   }
   
   static void
+Only in heirloom-060122-patched/whodo: whodo.c~
 Common subdirectories: heirloom-060122/xargs and heirloom-060122-patched/xargs
-Only in heirloom-060122-patched/xargs: Makefile
 diff -c heirloom-060122/xargs/xargs.c heirloom-060122-patched/xargs/xargs.c
 *** heirloom-060122/xargs/xargs.c Tue Jun 21 15:27:01 2005
---- heirloom-060122-patched/xargs/xargs.c Fri Oct 20 18:23:27 2006
+--- heirloom-060122-patched/xargs/xargs.c Sat Oct 21 00:32:54 2006
 ***************
 *** 53,58 ****
 --- 53,62 ----
@@ -12388,5 +12377,5 @@ diff -c heirloom-060122/xargs/xargs.c heirloom-060122-patched/xargs/xargs.c
   #if defined (__GLIBC__) && defined(_IO_putc_unlocked)
   #undef	putc
   #define	putc(c, f)	_IO_putc_unlocked(c, f)
+Only in heirloom-060122-patched/xargs: xargs.c~
 Common subdirectories: heirloom-060122/yes and heirloom-060122-patched/yes
-Only in heirloom-060122-patched/yes: Makefile
