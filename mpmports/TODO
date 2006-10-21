@@ -1,10 +1,5 @@
-* do not forget secutiry patches for a few xorg-* (sub)packages
-
-* fix permissions and uid/gid of /usr/bin/* for xorg-*
-    uid/gid might already be fixed by unpacking with tar opxf; need to rebuild
-    for that.
-    permissions might be related
-
 * have all packages install all files as bin:operator, except for suid/sgid
   programs
+
+* port of Xorg 7.1 has been postponed
 
