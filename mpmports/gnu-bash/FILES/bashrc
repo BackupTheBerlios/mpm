@@ -1,12 +1,16 @@
+echo "/usr/gnu/etc/bashrc"
+
 export EDITOR=elvis
 export PAGER=more
 
+umask 022
+
 if test "$USER" = "root" -o "$USER" = "bin"; then
     export PS1='[\# \u@\h \w]# '
-    export PATH=$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin
+    export PATH=$HOME/bin:/usr/local/bin:/usr/X11R6/bin:/usr/bin:/bin
 else
     export PS1='[\# \u@\h \w]$ '
-    export PATH=$HOME/bin:/usr/gnu/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin
+    export PATH=$HOME/bin:/usr/gnu/bin:/usr/local/bin:/usr/X11R6/bin:/usr/bin:/bin
 fi
 
 alias vi='elvis'
