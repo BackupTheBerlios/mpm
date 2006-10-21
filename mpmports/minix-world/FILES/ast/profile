@@ -1,0 +1,25 @@
+echo -n ".profile "
+
+stty sane erase '^H' kill '^U'
+
+case $TERM in
+dialup|unknown|network)
+	echo -n "Terminal type? ($TERM) "; read term
+	TERM="${term:-$TERM}"
+	unset term
+esac
+
+if test -n "$KSH_VERSION" ; then
+    DOTRC="$HOME/.kshrc"
+elif test -n "$BASH_VERSION" ; then
+    DOTRC="$HOME/.bashrc"
+else
+    DOTRC="$HOME/.ashrc"
+fi
+
+if test -f $DOTRC ; then
+    . $DOTRC
+else
+    # last script
+    echo ""
+fi
