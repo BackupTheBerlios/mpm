@@ -1,0 +1,20 @@
+diff -c wmclockmon-0.8.1/Makefile.in wmclockmon-0.8.1-patched/Makefile.in
+*** wmclockmon-0.8.1/Makefile.in Thu Apr  7 09:37:43 2005
+--- wmclockmon-0.8.1-patched/Makefile.in Sun Oct 15 13:11:47 2006
+***************
+*** 77,83 ****
+  X_EXTRA_LIBS = @X_EXTRA_LIBS@
+  X_LIBRARY_PATH = @X_LIBRARY_PATH@
+  
+! SUBDIRS = src doc wmclockmon-config wmclockmon-cal styles
+  ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+  mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+  CONFIG_HEADER = config.h
+--- 77,83 ----
+  X_EXTRA_LIBS = @X_EXTRA_LIBS@
+  X_LIBRARY_PATH = @X_LIBRARY_PATH@
+  
+! SUBDIRS = src doc styles
+  ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+  mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+  CONFIG_HEADER = config.h

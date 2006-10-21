@@ -1,0 +1,22 @@
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+fix_destdir() {
+# fix Makefile.in's so DESTDIR works with plain make
+    for i in Makefile.in */Makefile.in ; do
+        sed -e 's/DESTDIR =//' $i > $i.new
+        mv $i.new $i
+    done
+}
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmclock-1.0.12.2"
+patch -p1 < "$SMPM_PATCHES/wmclock-1.0.12.2-minix3.patch"
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmclockmon-0.8.1"
+patch -p1 < "$SMPM_PATCHES/wmclockmon-0.8.1-minix3.patch"
+cp "$SMPM_FILES/configure.wmclockmon" configure
+fix_destdir
+
+exit 0

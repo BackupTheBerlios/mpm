@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_INSTALLROOT/usr/local/man/man1"
+rm wmclockmon-config.1 wmclockmon-cal.1
+
+exit 0

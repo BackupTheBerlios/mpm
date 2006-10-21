@@ -42,6 +42,7 @@ PACKAGES=\
 	xorg6 \
 	vim \
 	windowmaker \
+	windowmaker-dockapps \
 	windowmaker-themes \
 	zlib \
 

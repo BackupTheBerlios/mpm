@@ -1,0 +1,25 @@
+set -e
+
+PATH=/bin:/usr/bin:/usr/X11R6/bin
+export PATH
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmclock-1.0.12.2"
+./configure
+make CC="cc -s"
+install -d -m 755 -o bin -g operator "$SMPM_INSTALLROOT/usr/local/share/doc/html"
+install -m 644 -o bin -g operator wmclock.1.html "$SMPM_INSTALLROOT/usr/local/share/doc/html/wmclock.1.html"
+install -d -m 755 -o bin -g operator "$SMPM_INSTALLROOT/usr/local/man/man1"
+install -m 644 -o bin -g operator wmclock.man "$SMPM_INSTALLROOT/usr/local/man/man1/wmclock.1"
+install -d -m 755 -o bin -g operator "$SMPM_INSTALLROOT/usr/local/bin"
+install -m 755 -o bin -g operator wmclock "$SMPM_INSTALLROOT/usr/local/bin/wmclock"
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install.share
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmclockmon-0.8.1"
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls
+make
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

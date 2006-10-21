@@ -1,0 +1,39 @@
+diff -c wmclock-1.0.12.2/Imakefile wmclock-1.0.12.2-patched/Imakefile
+*** wmclock-1.0.12.2/Imakefile Thu Apr 13 07:50:11 2000
+--- wmclock-1.0.12.2-patched/Imakefile Mon Oct 16 21:21:38 2006
+***************
+*** 13,19 ****
+  
+  LINTLIBS	= $(LINTXLIB)
+  
+! SHAREDIR	= /usr/share/$(NAME)
+  
+  IMAKEFILE	= Imakefile
+  MAKEFILE	= Makefile
+--- 13,19 ----
+  
+  LINTLIBS	= $(LINTXLIB)
+  
+! SHAREDIR	= /usr/local/share/$(NAME)
+  
+  IMAKEFILE	= Imakefile
+  MAKEFILE	= Makefile
+diff -c wmclock-1.0.12.2/wmclock.c wmclock-1.0.12.2-patched/wmclock.c
+*** wmclock-1.0.12.2/wmclock.c Wed Mar  8 07:31:33 2000
+--- wmclock-1.0.12.2-patched/wmclock.c Mon Oct 16 20:49:17 2006
+***************
+*** 35,40 ****
+--- 35,47 ----
+  
+  #include "dynlist.h"
+  
++ #ifdef _MINIX
++ struct timezone {
++     int tz_minuteswest;
++     int tz_dsttime;
++ };
++ #endif
++ 
+  /**********************************************************************/
+  #define ONLY_SHAPED_WINDOW	1
+  
