@@ -1,0 +1,27 @@
+echo "/usr/local/etc/kshrc"
+
+set -o emacs
+
+HOSTNAME=`cat /etc/hostname.file | cut -d . -f 1`
+
+bind "^I=complete"
+
+export EDITOR=elvis
+export PAGER=more
+
+umask 022
+
+if test "$USER" = "root" -o "$USER" = "bin"; then
+    export PS1='[! ${LOGNAME}@${HOSTNAME} ${PWD}]# '
+    export PATH=$HOME/bin:/usr/local/bin:/usr/X11R6/bin:/usr/bin:/bin
+else
+    export PS1='[! ${LOGNAME}@${HOSTNAME} ${PWD}]$ '
+    export PATH=$HOME/bin:/usr/gnu/bin:/usr/local/bin:/usr/X11R6/bin:/usr/bin:/bin
+fi
+
+alias vi='elvis'
+test -f /usr/gnu/bin/ls && alias ls='/usr/gnu/bin/ls --color=auto'
+test -f /usr/local/bin/vim && alias vi='vim' && export EDITOR=vim
+test -f /usr/gnu/bin/rm && alias rm='/usr/gnu/bin/rm -i'
+test -f /usr/gnu/bin/mv && alias mv='/usr/gnu/bin/mv -i'
+test -f /usr/gnu/bin/cp && alias cp='/usr/gnu/bin/cp -i'
