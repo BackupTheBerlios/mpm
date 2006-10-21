@@ -82,4 +82,15 @@ for i in clone cp cpdir ln mv rm ; do
     link_from_usrbin_to_bin "$i" "cp"
 done
 
+# default setup files
+cd "$SMPM_FILES"
+cp profile "$SMPM_INSTALLROOT/etc"
+cd "$SMPM_FILES/ast"
+cp profile "$SMPM_INSTALLROOT/usr/ast/.profile"
+cp bashrc "$SMPM_INSTALLROOT/usr/ast/.bashrc"
+cp kshrc "$SMPM_INSTALLROOT/usr/ast/.kshrc"
+cp profile "$SMPM_INSTALLROOT/root/.profile"
+cp bashrc "$SMPM_INSTALLROOT/root/.bashrc"
+cp kshrc "$SMPM_INSTALLROOT/root/.kshrc"
+
 exit 0
