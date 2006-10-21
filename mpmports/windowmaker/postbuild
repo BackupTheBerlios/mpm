@@ -7,5 +7,6 @@ exec /usr/local/lib/GNUstep/Applications/WPrefs.app/WPrefs
 __EOF__
 chmod 755 WPrefs
 chmod 755 wkdemenu.pl
+chmem =`expr 16 \* 1024 \* 1024` wmsetbg
 
 exit 0
