@@ -1,7 +1,5 @@
 echo "/usr/local/etc/kshrc"
 
-set -o emacs
-
 HOSTNAME=`cat /etc/hostname.file | cut -d . -f 1`
 
 bind "^I=complete"
@@ -25,3 +23,5 @@ test -f /usr/local/bin/vim && alias vi='vim' && export EDITOR=vim
 test -f /usr/gnu/bin/rm && alias rm='/usr/gnu/bin/rm -i'
 test -f /usr/gnu/bin/mv && alias mv='/usr/gnu/bin/mv -i'
 test -f /usr/gnu/bin/cp && alias cp='/usr/gnu/bin/cp -i'
+
+set -o emacs
