@@ -22,4 +22,21 @@ CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
 make
 DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmcpuload-1.0.1"
+ac_cv_func_malloc_0_nonnull=yes \
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls
+make
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmdiskmon-0.0.2"
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls
+make
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
 exit 0

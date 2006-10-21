@@ -19,4 +19,13 @@ patch -p1 < "$SMPM_PATCHES/wmclockmon-0.8.1-minix3.patch"
 cp "$SMPM_FILES/configure.wmclockmon" configure
 fix_destdir
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmcpuload-1.0.1"
+cp "$SMPM_FILES/configure.wmcpuload" configure
+cp "$SMPM_FILES/cpu_minix.c" src
+fix_destdir
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmdiskmon-0.0.2"
+cp "$SMPM_FILES/configure.wmdiskmon" configure
+fix_destdir
+
 exit 0
