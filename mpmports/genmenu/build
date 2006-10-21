@@ -1,0 +1,11 @@
+set -e
+
+cd "$SMPM_BUILDROOT/genmenu-1.0.7"
+
+PATH=/bin:/usr/bin
+export PATH
+
+install -d -m 0755 -o bin -g operator "$SMPM_INSTALLROOT/usr/local/bin"
+install -c -m 0755 -o bin -g operator genmenu "$SMPM_INSTALLROOT/usr/local/bin/genmenu"
+
+exit 0

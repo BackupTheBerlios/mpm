@@ -3,6 +3,7 @@ PACKAGES=\
 	cvs \
 	dialog \
 	flex \
+	genmenu \
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \

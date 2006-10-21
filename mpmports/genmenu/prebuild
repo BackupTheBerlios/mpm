@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT/genmenu-1.0.7"
+patch -p1 < "$SMPM_PATCHES/genmenu-1.0.7-minix3.patch"
+
+exit 0
