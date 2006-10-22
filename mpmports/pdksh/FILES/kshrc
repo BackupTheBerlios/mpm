@@ -19,7 +19,7 @@ fi
 
 alias vi='elvis'
 test -f /usr/gnu/bin/ls && alias ls='/usr/gnu/bin/ls --color=auto'
-test -f /usr/local/bin/vim && alias vi='vim' && export EDITOR=vim
+test -f /usr/local/bin/vim && alias vi='/usr/local/bin/vim' && export EDITOR=vim
 test -f /usr/gnu/bin/rm && alias rm='/usr/gnu/bin/rm -i'
 test -f /usr/gnu/bin/mv && alias mv='/usr/gnu/bin/mv -i'
 test -f /usr/gnu/bin/cp && alias cp='/usr/gnu/bin/cp -i'
