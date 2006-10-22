@@ -1,0 +1,174 @@
+diff -c glib-1.2.10/gcompletion.c glib-1.2.10-patched/gcompletion.c
+*** glib-1.2.10/gcompletion.c Wed Aug  9 18:12:31 2000
+--- glib-1.2.10-patched/gcompletion.c Sun Oct 22 15:43:14 2006
+***************
+*** 29,34 ****
+--- 29,37 ----
+   */
+  
+  #include "glib.h"
++ #ifdef _MINIX
++ #undef NULL     /* will be redefined again */
++ #endif
+  #include <string.h>
+  
+  static void completion_check_cache (GCompletion* cmp,
+diff -c glib-1.2.10/gdate.c glib-1.2.10-patched/gdate.c
+*** glib-1.2.10/gdate.c Fri Jun 18 07:59:17 1999
+--- glib-1.2.10-patched/gdate.c Sun Oct 22 15:43:25 2006
+***************
+*** 33,39 ****
+  #endif
+  
+  #include "glib.h"
+! 
+  #include <time.h>
+  #include <string.h>
+  #include <ctype.h>
+--- 33,41 ----
+  #endif
+  
+  #include "glib.h"
+! #ifdef _MINIX
+! #undef NULL     /* will be redefined again */
+! #endif
+  #include <time.h>
+  #include <string.h>
+  #include <ctype.h>
+diff -c glib-1.2.10/giochannel.c glib-1.2.10-patched/giochannel.c
+*** glib-1.2.10/giochannel.c Wed Feb 24 06:13:37 1999
+--- glib-1.2.10-patched/giochannel.c Sun Oct 22 15:43:42 2006
+***************
+*** 35,40 ****
+--- 35,43 ----
+  
+  #include "glib.h"
+  #ifdef HAVE_UNISTD_H
++ # ifdef _MINIX
++ #  undef NULL     /* will be redefined again */
++ # endif
+  #include <unistd.h>
+  #endif
+  
+diff -c glib-1.2.10/giounix.c glib-1.2.10-patched/giounix.c
+*** glib-1.2.10/giounix.c Tue Mar 23 21:44:16 1999
+--- glib-1.2.10-patched/giounix.c Sun Oct 22 15:43:55 2006
+***************
+*** 32,37 ****
+--- 32,40 ----
+   */
+  
+  #include "glib.h"
++ #ifdef _MINIX
++ #undef NULL     /* will be redefined again */
++ #endif
+  #include <sys/types.h>
+  #include <unistd.h>
+  #include <errno.h>
+diff -c glib-1.2.10/gmain.c glib-1.2.10-patched/gmain.c
+*** glib-1.2.10/gmain.c Tue Feb 27 06:00:21 2001
+--- glib-1.2.10-patched/gmain.c Sun Oct 22 15:44:46 2006
+***************
+*** 39,44 ****
+--- 39,47 ----
+  
+  
+  #include "glib.h"
++ #ifdef _MINIX
++ #undef NULL     /* will be redefined */
++ #endif
+  #include <sys/types.h>
+  #include <time.h>
+  #ifdef HAVE_SYS_TIME_H
+diff -c glib-1.2.10/gmodule/gmodule.c glib-1.2.10-patched/gmodule/gmodule.c
+*** glib-1.2.10/gmodule/gmodule.c Thu Mar 15 15:33:10 2001
+--- glib-1.2.10-patched/gmodule/gmodule.c Sun Oct 22 15:53:13 2006
+***************
+*** 30,35 ****
+--- 30,38 ----
+  
+  #include	"gmodule.h"
+  #include	"gmoduleconf.h"
++ #ifdef _MINIX
++ #undef NULL
++ #endif
+  #include	<errno.h>
+  #include	<string.h>
+  
+diff -c glib-1.2.10/gmodule/libgplugin_a.c glib-1.2.10-patched/gmodule/libgplugin_a.c
+*** glib-1.2.10/gmodule/libgplugin_a.c Sat Feb 19 18:46:06 2000
+--- glib-1.2.10-patched/gmodule/libgplugin_a.c Sun Oct 22 15:53:48 2006
+***************
+*** 25,30 ****
+--- 25,33 ----
+   */
+  
+  #include	<gmodule.h>
++ #ifdef _MINIX
++ #undef NULL
++ #endif
+  #include	<stdlib.h>
+  
+  #if defined (NATIVE_WIN32) && defined (__LCC__)
+diff -c glib-1.2.10/grel.c glib-1.2.10-patched/grel.c
+*** glib-1.2.10/grel.c Sun Mar 14 20:03:50 1999
+--- glib-1.2.10-patched/grel.c Sun Oct 22 15:45:31 2006
+***************
+*** 28,33 ****
+--- 28,36 ----
+   */
+  
+  #include "glib.h"
++ #ifdef _MINIX
++ #undef NULL     /* will be redefined */
++ #endif
+  #include <stdarg.h>
+  #include <string.h>
+  
+diff -c glib-1.2.10/gtimer.c glib-1.2.10-patched/gtimer.c
+*** glib-1.2.10/gtimer.c Thu Jan 27 17:06:14 2000
+--- glib-1.2.10-patched/gtimer.c Sun Oct 22 15:46:54 2006
+***************
+*** 34,39 ****
+--- 34,42 ----
+  
+  #include "glib.h"
+  #ifdef HAVE_UNISTD_H
++ # ifdef _MINIX
++ #  undef NULL /* will be redefined */
++ # endif
+  #include <unistd.h>
+  #endif /* HAVE_UNISTD_H */
+  #ifndef NATIVE_WIN32
+diff -c glib-1.2.10/testgdate.c glib-1.2.10-patched/testgdate.c
+*** glib-1.2.10/testgdate.c Wed Aug  9 18:12:31 2000
+--- glib-1.2.10-patched/testgdate.c Sun Oct 22 15:48:03 2006
+***************
+*** 1,6 ****
+--- 1,10 ----
+  
+  #include "glib.h"
+  
++ #ifdef _MINIX
++ #undef NULL
++ #endif
++ 
+  #include <stdio.h>
+  #include <string.h>
+  #include <locale.h>
+diff -c glib-1.2.10/testgdateparser.c glib-1.2.10-patched/testgdateparser.c
+*** glib-1.2.10/testgdateparser.c Wed Dec  2 20:20:35 1998
+--- glib-1.2.10-patched/testgdateparser.c Sun Oct 22 15:49:11 2006
+***************
+*** 1,6 ****
+--- 1,10 ----
+  
+  #include "glib.h"
+  
++ #ifdef _MINIX
++ #undef NULL
++ #endif
++ 
+  #include <stdio.h>
+  #include <string.h>
+  #include <locale.h>

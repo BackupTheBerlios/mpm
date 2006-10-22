@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT/glib-1.2.10"
+
+PATH=/bin:/usr/bin
+export PATH
+
+
+CC="cc -stack 4m -s" LD="cc -stack 4m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls \
+            --disable-threads \
+            --host=i386-pc-minix \
+
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
+exit 0

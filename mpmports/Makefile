@@ -4,6 +4,7 @@ PACKAGES=\
 	dialog \
 	flex \
 	genmenu \
+	glib \
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \
