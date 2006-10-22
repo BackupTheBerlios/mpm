@@ -53,4 +53,8 @@ patch -p1 < "$SMPM_PATCHES/wmupmon-0.1.3-minix3.patch"
 cp "$SMPM_FILES/configure.wmupmon" configure
 cp "$SMPM_FILES/uptime_minix.c" src
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmweather+-2.9"
+patch -p1 < "$SMPM_PATCHES/wmweather+-2.9-minix3.patch"
+cp "$SMPM_FILES/nan.h" .
+
 exit 0

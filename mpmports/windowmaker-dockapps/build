@@ -3,6 +3,19 @@ set -e
 PATH=/bin:/usr/bin:/usr/X11R6/bin
 export PATH
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmweather+-2.9"
+ac_cv_func_malloc_0_nonnull=yes \
+ac_cv_func_working_mktime=yes \
+ac_cv_lib_wraster_RCreateContext=yes \
+ac_cv_path_LIBWWW_CONFIG=/usr/local/bin/libwww-config \
+CC="cc -stack 2m -s" LD="cc -stack 2m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls
+make
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
 cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmclock-1.0.12.2"
 ./configure
 make CC="cc -s"
@@ -72,5 +85,6 @@ CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
             --disable-nls
 make
 DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
 
 exit 0

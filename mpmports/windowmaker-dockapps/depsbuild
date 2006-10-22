@@ -1,3 +1,9 @@
 xorg6
 libdockapp
 gnu-make
+libpcre
+zlib
+libwww
+libpng
+libjpeg
+libtiff

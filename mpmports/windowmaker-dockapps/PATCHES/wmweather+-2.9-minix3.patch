@@ -1,0 +1,231 @@
+diff -c wmweather+-2.9/Makefile.in wmweather+-2.9-patched/Makefile.in
+*** wmweather+-2.9/Makefile.in Sat Jun  5 13:33:12 2004
+--- wmweather+-2.9-patched/Makefile.in Mon Oct 16 18:10:01 2006
+***************
+*** 136,142 ****
+  INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+  LDFLAGS = @LDFLAGS@
+  LIBOBJS = @LIBOBJS@
+! LIBS = @LIBS@
+  LIBWWW_CFLAGS = @LIBWWW_CFLAGS@
+  LIBWWW_CONFIG = @LIBWWW_CONFIG@
+  LIBWWW_LIBS = @LIBWWW_LIBS@
+--- 136,142 ----
+  INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+  LDFLAGS = @LDFLAGS@
+  LIBOBJS = @LIBOBJS@
+! LIBS = @LIBS@ -lpng -ltiff -ljpeg -lwwwzip -lXpm -lX11 -lz
+  LIBWWW_CFLAGS = @LIBWWW_CFLAGS@
+  LIBWWW_CONFIG = @LIBWWW_CONFIG@
+  LIBWWW_LIBS = @LIBWWW_LIBS@
+diff -c wmweather+-2.9/convert.c wmweather+-2.9-patched/convert.c
+*** wmweather+-2.9/convert.c Sun Sep 22 20:00:53 2002
+--- wmweather+-2.9-patched/convert.c Mon Oct 16 18:05:16 2006
+***************
+*** 37,42 ****
+--- 37,46 ----
+  #include <stdlib.h>
+  #include "convert.h"
+  
++ #ifdef _MINIX
++ #include "nan.h"
++ #endif
++ 
+  /*
+   * To indicate unavailable data
+   *   999 is used for temperature
+diff -c wmweather+-2.9/die.h wmweather+-2.9-patched/die.h
+*** wmweather+-2.9/die.h Mon Aug 19 22:26:01 2002
+--- wmweather+-2.9-patched/die.h Mon Oct 16 18:04:42 2006
+***************
+*** 1,5 ****
+--- 1,9 ----
+  #include <stdarg.h>
+  
++ #ifdef _MINIX
++ #define __attribute__(a)
++ #endif
++ 
+  void warn(char *fmt, ...) __attribute__ ((__format__ (__printf__, 1, 2)));
+  void die(char *fmt, ...) __attribute__ ((__format__ (__printf__, 1, 2), __noreturn__));
+  
+diff -c wmweather+-2.9/download.c wmweather+-2.9-patched/download.c
+*** wmweather+-2.9/download.c Sat Jun  5 13:06:33 2004
+--- wmweather+-2.9-patched/download.c Mon Oct 16 18:05:43 2006
+***************
+*** 21,26 ****
+--- 21,30 ----
+  #include <limits.h>
+  #include <fcntl.h>
+  #include <errno.h>
++ #ifdef _MINIX
++ #undef VERSION
++ #undef PACKAGE
++ #endif
+  #include <WWWInit.h>
+  
+  #include "die.h"
+diff -c wmweather+-2.9/forecast.c wmweather+-2.9-patched/forecast.c
+*** wmweather+-2.9/forecast.c Sun Mar 23 00:04:40 2003
+--- wmweather+-2.9-patched/forecast.c Mon Oct 16 18:45:26 2006
+***************
+*** 43,48 ****
+--- 43,52 ----
+  #include "getLine.h"
+  #include "die.h"
+  
++ #ifdef _MINIX
++ #include "nan.h"
++ #endif
++ 
+  /* Important variables */
+  static struct forecast **forecasts=NULL;
+  static int num_forecasts=0;
+***************
+*** 76,82 ****
+  
+  time_t parse_time_string(char *s){
+      struct tm tm;
+!     int ovector[ovecsize];
+      int ovalue;
+      char *e;
+      int i;
+--- 80,90 ----
+  
+  time_t parse_time_string(char *s){
+      struct tm tm;
+! #ifndef _MINIX
+!     int ovector[ovecsize];
+! #else
+!     int ovector[8192]; /* XXX */
+! #endif
+      int ovalue;
+      char *e;
+      int i;
+diff -c wmweather+-2.9/metar.c wmweather+-2.9-patched/metar.c
+*** wmweather+-2.9/metar.c Fri May 14 02:55:39 2004
+--- wmweather+-2.9-patched/metar.c Mon Oct 16 18:45:52 2006
+***************
+*** 51,56 ****
+--- 51,60 ----
+  #include "moon.h"
+  #include "subst.h"
+  
++ #ifdef _MINIX
++ #include "nan.h"
++ #endif
++ 
+  /* Important variables */
+  static time_t metar_time=0;
+  
+***************
+*** 182,188 ****
+  static int parse_metar(char *file){
+      FILE *fp;
+      char *s, *c;
+!     int ovector[ovecsize];
+      int ovalue;
+      int len;
+      float f;
+--- 186,196 ----
+  static int parse_metar(char *file){
+      FILE *fp;
+      char *s, *c;
+! #ifndef _MINIX
+!     int ovector[ovecsize];
+! #else
+!     int ovector[8192]; /* XXX */
+! #endif
+      int ovalue;
+      int len;
+      float f;
+diff -c wmweather+-2.9/moon.c wmweather+-2.9-patched/moon.c
+*** wmweather+-2.9/moon.c Fri May 14 02:55:39 2004
+--- wmweather+-2.9-patched/moon.c Mon Oct 16 18:12:56 2006
+***************
+*** 43,48 ****
+--- 43,52 ----
+  
+  #include "wmgeneral/wmgeneral-x11.h"
+  
++ #ifdef _MINIX
++ #include "nan.h"
++ #endif
++ 
+  static double fpart(double t){
+      return t-trunc(t);
+  }
+diff -c wmweather+-2.9/warnings.c wmweather+-2.9-patched/warnings.c
+*** wmweather+-2.9/warnings.c Sat Nov 22 02:13:25 2003
+--- wmweather+-2.9-patched/warnings.c Mon Oct 16 18:46:11 2006
+***************
+*** 177,192 ****
+  }
+  
+  void update_warnings(int force){
+! //    time_t t;
+      struct stat statbuf;
+      int i, z;
+      struct callback_data *d;
+  
+      if(warning_filename1==NULL) return;
+! //    t=time(NULL)/60;
+! //    if(!force && warning_time>t) return;
+! 
+! //    warning_time=t+15;
+  
+      for(z=0; warning_zones[z]!=NULL; z++){
+          for(i=0; filenames[i]!=NULL; i++){
+--- 177,192 ----
+  }
+  
+  void update_warnings(int force){
+! /*    time_t t;*/
+      struct stat statbuf;
+      int i, z;
+      struct callback_data *d;
+  
+      if(warning_filename1==NULL) return;
+! /*    t=time(NULL)/60;
+! //    if(!force && warning_time>t) return;
+! 
+! //    warning_time=t+15; */
+  
+      for(z=0; warning_zones[z]!=NULL; z++){
+          for(i=0; filenames[i]!=NULL; i++){
+***************
+*** 224,230 ****
+      int i;
+      time_t t;
+      struct tm *tm;
+!     int ovector[ovecsize];
+      int ovalue;
+  
+      if((fp=fopen(file, "r"))==NULL) return 0;
+--- 224,234 ----
+      int i;
+      time_t t;
+      struct tm *tm;
+! #ifndef _MINIX
+!     int ovector[ovecsize];
+! #else
+!     int ovector[8192]; /* XXX */
+! #endif
+      int ovalue;
+  
+      if((fp=fopen(file, "r"))==NULL) return 0;
+diff -c wmweather+-2.9/wmweather+.c wmweather+-2.9-patched/wmweather+.c
+*** wmweather+-2.9/wmweather+.c Tue Mar 30 03:17:20 2004
+--- wmweather+-2.9-patched/wmweather+.c Mon Oct 16 18:30:02 2006
+***************
+*** 100,105 ****
+--- 100,108 ----
+  int start_do_animation=1;
+  int starting_mode=0;
+  
++ #ifdef _MINIX
++ #define __THROW
++ #endif
+  
+  /**********************************
+   * Prototypes
