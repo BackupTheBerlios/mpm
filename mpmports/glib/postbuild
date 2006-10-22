@@ -1,3 +1,7 @@
 set -e
 
+cd "$SMPM_INSTALLROOT/usr/local/include/glib-1.2"
+sed -e 's/ifndef.NULL/if !defined(NULL) \&\& !defined(_MINIX)/' glib.h > glib.h.new
+mv glib.h.new glib.h
+
 exit 0
