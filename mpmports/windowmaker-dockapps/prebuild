@@ -28,4 +28,18 @@ cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmdiskmon-0.0.2"
 cp "$SMPM_FILES/configure.wmdiskmon" configure
 fix_destdir
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmmaiload-2.2.1"
+patch -p1 < "$SMPM_PATCHES/wmmaiload-2.2.1-minix3.patch"
+for i in */Makefile ; do
+    sed -e 's/--mode=/-m /' $i > $i.new
+    mv $i.new $i
+done
+sed -e 's/done/; done/' doc/Makefile > doc/Makefile.new
+mv doc/Makefile.new doc/Makefile
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmmemload-0.1.6"
+cp "$SMPM_FILES/configure.wmmemload" configure
+cp "$SMPM_FILES/mem_minix.c" src
+fix_destdir
+
 exit 0

@@ -39,4 +39,21 @@ CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
 make
 DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmmaiload-2.2.1"
+sh ./configure -e IMAP -e MAILDIR -e MBOX -e MH -e POP3
+/usr/gnu/bin/make -C wmmaiload distclean
+/usr/gnu/bin/make clean
+sh ./configure -e IMAP -e MAILDIR -e MBOX -e MH -e POP3
+/usr/gnu/bin/make
+/usr/gnu/bin/make DESTDIR="$SMPM_INSTALLROOT" install
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmmemload-0.1.6"
+ac_cv_func_malloc_0_nonnull=yes \
+CC="cc -s" LD="cc -s" CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls
+make
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
 exit 0

@@ -1,0 +1,419 @@
+diff -c wmmaiload-2.2.1/Init.make wmmaiload-2.2.1-patched/Init.make
+*** wmmaiload-2.2.1/Init.make Sat Aug  6 10:01:03 2005
+--- wmmaiload-2.2.1-patched/Init.make Mon Oct 16 21:48:43 2006
+***************
+*** 19,23 ****
+    VERSION = $(shell cat VERSION)
+  endif
+  
+! SUBDIRS = wmmaiload wmmaiload-config doc
+  
+--- 19,23 ----
+    VERSION = $(shell cat VERSION)
+  endif
+  
+! SUBDIRS = wmmaiload doc
+  
+diff -c wmmaiload-2.2.1/Makefile wmmaiload-2.2.1-patched/Makefile
+*** wmmaiload-2.2.1/Makefile Sun Aug 28 19:36:38 2005
+--- wmmaiload-2.2.1-patched/Makefile Mon Oct 16 22:04:52 2006
+***************
+*** 70,80 ****
+  local_clean:
+  	@rm -f Config.make
+  
+! clean: local_clean
+  	@for dir in ${SUBDIRS}; do \
+  		echo "Making clean in $$dir..." ; \
+  		$(MAKE) -C $$dir clean ; \
+  	done
+  
+  mrproper: local_clean
+  	@for dir in ${SUBDIRS}; do \
+--- 70,81 ----
+  local_clean:
+  	@rm -f Config.make
+  
+! clean:
+  	@for dir in ${SUBDIRS}; do \
+  		echo "Making clean in $$dir..." ; \
+  		$(MAKE) -C $$dir clean ; \
+  	done
++ 	@rm -f Config.make
+  
+  mrproper: local_clean
+  	@for dir in ${SUBDIRS}; do \
+diff -c wmmaiload-2.2.1/doc/Makefile wmmaiload-2.2.1-patched/doc/Makefile
+*** wmmaiload-2.2.1/doc/Makefile Thu Jul 14 12:36:54 2005
+--- wmmaiload-2.2.1-patched/doc/Makefile Mon Oct 16 22:47:11 2006
+***************
+*** 14,19 ****
+--- 14,20 ----
+  #                                                                #
+  ##################################################################
+  
++ PREFIX	   = /usr/local
+  
+  INSTALLDIR = $(DESTDIR)$(PREFIX)
+  BINDIR     = $(INSTALLDIR)/bin
+***************
+*** 26,32 ****
+  # TARGET - SOURCES - OBJECTS :
+  #
+  
+! SRCS       = $(shell ls *.1)
+  
+  
+  #*****************************************************************
+--- 27,33 ----
+  # TARGET - SOURCES - OBJECTS :
+  #
+  
+! SRCS       = wmmaiload.1
+  
+  
+  #*****************************************************************
+diff -c wmmaiload-2.2.1/wmmaiload/.dependencies wmmaiload-2.2.1-patched/wmmaiload/.dependencies
+*** wmmaiload-2.2.1/wmmaiload/.dependencies Sun Aug 28 19:28:39 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/.dependencies Mon Oct 16 22:49:23 2006
+***************
+*** 1,8 ****
+- checkthread.o: checkthread.c config.h main.h dockapp.h options.h
+- dockapp.o: dockapp.c dockapp.h config.h
+- imapclient.o: imapclient.c config.h
+- main.o: main.c config.h main.h dockapp.h options.h checkthread.h \
+-  backlight_on.xpm backlight_off.xpm parts.xpm
+- options.o: options.c options.h dockapp.h config.h
+- pop3client.o: pop3client.c config.h
+- ssl.o: ssl.c config.h
+--- 0 ----
+diff -c wmmaiload-2.2.1/wmmaiload/Init.make wmmaiload-2.2.1-patched/wmmaiload/Init.make
+*** wmmaiload-2.2.1/wmmaiload/Init.make Sun Aug 28 19:14:57 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/Init.make Mon Oct 16 22:01:55 2006
+***************
+*** 45,57 ****
+  # SPECIFIC INFORMATIONS :
+  #
+  
+! LIB_SSL = $(shell grep -q '^OPTIONS.*HAVE_SSL' ../Config.make && echo '-lssl')
+! LIB_THREADS = $(shell grep -q '^OPTIONS.*HAVE_THREADS' ../Config.make && echo '-lpthread')
+  
+  CROSS_COMPILE =
+  USER_CPPFLAGS = $(OPTIONS)
+  USER_CFLAGS   =
+! USER_LDFLAGS  = -L/usr/X11R6/lib -lX11 -lXext -lXpm $(LIB_THREADS) $(LIB_SSL)
+  
+  
+  #*****************************************************************
+--- 45,57 ----
+  # SPECIFIC INFORMATIONS :
+  #
+  
+! LIB_SSL = 
+! LIB_THREADS = 
+  
+  CROSS_COMPILE =
+  USER_CPPFLAGS = $(OPTIONS)
+  USER_CFLAGS   =
+! USER_LDFLAGS  = -L/usr/X11R6/lib -lXext -lXpm -lX11 $(LIB_THREADS) $(LIB_SSL)
+  
+  
+  #*****************************************************************
+diff -c wmmaiload-2.2.1/wmmaiload/Makefile wmmaiload-2.2.1-patched/wmmaiload/Makefile
+*** wmmaiload-2.2.1/wmmaiload/Makefile Sat Jul 30 13:09:27 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/Makefile Mon Oct 16 22:00:58 2006
+***************
+*** 35,42 ****
+  #
+  
+  CFLAGS           = 
+! CPPFLAGS         = -O2 -Wall
+! EXTRA_CPPFLAGS   =
+  LDFLAGS          =
+  
+  
+--- 35,42 ----
+  #
+  
+  CFLAGS           = 
+! CPPFLAGS         = -O -I/usr/X11R6/include -I/usr/local/include
+! EXTRA_CPPFLAGS   = -D_MINIX=1 -D_POSIX_SOURCE=1 -wo
+  LDFLAGS          =
+  
+  
+***************
+*** 44,52 ****
+  # DEBUG MODE FLAGS :
+  #
+  
+! DEBUG_CFLAGS     = -g3
+! DEBUG_CPPFLAGS   = -DDEBUG_LEVEL=${DEBUG_LEVEL}
+! DEBUG_LDFLAGS    = -g3
+  
+  
+  #*****************************************************************
+--- 44,52 ----
+  # DEBUG MODE FLAGS :
+  #
+  
+! DEBUG_CFLAGS     = 
+! DEBUG_CPPFLAGS   = 
+! DEBUG_LDFLAGS    = 
+  
+  
+  #*****************************************************************
+***************
+*** 76,83 ****
+  #*****************************************************************
+  # COMMON COMMANDS :
+  #
+! CPP		 = $(CROSS_COMPILE)cpp
+! CC               = $(CROSS_COMPILE)gcc
+  STRIP		 = $(CROSS_COMPILE)strip
+  CP               = cp
+  RM               = rm
+--- 76,83 ----
+  #*****************************************************************
+  # COMMON COMMANDS :
+  #
+! CPP		 = $(CROSS_COMPILE)cc -E
+! CC               = $(CROSS_COMPILE)cc -s
+  STRIP		 = $(CROSS_COMPILE)strip
+  CP               = cp
+  RM               = rm
+***************
+*** 144,153 ****
+  	@echo "Creating dependencies for $(PROGRAM)..."
+  	@-$(RM) -f .dependencies
+  	@touch .dependencies
+! 	@for i in ${SRCS} ; do \
+! 	  echo "Making dependencies for $$i" ; \
+! 	  $(CPP) $(ALL_CPPFLAGS) -MM $$i >> .dependencies ; \
+! 	done
+  
+  include .dependencies
+  
+--- 144,153 ----
+  	@echo "Creating dependencies for $(PROGRAM)..."
+  	@-$(RM) -f .dependencies
+  	@touch .dependencies
+! #	@for i in ${SRCS} ; do \
+! #	  echo "Making dependencies for $$i" ; \
+! #	  $(CPP) $(ALL_CPPFLAGS) -MM $$i >> .dependencies ; \
+! #	done
+  
+  include .dependencies
+  
+diff -c wmmaiload-2.2.1/wmmaiload/checkthread.c wmmaiload-2.2.1-patched/wmmaiload/checkthread.c
+*** wmmaiload-2.2.1/wmmaiload/checkthread.c Sun Aug 28 19:26:18 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/checkthread.c Mon Oct 16 21:54:01 2006
+***************
+*** 39,45 ****
+  #include <utime.h>
+  #include <time.h>
+  #include <math.h>
+! #include <pthread.h>
+  #include <string.h>
+  #ifdef HAVE_POP3
+  # include "pop3client.h"
+--- 39,47 ----
+  #include <utime.h>
+  #include <time.h>
+  #include <math.h>
+! #ifdef HAVE_THREADS
+! #include <pthread.h>
+! #endif
+  #include <string.h>
+  #ifdef HAVE_POP3
+  # include "pop3client.h"
+***************
+*** 66,72 ****
+  extern Bool             run_once;
+  extern int              boxnum;
+  extern Bool             use_threads;
+! extern pthread_mutex_t  mutex_list;
+  
+  
+  
+--- 68,76 ----
+  extern Bool             run_once;
+  extern int              boxnum;
+  extern Bool             use_threads;
+! #ifdef HAVE_THREADS
+! extern pthread_mutex_t  mutex_list;
+! #endif
+  
+  
+  
+***************
+*** 816,824 ****
+--- 820,830 ----
+  static void check_mailbox_thread(void *data)
+  {
+          MailBox *box   = get_mailbox((int) data);
++ #ifdef HAVE_THREADS
+          pthread_t       tid = pthread_self();
+  
+          pthread_detach(tid);
++ #endif
+  #if DEBUG_LEVEL>0
+          printf("check_mailbox launched : mailbox = %s\n", box->entry);
+  #endif
+diff -c wmmaiload-2.2.1/wmmaiload/config.h wmmaiload-2.2.1-patched/wmmaiload/config.h
+*** wmmaiload-2.2.1/wmmaiload/config.h Sun Aug 28 19:28:35 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/config.h Mon Oct 16 22:49:23 2006
+***************
+*** 15,22 ****
+  #define PACKAGE "WMMaiLoad"
+  #define PROGRAM "wmmaiload"
+  #define VERSION "2.2.1"
+! #define OSTYPE  "linux"
+! #define BUILD   "2005-08-28"
+  #define AUTHORS "Thomas Nemeth"
+  
+  #endif
+--- 15,22 ----
+  #define PACKAGE "WMMaiLoad"
+  #define PROGRAM "wmmaiload"
+  #define VERSION "2.2.1"
+! #define OSTYPE  "minix"
+! #define BUILD   "2006-10-16"
+  #define AUTHORS "Thomas Nemeth"
+  
+  #endif
+diff -c wmmaiload-2.2.1/wmmaiload/dockapp.c wmmaiload-2.2.1-patched/wmmaiload/dockapp.c
+*** wmmaiload-2.2.1/wmmaiload/dockapp.c Tue Jul 12 19:39:47 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/dockapp.c Mon Oct 16 21:55:49 2006
+***************
+*** 28,33 ****
+--- 28,37 ----
+  #include <sys/types.h>
+  #include <unistd.h>
+  
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
++ 
+  #define WINDOWED_SIZE_W 64
+  #define WINDOWED_SIZE_H 64
+  
+diff -c wmmaiload-2.2.1/wmmaiload/imapclient.c wmmaiload-2.2.1-patched/wmmaiload/imapclient.c
+*** wmmaiload-2.2.1/wmmaiload/imapclient.c Sun Aug 28 19:14:57 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/imapclient.c Mon Oct 16 22:44:37 2006
+***************
+*** 17,22 ****
+--- 17,29 ----
+  
+  #include "imapclient.h"
+  
++ #ifdef _MINIX
++ #undef recv
++ #undef send
++ #define recv(fd, buf, len, flags) read(fd, buf, len)
++ #define send(fd, buf, len, flags) write(fd, buf, len)
++ #endif
++ 
+  struct imap_struct
+  {
+          struct sockaddr_in server;
+***************
+*** 127,133 ****
+                  return -1;
+          memset( &(ic->server), 0, sizeof(ic->server) );
+          ic->server.sin_family = AF_INET;
+!         if ((ic->hp = gethostbyname(serverName)) <= 0)
+                  return -1;
+          memcpy( &(ic->server.sin_addr), ic->hp->h_addr, ic->hp->h_length );
+          ic->server.sin_port = htons(port);
+--- 134,140 ----
+                  return -1;
+          memset( &(ic->server), 0, sizeof(ic->server) );
+          ic->server.sin_family = AF_INET;
+!         if ((ic->hp = gethostbyname(serverName)) == NULL)
+                  return -1;
+          memcpy( &(ic->server.sin_addr), ic->hp->h_addr, ic->hp->h_length );
+          ic->server.sin_port = htons(port);
+diff -c wmmaiload-2.2.1/wmmaiload/main.c wmmaiload-2.2.1-patched/wmmaiload/main.c
+*** wmmaiload-2.2.1/wmmaiload/main.c Sun Aug 28 19:22:47 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/main.c Mon Oct 16 21:57:12 2006
+***************
+*** 33,39 ****
+  #include <pwd.h>
+  #include <signal.h>
+  #include <dirent.h>
+! #include <pthread.h>
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <utime.h>
+--- 33,41 ----
+  #include <pwd.h>
+  #include <signal.h>
+  #include <dirent.h>
+! #ifdef HAVE_THREADS
+! #include <pthread.h>
+! #endif
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <utime.h>
+***************
+*** 59,65 ****
+  Bool             run_once    = False;
+  int              boxnum      = 0;
+  Bool             use_threads = True;
+! pthread_mutex_t  mutex_list;
+  
+  Pixmap pixmap;
+  Pixmap backdrop_on;
+--- 61,69 ----
+  Bool             run_once    = False;
+  int              boxnum      = 0;
+  Bool             use_threads = True;
+! #ifdef HAVE_THREADS
+! pthread_mutex_t  mutex_list;
+! #endif
+  
+  Pixmap pixmap;
+  Pixmap backdrop_on;
+diff -c wmmaiload-2.2.1/wmmaiload/pop3client.c wmmaiload-2.2.1-patched/wmmaiload/pop3client.c
+*** wmmaiload-2.2.1/wmmaiload/pop3client.c Sat Jul 30 13:52:46 2005
+--- wmmaiload-2.2.1-patched/wmmaiload/pop3client.c Mon Oct 16 22:38:02 2006
+***************
+*** 15,21 ****
+  #ifdef HAVE_SSL
+  #include "ssl.h"
+  #endif
+! 
+  
+  struct pop3_struct
+  {
+--- 15,27 ----
+  #ifdef HAVE_SSL
+  #include "ssl.h"
+  #endif
+! #ifdef _MINIX
+! #include <sys/select.h>
+! #undef recv
+! #undef send
+! #define recv(fd, buf, len, flags) read(fd, buf, len)
+! #define send(fd, buf, len, flags) write(fd, buf, len)
+! #endif
+  
+  struct pop3_struct
+  {
+***************
+*** 121,127 ****
+  
+          memset(&(pc->server), 0, sizeof(pc->server));
+          pc->server.sin_family = AF_INET;
+!         if ((pc->hp = gethostbyname(serverName)) <= 0) return -1;
+  
+          memcpy( &(pc->server.sin_addr), pc->hp->h_addr, pc->hp->h_length);
+          pc->server.sin_port = htons(port);
+--- 127,133 ----
+  
+          memset(&(pc->server), 0, sizeof(pc->server));
+          pc->server.sin_family = AF_INET;
+!         if ((pc->hp = gethostbyname(serverName)) == NULL) return -1;
+  
+          memcpy( &(pc->server.sin_addr), pc->hp->h_addr, pc->hp->h_length);
+          pc->server.sin_port = htons(port);
