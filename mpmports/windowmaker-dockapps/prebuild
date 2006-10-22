@@ -42,4 +42,15 @@ cp "$SMPM_FILES/configure.wmmemload" configure
 cp "$SMPM_FILES/mem_minix.c" src
 fix_destdir
 
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmnetload-1.3"
+patch -p1 < "$SMPM_PATCHES/wmnetload-1.3-minix3.patch"
+cp "$SMPM_FILES/configure.wmnetload" configure
+cp "$SMPM_FILES/ifstat_minix.c" src
+fix_destdir
+
+cd "$SMPM_BUILDROOT/windowmaker-dockapps-1.0/wmupmon-0.1.3"
+patch -p1 < "$SMPM_PATCHES/wmupmon-0.1.3-minix3.patch"
+cp "$SMPM_FILES/configure.wmupmon" configure
+cp "$SMPM_FILES/uptime_minix.c" src
+
 exit 0

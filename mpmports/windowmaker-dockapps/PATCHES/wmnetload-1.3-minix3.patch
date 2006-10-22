@@ -1,0 +1,169 @@
+diff -c wmnetload-1.3/src/ifstat.h wmnetload-1.3-patched/src/ifstat.h
+*** wmnetload-1.3/src/ifstat.h Wed Jan  9 06:23:25 2002
+--- wmnetload-1.3-patched/src/ifstat.h Sun Oct 15 20:13:58 2006
+***************
+*** 27,39 ****
+  
+  #pragma ident "@(#)ifstat.h	1.1	02/01/09 meem"
+  
+  /*
+   * For now, we only keep two network statistics -- maybe we'll keep more in
+   * the future.
+   */
+  typedef struct {
+! 	unsigned long long	rxbytes;	/* received byte count */
+! 	unsigned long long	txbytes;	/* transmitted byte count */
+  } ifstats_t;
+  
+  /*
+--- 27,45 ----
+  
+  #pragma ident "@(#)ifstat.h	1.1	02/01/09 meem"
+  
++ #ifdef __ACK__
++ typedef unsigned long counter_t;
++ #else
++ typedef unsigned long long counter_t;
++ #endif
++ 
+  /*
+   * For now, we only keep two network statistics -- maybe we'll keep more in
+   * the future.
+   */
+  typedef struct {
+! 	counter_t	rxbytes;	/* received byte count */
+! 	counter_t	txbytes;	/* transmitted byte count */
+  } ifstats_t;
+  
+  /*
+diff -c wmnetload-1.3/src/wmnetload.c wmnetload-1.3-patched/src/wmnetload.c
+*** wmnetload-1.3/src/wmnetload.c Sun Feb 23 09:07:17 2003
+--- wmnetload-1.3-patched/src/wmnetload.c Sun Oct 15 20:59:55 2006
+***************
+*** 49,54 ****
+--- 49,64 ----
+  #include "utils.h"
+  #include "pixmaps.h"
+  
++ #if defined(__ACK__) && defined(ulonglong_t)
++ #undef ulonglong_t
++ typedef unsigned long ulonglong_t;
++ #endif
++ 
++ #ifdef _MINIX
++ #define IFNAMSIZ 16
++ #include <ifaddrs.h>
++ #endif
++ 
+  /*
+   * Convenience macro for copying rectangles with shared origins.
+   */
+***************
+*** 208,213 ****
+--- 218,226 ----
+  
+  	DAParseArguments(argc, argv, options, OPT_MAX, desc, vers);
+  
++ #ifdef _MINIX
++     fprintf(stderr, "interface: %s\n", ifname);
++ #else
+  	siocfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+  	if (siocfd == -1)
+  		die("cannot open datagram socket");
+***************
+*** 222,227 ****
+--- 235,241 ----
+  		    nextifname);
+  		ifname = nextifname;
+  	}
++ #endif
+  
+  	if (!options[OPT_DISPLAY].used)
+  		display = "";
+***************
+*** 402,409 ****
+  	ifstats_t	*stats = ifp->graph->stats;
+  	unsigned int	col = ifp->graph->col;
+  	unsigned int	ocol = WN_MODDEC(col, WN_GR_COLS);
+! 	long long	num;
+! 	long long	onum;
+  
+  	num = stats[col].rxbytes + stats[col].txbytes;
+  	onum = stats[ocol].rxbytes + stats[ocol].txbytes;
+--- 416,427 ----
+  	ifstats_t	*stats = ifp->graph->stats;
+  	unsigned int	col = ifp->graph->col;
+  	unsigned int	ocol = WN_MODDEC(col, WN_GR_COLS);
+! #ifdef __ACK__
+!     long num, onum;
+! #else
+! 	long long	num;
+! 	long long	onum;
+! #endif
+  
+  	num = stats[col].rxbytes + stats[col].txbytes;
+  	onum = stats[ocol].rxbytes + stats[ocol].txbytes;
+***************
+*** 827,832 ****
+--- 845,855 ----
+  /*
+   * Get an interface's current flags, or -1 if the cannot be retrieved.
+   */
++ #ifdef _MINIX   /* always up and no loopback :) */
++ static int if_flags(int fd, const char *ifname) {
++     return IFF_UP;
++ }
++ #else
+  static int
+  if_flags(int fd, const char *ifname)
+  {
+***************
+*** 840,850 ****
+--- 863,875 ----
+  
+  	return (ifr.ifr_flags);
+  }
++ #endif
+  
+  /*
+   * Return a pointer to the next ifreq structure after `ifrp'.  See the rant
+   * in if_next() for more on this misery.
+   */
++ #ifndef _MINIX
+  static struct ifreq *
+  ifr_next(struct ifreq *ifrp)
+  {
+***************
+*** 870,875 ****
+--- 895,901 ----
+  	len += sizeof (ifrp->ifr_name);
+  	return ((struct ifreq *)((caddr_t)ifrp + len));
+  }
++ #endif
+  
+  /*
+   * Fetch the name of the "next" interface in the interface list.  If the
+***************
+*** 877,882 ****
+--- 903,913 ----
+   * in the list that isn't loopback (unless loopback is the only interface).
+   * If the next interface name cannot be determined, then 0 is returned.
+   */
++ #ifdef _MINIX
++ static int if_next(int fd, const char *ifname, char *nextifname) {
++     return 0;
++ }
++ #else
+  static int
+  if_next(int fd, const char *ifname, char *nextifname)
+  {
+***************
+*** 1000,1005 ****
+--- 1031,1037 ----
+  	}
+  	return (0);
+  }
++ #endif
+  
+  /*
+   * Make pixmaps from the raw XPM data.
