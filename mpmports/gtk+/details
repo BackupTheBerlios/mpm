@@ -1,0 +1,10 @@
+name:       gtk+
+version:    1.2.0
+release:    1
+source:     ftp://ftp.gtk.org/pub/gtk/v1.2/gtk+-1.2.10.tar.gz
+filesize:   2868322
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    GTK+
+os:         yes
+arch:       yes

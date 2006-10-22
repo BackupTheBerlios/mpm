@@ -1,0 +1,23 @@
+set -e
+
+cd "$SMPM_BUILDROOT/gtk+-1.2.10"
+
+PATH=/bin:/usr/bin
+export PATH
+
+# increase stack size of linker, otherwise it will hang
+chmem =`expr 8 \* 1024 \* 1024` /usr/lib/em_led
+
+GLIB_CONFIG=/usr/local/bin/glib-config \
+CC="cc -stack 4m -s" LD="cc -stack 4m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+./configure --prefix=/usr/local \
+            --disable-dependency-tracking \
+            --disable-nls \
+            --host=i386-pc-minix \
+
+DESTDIR="$SMPM_INSTALLROOT" make DESTDIR="$SMPM_INSTALLROOT" install
+
+binsizes xxl
+
+exit 0

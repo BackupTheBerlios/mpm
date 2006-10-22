@@ -22,6 +22,7 @@ PACKAGES=\
 	gnu-shutils \
 	gnu-tar \
 	gnu-textutils \
+	gtk+ \
 	heirloom-sh \
 	heirloom-toolchest \
 	libdockapp \

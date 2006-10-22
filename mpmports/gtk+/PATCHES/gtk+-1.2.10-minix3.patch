@@ -1,0 +1,19 @@
+diff -c gtk+-1.2.10/gtk/testrgb.c gtk+-1.2.10-patched/gtk/testrgb.c
+*** gtk+-1.2.10/gtk/testrgb.c Fri Aug 18 21:36:34 2000
+--- gtk+-1.2.10-patched/gtk/testrgb.c Sun Oct 22 18:08:06 2006
+***************
+*** 49,57 ****
+--- 49,61 ----
+  get_time (void)
+  {
+    struct timeval tv;
++ #ifdef _MINIX
++   gettimeofday(&tv, NULL);
++ #else
+    struct timezone tz;
+  
+    gettimeofday (&tv, &tz);
++ #endif
+  
+    return tv.tv_sec + 1e-6 * tv.tv_usec;
+  }
