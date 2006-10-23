@@ -1,2 +1,4 @@
-echo -n ".bashrc "
+case "$-" in
+    *i*) echo -n ".bashrc " ;;
+esac
 . /usr/gnu/etc/bashrc

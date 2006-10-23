@@ -1,4 +1,6 @@
-echo -n ".profile "
+case "$-" in
+    *i*) echo -n ".profile " ;;
+esac
 
 stty sane erase '^H' kill '^U'
 

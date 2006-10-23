@@ -1,2 +1,4 @@
-echo -n ".kshrc "
+case "$-" in
+    *i*) echo -n ".kshrc " ;;
+esac
 . /usr/local/etc/kshrc

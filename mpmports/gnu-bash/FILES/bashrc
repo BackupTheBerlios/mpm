@@ -1,4 +1,6 @@
-echo "/usr/gnu/etc/bashrc"
+case "$-" in
+    *i*) echo "/usr/gnu/etc/bashrc" ;;
+esac
 
 export EDITOR=elvis
 export PAGER=more

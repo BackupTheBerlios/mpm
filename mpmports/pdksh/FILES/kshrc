@@ -1,4 +1,6 @@
-echo "/usr/local/etc/kshrc"
+case "$-" in
+    *i*) echo "/usr/local/etc/kshrc" ;;
+esac
 
 HOSTNAME=`cat /etc/hostname.file | cut -d . -f 1`
 
