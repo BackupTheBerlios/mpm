@@ -1,0 +1,175 @@
+PREFIX = /usr/local
+
+
+# Compiler flags
+#
+CFLAGS   = -O -g `/usr/local/bin/glib-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+CPPFLAGS = -D__cplusplus -Dc_plusplus
+
+
+# Include directories
+#
+INC_DIRS =
+
+
+# Libraries
+#
+LIBS     = `/usr/local/bin/glib-config --libs`
+LIB_DIRS =
+
+
+# Compilers
+#
+CC  = cc
+CPP = cc
+LD	= cc
+
+
+# Programs
+LS      = ls
+LSFLAGS = -l
+RM      = rm
+RMFLAGS = -f
+
+
+# Source list
+#
+include Makefile.srclist
+
+
+# Source to object
+#
+LIB_CFG_BIN = endeavour2-config
+LIB_CFG_MAN = endeavour2-config.1.bz2
+LIB         = libendeavour2.a
+OBJ_C   = $(SRC_C:.c=.o)
+OBJ_CPP = $(SRC_CPP:.cpp=.o)
+.c.o:
+	$(CC) -c $*.c $(CFLAGS)
+.cpp.o:
+	@echo "Compiling module $*.o"
+	@+$(CPP) -c $*.cpp $(CFLAGS) $(CPPFLAGS)
+
+
+# Programs and their flags
+#
+MKDIR      = mkdir
+MKDIRFLAGS = -p -m 0755
+
+LINK      = ln
+LINKFLAGS = -s -f
+
+INSTALL      = install
+INSTBINFLAGS = -m 0755 -s
+INSTDATFLAGS = -m 0644
+INSTINCFLAGS = -m 0644
+INSTLIBFLAGS = -m 0755 -s
+INSTMANFLAGS = -m 0644
+
+# Locations
+#
+BIN_DIR         = $(DESTDIR)$(PREFIX)/bin
+LIB_DIR         = $(DESTDIR)$(PREFIX)/lib
+MAN1_DIR        = $(DESTDIR)$(PREFIX)/man/man1
+EDV_ARCH_DIR    = $(DESTDIR)$(PREFIX)/lib/endeavour2
+EDV_INCLUDE_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/include
+EDV_LIB_DIR     = $(DESTDIR)$(PREFIX)/lib/endeavour2/lib
+
+
+# Compile time information export:
+#
+EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+\#ifndef COMPILETIMEINFO_H\n\
+\#define COMPILETIMEINFO_H\n\
+\#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+\#define COMPILE_USER\t\t\"$(USER)\"\n\
+\#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+\#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+\#endif\t/* COMPILETIMEINFO_H */\n"
+
+
+# Build rules:
+#
+$(LIB): prebuild config modules $(LIB_CFG_BIN) postbuild
+
+config:
+	@echo "Compiling resources"
+	@$(EXPORT_COMPILETIMEINFO_H) > compiletimeinfo.h
+
+modules: $(OBJ_C) $(OBJ_CPP)
+	@echo -n "Linking modules..."
+	$(AR) cr $(LIB) $(OBJ_C) $(OBJ_CPP) $(OBJ_SO)
+	@echo -n "   "
+	@-$(LS) $(LSFLAGS) $(LIB)
+
+prebuild:
+	@echo "Building library \"$(LIB)\"..."
+
+postbuild:
+	@echo "Build done."
+
+$(LIB_CFG_BIN):
+	@echo "Compiling $(LIB_CFG_BIN)"
+	@$(CC) -O -g endeavour2-config.c \
+	-o $(LIB_CFG_BIN)
+
+all: $(LIB)
+
+
+HR = "-------------------------------------------------------------------------"
+
+install: preinstall install_lib postinstall
+
+install_lib:
+	@echo "Installing $(LIB_CFG_BIN) -> $(BIN_DIR)"
+	@$(MKDIR) $(MKDIRFLAGS) $(BIN_DIR)
+	@$(INSTALL) $(INSTBINFLAGS) $(LIB_CFG_BIN) $(BIN_DIR)
+	@echo "Installing $(LIB_CFG_MAN) -> $(MAN1_DIR)"
+	@$(MKDIR) $(MKDIRFLAGS) $(MAN1_DIR)
+	@$(INSTALL) $(INSTMANFLAGS) $(LIB_CFG_MAN) $(MAN1_DIR)
+	@echo "Installing $(LIB) -> $(EDV_LIB_DIR)"
+	@$(MKDIR) $(MKDIRFLAGS) $(EDV_ARCH_DIR)
+	@$(MKDIR) $(MKDIRFLAGS) $(EDV_INCLUDE_DIR)
+	@$(MKDIR) $(MKDIRFLAGS) $(EDV_LIB_DIR)
+	@$(INSTALL) $(INSTLIBFLAGS) $(LIB) $(EDV_LIB_DIR)
+	@echo "Linking $(LIB_DIR)/$(LIB) -> endeavour2/lib/$(LIB)"
+	@$(LINK) $(LINKFLAGS) endeavour2/lib/$(LIB) $(LIB_DIR)/$(LIB)
+	@echo "Installing header files to $(EDV_INCLUDE_DIR)"
+	@-$(RM) $(RMFLAGS) $(EDV_INCLUDE_DIR)/edvcfg.h
+	@-$(RM) $(RMFLAGS) $(EDV_INCLUDE_DIR)/edvcfgfio.h
+	@for h_file in $(SRC_H); do \
+            $(INSTALL) $(INSTINCFLAGS) $$h_file $(EDV_INCLUDE_DIR); \
+        done
+	@echo "Installing data files to $(EDV_ARCH_DIR)"
+	@$(INSTALL) $(INSTDATFLAGS) README $(EDV_ARCH_DIR)
+	@$(INSTALL) $(INSTDATFLAGS) LICENSE $(EDV_ARCH_DIR)
+
+preinstall:
+	@echo "Installing \"$(LIB)\"..."
+
+postinstall:
+	@echo "Install done."
+	@echo $(HR)
+	@echo "Program $(LIB_CFG_BIN) installed in:"
+	@echo " "
+	@echo "        $(BIN_DIR)/$(LIB_CFG_BIN)"
+	@echo " "
+	@echo "Library $(LIB) installed in:"
+	@echo " "
+	@echo "        $(EDV_LIB_DIR)/$(LIB)"
+	@echo " "
+	@echo "Header files installed in:"
+	@echo " "
+	@echo "        $(EDV_INCLUDE_DIR)"
+	@echo " "
+	@echo $(HR)
+	@echo " "
+
+
+# Maintainance and Misc Rules:
+clean:
+	@echo "Cleaning library \"$(LIB)\"..."
+	@echo "Deleting all intermediate files..."
+	@-$(RM) $(RMFLAGS) a.out core *.o compiletimeinfo.h \
+        $(LIB) $(LIB_CFG_BIN)
+	@echo "Clean done."

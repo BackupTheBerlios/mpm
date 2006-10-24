@@ -1,0 +1,88 @@
+# Platform Configurator generated Makefile
+#
+PREFIX = /usr/local
+
+CFLAGS = -DPREFIX="\"/usr/local\"" -O -DNEED_STRCASESTR -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws -I. `/usr/local/bin/gtk-config --cflags` -Dlchown=chown `/usr/local/bin/imlib-config --cflags` -DHAVE_IMLIB
+
+INC_DIRS =
+
+LIBS = -lm `/usr/local/bin/imlib-config --libs` `/usr/local/bin/gtk-config --libs`
+
+LIB_DIRS =  -L/usr/X11R6/lib
+
+CC = cc
+
+CPP = cc -.c -E
+
+LD = cc -stack 8m -s
+
+# Appended stuff starts here
+#
+
+SHELL = /usr/gnu/bin/bash
+
+# C++ flags:
+CPPFLAGS = -D__cplusplus -Dc_plusplus
+
+# Source files list:
+include Makefile.srclist
+
+# Compiler set up:
+BIN     = endeavour2
+OBJ_C   = $(SRC_C:.c=.o)
+OBJ_CPP = $(SRC_CPP:.cpp=.o)
+.c.o:
+	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+
+# Programs
+LS      = ls
+LSFLAGS = -l
+RM      = rm
+RMFLAGS = -f
+
+# Build rules:
+EXPORT_COMPILETIMEINFO_H = echo -ne "\
+\#ifndef COMPILETIMEINFO_H\n\
+\#define COMPILETIMEINFO_H\n\
+\#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+\#define COMPILE_USER\t\t\"$(USER)\"\n\
+\#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+\#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+\n\
+\#ifndef IMLIB_VERSION\n\
+\# define IMLIB_VERSION\t\t\"`imlib-config --version`\"\n\
+\#endif\n\
+\n\
+\#endif\t/* COMPILETIMEINFO_H */\n"
+
+$(BIN): prebuild config modules postbuild
+
+config:
+	@echo "Compiling resources"
+	@$(EXPORT_COMPILETIMEINFO_H) > compiletimeinfo.h
+
+modules: $(OBJ_C) $(OBJ_CPP)
+	@echo -n "Linking modules..."
+	$(LD) $(OBJ_C) $(OBJ_CPP) -o $(BIN) $(LIBS) $(LIB_DIRS)
+	@echo -n "   "
+	@-$(LS) $(LSFLAGS) $(BIN)
+
+prebuild:
+	@echo "Building program \"$(BIN)\"..."
+
+postbuild:
+	@echo "Build done."
+
+all: $(BIN)
+
+
+# Install Rules:
+include Makefile.install.UNIX
+
+
+# Maintainance and Misc Rules:
+clean:
+	@echo "Cleaning program \"$(BIN)\"..."
+	@echo "Deleting all intermediate files..."
+	@$(RM) $(RMFLAGS) a.out core *.o compiletimeinfo.h $(BIN)
+	@echo "Clean done."

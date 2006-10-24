@@ -1,0 +1,3816 @@
+diff -c endeavour-2.7.1/endeavour2/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/Makefile.install.UNIX Mon Oct 23 21:50:09 2006
+***************
+*** 30,43 ****
+  
+  MAN = $(BIN).1.bz2
+  
+! BIN_DIR         = $(PREFIX)/bin
+! EDV_ARCHDEP_DIR = $(PREFIX)/lib/$(BIN)
+! EDV_BIN_DIR     = $(PREFIX)/lib/$(BIN)/bin
+! EDV_LIB_DIR     = $(PREFIX)/lib/$(BIN)/lib
+! MAN_DIR         = $(PREFIX)/man/man1
+! DATA_DIR        = $(PREFIX)/share/$(BIN)
+! EDV_ICONS_DIR   = $(DATA_DIR)/icons
+! ICONS_DIR       = $(PREFIX)/share/icons
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 30,43 ----
+  
+  MAN = $(BIN).1.bz2
+  
+! BIN_DIR         = $(DESTDIR)$(PREFIX)/bin
+! EDV_ARCHDEP_DIR = $(DESTDIR)$(PREFIX)/lib/$(BIN)
+! EDV_BIN_DIR     = $(DESTDIR)$(PREFIX)/lib/$(BIN)/bin
+! EDV_LIB_DIR     = $(DESTDIR)$(PREFIX)/lib/$(BIN)/lib
+! MAN_DIR         = $(DESTDIR)$(PREFIX)/man/man1
+! DATA_DIR        = $(DESTDIR)$(PREFIX)/share/$(BIN)
+! EDV_ICONS_DIR   = $(DATA_DIR)/icons
+! ICONS_DIR       = $(DESTDIR)$(PREFIX)/share/icons
+  
+  HR = "-------------------------------------------------------------------------"
+  
+Only in endeavour-2.7.1-patched/endeavour2: Makefile.install.UNIX~
+Only in endeavour-2.7.1-patched/endeavour2: Makefile.minix
+diff -c endeavour-2.7.1/endeavour2/Makefile.srclist endeavour-2.7.1-patched/endeavour2/Makefile.srclist
+*** endeavour-2.7.1/endeavour2/Makefile.srclist Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/Makefile.srclist Mon Oct 23 18:24:23 2006
+***************
+*** 79,85 ****
+          pulist.c recbin.c recbin_cb.c recbin_contents_list.c	\
+          recbin_desktop_icon.c recbin_dnd.c recbin_op_cb.c	\
+          rgba_to_cidx.c run_dlg.c stacklist.c statictip.c	\
+!         style_edit.c tlist.c toolbar.c tview.c tviewcb.c url.c
+  
+  SRC_CPP = disk.cpp fio.cpp prochandle.cpp string.cpp		\
+            tga.cpp tgadither.cpp
+--- 79,86 ----
+          pulist.c recbin.c recbin_cb.c recbin_contents_list.c	\
+          recbin_desktop_icon.c recbin_dnd.c recbin_op_cb.c	\
+          rgba_to_cidx.c run_dlg.c stacklist.c statictip.c	\
+!         style_edit.c tlist.c toolbar.c tview.c tviewcb.c url.c \
+! 		rint.c fnmatch.c
+  
+  SRC_CPP = disk.cpp fio.cpp prochandle.cpp string.cpp		\
+            tga.cpp tgadither.cpp
+diff -c endeavour-2.7.1/endeavour2/archive_info_dlg.c endeavour-2.7.1-patched/endeavour2/archive_info_dlg.c
+*** endeavour-2.7.1/endeavour2/archive_info_dlg.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/archive_info_dlg.c Mon Oct 23 16:19:21 2006
+***************
+*** 419,425 ****
+  	    }
+  	    else
+  	    {
+! 		block_size = (gulong)stat_buf.st_blksize;
+  	    }
+  
+  	    /* Allocate the read buffer */
+--- 419,429 ----
+  	    }
+  	    else
+  	    {
+! #ifdef _MINIX
+!             block_size = 512;
+! #else
+! 		block_size = (gulong)stat_buf.st_blksize;
+! #endif
+  	    }
+  
+  	    /* Allocate the read buffer */
+diff -c endeavour-2.7.1/endeavour2/cfg.c endeavour-2.7.1-patched/endeavour2/cfg.c
+*** endeavour-2.7.1/endeavour2/cfg.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/cfg.c Mon Oct 23 16:31:22 2006
+***************
+*** 386,393 ****
+  	guint16 *ptr_u16;
+  	gint32 *ptr_32;
+  	guint32 *ptr_u32;
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+  	gfloat *ptr_float;
+  	gdouble *ptr_double;
+  	cfg_intlist_struct *ptr_intlist;
+--- 386,395 ----
+  	guint16 *ptr_u16;
+  	gint32 *ptr_32;
+  	guint32 *ptr_u32;
+! #ifndef _MINIX
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+! #endif
+  	gfloat *ptr_float;
+  	gdouble *ptr_double;
+  	cfg_intlist_struct *ptr_intlist;
+***************
+*** 455,461 ****
+  		g_memcpy(ptr_u32, value, size);
+  	    ci->value = ptr_u32;
+  	    break;
+! 
+  	  case CFG_ITEM_TYPE_INT64:
+  	    size = sizeof(gint64);
+  	    ptr_64 = (gint64 *)g_malloc(size);
+--- 457,463 ----
+  		g_memcpy(ptr_u32, value, size);
+  	    ci->value = ptr_u32;
+  	    break;
+! #ifndef _MINIX
+  	  case CFG_ITEM_TYPE_INT64:
+  	    size = sizeof(gint64);
+  	    ptr_64 = (gint64 *)g_malloc(size);
+***************
+*** 470,476 ****
+  		g_memcpy(ptr_u64, value, size);
+  	    ci->value = ptr_u64;
+  	    break;
+! 
+  	  case CFG_ITEM_TYPE_FLOAT:
+  	    size = sizeof(gfloat);
+  	    ptr_float = (gfloat *)g_malloc(size);
+--- 472,478 ----
+  		g_memcpy(ptr_u64, value, size);
+  	    ci->value = ptr_u64;
+  	    break;
+! #endif
+  	  case CFG_ITEM_TYPE_FLOAT:
+  	    size = sizeof(gfloat);
+  	    ptr_float = (gfloat *)g_malloc(size);
+***************
+*** 1035,1042 ****
+  	gint ci_num;
+  	const cfg_item_struct *ci_ptr;
+  
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+  
+  
+  	/* Match by parameter */
+--- 1037,1046 ----
+  	gint ci_num;
+  	const cfg_item_struct *ci_ptr;
+  
+! #ifndef _MINIX
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+! #endif
+  
+  
+  	/* Match by parameter */
+***************
+*** 1063,1069 ****
+  		list, parameter
+  	    );
+  	    break;
+! 
+  	  case CFG_ITEM_TYPE_INT64:
+  	    ptr_64 = (gint64 *)ci_ptr->value;
+  	    rtn_val = (RTN_VAL_T)(*ptr_64);
+--- 1067,1073 ----
+  		list, parameter
+  	    );
+  	    break;
+! #ifndef _MINIX
+  	  case CFG_ITEM_TYPE_INT64:
+  	    ptr_64 = (gint64 *)ci_ptr->value;
+  	    rtn_val = (RTN_VAL_T)(*ptr_64);
+***************
+*** 1072,1077 ****
+--- 1076,1082 ----
+  	    ptr_u64 = (guint64 *)ci_ptr->value;
+  	    rtn_val = (RTN_VAL_T)(*ptr_u64);
+  	    break;
++ #endif
+  	}
+  
+  	return(rtn_val);
+***************
+*** 1102,1109 ****
+  	gint ci_num;
+  	const cfg_item_struct *ci_ptr;
+  
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+  
+  
+  	/* Match by parameter */
+--- 1107,1116 ----
+  	gint ci_num;
+  	const cfg_item_struct *ci_ptr;
+  
+! #ifndef _MINIX
+! 	gint64 *ptr_64;
+! 	guint64 *ptr_u64;
+! #endif
+  
+  
+  	/* Match by parameter */
+***************
+*** 1131,1136 ****
+--- 1138,1144 ----
+  	    );
+  	    break;
+  
++ #ifndef _MINIX
+  	  case CFG_ITEM_TYPE_INT64:
+  	    ptr_64 = (gint64 *)ci_ptr->value;
+  	    rtn_val = (RTN_VAL_T)(*ptr_64);
+***************
+*** 1139,1144 ****
+--- 1147,1153 ----
+  	    ptr_u64 = (guint64 *)ci_ptr->value;
+  	    rtn_val = (RTN_VAL_T)(*ptr_u64);
+  	    break;
++ #endif
+  	}
+  
+  	return(rtn_val);
+***************
+*** 1531,1538 ****
+  	guint16 v_u16;
+  	gint32 v_32;
+  	guint32 v_u32;
+! 	gint64 v_64;
+! 	guint64 v_u64;
+  	gfloat v_float;
+  	gdouble v_double;
+  
+--- 1540,1549 ----
+  	guint16 v_u16;
+  	gint32 v_32;
+  	guint32 v_u32;
+! #ifndef _MINIX
+! 	gint64 v_64;
+! 	guint64 v_u64;
+! #endif
+  	gfloat v_float;
+  	gdouble v_double;
+  
+***************
+*** 1576,1581 ****
+--- 1587,1593 ----
+  		ptr = (gpointer)&v_u32;
+  		break;
+  
++ #ifndef _MINIX
+  	      case CFG_ITEM_TYPE_INT64:
+  		v_64 = (gint64)value;
+  		ptr = (gpointer)&v_64;
+***************
+*** 1584,1589 ****
+--- 1596,1602 ----
+  		v_u64 = (guint64)value;
+  		ptr = (gpointer)&v_u64;
+  		break;
++ #endif
+  
+  	      case CFG_ITEM_TYPE_FLOAT:
+  		v_float = (gfloat)value;
+***************
+*** 1685,1692 ****
+  	guint16 v_u16;
+  	gint32 v_32;
+  	guint32 v_u32;
+! 	gint64 v_64;
+! 	guint64 v_u64;
+  	gfloat v_float;
+  	gdouble v_double;
+  
+--- 1698,1707 ----
+  	guint16 v_u16;
+  	gint32 v_32;
+  	guint32 v_u32;
+! #ifndef _MINIX
+! 	gint64 v_64;
+! 	guint64 v_u64;
+! #endif
+  	gfloat v_float;
+  	gdouble v_double;
+  
+***************
+*** 1730,1735 ****
+--- 1745,1751 ----
+  		ptr = (gpointer)&v_u32;
+  		break;
+  
++ #ifndef _MINIX
+  	      case CFG_ITEM_TYPE_INT64:
+  		v_64 = (gint64)value;
+  		ptr = (gpointer)&v_64;
+***************
+*** 1738,1743 ****
+--- 1754,1760 ----
+  		v_u64 = (guint64)value;
+  		ptr = (gpointer)&v_u64;
+  		break;
++ #endif
+  
+  	      case CFG_ITEM_TYPE_FLOAT:
+  		v_float = (gfloat)value;
+diff -c endeavour-2.7.1/endeavour2/cfg_fio.c endeavour-2.7.1-patched/endeavour2/cfg_fio.c
+*** endeavour-2.7.1/endeavour2/cfg_fio.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/cfg_fio.c Mon Oct 23 16:32:49 2006
+***************
+*** 136,143 ****
+  		guint16		ui16;
+  		gint32 		i32;
+  		guint32		ui32;
+! 		gint64		i64;
+! 		guint64		ui64;
+  		gfloat		f;
+  		gdouble		d;
+  		cfg_color_struct color;
+--- 136,145 ----
+  		guint16		ui16;
+  		gint32 		i32;
+  		guint32		ui32;
+! #ifndef _MINIX
+! 		gint64		i64;
+! 		guint64		ui64;
+! #endif
+  		gfloat		f;
+  		gdouble		d;
+  		cfg_color_struct color;
+***************
+*** 177,182 ****
+--- 179,185 ----
+  		    CFGItemSetValue(ci, &ui32);
+  		    break;
+  
++ #ifndef _MINIX
+  		  case CFG_ITEM_TYPE_INT64:
+  		    FGetValuesL(fp, (long *)vl, 1);
+  		    i64 = (gint64)vl[0];
+***************
+*** 187,192 ****
+--- 190,196 ----
+  		    ui64 = (guint64)vl[0];
+  		    CFGItemSetValue(ci, &ui64);
+  		    break;
++ #endif
+  
+  		  case CFG_ITEM_TYPE_FLOAT:
+  		    FGetValuesF(fp, (double *)vd, 1);
+***************
+*** 611,616 ****
+--- 615,621 ----
+  		    );
+  		    break;
+  
++ #ifndef _MINIX
+  		  case CFG_ITEM_TYPE_INT64:
+  		    fprintf(
+  			fp,
+***************
+*** 629,634 ****
+--- 634,640 ----
+  			    (unsigned long)(*(guint64 *)value) : 0
+    		    );
+  		    break;
++ #endif
+  
+  		  case CFG_ITEM_TYPE_FLOAT:
+  		    fprintf(
+diff -c endeavour-2.7.1/endeavour2/conmsg.c endeavour-2.7.1-patched/endeavour2/conmsg.c
+*** endeavour-2.7.1/endeavour2/conmsg.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/conmsg.c Mon Oct 23 16:34:42 2006
+***************
+*** 501,507 ****
+  	/* Get block size for optimul reading and allocate the read
+  	 * buffer
+  	 */
+! 	buf_len = (gint)stat_buf.st_blksize;
+  	if(buf_len <= 0)
+  	    buf_len = 1024;
+  	buf = (gchar *)g_malloc(buf_len * sizeof(gchar));
+--- 501,511 ----
+  	/* Get block size for optimul reading and allocate the read
+  	 * buffer
+  	 */
+! #ifdef _MINIX
+!     buf_len = 512;
+! #else
+! 	buf_len = (gint)stat_buf.st_blksize;
+! #endif
+  	if(buf_len <= 0)
+  	    buf_len = 1024;
+  	buf = (gchar *)g_malloc(buf_len * sizeof(gchar));
+diff -c endeavour-2.7.1/endeavour2/download.front/Makefile endeavour-2.7.1-patched/endeavour2/download.front/Makefile
+*** endeavour-2.7.1/endeavour2/download.front/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/download.front/Makefile Mon Oct 23 21:05:28 2006
+***************
+*** 1,19 ****
+  # Prefix
+! PREFIX = /usr
+! 
+! # Compiler flags
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  # Include directories:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = c++
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+--- 1,19 ----
+  # Prefix
+! PREFIX = /usr/local
+! 
+! # Compiler flags
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  # Include directories:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = cc
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+***************
+*** 26,40 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 26,39 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 42,48 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 41,47 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/download.front/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/download.front/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/download.front/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/download.front/Makefile.install.UNIX Mon Oct 23 21:52:51 2006
+***************
+*** 23,29 ****
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 23,29 ----
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/edv_archive_extract.c endeavour-2.7.1-patched/endeavour2/edv_archive_extract.c
+*** endeavour-2.7.1/endeavour2/edv_archive_extract.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_archive_extract.c Mon Oct 23 17:42:19 2006
+***************
+*** 3310,3322 ****
+  		tar_fd = fileno(tar_fp);
+  
+  		/* Set the file permissions */
+! 		fchmod(
+! 		    tar_fd,
+  		    (~m) &
+  		    (S_IRUSR | S_IWUSR |
+  		     S_IRGRP | S_IWGRP |
+  		     S_IROTH | S_IWOTH)
+! 		);
+  
+  		/* Calculate the block size */
+  		if(fstat(tar_fd, &stat_buf))
+--- 3310,3332 ----
+  		tar_fd = fileno(tar_fp);
+  
+  		/* Set the file permissions */
+! #ifdef _MINIX
+!         chmod(
+! 		    tar_path,
+  		    (~m) &
+  		    (S_IRUSR | S_IWUSR |
+  		     S_IRGRP | S_IWGRP |
+  		     S_IROTH | S_IWOTH)
+!             );
+! #else
+! 		fchmod(
+! 		    tar_fd,
+! 		    (~m) &
+! 		    (S_IRUSR | S_IWUSR |
+! 		     S_IRGRP | S_IWGRP |
+! 		     S_IROTH | S_IWOTH)
+! 		);
+! #endif
+  
+  		/* Calculate the block size */
+  		if(fstat(tar_fd, &stat_buf))
+diff -c endeavour-2.7.1/endeavour2/edv_device.c endeavour-2.7.1-patched/endeavour2/edv_device.c
+*** endeavour-2.7.1/endeavour2/edv_device.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_device.c Mon Oct 23 16:46:05 2006
+***************
+*** 10,15 ****
+--- 10,16 ----
+  # include <sys/vfs.h>
+  # include <sys/mnttab.h>
+  # include <sys/statvfs.h>
++ #elif defined(_MINIX)
+  #else
+  # include <mntent.h>
+  #endif
+***************
+*** 190,195 ****
+--- 191,204 ----
+  	}
+  }
+  
++ #ifdef _MINIX
++ 
++ void EDVDeviceUpdateMountStateFromSystem(edv_device_struct *d)
++ {
++     d->flags |= EDV_DEVICE_MOUNTED;
++ }
++ 
++ #else
+  
+  /*
+   *	Updates the mount state of the Device by checking with the
+***************
+*** 313,318 ****
+--- 322,329 ----
+  #endif
+  }
+  
++ #endif /* _MINIX */
++ 
+  /*
+   *	Updates the Device's mount state.
+   */
+diff -c endeavour-2.7.1/endeavour2/edv_devices_list.c endeavour-2.7.1-patched/endeavour2/edv_devices_list.c
+*** endeavour-2.7.1/endeavour2/edv_devices_list.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_devices_list.c Mon Oct 23 16:50:17 2006
+***************
+*** 9,14 ****
+--- 9,16 ----
+  #elif defined(__SOLARIS__)
+  # include <sys/mnttab.h>
+  # include <sys/vfstab.h>
++ #elif defined(_MINIX)
++ 
+  #else
+  # include <mntent.h>
+  # include <sys/vfs.h>
+***************
+*** 203,219 ****
+  
+  
+  
+! 
+! /*
+!  *	Loads devices found in the system (/etc/fstab) list of devices
+!  *	and appends them to the Devices list.
+!  */
+  void EDVDevicesListLoadFromSystem(
+  	edv_device_struct ***list, gint *total,
+  	gint (*progress_cb)(gpointer, const gulong, const gulong),
+  	gpointer client_data
+  )
+  {
+  	FILE *fp;
+  	gulong file_size;
+  	gint dev_num;
+--- 205,232 ----
+  
+  
+  
+! #ifdef _MINIX
+! 
+  void EDVDevicesListLoadFromSystem(
+  	edv_device_struct ***list, gint *total,
+  	gint (*progress_cb)(gpointer, const gulong, const gulong),
+  	gpointer client_data
+  )
+  {
++ }
++ 
++ #else
++ 
++ /*
++  *	Loads devices found in the system (/etc/fstab) list of devices
++  *	and appends them to the Devices list.
++  */
++ void EDVDevicesListLoadFromSystem(
++ 	edv_device_struct ***list, gint *total,
++ 	gint (*progress_cb)(gpointer, const gulong, const gulong),
++ 	gpointer client_data
++ )
++ {
+  	FILE *fp;
+  	gulong file_size;
+  	gint dev_num;
+***************
+*** 457,462 ****
+--- 470,476 ----
+  	    );
+  }
+  
++ #endif
+  
+  /*
+   *	Updates the mount states of all the Devices in the list with
+***************
+*** 481,486 ****
+--- 495,509 ----
+  	EDVDevicesListUpdateMountStatesFromSystem(list, total);
+  }
+  
++ #ifdef _MINIX
++ 
++ void EDVDevicesListUpdateStats(
++ 	edv_device_struct **list, const gint total
++ )
++ {
++ }
++ 
++ #else
+  
+  /*
+   *	Updates the statistics of each device in Devices List.
+***************
+*** 557,562 ****
+--- 580,586 ----
+  	}
+  }
+  
++ #endif
+  
+  /*
+   *	Opens and appends the devices from file to the devices list.
+diff -c endeavour-2.7.1/endeavour2/edv_help.c endeavour-2.7.1-patched/endeavour2/edv_help.c
+*** endeavour-2.7.1/endeavour2/edv_help.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_help.c Mon Oct 23 16:51:35 2006
+***************
+*** 3,9 ****
+  #include <unistd.h>
+  #include <gtk/gtk.h>
+  
+! //#include "../include/string.h"
+  #include "../include/disk.h"
+  #include "../include/prochandle.h"
+  
+--- 3,9 ----
+  #include <unistd.h>
+  #include <gtk/gtk.h>
+  
+! /*#include "../include/string.h"*/
+  #include "../include/disk.h"
+  #include "../include/prochandle.h"
+  
+diff -c endeavour-2.7.1/endeavour2/edv_interps.c endeavour-2.7.1-patched/endeavour2/edv_interps.c
+*** endeavour-2.7.1/endeavour2/edv_interps.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_interps.c Mon Oct 23 17:44:13 2006
+***************
+*** 271,277 ****
+              /* Set the command file's permissions so that only
+               * the owner can read and write to it
+               */
+!             if(fchmod(fileno(fp), S_IRUSR | S_IWUSR))
+  	    {
+  		fclose(fp);
+  		g_free(cmd_file);
+--- 271,281 ----
+              /* Set the command file's permissions so that only
+               * the owner can read and write to it
+               */
+! #ifdef _MINIX
+!             if(chmod(cmd_file, S_IRUSR | S_IWUSR))
+! #else
+!             if(fchmod(fileno(fp), S_IRUSR | S_IWUSR))
+! #endif
+  	    {
+  		fclose(fp);
+  		g_free(cmd_file);
+***************
+*** 340,346 ****
+  	}
+  
+  	/* Allocate the read buffer */
+! 	read_buf_len = (gulong)(stat_buf.st_blksize / sizeof(gchar));
+  	if(read_buf_len == 0l)
+  	    read_buf_len = 1024l;
+  	read_buf = (gchar *)g_malloc(read_buf_len);
+--- 344,354 ----
+  	}
+  
+  	/* Allocate the read buffer */
+! #ifdef _MINIX
+! 	read_buf_len = (gulong)(512 / sizeof(gchar));
+! #else
+! 	read_buf_len = (gulong)(stat_buf.st_blksize / sizeof(gchar));
+! #endif
+  	if(read_buf_len == 0l)
+  	    read_buf_len = 1024l;
+  	read_buf = (gchar *)g_malloc(read_buf_len);
+diff -c endeavour-2.7.1/endeavour2/edv_obj.c endeavour-2.7.1-patched/endeavour2/edv_obj.c
+*** endeavour-2.7.1/endeavour2/edv_obj.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_obj.c Mon Oct 23 16:59:00 2006
+***************
+*** 528,535 ****
+  	obj->device_type = (gint)lstat_buf->st_rdev;
+  
+  	/* Block transfer size and blocks allocated */
+! 	obj->block_size = (gulong)lstat_buf->st_blksize;
+! 	obj->blocks = (gulong)lstat_buf->st_blocks;
+  
+  	/* Number of hard links */
+  	obj->hard_links = (gint)lstat_buf->st_nlink;
+--- 528,541 ----
+  	obj->device_type = (gint)lstat_buf->st_rdev;
+  
+  	/* Block transfer size and blocks allocated */
+! #ifdef _MINIX
+! 	obj->block_size = (gulong)512;
+! 	obj->blocks = (gulong)(obj->size % 512 == 0 ? obj->size / obj->block_size :
+!                                               obj->size / obj->block_size + 1);
+! #else
+! 	obj->block_size = (gulong)lstat_buf->st_blksize;
+! 	obj->blocks = (gulong)lstat_buf->st_blocks;
+! #endif
+  
+  	/* Number of hard links */
+  	obj->hard_links = (gint)lstat_buf->st_nlink;
+diff -c endeavour-2.7.1/endeavour2/edv_obj_op.c endeavour-2.7.1-patched/endeavour2/edv_obj_op.c
+*** endeavour-2.7.1/endeavour2/edv_obj_op.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_obj_op.c Mon Oct 23 18:00:48 2006
+***************
+*** 1286,1297 ****
+  	    const gint tar_fd = (gint)fileno(tar_fp);
+  
+  	    file_size = (gulong)src_lstat_buf->st_size;
+! 	    read_buf_len = (gulong)src_lstat_buf->st_blksize;
+  
+  	    /* Set properties on the target file to match the source
+  	     * file if possible (ignore errors)
+  	     */
+! 	    fchmod((int)tar_fd, src_lstat_buf->st_mode);
+  	}
+  	else
+  	{
+--- 1286,1305 ----
+  	    const gint tar_fd = (gint)fileno(tar_fp);
+  
+  	    file_size = (gulong)src_lstat_buf->st_size;
+! #ifdef _MINIX
+!         read_buf_len = 512;
+! #else
+! 	    read_buf_len = (gulong)src_lstat_buf->st_blksize;
+! #endif
+  
+  	    /* Set properties on the target file to match the source
+  	     * file if possible (ignore errors)
+  	     */
+! #ifdef _MINIX
+! 	    chmod(tar_path, src_lstat_buf->st_mode);
+! #else
+! 	    fchmod((int)tar_fd, src_lstat_buf->st_mode);
+! #endif
+  	}
+  	else
+  	{
+***************
+*** 1303,1310 ****
+  	if(!fstat(fileno(tar_fp), &tar_stat_buf))
+  	{
+  	    /* Need to use a smaller read buffer? */
+! 	    if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		read_buf_len = (gulong)tar_stat_buf.st_blksize;
+  	}
+  
+  	/* Allocate the read buffer */
+--- 1311,1322 ----
+  	if(!fstat(fileno(tar_fp), &tar_stat_buf))
+  	{
+  	    /* Need to use a smaller read buffer? */
+! #ifdef _MINIX
+!         read_buf_len = 512;
+! #else
+! 	    if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		read_buf_len = (gulong)tar_stat_buf.st_blksize;
+! #endif
+  	}
+  
+  	/* Allocate the read buffer */
+diff -c endeavour-2.7.1/endeavour2/edv_recbin_index.c endeavour-2.7.1-patched/endeavour2/edv_recbin_index.c
+*** endeavour-2.7.1/endeavour2/edv_recbin_index.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_recbin_index.c Mon Oct 23 18:00:15 2006
+***************
+*** 1130,1136 ****
+  	    FILE *in_fp, *out_fp;
+  	    struct stat tar_stat_buf;
+  	    const gulong file_size = (gulong)in_lstat_buf.st_size;
+! 	    gulong read_buf_len = (gulong)in_lstat_buf.st_blksize;
+  	    guint8 *read_buf;
+  
+  	    /* Report the initial progress */
+--- 1130,1140 ----
+  	    FILE *in_fp, *out_fp;
+  	    struct stat tar_stat_buf;
+  	    const gulong file_size = (gulong)in_lstat_buf.st_size;
+! #ifdef _MINIX
+! 	    gulong read_buf_len = 512;
+! #else
+! 	    gulong read_buf_len = (gulong)in_lstat_buf.st_blksize;
+! #endif
+  	    guint8 *read_buf;
+  
+  	    /* Report the initial progress */
+***************
+*** 1191,1204 ****
+  	    if(!fstat(out_fd, &tar_stat_buf))
+  	    {
+  		/* Use a smaller read buffer? */
+! 		if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		    read_buf_len = (gulong)tar_stat_buf.st_blksize;
+  	    }
+  
+  	    /* Set the recycled file's permissions so that only
+  	     * the owner can read and write to it
+  	     */
+! 	    if(fchmod(out_fd, S_IRUSR | S_IWUSR))
+  	    {
+  		last_error = "Unable to set the recycled file's permissoins";
+  		fclose(in_fp);
+--- 1195,1216 ----
+  	    if(!fstat(out_fd, &tar_stat_buf))
+  	    {
+  		/* Use a smaller read buffer? */
+! #ifdef _MINIX
+!             read_buf_len = 512;
+! #else
+! 		if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		    read_buf_len = (gulong)tar_stat_buf.st_blksize;
+! #endif
+  	    }
+  
+  	    /* Set the recycled file's permissions so that only
+  	     * the owner can read and write to it
+  	     */
+! #ifdef _MINIX
+! 	    if(chmod(out_path, S_IRUSR | S_IWUSR))
+! #else
+! 	    if(fchmod(out_fd, S_IRUSR | S_IWUSR))
+! #endif
+  	    {
+  		last_error = "Unable to set the recycled file's permissoins";
+  		fclose(in_fp);
+***************
+*** 1933,1939 ****
+  	    FILE *in_fp, *out_fp;
+  	    struct stat tar_stat_buf;
+  	    const gulong file_size = (gulong)in_lstat_buf.st_size;
+! 	    gulong read_buf_len = (gulong)in_lstat_buf.st_blksize;
+  	    guint8 *read_buf;
+  
+  	    /* Report the initial progress */
+--- 1945,1955 ----
+  	    FILE *in_fp, *out_fp;
+  	    struct stat tar_stat_buf;
+  	    const gulong file_size = (gulong)in_lstat_buf.st_size;
+! #ifdef _MINIX
+! 	    gulong read_buf_len = 512;
+! #else
+! 	    gulong read_buf_len = (gulong)in_lstat_buf.st_blksize;
+! #endif
+  	    guint8 *read_buf;
+  
+  	    /* Report the initial progress */
+***************
+*** 1995,2002 ****
+  		 * block size io then the io buffer must be shrinked to
+  		 * match this block size io
+  		 */
+! 		if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		    read_buf_len = (gulong)tar_stat_buf.st_blksize;
+  	    }
+  
+  	    /* Allocate the read buffer */
+--- 2011,2022 ----
+  		 * block size io then the io buffer must be shrinked to
+  		 * match this block size io
+  		 */
+! #ifdef _MINIX
+!             read_buf_len = 512;
+! #else
+! 		if((gulong)tar_stat_buf.st_blksize < read_buf_len)
+! 		    read_buf_len = (gulong)tar_stat_buf.st_blksize;
+! #endif
+  	    }
+  
+  	    /* Allocate the read buffer */
+diff -c endeavour-2.7.1/endeavour2/edv_utils.c endeavour-2.7.1-patched/endeavour2/edv_utils.c
+*** endeavour-2.7.1/endeavour2/edv_utils.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/edv_utils.c Mon Oct 23 18:29:05 2006
+***************
+*** 8,14 ****
+  #include <ctype.h>
+  #include <errno.h>
+  #include <signal.h>
+! #include <sched.h>
+  #include <sys/wait.h>
+  #include <sys/stat.h>
+  #include <fnmatch.h>
+--- 8,16 ----
+  #include <ctype.h>
+  #include <errno.h>
+  #include <signal.h>
+! #ifndef _MINIX
+! #include <sched.h>
+! #endif
+  #include <sys/wait.h>
+  #include <sys/stat.h>
+  #include <fnmatch.h>
+***************
+*** 805,810 ****
+--- 807,821 ----
+  }
+  
+  
++ #ifdef _MINIX
++ 
++ gboolean EDVProcessIsRunning(const gint pid)
++ {
++     return (FALSE);
++ }
++ 
++ #else
++ 
+  /*
+   *	Checks if the process speecified by pid is still running.
+   */
+***************
+*** 833,838 ****
+--- 844,850 ----
+  #endif   
+  }
+  
++ #endif
+  
+  /*
+   *	SIGCHLD signal callback.
+***************
+*** 842,848 ****
+  static void EDVSystemWaitCB(gint s)
+  {
+  	gint status;
+! 	while(wait3((int *)&status, WNOHANG, NULL) > 0);
+  }
+  
+  /*
+--- 854,864 ----
+  static void EDVSystemWaitCB(gint s)
+  {
+  	gint status;
+! #ifdef _MINIX
+! 	while(waitpid(-1, (int *)&status, WNOHANG) > 0);
+! #else
+! 	while(wait3((int *)&status, WNOHANG, NULL) > 0);
+! #endif
+  }
+  
+  /*
+diff -c endeavour-2.7.1/endeavour2/fb.c endeavour-2.7.1-patched/endeavour2/fb.c
+*** endeavour-2.7.1/endeavour2/fb.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/fb.c Mon Oct 23 17:11:12 2006
+***************
+*** 16,21 ****
+--- 16,22 ----
+  #  include <sys/vfstab.h>
+  # elif defined(__FreeBSD__)
+  /* #  include <mntent.h> */
++ # elif defined(_MINIX)
+  # else
+  #  include <mntent.h>
+  # endif
+***************
+*** 854,860 ****
+  	    *n = strc;
+  
+  	return(strv);
+! #elif defined(__FreeBSD__)
+  	/* FreeBSD */
+  	if(n != NULL )
+  	    *n = 0;
+--- 855,861 ----
+  	    *n = strc;
+  
+  	return(strv);
+! #elif defined(__FreeBSD__) || defined(_MINIX)
+  	/* FreeBSD */
+  	if(n != NULL )
+  	    *n = 0;
+diff -c endeavour-2.7.1/endeavour2/format.front/Makefile endeavour-2.7.1-patched/endeavour2/format.front/Makefile
+*** endeavour-2.7.1/endeavour2/format.front/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/format.front/Makefile Mon Oct 23 21:08:27 2006
+***************
+*** 1,14 ****
+! PREFIX = /usr
+! 
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  INC_DIRS =
+  
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = c++
+  
+  # Appended stuff starts here
+  #
+--- 1,14 ----
+! PREFIX = /usr/local
+! 
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  INC_DIRS =
+  
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = cc
+  
+  # Appended stuff starts here
+  #
+***************
+*** 24,38 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 24,37 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 40,46 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 39,45 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/format.front/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/format.front/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/format.front/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/format.front/Makefile.install.UNIX Mon Oct 23 21:53:15 2006
+***************
+*** 23,29 ****
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 23,29 ----
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/fsck.front/Makefile endeavour-2.7.1-patched/endeavour2/fsck.front/Makefile
+*** endeavour-2.7.1/endeavour2/fsck.front/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/fsck.front/Makefile Mon Oct 23 21:10:28 2006
+***************
+*** 1,14 ****
+! PREFIX = /usr
+! 
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  INC_DIRS =
+  
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = c++
+  
+  # Appended stuff starts here
+  #
+--- 1,14 ----
+! PREFIX = /usr/local
+! 
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  INC_DIRS =
+  
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = cc
+  
+  # Appended stuff starts here
+  #
+***************
+*** 24,38 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 24,37 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 40,46 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 39,45 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/fsck.front/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/fsck.front/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/fsck.front/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/fsck.front/Makefile.install.UNIX Mon Oct 23 21:54:34 2006
+***************
+*** 23,29 ****
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 23,29 ----
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/guiutils.c endeavour-2.7.1-patched/endeavour2/guiutils.c
+*** endeavour-2.7.1/endeavour2/guiutils.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/guiutils.c Mon Oct 23 16:33:33 2006
+***************
+*** 4908,4919 ****
+--- 4908,4921 ----
+  		    *(gint32 *)selection_data->data
+  		);
+  		break;
++ #ifndef _MINIX
+  	      case 8:
+  		data = g_strdup_printf(
+  		    "%ld",
+  		    (long)(*(gint64 *)selection_data->data)
+  		);
+  		break;
++ #endif
+  	      default:
+  		data = NULL;
+  		break;
+diff -c endeavour-2.7.1/endeavour2/hedit/Makefile endeavour-2.7.1-patched/endeavour2/hedit/Makefile
+*** endeavour-2.7.1/endeavour2/hedit/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/hedit/Makefile Mon Oct 23 21:18:47 2006
+***************
+*** 1,19 ****
+  # Prefix:
+! PREFIX = /usr
+! 
+! # Compiler flags:
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  # Include directory:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = c++
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+--- 1,19 ----
+  # Prefix:
+! PREFIX = /usr/local
+! 
+! # Compiler flags:
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  # Include directory:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = cc
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+***************
+*** 26,40 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 26,39 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 42,48 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 41,47 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/hedit/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/hedit/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/hedit/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/hedit/Makefile.install.UNIX Mon Oct 23 21:55:18 2006
+***************
+*** 25,32 ****
+  
+  MAN = $(BIN).1.bz2
+  
+! MAN_DIR	= $(PREFIX)/man/man1
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 25,32 ----
+  
+  MAN = $(BIN).1.bz2
+  
+! MAN_DIR	= $(DESTDIR)$(PREFIX)/man/man1
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/hedit/main.c endeavour-2.7.1-patched/endeavour2/hedit/main.c
+*** endeavour-2.7.1/endeavour2/hedit/main.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/hedit/main.c Mon Oct 23 21:19:51 2006
+***************
+*** 1036,1042 ****
+  	guint16 i16 = 0, i16s = 0;
+  	guint32 i24 = 0, i24s = 0;
+  	guint32 i32 = 0, i32s = 0;
+! 	guint64 i64 = 0, i64s = 0;
+  	const guint8 *buf;
+  	GtkWidget *toplevel;
+  	hview_struct *hv;
+--- 1036,1044 ----
+  	guint16 i16 = 0, i16s = 0;
+  	guint32 i24 = 0, i24s = 0;
+  	guint32 i32 = 0, i32s = 0;
+! #ifndef _MINIX
+! 	guint64 i64 = 0, i64s = 0;
+! #endif
+  	const guint8 *buf;
+  	GtkWidget *toplevel;
+  	hview_struct *hv;
+***************
+*** 1083,1090 ****
+  		    i16 = *(guint16 *)(&buf[i]);
+  		if(len >= sizeof(guint32))
+  		    i32 = *(guint32 *)(&buf[i]);
+! 		if(len >= sizeof(guint64))
+! 		    i64 = *(guint64 *)(&buf[i]);
+  
+  		i24 = (i32 & 0x00ffffff);
+  	    }
+--- 1085,1094 ----
+  		    i16 = *(guint16 *)(&buf[i]);
+  		if(len >= sizeof(guint32))
+  		    i32 = *(guint32 *)(&buf[i]);
+! #ifndef _MINIX
+! 		if(len >= sizeof(guint64))
+! 		    i64 = *(guint64 *)(&buf[i]);
+! #endif
+  
+  		i24 = (i32 & 0x00ffffff);
+  	    }
+***************
+*** 1101,1108 ****
+  		    i16 = *(guint16 *)(&buf[i]);
+  		if((i + sizeof(guint32)) <= hv->buf_len)
+  		    i32 = *(guint32 *)(&buf[i]);
+! 		if((i + sizeof(guint64)) <= hv->buf_len)
+! 		    i64 = *(guint64 *)(&buf[i]);
+  
+  		i24 = (i32 & 0x00ffffff);
+  	    }
+--- 1105,1114 ----
+  		    i16 = *(guint16 *)(&buf[i]);
+  		if((i + sizeof(guint32)) <= hv->buf_len)
+  		    i32 = *(guint32 *)(&buf[i]);
+! #ifndef _MINIX
+! 		if((i + sizeof(guint64)) <= hv->buf_len)
+! 		    i64 = *(guint64 *)(&buf[i]);
+! #endif
+  
+  		i24 = (i32 & 0x00ffffff);
+  	    }
+***************
+*** 1124,1130 ****
+  	    i32s |= ((i32 & 0x0000ff00) << 8);
+  	    i32s |= ((i32 & 0x00ff0000) >> 8);
+  	    i32s |= ((i32 & 0xff000000) >> 24);
+! 
+  	    i64s |= ((i64 & 0x00000000000000ffLL) << 56);
+  	    i64s |= ((i64 & 0x000000000000ff00LL) << 40);
+  	    i64s |= ((i64 & 0x0000000000ff0000LL) << 24);
+--- 1130,1136 ----
+  	    i32s |= ((i32 & 0x0000ff00) << 8);
+  	    i32s |= ((i32 & 0x00ff0000) >> 8);
+  	    i32s |= ((i32 & 0xff000000) >> 24);
+! #ifndef _MINIX
+  	    i64s |= ((i64 & 0x00000000000000ffLL) << 56);
+  	    i64s |= ((i64 & 0x000000000000ff00LL) << 40);
+  	    i64s |= ((i64 & 0x0000000000ff0000LL) << 24);
+***************
+*** 1133,1138 ****
+--- 1139,1145 ----
+  	    i64s |= ((i64 & 0x0000ff0000000000LL) >> 24);
+  	    i64s |= ((i64 & 0x00ff000000000000LL) >> 40);
+  	    i64s |= ((i64 & 0xff00000000000000LL) >> 56);
++ #endif
+  	}
+  
+  
+***************
+*** 1143,1172 ****
+  8 Bit Value: %i  Unsigned: %i  0x%.2X\n\
+  16 Bit Value: %i  Unsigned: %i  0x%.4X\n\
+  24 Bit Value: %i  Unsigned: %i  0x%.6X\n\
+! 32 Bit Value: %i  Unsigned: %i  0x%.8X\n\
+! 64 Bit Value: %ld  Unsigned: %ld  0x%.16LX\n\
+! \n\
+  Swapped Values:\n\
+  8 Bit Value: %i  Unsigned: %i  0x%.2X\n\
+  16 Bit Value: %i  Unsigned: %i  0x%.4X\n\
+  24 Bit Value: %i  Unsigned: %i  0x%.6X\n\
+! 32 Bit Value: %i  Unsigned: %i  0x%.8X\n\
+! 64 Bit Value: %ld  Unsigned: %ld  0x%.16LX",
+  		pos,
+  		(gint8)((gint32)i8 - (0xff / 2) - 1), i8, i8,
+  		(gint16)((gint32)i16 - (0xffff / 2) - 1), i16, i16,
+! 		(gint32)((gint64)i24 - (0xffffff / 2) - 1), i24, i24,
+! 		(gint32)((gint64)i32 - (0xffffffff / 2) - 1), i32, i32,
+  		(unsigned long)((gint64)i64 - (0xffffffffffffffffLL / 2) - 1),
+  		(unsigned long)i64,
+  		(long long unsigned int)i64,
+! 		(gint8)((gint32)i8s - (0xff / 2) - 1), i8s, i8s,
+! 		(gint16)((gint32)i16s - (0xffff / 2) - 1), i16s, i16s,
+! 		(gint32)((gint64)i24s - (0xffffff / 2) - 1), i24s, i24s,
+! 		(gint32)((gint64)i32s - (0xffffffff / 2) - 1), i32s, i32s,
+  		(unsigned long)((gint64)i64s - (0xffffffffffffffffLL / 2) - 1),
+  		(unsigned long)i64s,
+  		(long long unsigned int)i64s
+  	    );
+  	    EDVPlaySoundInfo(he->ctx);
+  	    CDialogSetTransientFor(toplevel);
+--- 1150,1199 ----
+  8 Bit Value: %i  Unsigned: %i  0x%.2X\n\
+  16 Bit Value: %i  Unsigned: %i  0x%.4X\n\
+  24 Bit Value: %i  Unsigned: %i  0x%.6X\n\
+! 32 Bit Value: %i  Unsigned: %i  0x%.8X\n"
+! #ifndef _MINIX
+! "64 Bit Value: %ld  Unsigned: %ld  0x%.16LX\n"
+! #endif
+! "\n\
+  Swapped Values:\n\
+  8 Bit Value: %i  Unsigned: %i  0x%.2X\n\
+  16 Bit Value: %i  Unsigned: %i  0x%.4X\n\
+  24 Bit Value: %i  Unsigned: %i  0x%.6X\n\
+! 32 Bit Value: %i  Unsigned: %i  0x%.8X\n"
+! #ifndef _MINIX
+! "64 Bit Value: %ld  Unsigned: %ld  0x%.16LX"
+! #endif
+! ,
+  		pos,
+  		(gint8)((gint32)i8 - (0xff / 2) - 1), i8, i8,
+  		(gint16)((gint32)i16 - (0xffff / 2) - 1), i16, i16,
+! #ifdef _MINIX
+! 		(gint32)((gint32)i24 - (0xffffff / 2) - 1), i24, i24,
+! 		(gint32)((gint32)i32 - (0xffffffff / 2) - 1), i32, i32,
+! #else
+! 		(gint32)((gint64)i24 - (0xffffff / 2) - 1), i24, i24,
+! 		(gint32)((gint64)i32 - (0xffffffff / 2) - 1), i32, i32,
+! #endif
+! #ifndef _MINIX
+  		(unsigned long)((gint64)i64 - (0xffffffffffffffffLL / 2) - 1),
+  		(unsigned long)i64,
+  		(long long unsigned int)i64,
+! #endif
+! 		(gint8)((gint32)i8s - (0xff / 2) - 1), i8s, i8s,
+! 		(gint16)((gint32)i16s - (0xffff / 2) - 1), i16s, i16s,
+! #ifdef _MINIX
+! 		(gint32)((gint32)i24s - (0xffffff / 2) - 1), i24s, i24s,
+! 		(gint32)((gint32)i32s - (0xffffffff / 2) - 1), i32s, i32s
+! #else
+! 		(gint32)((gint64)i24s - (0xffffff / 2) - 1), i24s, i24s,
+! 		(gint32)((gint64)i32s - (0xffffffff / 2) - 1), i32s, i32s
+! #endif
+! #ifndef _MINIX
+!             ,
+  		(unsigned long)((gint64)i64s - (0xffffffffffffffffLL / 2) - 1),
+  		(unsigned long)i64s,
+  		(long long unsigned int)i64s
++ #endif
+  	    );
+  	    EDVPlaySoundInfo(he->ctx);
+  	    CDialogSetTransientFor(toplevel);
+diff -c endeavour-2.7.1/endeavour2/hview.c endeavour-2.7.1-patched/endeavour2/hview.c
+*** endeavour-2.7.1/endeavour2/hview.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/hview.c Mon Oct 23 17:12:57 2006
+***************
+*** 351,357 ****
+  	    }
+  	    else
+  	    {
+! 		read_buf_len = (gulong)stat_buf.st_blksize;
+  		size = (gulong)stat_buf.st_size;
+  	    }
+  
+--- 351,361 ----
+  	    }
+  	    else
+  	    {
+! #ifdef _MINIX
+!             read_buf_len = 512;
+! #else
+! 		read_buf_len = (gulong)stat_buf.st_blksize;
+! #endif
+  		size = (gulong)stat_buf.st_size;
+  	    }
+  
+***************
+*** 556,562 ****
+  	    }
+  	    else
+  	    {
+! 		write_buf_len = (gulong)stat_buf.st_blksize;
+  		size = (gulong)stat_buf.st_size;
+  	    }
+  
+--- 560,570 ----
+  	    }
+  	    else
+  	    {
+! #ifdef _MINIX
+!             write_buf_len = 512;
+! #else
+! 		write_buf_len = (gulong)stat_buf.st_blksize;
+! #endif
+  		size = (gulong)stat_buf.st_size;
+  	    }
+  
+diff -c endeavour-2.7.1/endeavour2/lib/Makefile endeavour-2.7.1-patched/endeavour2/lib/Makefile
+*** endeavour-2.7.1/endeavour2/lib/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/lib/Makefile Mon Oct 23 21:52:12 2006
+***************
+*** 1,10 ****
+! PREFIX = /usr
+  
+  
+  # Compiler flags
+  #
+! CFLAGS   = -Wall -O2 -g -fPIC \
+!            `glib-config --cflags`
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+  
+  
+--- 1,9 ----
+! PREFIX = /usr/local
+  
+  
+  # Compiler flags
+  #
+! CFLAGS   = -O -g `/usr/local/bin/glib-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+  
+  
+***************
+*** 15,33 ****
+  
+  # Libraries
+  #
+! LIBS     = `glib-config --libs`
+  LIB_DIRS =
+  
+  
+  # Compilers
+  #
+  CC  = cc
+! CPP = c++
+  
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 14,33 ----
+  
+  # Libraries
+  #
+! LIBS     = `/usr/local/bin/glib-config --libs`
+  LIB_DIRS =
+  
+  
+  # Compilers
+  #
+  CC  = cc
+! CPP = cc
+! LD	= cc
+  
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 41,52 ****
+  #
+  LIB_CFG_BIN = endeavour2-config
+  LIB_CFG_MAN = endeavour2-config.1.bz2
+! LIB         = libendeavour2.so
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(CFLAGS) $(CPPFLAGS)
+--- 41,51 ----
+  #
+  LIB_CFG_BIN = endeavour2-config
+  LIB_CFG_MAN = endeavour2-config.1.bz2
+! LIB         = libendeavour2.a
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(CFLAGS) $(CPPFLAGS)
+***************
+*** 69,80 ****
+  
+  # Locations
+  #
+! BIN_DIR         = $(PREFIX)/bin
+! LIB_DIR         = $(PREFIX)/lib
+! MAN1_DIR        = $(PREFIX)/man/man1
+! EDV_ARCH_DIR    = $(PREFIX)/lib/endeavour2
+! EDV_INCLUDE_DIR = $(PREFIX)/lib/endeavour2/include
+! EDV_LIB_DIR     = $(PREFIX)/lib/endeavour2/lib
+  
+  
+  # Compile time information export:
+--- 68,79 ----
+  
+  # Locations
+  #
+! BIN_DIR         = $(DESTDIR)$(PREFIX)/bin
+! LIB_DIR         = $(DESTDIR)$(PREFIX)/lib
+! MAN1_DIR        = $(DESTDIR)$(PREFIX)/man/man1
+! EDV_ARCH_DIR    = $(DESTDIR)$(PREFIX)/lib/endeavour2
+! EDV_INCLUDE_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/include
+! EDV_LIB_DIR     = $(DESTDIR)$(PREFIX)/lib/endeavour2/lib
+  
+  
+  # Compile time information export:
+***************
+*** 82,88 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version | tr '\n' ' '`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 81,87 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+***************
+*** 99,105 ****
+  
+  modules: $(OBJ_C) $(OBJ_CPP)
+  	@echo -n "Linking modules..."
+! 	@$(CPP) $(OBJ_C) $(OBJ_CPP) $(OBJ_SO) $(LIBS) -shared -o $(LIB)
+  	@echo -n "   "
+  	@-$(LS) $(LSFLAGS) $(LIB)
+  
+--- 98,104 ----
+  
+  modules: $(OBJ_C) $(OBJ_CPP)
+  	@echo -n "Linking modules..."
+! 	$(AR) cr $(LIB) $(OBJ_C) $(OBJ_CPP) $(OBJ_SO)
+  	@echo -n "   "
+  	@-$(LS) $(LSFLAGS) $(LIB)
+  
+***************
+*** 111,117 ****
+  
+  $(LIB_CFG_BIN):
+  	@echo "Compiling $(LIB_CFG_BIN)"
+! 	@$(CC) -O2 -g -Wall endeavour2-config.c \
+  	-o $(LIB_CFG_BIN)
+  
+  all: $(LIB)
+--- 110,116 ----
+  
+  $(LIB_CFG_BIN):
+  	@echo "Compiling $(LIB_CFG_BIN)"
+! 	@$(CC) -O -g endeavour2-config.c \
+  	-o $(LIB_CFG_BIN)
+  
+  all: $(LIB)
+diff -c endeavour-2.7.1/endeavour2/lib/Makefile.srclist endeavour-2.7.1-patched/endeavour2/lib/Makefile.srclist
+*** endeavour-2.7.1/endeavour2/lib/Makefile.srclist Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/lib/Makefile.srclist Mon Oct 23 20:58:41 2006
+***************
+*** 5,11 ****
+          edv_message.h edv_mime_type.h edv_mime_type_get.h	\
+          edv_mime_types_list.h edv_mime_type_install.h		\
+          edv_notify.h edv_open.h edv_recycle.h edv_types.h	\
+!         edv_utils.h edv_window.h endeavour2.h
+  
+  # Add header files from Ehdeavour 2
+  SRC_H += ../edv_interps.h ../edv_recbin_index.h			\
+--- 5,11 ----
+          edv_message.h edv_mime_type.h edv_mime_type_get.h	\
+          edv_mime_types_list.h edv_mime_type_install.h		\
+          edv_notify.h edv_open.h edv_recycle.h edv_types.h	\
+!         edv_utils.h edv_window.h endeavour2.h fnmatch.h
+  
+  # Add header files from Ehdeavour 2
+  SRC_H += ../edv_interps.h ../edv_recbin_index.h			\
+***************
+*** 19,25 ****
+          edv_help.c edv_history.c edv_message.c edv_mime_type.c	\
+          edv_mime_type_get.c edv_mime_type_install.c		\
+          edv_mime_types_list.c edv_notify.c edv_open.c		\
+!         edv_recycle.c edv_window.c
+  
+  # Add source C files from Endeavour 2
+  SRC_C += ../cfg.c ../cfg_fio.c ../edv_interps.c			\
+--- 19,25 ----
+          edv_help.c edv_history.c edv_message.c edv_mime_type.c	\
+          edv_mime_type_get.c edv_mime_type_install.c		\
+          edv_mime_types_list.c edv_notify.c edv_open.c		\
+!         edv_recycle.c edv_window.c fnmatch.c
+  
+  # Add source C files from Endeavour 2
+  SRC_C += ../cfg.c ../cfg_fio.c ../edv_interps.c			\
+diff -c endeavour-2.7.1/endeavour2/lib/edv_device.c endeavour-2.7.1-patched/endeavour2/lib/edv_device.c
+*** endeavour-2.7.1/endeavour2/lib/edv_device.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/lib/edv_device.c Mon Oct 23 20:54:54 2006
+***************
+*** 2,7 ****
+--- 2,8 ----
+  #if defined(__FreeBSD__)
+  #include <sys/param.h>
+  #include <sys/mount.h>
++ #elif defined(_MINIX)
+  #else
+  #include <sys/vfs.h>
+  #endif
+***************
+*** 213,218 ****
+--- 214,226 ----
+  	EDVDevicesListUpdateMountStates(list, 1);
+  }
+  
++ #ifdef _MINIX
++ void EDVDevicesListUpdateStats(
++ 	edv_device_struct **list, const gint total
++ )
++ {
++ }
++ #else
+  
+  /*
+   *	Updates the blocks_total, blocks_available, and blocks_free
+***************
+*** 288,293 ****
+--- 296,302 ----
+  	    }
+  	}
+  }
++ #endif
+  
+  /*
+   *	Updates the blocks_total, blocks_available, and blocks_free
+diff -c endeavour-2.7.1/endeavour2/lib/edv_devices_list.c endeavour-2.7.1-patched/endeavour2/lib/edv_devices_list.c
+*** endeavour-2.7.1/endeavour2/lib/edv_devices_list.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/lib/edv_devices_list.c Mon Oct 23 20:56:05 2006
+***************
+*** 10,15 ****
+--- 10,16 ----
+  #elif defined(__SOLARIS__)
+  # include <sys/mnttab.h>
+  # include <sys/vfstab.h>
++ #elif defined(_MINIX)
+  #else
+  # include <mntent.h>
+  #endif
+***************
+*** 53,66 ****
+  #define STRISEMPTY(s)   (((s) != NULL) ? (*(s) == '\0') : TRUE)
+  
+  
+! /*
+!  *	Updates the mount states of all Devices in the list to
+!  *	reflect current mount states of the devices from the system.
+!  */
+  void EDVDevicesListUpdateMountStatesFromSystem(
+  	edv_device_struct **list, const gint total
+  )
+  {
+  	FILE *fp;
+  	gint dev_num;
+  	edv_device_struct *dev;
+--- 54,75 ----
+  #define STRISEMPTY(s)   (((s) != NULL) ? (*(s) == '\0') : TRUE)
+  
+  
+! #ifdef _MINIX
+  void EDVDevicesListUpdateMountStatesFromSystem(
+  	edv_device_struct **list, const gint total
+  )
+  {
++ }
++ #else
++ 
++ /*
++  *	Updates the mount states of all Devices in the list to
++  *	reflect current mount states of the devices from the system.
++  */
++ void EDVDevicesListUpdateMountStatesFromSystem(
++ 	edv_device_struct **list, const gint total
++ )
++ {
+  	FILE *fp;
+  	gint dev_num;
+  	edv_device_struct *dev;
+***************
+*** 174,179 ****
+--- 183,189 ----
+  	endmntent(fp);
+  #endif
+  }
++ #endif
+  
+  
+  /*
+diff -c endeavour-2.7.1/endeavour2/platforms.ini endeavour-2.7.1-patched/endeavour2/platforms.ini
+*** endeavour-2.7.1/endeavour2/platforms.ini Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/platforms.ini Mon Oct 23 19:42:28 2006
+***************
+*** 20,45 ****
+  # Platforms section:
+  #
+  
+! # UNIX
+! #
+! Platform = UNIX
+! 	Description = For most any UNIX system
+! 	PREFIX = /usr
+! 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+! 	CPP = c++
+! 	PlatformSearchPathInclude = /usr/include
+! 	PlatformSearchPathInclude = /usr/X11R6/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+  	PlatformSearchPathEtc = /etc
+  	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+  	PlatformSearchPathData = /usr/share/icons
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+--- 20,48 ----
+  # Platforms section:
+  #
+  
+! # MINIX
+! #
+! Platform = MINIX
+! 	Description = Minix 3.1.2a
+! 	PREFIX = /usr/local
+! 	CFLAGS = -O -DNEED_STRCASESTR -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws -I. -Dlchown=chown
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+! 	CPP = cc -.c -E
+! 	PlatformSearchPathInclude = /usr/include
+! 	PlatformSearchPathInclude = /usr/X11R6/include
+! 	PlatformSearchPathInclude = /usr/local/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
++ 	PlatformSearchPathLib = /usr/local/lib
+  	PlatformSearchPathEtc = /etc
+  	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
++ 	PlatformSearchPathBin = /usr/local/bin
+  	PlatformSearchPathData = /usr/share/icons
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+***************
+*** 47,53 ****
+  		FeatureCFLAGS = -g
+          PlatformFeature = libxar
+                  Description = X Archive Library
+!                 MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBXAR
+                  FeatureLIBS = -lxar
+                  FeatureDepend = libxar-devel
+--- 50,56 ----
+  		FeatureCFLAGS = -g
+          PlatformFeature = libxar
+                  Description = X Archive Library
+!                 MustExist = No
+                  FeatureCFLAGS = -DHAVE_LIBXAR
+                  FeatureLIBS = -lxar
+                  FeatureDepend = libxar-devel
+***************
+*** 57,63 ****
+                          DependGrepString = xar_open
+          PlatformFeature = libzip
+                  Description = PKZip Library
+!                 MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBZIP
+                  FeatureLIBS = -lzip
+                  FeatureDepend = libzip-devel
+--- 60,66 ----
+                          DependGrepString = xar_open
+          PlatformFeature = libzip
+                  Description = PKZip Library
+!                 MustExist = No
+                  FeatureCFLAGS = -DHAVE_LIBZIP
+                  FeatureLIBS = -lzip
+                  FeatureDepend = libzip-devel
+***************
+*** 67,73 ****
+                          DependGrepString = zip_open
+          PlatformFeature = libgif
+                  Description = Uncompressed GIF Library
+!                 MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+                  FeatureLIBS = -lgif
+                  FeatureDepend = libgif-devel
+--- 70,76 ----
+                          DependGrepString = zip_open
+          PlatformFeature = libgif
+                  Description = Uncompressed GIF Library
+!                 MustExist = No
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+                  FeatureLIBS = -lgif
+                  FeatureDepend = libgif-devel
+***************
+*** 77,83 ****
+                          DependGrepString = DGifOpenFileName
+          PlatformFeature = XF86VidMode
+                  Description = XF86 Video Mode extension
+!                 MustExist = Preferred
+                  FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+                  FeatureLIBS = -lXxf86vm
+                  FeatureLIB_DIR = -L/usr/X11R6/lib/
+--- 80,86 ----
+                          DependGrepString = DGifOpenFileName
+          PlatformFeature = XF86VidMode
+                  Description = XF86 Video Mode extension
+!                 MustExist = No
+                  FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+                  FeatureLIBS = -lXxf86vm
+                  FeatureLIB_DIR = -L/usr/X11R6/lib/
+***************
+*** 93,99 ****
+                          DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+! 		MustExist = Preffered
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+  		FeatureLIBS = `imlib-config --libs`
+  		FeatureDepend = Imlib-devel
+--- 96,102 ----
+                          DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+! 		MustExist = No
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+  		FeatureLIBS = `imlib-config --libs`
+  		FeatureDepend = Imlib-devel
+***************
+*** 103,122 ****
+  	PlatformFeature = libgtk
+  		Description = GTK+ 1.2.x
+  		MustExist = Yes
+! 		FeatureCFLAGS = `gtk-config --cflags`
+! 		FeatureLIBS = `gtk-config --libs`
+  		FeatureLIB_DIR = -L/usr/X11R6/lib
+  		FeatureDepend = gtk-devel
+  			DependType = Program
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # FreeBSD
+! #
+! # Author: Sebastian Kutsch <Sebastian.Kutsch@web.de>
+! #
+! Platform = FreeBSD
+! 	Description = For FreeBSD
+  	PREFIX = /usr
+  	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+--- 106,123 ----
+  	PlatformFeature = libgtk
+  		Description = GTK+ 1.2.x
+  		MustExist = Yes
+! 		FeatureCFLAGS = `/usr/local/bin/gtk-config --cflags`
+! 		FeatureLIBS = `/usr/local/bin/gtk-config --libs`
+  		FeatureLIB_DIR = -L/usr/X11R6/lib
+  		FeatureDepend = gtk-devel
+  			DependType = Program
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # UNIX
+! #
+! Platform = UNIX
+! 	Description = For most any UNIX system
+  	PREFIX = /usr
+  	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+***************
+*** 158,170 ****
+                          MustExist = Yes
+                          DependPath = zip.h
+                          DependGrepString = zip_open
+!         PlatformFeature = libgif                        
+                  Description = Uncompressed GIF Library
+                  MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+! # FreeBSD does not symlink libgif to libungif or vice versa
+! 		FeatureLIBS = -lungif
+!                 FeatureDepend = libgif-devel  
+                          DependType = Header
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+--- 159,170 ----
+                          MustExist = Yes
+                          DependPath = zip.h
+                          DependGrepString = zip_open
+!         PlatformFeature = libgif
+                  Description = Uncompressed GIF Library
+                  MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+!                 FeatureLIBS = -lgif
+!                 FeatureDepend = libgif-devel
+                          DependType = Header
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+***************
+*** 205,220 ****
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # Linux
+! #
+! # Works on:
+! #
+! #	Mandrivia Cooker
+! #	RedHat 6.x or newer
+! #	SUSE
+! #
+! Platform = Linux
+! 	Description = For most any Linux system
+  	PREFIX = /usr
+  	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+--- 205,216 ----
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # FreeBSD
+! #
+! # Author: Sebastian Kutsch <Sebastian.Kutsch@web.de>
+! #
+! Platform = FreeBSD
+! 	Description = For FreeBSD
+  	PREFIX = /usr
+  	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+***************
+*** 223,282 ****
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+- 	PlatformSearchPathInclude = /usr/local/include
+- 	PlatformSearchPathInclude = /opt/gnome/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathLib = /usr/local/lib
+! 	PlatformSearchPathLib = /opt/gnome/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+! 	PlatformSearchPathEtc = /usr/local/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/local/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathBin = /opt/gnome/bin
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+  		MustExist = No
+  		FeatureCFLAGS = -g
+- 	PlatformFeature = arch-i486
+- 		Description = Adds -march=i486 for 486 specific optimizations
+- 		MustExist = Preferred  
+- 		FeatureCFLAGS = -march=i486
+- 		FeatureDepend = i486
+- 			DependType = Machine
+- 			MustExist = Yes
+- 			DependMachine = i486
+- 	PlatformFeature = arch-i586
+- 		Description = Adds -march=i586 for Pentium specific optimizations
+- 		MustExist = Preferred
+- 		FeatureCFLAGS = -march=i586
+- 		FeatureDepend = i586
+- 			DependType = Machine
+- 			MustExist = Yes
+- 			DependMachine = i586
+- 	PlatformFeature = arch-i686
+- 		Description = Adds -march=i686 for Pentium Pro specific optimizations
+- 		MustExist = Preferred
+- 		FeatureCFLAGS = -march=i686
+- 		FeatureDepend = i686
+- 			DependType = Machine
+- 			MustExist = Yes
+- 			DependMachine = i686
+- 	PlatformFeature = arch-pentiumpro
+- 		Description = Adds -march=pentiumpro for Pentium Pro specific optimizations
+- 		MustExist = Preferred
+- 		FeatureCFLAGS = -march=pentiumpro
+- 		FeatureDepend = pentiumpro
+- 			DependType = Machine
+- 			MustExist = Yes
+- 			DependMachine = pentiumpro
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+--- 219,237 ----
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathData = /usr/share/icons
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+  		MustExist = No
+  		FeatureCFLAGS = -g
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+***************
+*** 297,315 ****
+                          MustExist = Yes
+                          DependPath = zip.h
+                          DependGrepString = zip_open
+!         PlatformFeature = libgif
+                  Description = Uncompressed GIF Library
+                  MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+!                 FeatureLIBS = -lgif
+!                 FeatureDepend = libgif-devel
+                          DependType = Header
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+          PlatformFeature = XF86VidMode
+                  Description = XF86 Video Mode extension
+!                 MustExist = Preferred                  
+                  FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+                  FeatureLIBS = -lXxf86vm
+                  FeatureLIB_DIR = -L/usr/X11R6/lib/
+--- 252,271 ----
+                          MustExist = Yes
+                          DependPath = zip.h
+                          DependGrepString = zip_open
+!         PlatformFeature = libgif                        
+                  Description = Uncompressed GIF Library
+                  MustExist = Preffered
+                  FeatureCFLAGS = -DHAVE_LIBGIF
+! # FreeBSD does not symlink libgif to libungif or vice versa
+! 		FeatureLIBS = -lungif
+!                 FeatureDepend = libgif-devel  
+                          DependType = Header
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+          PlatformFeature = XF86VidMode
+                  Description = XF86 Video Mode extension
+!                 MustExist = Preferred
+                  FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+                  FeatureLIBS = -lXxf86vm
+                  FeatureLIB_DIR = -L/usr/X11R6/lib/
+***************
+*** 343,382 ****
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! 
+! # Debian GNU/Linux
+! #
+! # Author: Christoph Berg <cb@df7cb.de>
+! #
+! Platform = Debian
+! 	Description = For compiling on Debian GNU/Linux
+! 	PREFIX = /usr
+! 	CFLAGS = -g -Wall -DDEBIAN -DNEED_STRCASESTR -fPIC
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+! 	PlatformFeature = debian-normal
+! 		Description = Add -O2 to CFLAGS
+! 		MustExist = No
+! 		FeatureCFLAGS = -O2
+! 	PlatformFeature = debian-noopt
+! 		Description = Add -O0 to CFLAGS
+! 		MustExist = No
+! 		FeatureCFLAGS = -O0
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+--- 299,376 ----
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # Linux
+! #
+! # Works on:
+! #
+! #	Mandrivia Cooker
+! #	RedHat 6.x or newer
+! #	SUSE
+! #
+! Platform = Linux
+! 	Description = For most any Linux system
+! 	PREFIX = /usr
+! 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
++ 	PlatformSearchPathInclude = /usr/local/include
++ 	PlatformSearchPathInclude = /opt/gnome/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathLib = /usr/local/lib
+! 	PlatformSearchPathLib = /opt/gnome/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+! 	PlatformSearchPathEtc = /usr/local/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/local/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathBin = /opt/gnome/bin
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+! 	PlatformFeature = debug
+! 		Description = Just adds -g to the CFLAGS for debugging
+! 		MustExist = No
+! 		FeatureCFLAGS = -g
+! 	PlatformFeature = arch-i486
+! 		Description = Adds -march=i486 for 486 specific optimizations
+! 		MustExist = Preferred  
+! 		FeatureCFLAGS = -march=i486
+! 		FeatureDepend = i486
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i486
+! 	PlatformFeature = arch-i586
+! 		Description = Adds -march=i586 for Pentium specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=i586
+! 		FeatureDepend = i586
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i586
+! 	PlatformFeature = arch-i686
+! 		Description = Adds -march=i686 for Pentium Pro specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=i686
+! 		FeatureDepend = i686
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i686
+! 	PlatformFeature = arch-pentiumpro
+! 		Description = Adds -march=pentiumpro for Pentium Pro specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=pentiumpro
+! 		FeatureDepend = pentiumpro
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = pentiumpro
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+***************
+*** 407,433 ****
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+! 	PlatformFeature = XF86VidMode
+! 		Description = XF86 Video Mode extension
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+! 		FeatureLIBS = -lXxf86vm
+! 		FeatureLIB_DIR = -L/usr/X11R6/lib/
+! 		FeatureDepend = xf86vidmode-lib
+! 			DependType = Library
+! 			MustExist = Yes
+! 			DependPath = libXxf86vm.a
+! 			DependGrepString = XF86VidModeQueryExtension
+! 		FeatureDepend = xf86vidmode-devel
+! 			DependType = Header
+! 			MustExist = Yes
+! 			DependPath = X11/extensions/xf86vmode.h
+! 			DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+  		MustExist = Preffered
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+! 		FeatureLIBS = -lImlib
+  		FeatureDepend = Imlib-devel
+  			DependType = Program
+  			MustExist = Yes
+--- 401,427 ----
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+!         PlatformFeature = XF86VidMode
+!                 Description = XF86 Video Mode extension
+!                 MustExist = Preferred                  
+!                 FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+!                 FeatureLIBS = -lXxf86vm
+!                 FeatureLIB_DIR = -L/usr/X11R6/lib/
+!                 FeatureDepend = xf86vidmode-lib
+!                         DependType = Library
+!                         MustExist = Yes
+!                         DependPath = libXxf86vm.a
+!                         DependGrepString = XF86VidModeQueryExtension
+!                 FeatureDepend = xf86vidmode-devel
+!                         DependType = Header
+!                         MustExist = Yes
+!                         DependPath = X11/extensions/xf86vmode.h
+!                         DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+  		MustExist = Preffered
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+! 		FeatureLIBS = `imlib-config --libs`
+  		FeatureDepend = Imlib-devel
+  			DependType = Program
+  			MustExist = Yes
+***************
+*** 443,516 ****
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # Linux - Big Endian
+! #
+! # For Linux on big endian machines.
+! #
+! Platform = LinuxBigEndian
+! 	Description = For Linux on big endian machines
+! 	PREFIX = /usr
+! 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR -DUSE_BIG_ENDIAN
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+- 	PlatformSearchPathInclude = /usr/local/include
+- 	PlatformSearchPathInclude = /opt/gnome/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathLib = /usr/local/lib
+! 	PlatformSearchPathLib = /opt/gnome/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+! 	PlatformSearchPathEtc = /usr/local/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/local/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathBin = /opt/gnome/bin
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+! 	PlatformFeature = debug
+! 		Description = Just adds -g to the CFLAGS for debugging
+! 		MustExist = No
+! 		FeatureCFLAGS = -g
+! 	PlatformFeature = arch-i486
+! 		Description = Adds -march=i486 for 486 specific optimizations
+! 		MustExist = Preferred  
+! 		FeatureCFLAGS = -march=i486
+! 		FeatureDepend = i486
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i486
+! 	PlatformFeature = arch-i586
+! 		Description = Adds -march=i586 for Pentium specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=i586
+! 		FeatureDepend = i586
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i586
+! 	PlatformFeature = arch-i686
+! 		Description = Adds -march=i686 for Pentium Pro specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=i686
+! 		FeatureDepend = i686
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = i686
+! 	PlatformFeature = arch-pentiumpro
+! 		Description = Adds -march=pentiumpro for Pentium Pro specific optimizations
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -march=pentiumpro
+! 		FeatureDepend = pentiumpro
+! 			DependType = Machine
+! 			MustExist = Yes
+! 			DependMachine = pentiumpro
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+--- 437,476 ----
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! 
+! # Debian GNU/Linux
+! #
+! # Author: Christoph Berg <cb@df7cb.de>
+! #
+! Platform = Debian
+! 	Description = For compiling on Debian GNU/Linux
+! 	PREFIX = /usr
+! 	CFLAGS = -g -Wall -DDEBIAN -DNEED_STRCASESTR -fPIC
+  	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+! 	PlatformFeature = debian-normal
+! 		Description = Add -O2 to CFLAGS
+! 		MustExist = No
+! 		FeatureCFLAGS = -O2
+! 	PlatformFeature = debian-noopt
+! 		Description = Add -O0 to CFLAGS
+! 		MustExist = No
+! 		FeatureCFLAGS = -O0
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+***************
+*** 541,567 ****
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+!         PlatformFeature = XF86VidMode
+!                 Description = XF86 Video Mode extension
+!                 MustExist = Preferred                  
+!                 FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+!                 FeatureLIBS = -lXxf86vm
+!                 FeatureLIB_DIR = -L/usr/X11R6/lib/
+!                 FeatureDepend = xf86vidmode-lib
+!                         DependType = Library
+!                         MustExist = Yes
+!                         DependPath = libXxf86vm.a
+!                         DependGrepString = XF86VidModeQueryExtension
+!                 FeatureDepend = xf86vidmode-devel
+!                         DependType = Header
+!                         MustExist = Yes
+!                         DependPath = X11/extensions/xf86vmode.h
+!                         DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+  		MustExist = Preffered
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+! 		FeatureLIBS = `imlib-config --libs`
+  		FeatureDepend = Imlib-devel
+  			DependType = Program
+  			MustExist = Yes
+--- 501,527 ----
+                          MustExist = Yes
+                          DependPath = gif_lib.h
+                          DependGrepString = DGifOpenFileName
+! 	PlatformFeature = XF86VidMode
+! 		Description = XF86 Video Mode extension
+! 		MustExist = Preferred
+! 		FeatureCFLAGS = -DHAVE_XF86_VIDMODE
+! 		FeatureLIBS = -lXxf86vm
+! 		FeatureLIB_DIR = -L/usr/X11R6/lib/
+! 		FeatureDepend = xf86vidmode-lib
+! 			DependType = Library
+! 			MustExist = Yes
+! 			DependPath = libXxf86vm.a
+! 			DependGrepString = XF86VidModeQueryExtension
+! 		FeatureDepend = xf86vidmode-devel
+! 			DependType = Header
+! 			MustExist = Yes
+! 			DependPath = X11/extensions/xf86vmode.h
+! 			DependGrepString = XF86VidModeQueryExtension
+  	PlatformFeature = Imlib
+  		Description = Image library
+  		MustExist = Preffered
+  		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
+! 		FeatureLIBS = -lImlib
+  		FeatureDepend = Imlib-devel
+  			DependType = Program
+  			MustExist = Yes
+***************
+*** 577,607 ****
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # Sun/Solaris 2.8
+! #
+! Platform = Solaris
+! 	Description = For Sun/Solaris 2.8
+! 	PREFIX = /usr
+! 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR -D__SOLARIS__
+! 	LIBS = -lm -lposix4
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathData = /usr/share/icons
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+  		MustExist = No
+  		FeatureCFLAGS = -g
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+--- 537,610 ----
+  			MustExist = Yes
+  			DependPath = gtk-config
+  
+! # Linux - Big Endian
+! #
+! # For Linux on big endian machines.
+! #
+! Platform = LinuxBigEndian
+! 	Description = For Linux on big endian machines
+! 	PREFIX = /usr
+! 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR -DUSE_BIG_ENDIAN
+! 	LIBS = -lm
+  	LIB_DIR =
+  	CC = cc
+  	CPP = c++
+  	PlatformSearchPathInclude = /usr/include
+  	PlatformSearchPathInclude = /usr/X11R6/include
++ 	PlatformSearchPathInclude = /usr/local/include
++ 	PlatformSearchPathInclude = /opt/gnome/include
+  	PlatformSearchPathLib = /lib
+  	PlatformSearchPathLib = /usr/lib
+  	PlatformSearchPathLib = /usr/X11R6/lib
+! 	PlatformSearchPathLib = /usr/local/lib
+! 	PlatformSearchPathLib = /opt/gnome/lib
+! 	PlatformSearchPathEtc = /etc
+! 	PlatformSearchPathEtc = /usr/etc
+! 	PlatformSearchPathEtc = /usr/local/etc
+  	PlatformSearchPathBin = /bin
+  	PlatformSearchPathBin = /usr/bin
+  	PlatformSearchPathBin = /usr/X11R6/bin
+! 	PlatformSearchPathBin = /usr/local/bin
+! 	PlatformSearchPathBin = /usr/games
+! 	PlatformSearchPathBin = /opt/gnome/bin
+! 	PlatformSearchPathData = /usr/share/icons
+! 	PlatformSearchPathData = /usr/share/games
+  	PlatformFeature = debug
+  		Description = Just adds -g to the CFLAGS for debugging
+  		MustExist = No
+  		FeatureCFLAGS = -g
++ 	PlatformFeature = arch-i486
++ 		Description = Adds -march=i486 for 486 specific optimizations
++ 		MustExist = Preferred  
++ 		FeatureCFLAGS = -march=i486
++ 		FeatureDepend = i486
++ 			DependType = Machine
++ 			MustExist = Yes
++ 			DependMachine = i486
++ 	PlatformFeature = arch-i586
++ 		Description = Adds -march=i586 for Pentium specific optimizations
++ 		MustExist = Preferred
++ 		FeatureCFLAGS = -march=i586
++ 		FeatureDepend = i586
++ 			DependType = Machine
++ 			MustExist = Yes
++ 			DependMachine = i586
++ 	PlatformFeature = arch-i686
++ 		Description = Adds -march=i686 for Pentium Pro specific optimizations
++ 		MustExist = Preferred
++ 		FeatureCFLAGS = -march=i686
++ 		FeatureDepend = i686
++ 			DependType = Machine
++ 			MustExist = Yes
++ 			DependMachine = i686
++ 	PlatformFeature = arch-pentiumpro
++ 		Description = Adds -march=pentiumpro for Pentium Pro specific optimizations
++ 		MustExist = Preferred
++ 		FeatureCFLAGS = -march=pentiumpro
++ 		FeatureDepend = pentiumpro
++ 			DependType = Machine
++ 			MustExist = Yes
++ 			DependMachine = pentiumpro
+          PlatformFeature = libxar
+                  Description = X Archive Library
+                  MustExist = Preffered
+***************
+*** 667,669 ****
+--- 670,763 ----
+  			DependType = Program
+  			MustExist = Yes
+  			DependPath = gtk-config
++ 
++ # Sun/Solaris 2.8
++ #
++ Platform = Solaris
++ 	Description = For Sun/Solaris 2.8
++ 	PREFIX = /usr
++ 	CFLAGS = -Wall -O2 -DNEED_STRCASESTR -D__SOLARIS__
++ 	LIBS = -lm -lposix4
++ 	LIB_DIR =
++ 	CC = cc
++ 	CPP = c++
++ 	PlatformSearchPathInclude = /usr/include
++ 	PlatformSearchPathInclude = /usr/X11R6/include
++ 	PlatformSearchPathLib = /lib
++ 	PlatformSearchPathLib = /usr/lib
++ 	PlatformSearchPathLib = /usr/X11R6/lib
++ 	PlatformSearchPathEtc = /etc
++ 	PlatformSearchPathEtc = /usr/etc
++ 	PlatformSearchPathBin = /bin
++ 	PlatformSearchPathBin = /usr/bin
++ 	PlatformSearchPathBin = /usr/X11R6/bin
++ 	PlatformSearchPathData = /usr/share/icons
++ 	PlatformFeature = debug
++ 		Description = Just adds -g to the CFLAGS for debugging
++ 		MustExist = No
++ 		FeatureCFLAGS = -g
++         PlatformFeature = libxar
++                 Description = X Archive Library
++                 MustExist = Preffered
++                 FeatureCFLAGS = -DHAVE_LIBXAR
++                 FeatureLIBS = -lxar
++                 FeatureDepend = libxar-devel
++                         DependType = Header
++                         MustExist = Yes
++                         DependPath = xar/xar.h
++                         DependGrepString = xar_open
++         PlatformFeature = libzip
++                 Description = PKZip Library
++                 MustExist = Preffered
++                 FeatureCFLAGS = -DHAVE_LIBZIP
++                 FeatureLIBS = -lzip
++                 FeatureDepend = libzip-devel
++                         DependType = Header
++                         MustExist = Yes
++                         DependPath = zip.h
++                         DependGrepString = zip_open
++         PlatformFeature = libgif
++                 Description = Uncompressed GIF Library
++                 MustExist = Preffered
++                 FeatureCFLAGS = -DHAVE_LIBGIF
++                 FeatureLIBS = -lgif
++                 FeatureDepend = libgif-devel
++                         DependType = Header
++                         MustExist = Yes
++                         DependPath = gif_lib.h
++                         DependGrepString = DGifOpenFileName
++         PlatformFeature = XF86VidMode
++                 Description = XF86 Video Mode extension
++                 MustExist = Preferred                  
++                 FeatureCFLAGS = -DHAVE_XF86_VIDMODE
++                 FeatureLIBS = -lXxf86vm
++                 FeatureLIB_DIR = -L/usr/X11R6/lib/
++                 FeatureDepend = xf86vidmode-lib
++                         DependType = Library
++                         MustExist = Yes
++                         DependPath = libXxf86vm.a
++                         DependGrepString = XF86VidModeQueryExtension
++                 FeatureDepend = xf86vidmode-devel
++                         DependType = Header
++                         MustExist = Yes
++                         DependPath = X11/extensions/xf86vmode.h
++                         DependGrepString = XF86VidModeQueryExtension
++ 	PlatformFeature = Imlib
++ 		Description = Image library
++ 		MustExist = Preffered
++ 		FeatureCFLAGS = `imlib-config --cflags` -DHAVE_IMLIB
++ 		FeatureLIBS = `imlib-config --libs`
++ 		FeatureDepend = Imlib-devel
++ 			DependType = Program
++ 			MustExist = Yes
++ 			DependPath = imlib-config
++ 	PlatformFeature = libgtk
++ 		Description = GTK+ 1.2.x
++ 		MustExist = Yes
++ 		FeatureCFLAGS = `gtk-config --cflags`
++ 		FeatureLIBS = `gtk-config --libs`
++ 		FeatureLIB_DIR = -L/usr/X11R6/lib
++ 		FeatureDepend = gtk-devel
++ 			DependType = Program
++ 			MustExist = Yes
++ 			DependPath = gtk-config
+diff -c endeavour-2.7.1/endeavour2/prop_dlg.c endeavour-2.7.1-patched/endeavour2/prop_dlg.c
+*** endeavour-2.7.1/endeavour2/prop_dlg.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/prop_dlg.c Mon Oct 23 17:17:50 2006
+***************
+*** 2790,2797 ****
+  	row++;
+  	s = g_strdup_printf(
+  	    "%s byte%s",
+! 	    EDVGetObjectSizeStr(core, lstat_buf->st_blksize),
+! 	    (lstat_buf->st_blksize == 1) ? "" : "s"
+  	);
+  	ADD_LINE(row, "IO Block Size:", s);
+  	g_free(s);
+--- 2790,2802 ----
+  	row++;
+  	s = g_strdup_printf(
+  	    "%s byte%s",
+! #ifdef _MINIX
+! 	    EDVGetObjectSizeStr(core, 512),
+! 	    (512 == 1) ? "" : "s"
+! #else
+! 	    EDVGetObjectSizeStr(core, lstat_buf->st_blksize),
+! 	    (lstat_buf->st_blksize == 1) ? "" : "s"
+! #endif
+  	);
+  	ADD_LINE(row, "IO Block Size:", s);
+  	g_free(s);
+***************
+*** 2800,2806 ****
+  	/* Blocks Allocated */
+  	row++;
+  	s = g_strdup_printf(
+! 	    "%ld", lstat_buf->st_blocks
+  	);
+  	ADD_LINE(row, "Blocks Allocated:", s);
+  	g_free(s);
+--- 2805,2815 ----
+  	/* Blocks Allocated */
+  	row++;
+  	s = g_strdup_printf(
+! #ifdef _MINIX
+! 	    "%ld", 0
+! #else
+! 	    "%ld", lstat_buf->st_blocks
+! #endif
+  	);
+  	ADD_LINE(row, "Blocks Allocated:", s);
+  	g_free(s);
+diff -c endeavour-2.7.1/endeavour2/rgba_to_cidx.h endeavour-2.7.1-patched/endeavour2/rgba_to_cidx.h
+*** endeavour-2.7.1/endeavour2/rgba_to_cidx.h Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/rgba_to_cidx.h Mon Oct 23 17:21:18 2006
+***************
+*** 7,12 ****
+--- 7,16 ----
+  #endif
+  
+  
++ #ifdef _MINIX
++ typedef unsigned char u_int8_t;
++ #endif
++ 
+  typedef struct _ColormapColor		ColormapColor;
+  
+  
+diff -c endeavour-2.7.1/endeavour2/sysinfo/Makefile endeavour-2.7.1-patched/endeavour2/sysinfo/Makefile
+*** endeavour-2.7.1/endeavour2/sysinfo/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/sysinfo/Makefile Mon Oct 23 21:21:29 2006
+***************
+*** 1,14 ****
+! PREFIX = /usr
+! 
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  INC_DIRS =
+  
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = c++
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+--- 1,14 ----
+! PREFIX = /usr/local
+! 
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  INC_DIRS =
+  
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = cc
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+***************
+*** 21,35 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 21,34 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 37,43 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 36,42 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/sysinfo/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/sysinfo/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/sysinfo/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/sysinfo/Makefile.install.UNIX Mon Oct 23 21:55:46 2006
+***************
+*** 25,32 ****
+  
+  MAN = $(BIN).endeavour2.1.bz2
+  
+! MAN_DIR     = $(PREFIX)/man/man1
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 25,32 ----
+  
+  MAN = $(BIN).endeavour2.1.bz2
+  
+! MAN_DIR     = $(DESTDIR)$(PREFIX)/man/man1
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/tedit/Makefile endeavour-2.7.1-patched/endeavour2/tedit/Makefile
+*** endeavour-2.7.1/endeavour2/tedit/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/tedit/Makefile Mon Oct 23 21:24:08 2006
+***************
+*** 1,21 ****
+  # Prefix:
+! PREFIX = /usr
+! 
+! # Compiler flags:
+! CFLAGS = -Wall -O2 -g				\
+!          -DNEED_STRCASESTR			\
+!          `gtk-config --cflags`
+  
+  # Include directory:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = c++
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+--- 1,22 ----
+  # Prefix:
+! PREFIX = /usr/local
+! 
+! # Compiler flags:
+! CFLAGS = -O -g				\
+!          -DNEED_STRCASESTR			\
+!          `/usr/local/bin/gtk-config --cflags` \
+! 		 -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  # Include directory:
+  INC_DIRS =
+  
+  # Libraries:
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  # Compiler:
+  CC = cc
+! CPP = cc
+  
+  # C++ flags:
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+***************
+*** 28,42 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 29,42 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 44,50 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 44,50 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/tedit/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/tedit/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/tedit/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/tedit/Makefile.install.UNIX Mon Oct 23 21:56:17 2006
+***************
+*** 25,32 ****
+  
+  MAN = $(BIN).1.bz2
+  
+! MAN_DIR	= $(PREFIX)/man/man1
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 25,32 ----
+  
+  MAN = $(BIN).1.bz2
+  
+! MAN_DIR	= $(DESTDIR)$(PREFIX)/man/man1
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/tedit/main.c endeavour-2.7.1-patched/endeavour2/tedit/main.c
+*** endeavour-2.7.1/endeavour2/tedit/main.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/tedit/main.c Mon Oct 23 21:25:37 2006
+***************
+*** 2074,2080 ****
+  	gtk_text_set_point(text, 0);
+  
+  	/* Allocate the read buffer */
+! 	read_buf_len = (gulong)stat_buf.st_blksize;
+  	if(read_buf_len > 0)
+  	    read_buf = (gchar *)g_malloc(read_buf_len * sizeof(gchar));
+  	else
+--- 2074,2084 ----
+  	gtk_text_set_point(text, 0);
+  
+  	/* Allocate the read buffer */
+! #ifdef _MINIX
+!     read_buf_len = 512;
+! #else
+! 	read_buf_len = (gulong)stat_buf.st_blksize;
+! #endif
+  	if(read_buf_len > 0)
+  	    read_buf = (gchar *)g_malloc(read_buf_len * sizeof(gchar));
+  	else
+***************
+*** 2334,2340 ****
+  	total_units_read = 0;
+  
+  	/* Allocate the read buffer */
+! 	read_buf_len = (gulong)stat_buf.st_blksize;
+  	if(read_buf_len > 0)
+  	    read_buf = (gchar *)g_malloc(read_buf_len * sizeof(gchar));
+  	else
+--- 2338,2348 ----
+  	total_units_read = 0;
+  
+  	/* Allocate the read buffer */
+! #ifdef _MINIX
+!     read_buf_len = 512;
+! #else
+! 	read_buf_len = (gulong)stat_buf.st_blksize;
+! #endif
+  	if(read_buf_len > 0)
+  	    read_buf = (gchar *)g_malloc(read_buf_len * sizeof(gchar));
+  	else
+***************
+*** 2741,2747 ****
+  
+  	/* Get the write buffer size */
+  	write_buf_len = MAX(
+! 	    (gulong)stat_buf.st_blksize,
+  	    1l
+  	);
+  
+--- 2749,2759 ----
+  
+  	/* Get the write buffer size */
+  	write_buf_len = MAX(
+! #ifdef _MINIX
+!             512,
+! #else
+! 	    (gulong)stat_buf.st_blksize,
+! #endif
+  	    1l
+  	);
+  
+***************
+*** 3026,3032 ****
+  
+  	/* Get the write buffer size */
+  	write_buf_len = MAX(
+! 	    (gulong)stat_buf.st_blksize,
+  	    1l
+  	);
+  
+--- 3038,3048 ----
+  
+  	/* Get the write buffer size */
+  	write_buf_len = MAX(
+! #ifdef _MINIX
+!             512,
+! #else
+! 	    (gulong)stat_buf.st_blksize,
+! #endif
+  	    1l
+  	);
+  
+diff -c endeavour-2.7.1/endeavour2/tview.c endeavour-2.7.1-patched/endeavour2/tview.c
+*** endeavour-2.7.1/endeavour2/tview.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/tview.c Mon Oct 23 17:23:07 2006
+***************
+*** 209,215 ****
+  	    {
+  		gint units_read;
+  		gchar *read_buf;
+! 		const gulong read_buf_len = (gulong)stat_buf.st_blksize;
+  
+  		gtk_text_freeze(text);
+  
+--- 209,219 ----
+  	    {
+  		gint units_read;
+  		gchar *read_buf;
+! #ifdef _MINIX
+! 		const gulong read_buf_len = 512;
+! #else
+! 		const gulong read_buf_len = (gulong)stat_buf.st_blksize;
+! #endif
+  
+  		gtk_text_freeze(text);
+  
+***************
+*** 320,326 ****
+  	    {
+  		gint cur_len, units_written;
+  		const gulong write_buf_len = MAX(
+! 		    (gulong)stat_buf.st_blksize,
+  		    1l
+  		);
+  		gchar *buf_ptr = buf;
+--- 324,334 ----
+  	    {
+  		gint cur_len, units_written;
+  		const gulong write_buf_len = MAX(
+! #ifdef _MINIX
+! 		    512,
+! #else
+! 		    (gulong)stat_buf.st_blksize,
+! #endif
+  		    1l
+  		);
+  		gchar *buf_ptr = buf;
+diff -c endeavour-2.7.1/endeavour2/utils/Makefile endeavour-2.7.1-patched/endeavour2/utils/Makefile
+*** endeavour-2.7.1/endeavour2/utils/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/utils/Makefile Mon Oct 23 21:57:22 2006
+***************
+*** 1,12 ****
+! PREFIX = /usr
+! 
+! CFLAGS = -Wall -g -O2
+! 
+! EDV_UTIL_CFLAGS = `glib-config --cflags` -I../lib
+! EDV_UTIL_LIBS = `glib-config --libs` -L../lib -lendeavour2
+! 
+! CC = cc
+! CPP = c++
+  
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+  
+--- 1,12 ----
+! PREFIX = /usr/local
+! 
+! CFLAGS = -g -O -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+! 
+! EDV_UTIL_CFLAGS = `/usr/local/bin/glib-config --cflags` -I../lib
+! EDV_UTIL_LIBS = -L../lib -lendeavour2 `/usr/local/bin/glib-config --libs`
+! 
+! CC = cc
+! CPP = cc
+  
+  CPPFLAGS = -D__cplusplus -Dc_plusplus
+  
+***************
+*** 33,39 ****
+  
+  # Install Locations
+  #
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  
+  # Build List
+--- 33,39 ----
+  
+  # Install Locations
+  #
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  
+  # Build List
+***************
+*** 48,54 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version | tr '\n' ' '`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 48,54 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+***************
+*** 71,152 ****
+  
+  confirmation-dialog:
+  	@echo "Compiling confirmation-dialog"
+! 	@$(CC) -c $(CFLAGS) `gtk-config --cflags`		\
+!         confirmation-dialog.c
+! 	@$(CPP) `gtk-config --libs`				\
+!         confirmation-dialog.o					\
+! 	../guiutils.o ../cdialog.o ../string.o			\
+!         -o confirmation-dialog
+  
+  file-selector:
+  	@echo "Compiling file-selector"
+! 	@$(CC) -c $(CFLAGS) `gtk-config --cflags`		\
+!         file-selector.c
+! 	@$(CPP) $(CFLAGS) `gtk-config --libs`			\
+  	file-selector.o ../fb.o					\
+  	../cdialog.o ../guiutils.o ../fprompt.o ../pulist.o	\
+          ../string.o ../disk.o ../fio.o				\
+!         -o file-selector
+  
+  lsmimetypes:
+  	@echo "Compiling lsmimetypes"
+! 	@$(CC) -Wall -O2 -g					\
+!         $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	lsmimetypes.c -o lsmimetypes
+  
+  notify:
+  	@echo "Compiling notify"
+! 	@$(CC) -Wall -O2 -g					\
+!         $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	notify.c -o notify
+  
+  open:
+  	@echo "Compiling open"
+! 	@$(CC) -Wall -O2 -g 					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	open.c -o open
+  
+  properties:
+  	@echo "Compiling properties"
+! 	@$(CC) -Wall -O2 -g 					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	properties.c -o properties
+  
+  purge:
+  	@echo "Compiling purge"
+! 	@$(CC) -Wall -O2 -g					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	purge.c -o purge
+  
+  recover:
+  	@echo "Compiling recover"
+! 	@$(CC) -Wall -O2 -g 					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	recover.c -o recover
+  
+  recycle:
+  	@echo "Compiling recycle"
+! 	@$(CC) -Wall -O2 -g					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	recycle.c -o recycle
+  
+  rls:
+  	@echo "Compiling rls"
+! 	@$(CC) -Wall -O2 -g					\
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			\
+! 	rls.c -o rls
+  
+  
+  style-editor:
+  	@echo "Compiling style-editor"
+! 	@$(CC) -c $(CFLAGS) `gtk-config --cflags`		\
+!         style-editor.c
+! 	@$(CPP) `gtk-config --libs`				\
+          style-editor.o						\
+          ../guiutils.o ../cdialog.o ../fprompt.o ../pulist.o	\
+          ../fb.o ../csd.o ../fsd.o ../style_edit.o		\
+          ../string.o ../fio.o ../disk.o				\
+!         -o style-editor
+  
+  
+  # Install
+--- 71,152 ----
+  
+  confirmation-dialog:
+  	@echo "Compiling confirmation-dialog"
+! 	$(CC) -c $(CFLAGS) `/usr/local/bin/gtk-config --cflags`		\
+!         confirmation-dialog.c
+! 	$(CPP) \
+!         confirmation-dialog.o					\
+! 	../guiutils.o ../cdialog.o ../string.o			\
+!         -o confirmation-dialog `/usr/local/bin/gtk-config --libs`
+  
+  file-selector:
+  	@echo "Compiling file-selector"
+! 	$(CC) -c $(CFLAGS) \
+!         file-selector.c `/usr/local/bin/gtk-config --cflags`
+! 	$(CPP) $(CFLAGS) 		\
+  	file-selector.o ../fb.o					\
+  	../cdialog.o ../guiutils.o ../fprompt.o ../pulist.o	\
+          ../string.o ../disk.o ../fio.o				\
+!         -o file-selector `/usr/local/bin/gtk-config --libs`	
+  
+  lsmimetypes:
+  	@echo "Compiling lsmimetypes"
+! 	$(CC) -O -g					\
+! 	lsmimetypes.c -o lsmimetypes \
+!         $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)
+  
+  notify:
+  	@echo "Compiling notify"
+! 	$(CC) -O -g					\
+! 	notify.c -o notify \
+!         $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  open:
+  	@echo "Compiling open"
+! 	$(CC) -O -g 					\
+! 	open.c -o open \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  properties:
+  	@echo "Compiling properties"
+! 	$(CC) -O -g 					\
+! 	properties.c -o properties \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  purge:
+  	@echo "Compiling purge"
+! 	$(CC) -O -g					\
+! 	purge.c -o purge \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  recover:
+  	@echo "Compiling recover"
+! 	$(CC) -O -g 					\
+! 	recover.c -o recover \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  recycle:
+  	@echo "Compiling recycle"
+! 	$(CC) -O -g					\
+! 	recycle.c -o recycle \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  rls:
+  	@echo "Compiling rls"
+! 	$(CC) -O -g					\
+! 	rls.c -o rls \
+! 	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+  
+  
+  style-editor:
+  	@echo "Compiling style-editor"
+! 	$(CC) -c $(CFLAGS) `/usr/local/bin/gtk-config --cflags`		\
+!         style-editor.c
+! 	$(CPP) \
+          style-editor.o						\
+          ../guiutils.o ../cdialog.o ../fprompt.o ../pulist.o	\
+          ../fb.o ../csd.o ../fsd.o ../style_edit.o		\
+          ../string.o ../fio.o ../disk.o				\
+!         -o style-editor `/usr/local/bin/gtk-config --libs`
+  
+  
+  # Install
+diff -c endeavour-2.7.1/endeavour2/ziptool.front/Makefile endeavour-2.7.1-patched/endeavour2/ziptool.front/Makefile
+*** endeavour-2.7.1/endeavour2/ziptool.front/Makefile Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/ziptool.front/Makefile Mon Oct 23 21:27:17 2006
+***************
+*** 1,14 ****
+! PREFIX = /usr
+! 
+! CFLAGS = -Wall -O2 -g `gtk-config --cflags`
+  
+  INC_DIRS =
+  
+! LIBS = -lm `gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = c++
+  
+  # Appended stuff starts here
+  #
+--- 1,14 ----
+! PREFIX = /usr/local
+! 
+! CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+  
+  INC_DIRS =
+  
+! LIBS = -lm `/usr/local/bin/gtk-config --libs`
+  LIB_DIRS =
+  
+  CC = cc
+! CPP = cc
+  
+  # Appended stuff starts here
+  #
+***************
+*** 24,38 ****
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	@echo "Compiling module $*.o"
+! 	@+$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -s -h -c --color=auto
+  RM      = rm
+  RMFLAGS = -f
+  
+--- 24,37 ----
+  OBJ_C   = $(SRC_C:.c=.o)
+  OBJ_CPP = $(SRC_CPP:.cpp=.o)
+  .c.o:
+! 	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+  .cpp.o:
+  	@echo "Compiling module $*.o"
+  	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+  
+  # Programs
+  LS      = ls
+! LSFLAGS = -l
+  RM      = rm
+  RMFLAGS = -f
+  
+***************
+*** 40,46 ****
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"`$(CPP) --version`\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+--- 39,45 ----
+  EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+  \#ifndef COMPILETIMEINFO_H\n\
+  \#define COMPILETIMEINFO_H\n\
+! \#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+  \#define COMPILE_USER\t\t\"$(USER)\"\n\
+  \#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+  \#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+diff -c endeavour-2.7.1/endeavour2/ziptool.front/Makefile.install.UNIX endeavour-2.7.1-patched/endeavour2/ziptool.front/Makefile.install.UNIX
+*** endeavour-2.7.1/endeavour2/ziptool.front/Makefile.install.UNIX Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/ziptool.front/Makefile.install.UNIX Mon Oct 23 21:56:43 2006
+***************
+*** 26,32 ****
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+--- 26,32 ----
+  MKDIR      = mkdir
+  MKDIRFLAGS = -p -m 0755
+  
+! EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+  
+  HR = "-------------------------------------------------------------------------"
+  
+diff -c endeavour-2.7.1/endeavour2/ziptool.front/ziptool.c endeavour-2.7.1-patched/endeavour2/ziptool.front/ziptool.c
+*** endeavour-2.7.1/endeavour2/ziptool.front/ziptool.c Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/ziptool.front/ziptool.c Mon Oct 23 21:27:56 2006
+***************
+*** 868,874 ****
+  		else
+  		    buf = g_strdup_printf(
+  			"%ld bytes",
+! 			stat_buf.st_blksize
+  		    );
+  		ADD_LABEL("IO Block Size:", buf)
+  		g_free(buf);      
+--- 868,878 ----
+  		else
+  		    buf = g_strdup_printf(
+  			"%ld bytes",
+! #ifdef _MINIX
+!             512
+! #else
+! 			stat_buf.st_blksize
+! #endif
+  		    );
+  		ADD_LABEL("IO Block Size:", buf)
+  		g_free(buf);      
+diff -c endeavour-2.7.1/include/xsw_ctype.h endeavour-2.7.1-patched/include/xsw_ctype.h
+*** endeavour-2.7.1/include/xsw_ctype.h Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/include/xsw_ctype.h Mon Oct 23 17:29:47 2006
+***************
+*** 1,5 ****
+! // xsw_ctype.h
+! // This is intended as a prototype for files using the global/ctype.cpp file.
+  
+  #if !defined(__FreeBSD__) && !defined(__NetBSD__)
+  # if defined(__cplusplus) || defined(c_plusplus)
+--- 1,5 ----
+! /* xsw_ctype.h
+! // This is intended as a prototype for files using the global/ctype.cpp file. */
+  
+  #if !defined(__FreeBSD__) && !defined(__NetBSD__)
+  # if defined(__cplusplus) || defined(c_plusplus)
+*** endeavour-2.7.1-test/include/os.h Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/include/os.h Tue Oct 24 16:05:36 2006
+***************
+*** 60,67 ****
+  
+  /* Apparently VI has become the standard editor for UNIX */
+  #if !defined(_PATH_VI) && !defined(WIN32) && !defined(__hpux)
+! //# define _PATH_VI		"/usr/bin/vi"
+! # include <paths.h>
+  #endif
+  
+  
+--- 60,71 ----
+  
+  /* Apparently VI has become the standard editor for UNIX */
+  #if !defined(_PATH_VI) && !defined(WIN32) && !defined(__hpux)
+! /*# define _PATH_VI		"/usr/bin/vi"*/
+! # ifdef _MINIX
+! #  define _PATH_VI "/usr/local/bin/vim"
+! # else
+! #  include <paths.h>
+! # endif
+  #endif
+  
+  
+***************
+*** 244,253 ****
+  
+  /* Bit types still not defined? */
+  #if !defined(__BIT_TYPES_DEFINED__) && !defined(WIN32) && !defined(__hpux)
+! //#define __BIT_TYPES_DEFINED__ Dan S: Multiple declaration problem.
+! #ifndef __FreeBSD__
+! 
+! // typedef char			int8_t;  Dan S: multiple declaration problem.
+  typedef unsigned char           u_int8_t;
+  typedef short                   int16_t;
+  typedef unsigned short          u_int16_t;
+--- 248,262 ----
+  
+  /* Bit types still not defined? */
+  #if !defined(__BIT_TYPES_DEFINED__) && !defined(WIN32) && !defined(__hpux)
+! /*#define __BIT_TYPES_DEFINED__ Dan S: Multiple declaration problem.*/
+! #if defined(_MINIX)
+! #include <stdint.h>
+! typedef unsigned char           u_int8_t;
+! typedef unsigned short          u_int16_t;
+! typedef unsigned int            u_int32_t;
+! #elif !defined(__FreeBSD__)
+! 
+! /* typedef char			int8_t;  Dan S: multiple declaration problem.*/
+  typedef unsigned char           u_int8_t;
+  typedef short                   int16_t;
+  typedef unsigned short          u_int16_t;
+*** endeavour-2.7.1-test/endeavour2/disk.cpp Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/disk.cpp Mon Oct 23 17:29:14 2006
+***************
+*** 1665,1671 ****
+  	if(fstat(fileno(src_fp), &stat_buf))
+  	    blksize = 0l;
+  	else
+! 	    blksize = stat_buf.st_blksize;
+  	if(blksize > 0l)
+  	{
+  	    /* Copy block by block */
+--- 1665,1675 ----
+  	if(fstat(fileno(src_fp), &stat_buf))
+  	    blksize = 0l;
+  	else
+! #ifdef _MINIX
+!         blksize = 512;
+! #else
+! 	    blksize = stat_buf.st_blksize;
+! #endif
+  	if(blksize > 0l)
+  	{
+  	    /* Copy block by block */
+*** endeavour-2.7.1-test/endeavour2/fio.cpp Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/fio.cpp Mon Oct 23 17:30:32 2006
+***************
+*** 21,26 ****
+--- 21,29 ----
+  # include "memwatch.h"
+  #endif
+  
++ #ifdef _MINIX
++ #include <sys/select.h>
++ #endif
+  
+  int FPending(FILE *fp);
+  
+*** endeavour-2.7.1-test/endeavour2/prochandle.cpp Sat Aug 12 03:00:00 2006
+--- endeavour-2.7.1-patched/endeavour2/prochandle.cpp Mon Oct 23 18:10:12 2006
+***************
+*** 3,9 ****
+  #include <stdlib.h>
+  #include <errno.h>
+  #include <limits.h>
+! #include <sched.h>
+  #include <signal.h>
+  #include <sys/time.h>
+  #include <unistd.h>
+--- 3,11 ----
+  #include <stdlib.h>
+  #include <errno.h>
+  #include <limits.h>
+! #ifndef _MINIX
+! #include <sched.h>
+! #endif
+  #include <signal.h>
+  #include <sys/time.h>
+  #include <unistd.h>
+***************
+*** 23,28 ****
+--- 25,33 ----
+  #include "../include/disk.h"
+  #include "../include/prochandle.h"
+  
++ #ifdef _MINIX
++ #define setlinebuf(a)
++ #endif
+  
+  static void SignalChildCB(int s);
+  static void *SignalAdd(int signum, void (*handler)(int));
+***************
+*** 84,90 ****
+  static void SignalChildCB(int s)
+  {
+  	int status;
+! 	while(wait3(&status, WNOHANG, (struct rusage *)0) > 0);
+  }
+  
+  /*
+--- 89,99 ----
+  static void SignalChildCB(int s)
+  {
+  	int status;
+! #ifdef _MINIX
+! 	while(waitpid(-1, &status, WNOHANG) > 0);
+! #else
+! 	while(wait3(&status, WNOHANG, (struct rusage *)0) > 0);
+! #endif
+  }
+  
+  /*
+***************
+*** 266,271 ****
+--- 275,286 ----
+  #undef STRIP_BACKSLASHES
+  }
+  
++ #ifdef _MINIX
++ 
++ int ExecProcessExists(pid_t pid)
++ { return 0; }
++ 
++ #else
+  
+  /*
+   *	Returns true if the process is still running.
+***************
+*** 295,300 ****
+--- 310,316 ----
+  #endif
+  }
+  
++ #endif
+  
+  /*
+   *	Returns the CPU load as a coefficient value from 0.0 to 1.0.

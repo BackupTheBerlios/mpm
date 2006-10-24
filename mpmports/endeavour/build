@@ -1,0 +1,24 @@
+set -e
+
+cd "$SMPM_BUILDROOT/endeavour-2.7.1"
+
+PATH=/bin:/usr/bin
+export PATH
+
+sh ./configure MINIX
+
+for i in "" download.front_ format.front_ fsck.front_ hedit_ lib_ sysinfo_ tedit_ utils_ ziptool.front_ ; do
+    j="endeavour2_${i}Makefile"
+    k=`echo $j | tr '_' '/'`
+    cp "$SMPM_FILES/$j" $k
+done
+
+# temporarily increase stack/heap of linker otherwise the linker will hang
+chmem =`expr 16 \* 1024 \* 1024` /usr/lib/em_led
+
+/usr/gnu/bin/make
+/usr/gnu/bin/make install DESTDIR="$SMPM_INSTALLROOT"
+
+binsizes xxl
+
+exit 0

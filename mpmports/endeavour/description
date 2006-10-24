@@ -1,0 +1,7 @@
+Endeavour Mark II File Management Suite
+
+Note: The device info functionality has not been ported to Minix. Everything
+else should work correctly though. I have no need for "managing" devices,
+but if you do, you can add it yourself and send a patch :) I think it's fairly
+straightforward parsing of /etc/mtab. The stat(v)fs stuff might be more tricky
+though.

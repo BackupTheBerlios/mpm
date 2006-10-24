@@ -1,0 +1,18 @@
+set -e
+
+cd "$SMPM_BUILDROOT/endeavour-2.7.1"
+patch -p1 < "$SMPM_PATCHES/endeavour-2.7.1-minix3.patch"
+
+cd "$SMPM_BUILDROOT/endeavour-2.7.1/endeavour2"
+for i in *.cpp ; do
+    j=`basename $i .cpp`
+    mv $i $j.c
+done
+
+cp "$SMPM_FILES/rint.c" .
+cp "$SMPM_FILES/fnmatch.c" .
+cp "$SMPM_FILES/fnmatch.h" .
+cp "$SMPM_FILES/fnmatch.c" lib/.
+cp "$SMPM_FILES/fnmatch.h" lib/.
+
+exit 0

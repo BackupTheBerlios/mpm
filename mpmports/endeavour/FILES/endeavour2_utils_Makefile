@@ -1,0 +1,204 @@
+PREFIX = /usr/local
+
+CFLAGS = -g -O -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+
+EDV_UTIL_CFLAGS = `/usr/local/bin/glib-config --cflags` -I../lib
+EDV_UTIL_LIBS = -L../lib -lendeavour2 `/usr/local/bin/glib-config --libs`
+
+CC = cc
+CPP = cc
+
+CPPFLAGS = -D__cplusplus -Dc_plusplus
+
+OBJ_C   = $(SRC_C:.c=.o)
+OBJ_CPP = $(SRC_CPP:.cpp=.o)
+
+# Programs
+#
+LS           = ls
+LSFLAGS      = -a -l
+COPY         = cp
+COPYFLAGS    = -R -f
+MOVE         = mv
+MOVEFLAGS    = -R -f
+LINK         = ln
+LINKFLAGS    = -s -f
+MKDIR        = mkdir
+MKDIRFLAGS   = -p -m 0755
+RM           = rm
+RMFLAGS      = -R -f
+INSTALL      = install
+INSTBINFLAGS = -m 0755 -s
+
+
+# Install Locations
+#
+EDV_BIN_DIR = $(DESTDIR)$(PREFIX)/lib/endeavour2/bin
+
+
+# Build List
+#
+BUILD_LIST = confirmation-dialog file-selector lsmimetypes	\
+             notify open properties purge recover recycle rls	\
+             style-editor
+
+
+# Compile Time Info
+#
+EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+\#ifndef COMPILETIMEINFO_H\n\
+\#define COMPILETIMEINFO_H\n\
+\#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+\#define COMPILE_USER\t\t\"$(USER)\"\n\
+\#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+\#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+\#endif\t/* COMPILETIMEINFO_H */\n"
+
+
+# Build Rules
+#
+all: pre_build config $(BUILD_LIST) post_build
+
+pre_build:
+	@echo "Building utilities..."
+
+post_build:
+	@echo "Build done."
+
+config:
+	@echo "Compiling resources"
+	@$(EXPORT_COMPILETIMEINFO_H) > compiletimeinfo.h
+
+confirmation-dialog:
+	@echo "Compiling confirmation-dialog"
+	$(CC) -c $(CFLAGS) `/usr/local/bin/gtk-config --cflags`		\
+        confirmation-dialog.c
+	$(CPP) \
+        confirmation-dialog.o					\
+	../guiutils.o ../cdialog.o ../string.o			\
+        -o confirmation-dialog `/usr/local/bin/gtk-config --libs`
+
+file-selector:
+	@echo "Compiling file-selector"
+	$(CC) -c $(CFLAGS) \
+        file-selector.c `/usr/local/bin/gtk-config --cflags`
+	$(CPP) $(CFLAGS) 		\
+	file-selector.o ../fb.o					\
+	../cdialog.o ../guiutils.o ../fprompt.o ../pulist.o	\
+        ../string.o ../disk.o ../fio.o				\
+        -o file-selector `/usr/local/bin/gtk-config --libs`	
+
+lsmimetypes:
+	@echo "Compiling lsmimetypes"
+	$(CC) -O -g					\
+	lsmimetypes.c -o lsmimetypes \
+        $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)
+
+notify:
+	@echo "Compiling notify"
+	$(CC) -O -g					\
+	notify.c -o notify \
+        $(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+open:
+	@echo "Compiling open"
+	$(CC) -O -g 					\
+	open.c -o open \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+properties:
+	@echo "Compiling properties"
+	$(CC) -O -g 					\
+	properties.c -o properties \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+purge:
+	@echo "Compiling purge"
+	$(CC) -O -g					\
+	purge.c -o purge \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+recover:
+	@echo "Compiling recover"
+	$(CC) -O -g 					\
+	recover.c -o recover \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+recycle:
+	@echo "Compiling recycle"
+	$(CC) -O -g					\
+	recycle.c -o recycle \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+rls:
+	@echo "Compiling rls"
+	$(CC) -O -g					\
+	rls.c -o rls \
+	$(EDV_UTIL_CFLAGS) $(EDV_UTIL_LIBS)			
+
+
+style-editor:
+	@echo "Compiling style-editor"
+	$(CC) -c $(CFLAGS) `/usr/local/bin/gtk-config --cflags`		\
+        style-editor.c
+	$(CPP) \
+        style-editor.o						\
+        ../guiutils.o ../cdialog.o ../fprompt.o ../pulist.o	\
+        ../fb.o ../csd.o ../fsd.o ../style_edit.o		\
+        ../string.o ../fio.o ../disk.o				\
+        -o style-editor `/usr/local/bin/gtk-config --libs`
+
+
+# Install
+#
+INSTALL      = install
+INSTBINFLAGS = -m 0755 -s
+INSTUIDFLAGS = -m 4755
+INSTLIBFLAGS = -m 0755 -s
+INSTINCFLAGS = -m 0644
+INSTMANFLAGS = -m 0644
+INSTCFGFLAGS = -m 0644
+INSTDATFLAGS = -m 0644
+
+install: pre_install install_bin install_data post_install
+
+HR = "-------------------------------------------------------------------------"
+
+pre_install:
+
+install_bin:
+	@for prog in $(BUILD_LIST); do				\
+            echo "Installing $$prog -> $(EDV_BIN_DIR)";		\
+            $(INSTALL) $(INSTBINFLAGS) $$prog $(EDV_BIN_DIR);	\
+        done
+
+install_data:
+
+post_install:
+	@$(LINK) $(LINKFLAGS) notify $(EDV_BIN_DIR)/notify-added
+	@$(LINK) $(LINKFLAGS) notify $(EDV_BIN_DIR)/notify-modified
+	@$(LINK) $(LINKFLAGS) notify $(EDV_BIN_DIR)/notify-renamed
+	@$(LINK) $(LINKFLAGS) notify $(EDV_BIN_DIR)/notify-removed
+	@echo "Install done."
+	@echo $(HR)
+	@echo "Utilities installed in:"
+	@echo " "
+	@echo "        $(EDV_BIN_DIR)"
+	@echo " "
+	@echo "This directory is not usually included in the global search path,"
+	@echo "so in order to make these programs globally available you need to"
+	@echo "either add this directory to the global search path or create links"
+	@echo "to each one of these programs in one of the directories already in"
+	@echo "the global search path."
+	@echo " "
+	@echo $(HR)
+	@echo " "
+
+# Clean
+#
+clean:
+	@echo "Cleaning utilities..."
+	@echo "Deleting all intermediate files..."
+	@$(RM) $(RMFLAGS) a.out core *.o compiletimeinfo.h	\
+        $(BUILD_LIST)
+	@echo "Clean done."

@@ -1,0 +1,10 @@
+xorg6
+gtk+
+glib
+libpng
+libtiff
+libungif
+libjpeg
+imlib
+gnu-make
+gnu-bash

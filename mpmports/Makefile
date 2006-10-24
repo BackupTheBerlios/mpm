@@ -2,6 +2,7 @@ PACKAGES=\
 	bwk \
 	cvs \
 	dialog \
+	endeavour \
 	flex \
 	genmenu \
 	glib \

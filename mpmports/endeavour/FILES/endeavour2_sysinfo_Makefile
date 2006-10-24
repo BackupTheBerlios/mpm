@@ -1,0 +1,75 @@
+PREFIX = /usr/local
+
+CFLAGS = -O -g `/usr/local/bin/gtk-config --cflags` -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -ws
+
+INC_DIRS =
+
+LIBS = -lm `/usr/local/bin/gtk-config --libs`
+LIB_DIRS =
+
+CC = cc
+CPP = cc
+
+# C++ flags:
+CPPFLAGS = -D__cplusplus -Dc_plusplus
+
+# Source files list:
+include Makefile.srclist
+
+# Compiler set up:
+BIN     = sysinfo
+OBJ_C   = $(SRC_C:.c=.o)
+OBJ_CPP = $(SRC_CPP:.cpp=.o)
+.c.o:
+	$(CC) -c $*.c $(INC_DIRS) $(CFLAGS)
+.cpp.o:
+	@echo "Compiling module $*.o"
+	@+$(CPP) -c $*.cpp $(INC_DIRS) $(CFLAGS) $(CPPFLAGS)
+
+# Programs
+LS      = ls
+LSFLAGS = -l
+RM      = rm
+RMFLAGS = -f
+
+# Build rules:
+EXPORT_COMPILETIMEINFO_H = echo -n -e "\
+\#ifndef COMPILETIMEINFO_H\n\
+\#define COMPILETIMEINFO_H\n\
+\#define COMPILE_COMPILER\t\"ACK Amsterdam Compiler Kit\"\n\
+\#define COMPILE_USER\t\t\"$(USER)\"\n\
+\#define COMPILE_LOCATION\t\"`uname -n`\"\n\
+\#define COMPILE_DATE\t\t`date +\"%s\"`\n\
+\#endif\t/* COMPILETIMEINFO_H */\n"
+
+$(BIN): config prebuild modules postbuild
+
+config:
+	@$(EXPORT_COMPILETIMEINFO_H) > compiletimeinfo.h
+
+modules: $(OBJ_C) $(OBJ_CPP)
+	@echo -n "Linking modules..."
+	@$(CPP) $(OBJ_C) $(OBJ_CPP) \
+        -o $(BIN) $(LIBS) $(LIB_DIRS)
+	@echo -n "   "
+	@-$(LS) $(LSFLAGS) $(BIN)
+
+prebuild:
+	@echo "Building program \"$(BIN)\"..."
+
+postbuild:
+	@echo "Build done."
+
+all: $(BIN)
+
+
+# Install Rules:
+include Makefile.install.UNIX
+
+
+# Maintainance and Misc Rules:
+clean:
+	@echo "Cleaning program \"$(BIN)\"..."
+	@echo "Deleting all intermediate files..."
+	@$(RM) $(RMFLAGS) a.out core *.o compiletimeinfo.h $(BIN)
+	@echo "Clean done."

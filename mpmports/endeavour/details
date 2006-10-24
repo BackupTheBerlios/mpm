@@ -1,0 +1,10 @@
+name:       endeavour
+version:    2.7.1
+release:    1
+source:     http://wolfpack.twu.net/users/wolfpack/endeavour-2.7.1.tar.bz2
+filesize:   2743132
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    Endeavour Mark II File Management Suite
+os:         yes
+arch:       yes
