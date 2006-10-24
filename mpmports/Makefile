@@ -25,6 +25,7 @@ PACKAGES=\
 	gtk+ \
 	heirloom-sh \
 	heirloom-toolchest \
+	imlib \
 	libdockapp \
 	libjpeg \
 	libpcre \

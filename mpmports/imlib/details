@@ -1,0 +1,10 @@
+name:       imlib
+version:    1.9.15
+release:    1
+source:     http://ftp.gnome.org/pub/GNOME/sources/imlib/1.9/imlib-1.9.15.tar.bz2
+filesize:   683242
+md5sum:     0123456789abcdef0123456789abcdef
+license:    GPL
+summary:    general image loading and rendering library
+os:         yes
+arch:       yes

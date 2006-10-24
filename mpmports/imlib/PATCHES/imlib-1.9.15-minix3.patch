@@ -1,0 +1,38 @@
+diff -c imlib-1.9.15/gdk_imlib/Makefile.in imlib-1.9.15-patched/gdk_imlib/Makefile.in
+*** imlib-1.9.15/gdk_imlib/Makefile.in Thu Sep 23 01:16:09 2004
+--- imlib-1.9.15-patched/gdk_imlib/Makefile.in Tue Oct 24 15:07:49 2006
+***************
+*** 416,422 ****
+  	done
+  t-load$(EXEEXT): $(t_load_OBJECTS) $(t_load_DEPENDENCIES) 
+  	@rm -f t-load$(EXEEXT)
+! 	$(LINK) $(t_load_LDFLAGS) $(t_load_OBJECTS) $(t_load_LDADD) $(LIBS)
+  
+  mostlyclean-compile:
+  	-rm -f *.$(OBJEXT) core *.core
+--- 416,422 ----
+  	done
+  t-load$(EXEEXT): $(t_load_OBJECTS) $(t_load_DEPENDENCIES) 
+  	@rm -f t-load$(EXEEXT)
+! 	$(LINK) $(t_load_LDFLAGS) $(t_load_OBJECTS) $(t_load_LDADD) $(LIBS) $(GDK_SUPPORT_LIBS)
+  
+  mostlyclean-compile:
+  	-rm -f *.$(OBJEXT) core *.core
+diff -c imlib-1.9.15/gdk_imlib/io-jpeg.c imlib-1.9.15-patched/gdk_imlib/io-jpeg.c
+*** imlib-1.9.15/gdk_imlib/io-jpeg.c Mon Mar  4 17:06:29 2002
+--- imlib-1.9.15-patched/gdk_imlib/io-jpeg.c Tue Oct 24 15:02:09 2006
+***************
+*** 6,11 ****
+--- 6,17 ----
+  #ifdef HAVE_LIBJPEG
+  #include <jpeglib.h>
+  
++ #ifdef _MINIX
++ void _longjmp(jmp_buf env, int val) {
++     longjmp(env, val);
++ }
++ #endif
++ 
+  /** 
+   * This error handling is broken beyond belief, but oh well it works
+   **/

@@ -1,0 +1,9 @@
+set -e
+
+cd "$SMPM_BUILDROOT/imlib-1.9.15"
+patch -p1 < "$SMPM_PATCHES/imlib-1.9.15-minix3.patch"
+
+sed -e 's@glib-config@/usr/local/bin/glib-config@' configure >configure.new
+mv configure.new configure
+
+exit 0
