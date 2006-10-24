@@ -36,3 +36,21 @@ diff -c imlib-1.9.15/gdk_imlib/io-jpeg.c imlib-1.9.15-patched/gdk_imlib/io-jpeg.
   /** 
    * This error handling is broken beyond belief, but oh well it works
    **/
+diff -c imlib-1.9.15/Imlib/load.c imlib-1.9.15-patched/Imlib/load.c
+*** imlib-1.9.15/Imlib/load.c Tue Sep 21 00:23:20 2004
+--- imlib-1.9.15-patched/Imlib/load.c Tue Oct 24 16:14:07 2006
+***************
+*** 4,9 ****
+--- 4,15 ----
+  #include "Imlib_private.h"
+  #include <setjmp.h>
+  
++ #ifdef _MINIX
++ void _longjmp(jmp_buf env, int val) {
++     longjmp(env, val);
++ }
++ #endif
++ 
+  /*      Split the ID - damages input    */
+  
+  static char        *
