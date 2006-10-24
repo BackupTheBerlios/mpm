@@ -4,4 +4,8 @@ cd "$SMPM_INSTALLROOT/usr/local/include/glib-1.2"
 sed -e 's/^#define.NULL.*((void\*) 0)$/#include <stddef.h>/' glib.h >glib.h.new
 mv glib.h.new glib.h
 
+cd "$SMPM_INSTALLROOT/usr/local/lib/pkgconfig"
+sed -e 's/-Wl,-E//' gmodule.pc >gmodule.pc.new
+mv gmodule.pc.new gmodule.pc
+
 exit 0
