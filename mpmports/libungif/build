@@ -1,0 +1,19 @@
+set -e
+
+cd "$SMPM_BUILDROOT/libungif-4.1.4"
+
+PATH=/bin:/usr/bin
+export PATH
+
+CONFIG_SHELL=/usr/local/bin/ksh SHELL=/usr/local/bin/ksh \
+lt_cv_sys_max_cmd_len=4096 \
+lt_cv_path_SED=sed \
+CC="cc -stack 1m -s" LD="cc -stack 1m -s" \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
+configure --prefix=/usr/local \
+          --disable-dependency-tracking \
+          --disable-nls \
+
+DESTDIR="$SMPM_INSTALLROOT" make install DESTDIR="$SMPM_INSTALLROOT"
+
+exit 0

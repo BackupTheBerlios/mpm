@@ -30,6 +30,7 @@ PACKAGES=\
 	libpcre \
 	libpng \
 	libtiff \
+	libungif \
 	libwww \
 	lynx \
 	mawk \

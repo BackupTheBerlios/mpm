@@ -1,0 +1,10 @@
+name:       libungif
+version:    4.1.4
+release:    1
+source:     http://surfnet.dl.sourceforge.net/sourceforge/libungif/libungif-4.1.4.tar.bz2
+filesize:   482222
+md5sum:     0123456789abcdef0123456789abcdef
+license:    BSD
+summary:    library and utilities to (un)compress GIF images
+os:         yes
+arch:       yes
