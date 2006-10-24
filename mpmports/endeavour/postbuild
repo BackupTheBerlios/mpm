@@ -1,3 +1,6 @@
 set -e
 
+cd "$SMPM_INSTALLROOT/usr/local/lib/endeavour2/bin"
+chmem =`expr 3 \* 1024 \* 1024` *
+
 exit 0
