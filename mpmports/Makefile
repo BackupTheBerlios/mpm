@@ -74,6 +74,7 @@ allsrcmpm:
 clean:
 	rm -f *~ */*~ */*/*~
 
+# does NOT work if FILES/ or PATCHES/ have subdirectories!
 cvs-add:	clean
 	test -n "${CVSADDDIR}" || exit 2
 	cvs add ${CVSADDDIR} ${CVSADDDIR}/FILES ${CVSADDDIR}/PATCHES
