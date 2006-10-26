@@ -2,6 +2,7 @@ set -e
 
 cd "$SMPM_BUILDROOT/heirloom-060122"
 patch -p1 < "$SMPM_PATCHES/heirloom-060122-minix3.patch"
+patch -p1 < "$SMPM_PATCHES/heirloom-060122-minix3.patch2"
 
 cd "$SMPM_FILES"
 cp dirname.c dirname.h fnmatch.c fnmatch.h realpath.c realpath.h \
