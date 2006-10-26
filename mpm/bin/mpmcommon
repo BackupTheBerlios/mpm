@@ -459,6 +459,12 @@ set_attributes() {
     cat "$2" | (
         read owner group mode file
         while test -n "$owner" ; do
+            case "$owner" in
+                \#*)
+                    read owner group mode file
+                    continue
+                    ;;
+            esac
             case "$file" in
                 FILES)
                     test "$owner" != "-" && \
