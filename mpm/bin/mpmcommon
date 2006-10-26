@@ -460,7 +460,7 @@ set_attributes() {
         read owner group mode file
         while test -n "$owner" ; do
             case "$owner" in
-                \#*)
+                \#*|//*|/\**)
                     read owner group mode file
                     continue
                     ;;
