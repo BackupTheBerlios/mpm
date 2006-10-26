@@ -120,7 +120,7 @@ action_install_bmpm() {
     echoend "ok"
 
     echostart "checking installation root: "
-    test -d "$_mpm_install_root" -a -w "$_mpm_install_root" || error "cannot find $_mpm_install_root or it is not writable"
+    test -d "$_mpm_install_root" || error "cannot find $_mpm_install_root"
     echoend "$_mpm_install_root"
 
     echostart "running preinstall script"
@@ -171,7 +171,7 @@ action_remove() {
 
     echostart "checking installation root: "
     test -n "$_mpm_install_root" || _mpm_install_root="/"
-    test -d "$_mpm_install_root" -a -w "$_mpm_install_root" || error "cannot find $_mpm_install_root or it is not writable"
+    test -d "$_mpm_install_root" || error "cannot find $_mpm_install_root"
     echoend "$_mpm_install_root"
 
     echostart "running preuninstall script"
