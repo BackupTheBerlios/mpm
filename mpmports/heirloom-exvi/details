@@ -4,7 +4,7 @@ release:    1
 source:     http://surfnet.dl.sourceforge.net/sourceforge/ex-vi/ex-050325.tar.bz2
 filesize:   215411
 md5sum:     0123456789abcdef0123456789abcdef
-license:    BSD
+license:    VAR
 summary:    the traditional ex and vi
 os:         yes
 arch:       yes
