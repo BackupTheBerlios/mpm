@@ -198,6 +198,10 @@ action_build_smpm() {
     rm-rf "$SMPM_BUILDROOT"
     echoend "ok"
 
+    echostart "setting attributes: "
+    set_attributes "$SMPM_INSTALLROOT" "$_dotmpmdir/attributes"
+    echoend "ok"
+
     echostart "generating filelist: "
     cd "$SMPM_INSTALLROOT"
     find . | grep -v "^.$" | cut -b 2- > "$_dotmpmdir/filelist" || error "cannot generate filelist"

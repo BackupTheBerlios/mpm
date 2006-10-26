@@ -24,7 +24,7 @@ MPM_SMPMS=${MPM_SMPMS-"$MPM_HOME/SMPMS"}
 #. "$MPM_ETC/$_myname.rc"
 . "$MPM_ETC/mpm.rc"
 
-_files="details description prebuild build postbuild preinstall postinstall preuninstall postuninstall depsbuild depsinstall"
+_files="details description prebuild build postbuild preinstall postinstall preuninstall postuninstall depsbuild depsinstall attributes"
 _files_bmpm="details description preinstall postinstall preuninstall postuninstall filelist depsinstall"
 _files_installed="details description preuninstall postuninstall filelist filename"
 _directories="FILES PATCHES"
@@ -451,3 +451,27 @@ progress2() {
     progress NULL "$1"
 }
 
+set_attributes() {
+    reldir=$1
+
+    cat $2 | (
+        read owner group mode file
+        while test -n "$owner" ; do
+            case "$file" in
+                FILES)
+                    find "$reldir" ! -type d -exec chown $owner:$group {} \;
+                    find "$reldir" ! -type d -exec chmod $mode {} \;
+                    ;;
+                DIRECTORIES)
+                    find "$reldir" -type d -exec chown $owner:$group {} \;
+                    find "$reldir" -type d -exec chmod $mode {} \;
+                    ;;
+                *)
+                    chown $owner:$group "$reldir/$file"
+                    chmod $mode "$reldir/$file"
+                    ;;
+            esac
+            read owner group mode file
+        done
+    )
+}
