@@ -1,0 +1,256 @@
+diff -c heirloom-060122-patched/df/df.c heirloom-060122-fixed/df/df.c
+*** heirloom-060122-patched/df/df.c Thu Oct 26 14:02:23 2006
+--- heirloom-060122-fixed/df/df.c Thu Oct 26 14:13:49 2006
+***************
+*** 47,54 ****
+  
+  #ifdef _MINIX
+  typedef		unsigned long 	ull;
+! #else
+! typedef		unsigned long long	ull;
+  #endif
+  
+  #include	<pwd.h>
+--- 47,56 ----
+  
+  #ifdef _MINIX
+  typedef		unsigned long 	ull;
+! #define NP_LLU "lu"
+! #else
+! typedef		unsigned long long	ull;
+! #define NP_LLU "llu"
+  #endif
+  
+  #include	<pwd.h>
+***************
+*** 145,153 ****
+  	}
+  	cp = malloc(10);
+  	if (n < 10 && rest)
+! 		snprintf(cp, 10, "%2llu.%u%c", n, rest, *up);
+! 	else
+! 		snprintf(cp, 10, "%4llu%c", n, *up);
+  	return cp;
+  }
+  
+--- 147,155 ----
+  	}
+  	cp = malloc(10);
+  	if (n < 10 && rest)
+! 		snprintf(cp, 10, "%2" NP_LLU ".%u%c", n, rest, *up);
+! 	else
+! 		snprintf(cp, 10, "%4" NP_LLU "%c", n, *up);
+  	return cp;
+  }
+  
+***************
+*** 332,374 ****
+  			cp = "";
+  		} else
+  			cp = mdev;
+! 		printf("%-20s  %s  %s  %s   %3llu%%    %s\n",
+  				cp, hfmt(total), hfmt(used), hfmt(avail),
+  				percent, mdir);
+  		break;
+  	case 'P':
+  	case 'k':
+  		percent = getpct(used, total);
+! 		printf("%-18s  %10llu %10llu %10llu     %3llu%% %s\n",
+  				mdev, total, used, avail, percent, mdir);
+  		break;
+  	case 'i':
+  		used = sv.f_files - sv.f_ffree;
+  		percent = getpct(used, sv.f_files);
+! 		printf("%-18s  %10llu %10llu %10llu   %3llu%% %s\n",
+  				mdev, (ull)sv.f_files, used, (ull)sv.f_favail,
+  				percent, mdir);
+  		break;
+  #ifndef	UCB
+  	case 'v':
+  		percent = getpct(used, total);
+! 		printf("%-10.10s %-18.18s %10llu %10llu %10llu %4u%%\n",
+  				mdir, mdev, total, used, avail,
+  				(unsigned)percent);
+  		break;
+  	case 'b':
+! 		printf("%-18s %10llu\n", mdir, avail);
+! 		break;
+! 	case 'e':
+! 		printf("%-18s %10llu\n", mdir, (ull)sv.f_favail);
+  		break;
+  	case 'n':
+  		printf("%-18s : %s\n", mdir, mtype);
+  		break;
+  	case 'g':
+  		printf("%-18s (%-18s): %12lu block size  %12lu frag size\n\
+! %8llu total blocks %10llu free blocks %8llu available %14llu total files\n\
+! %8llu free files %10lu filesys id\n\
+  %8s fstype       0x%08lx flag          %6lu filename length\n\n",
+  	mdir, mdev, (long)sv.f_bsize, (long)sv.f_frsize,
+  	(ull)sv.f_blocks, (ull)sv.f_bfree, (ull)sv.f_bavail, (ull)sv.f_files,
+--- 334,376 ----
+  			cp = "";
+  		} else
+  			cp = mdev;
+! 		printf("%-20s  %s  %s  %s   %3" NP_LLU "%%    %s\n",
+  				cp, hfmt(total), hfmt(used), hfmt(avail),
+  				percent, mdir);
+  		break;
+  	case 'P':
+  	case 'k':
+  		percent = getpct(used, total);
+! 		printf("%-18s  %10" NP_LLU " %10" NP_LLU " %10" NP_LLU "     %3" NP_LLU "%% %s\n",
+  				mdev, total, used, avail, percent, mdir);
+  		break;
+  	case 'i':
+  		used = sv.f_files - sv.f_ffree;
+  		percent = getpct(used, sv.f_files);
+! 		printf("%-18s  %10" NP_LLU " %10" NP_LLU " %10" NP_LLU "   %3" NP_LLU "%% %s\n",
+  				mdev, (ull)sv.f_files, used, (ull)sv.f_favail,
+  				percent, mdir);
+  		break;
+  #ifndef	UCB
+  	case 'v':
+  		percent = getpct(used, total);
+! 		printf("%-10.10s %-18.18s %10" NP_LLU " %10" NP_LLU " %10" NP_LLU " %4u%%\n",
+  				mdir, mdev, total, used, avail,
+  				(unsigned)percent);
+  		break;
+  	case 'b':
+! 		printf("%-18s %10" NP_LLU "\n", mdir, avail);
+! 		break;
+! 	case 'e':
+! 		printf("%-18s %10" NP_LLU "\n", mdir, (ull)sv.f_favail);
+  		break;
+  	case 'n':
+  		printf("%-18s : %s\n", mdir, mtype);
+  		break;
+  	case 'g':
+  		printf("%-18s (%-18s): %12lu block size  %12lu frag size\n\
+! %8" NP_LLU " total blocks %10" NP_LLU " free blocks %8" NP_LLU " available %14" NP_LLU " total files\n\
+! %8" NP_LLU " free files %10lu filesys id\n\
+  %8s fstype       0x%08lx flag          %6lu filename length\n\n",
+  	mdir, mdev, (long)sv.f_bsize, (long)sv.f_frsize,
+  	(ull)sv.f_blocks, (ull)sv.f_bfree, (ull)sv.f_bavail, (ull)sv.f_files,
+***************
+*** 384,412 ****
+  		totspace += total;
+  		totavail += avail;
+  		percent = total ? avail * 100 / total : 0;
+! printf("%-19s: Disk space: %5llu.%02llu MB of %5llu.%02llu MB available (%2u.%02u%%).\n",
+  			mdir, (ull)avail / 1024, (ull)avail % 1000 / 10,
+  			(ull)total / 1024, (ull)total % 1000 / 10,
+  			(int)percent,
+  			(int)(percent ? (avail * 10000 / total) % percent : 0));
+  		break;
+  	case 'E':	/* both -b and -e */
+! 		printf("%-18s (%-18s): %10llu kilobytes\n", mdir, mdev, avail);
+! 		printf("%-18s (%-18s): %10llu %s\n", mdir, mdev,
+  				(ull)sv.f_favail, files());
+  		break;
+  	default:
+! 		printf("%-18s (%-16s): %9llu blocks", mdir, mdev, avail);
+  		if (fflag)
+  			printf("\n");
+  		else
+! 			printf(" %9llu %s\n", (ull)sv.f_favail, files());
+! 		if (tflag) {
+! 	printf("                                total: %9llu blocks", total);
+  			if (fflag)
+  				printf("\n");
+  			else
+! 				printf(" %9llu %s\n", (ull)sv.f_files, files());
+  		}
+  #endif	/* !UCB */
+  	}
+--- 386,414 ----
+  		totspace += total;
+  		totavail += avail;
+  		percent = total ? avail * 100 / total : 0;
+! printf("%-19s: Disk space: %5" NP_LLU ".%02" NP_LLU " MB of %5" NP_LLU ".%02" NP_LLU " MB available (%2u.%02u%%).\n",
+  			mdir, (ull)avail / 1024, (ull)avail % 1000 / 10,
+  			(ull)total / 1024, (ull)total % 1000 / 10,
+  			(int)percent,
+  			(int)(percent ? (avail * 10000 / total) % percent : 0));
+  		break;
+  	case 'E':	/* both -b and -e */
+! 		printf("%-18s (%-18s): %10" NP_LLU " kilobytes\n", mdir, mdev, avail);
+! 		printf("%-18s (%-18s): %10" NP_LLU " %s\n", mdir, mdev,
+  				(ull)sv.f_favail, files());
+  		break;
+  	default:
+! 		printf("%-18s (%-16s): %9" NP_LLU " blocks", mdir, mdev, avail);
+  		if (fflag)
+  			printf("\n");
+  		else
+! 			printf(" %9" NP_LLU " %s\n", (ull)sv.f_favail, files());
+! 		if (tflag) {
+! 	printf("                                total: %9" NP_LLU " blocks", total);
+  			if (fflag)
+  				printf("\n");
+  			else
+! 				printf(" %9" NP_LLU " %s\n", (ull)sv.f_files, files());
+  		}
+  #endif	/* !UCB */
+  	}
+***************
+*** 832,838 ****
+  	if (dfspace) {
+  		int percent = totspace ? totavail * 100 / totspace : 0;
+  printf("\n\
+! %s: %5llu.%02llu MB of %5llu.%02llu MB available (%2u.%02u%%).\n",
+  		"Total Disk Space",
+  		(ull)totavail / 1024, (ull)totavail % 1000 / 10,
+  		(ull)totspace / 1024, (ull)totspace % 1000 / 10,
+--- 834,840 ----
+  	if (dfspace) {
+  		int percent = totspace ? totavail * 100 / totspace : 0;
+  printf("\n\
+! %s: %5" NP_LLU ".%02" NP_LLU " MB of %5" NP_LLU ".%02" NP_LLU " MB available (%2u.%02u%%).\n",
+  		"Total Disk Space",
+  		(ull)totavail / 1024, (ull)totavail % 1000 / 10,
+  		(ull)totspace / 1024, (ull)totspace % 1000 / 10,
+diff -c heirloom-060122-patched/sed/sed.h heirloom-060122-fixed/sed/sed.h
+*** heirloom-060122-patched/sed/sed.h Thu Oct 26 14:02:34 2006
+--- heirloom-060122-fixed/sed/sed.h Thu Oct 26 14:06:25 2006
+***************
+*** 74,81 ****
+  
+  #ifdef _MINIX
+  #define LONGLONG long
+! #else
+! #define LONGLONG long long
+  #endif
+  
+  extern int	circf, ceof, nbra, sed;
+--- 74,83 ----
+  
+  #ifdef _MINIX
+  #define LONGLONG long
+! #define P_LLD "%ld"
+! #else
+! #define LONGLONG long long
+! #define P_LLD "%lld"
+  #endif
+  
+  extern int	circf, ceof, nbra, sed;
+diff -c heirloom-060122-patched/sed/sed1.c heirloom-060122-fixed/sed/sed1.c
+*** heirloom-060122-patched/sed/sed1.c Thu Oct 26 14:02:34 2006
+--- heirloom-060122-fixed/sed/sed1.c Thu Oct 26 14:06:41 2006
+***************
+*** 489,495 ****
+  			break;
+  
+  		case EQCOM:
+! 			fprintf(stdout, "%lld\n", lnum);
+  			break;
+  
+  		case GCOM:
+--- 489,495 ----
+  			break;
+  
+  		case EQCOM:
+! 			fprintf(stdout, P_LLD "\n", lnum);
+  			break;
+  
+  		case GCOM:
