@@ -461,16 +461,25 @@ set_attributes() {
         while test -n "$owner" ; do
             case "$file" in
                 FILES)
-                    find "$reldir" ! -type d -exec chown $owner:$group {} \;
-                    find "$reldir" ! -type d -exec chmod $mode {} \;
+                    test "$owner" != "-" && \
+                        find "$reldir" ! -type d -exec chown $owner {} \;
+                    test "$group" != "-" && \
+                        find "$reldir" ! -type d -exec chgrp $group {} \;
+                    test "$mode" != "-" && \
+                        find "$reldir" ! -type d -exec chmod $mode {} \;
                     ;;
                 DIRECTORIES)
-                    find "$reldir" -type d -exec chown $owner:$group {} \;
-                    find "$reldir" -type d -exec chmod $mode {} \;
+                    test "$owner" != "-" && \
+                        find "$reldir" -type d -exec chown $owner {} \;
+                    test "$group" != "-" && \
+                        find "$reldir" -type d -exec chgrp $group {} \;
+                    test "$mode" != "-" && \
+                        find "$reldir" -type d -exec chmod $mode {} \;
                     ;;
                 *)
-                    chown $owner:$group ./$file
-                    chmod $mode ./$file
+                    test "$owner" != "-" && chown $owner ./$file
+                    test "$group" != "-" && chgrp $group ./$file
+                    test "$mode"  != "-" && chmod $mode ./$file
                     ;;
             esac
             read owner group mode file
