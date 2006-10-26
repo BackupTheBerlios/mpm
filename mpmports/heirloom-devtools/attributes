@@ -1,0 +1,2 @@
+bin     operator    0555    DIRECTORIES
+bin     operator    0444    FILES
