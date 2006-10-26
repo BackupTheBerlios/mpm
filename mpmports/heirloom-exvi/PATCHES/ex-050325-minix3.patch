@@ -1,0 +1,513 @@
+diff -c ex-050325/Makefile ex-050325-patched/Makefile
+*** ex-050325/Makefile Thu Mar 24 23:50:09 2005
+--- ex-050325-patched/Makefile Thu Oct 26 11:54:17 2006
+***************
+*** 79,100 ****
+  # Destinations for installation. $(PRESERVEDIR) is used for recovery files.
+  # It will get mode 1777.
+  #
+! PREFIX		= /usr/local
+! BINDIR		= $(PREFIX)/bin
+! LIBEXECDIR	= $(PREFIX)/libexec
+! MANDIR		= $(PREFIX)/share/man
+! PRESERVEDIR	= /var/preserve
+  
+  #
+  # DESTDIR is prepended to the installation paths. It is mostly useful
+  # for package building and should be left empty otherwise.
+  #
+! DESTDIR		=
+  
+  #
+  # A BSD-like install program. GNU install will fit well here, too.
+  #
+! INSTALL		= /usr/ucb/install
+  
+  #
+  # Compiler and linker flags.
+--- 79,110 ----
+  # Destinations for installation. $(PRESERVEDIR) is used for recovery files.
+  # It will get mode 1777.
+  #
+! #PREFIX		= /usr/local
+! #BINDIR		= $(PREFIX)/bin
+! #LIBEXECDIR	= $(PREFIX)/libexec
+! #MANDIR		= $(PREFIX)/share/man
+! #PRESERVEDIR	= /var/preserve
+! #
+! # install in 5bin/5libexec on Minix so it is separated from /usr/bin
+! # and /usr/local/bin and it is clear that it is the traditional Unix vi.
+! #
+! PREFIX		= /usr
+! BINDIR		= $(PREFIX)/5bin
+! LIBEXECDIR	= $(PREFIX)/5libexec
+! MANDIR		= $(PREFIX)/share/man/5man
+! PRESERVEDIR	= $(PREFIX)/5preserve
+  
+  #
+  # DESTDIR is prepended to the installation paths. It is mostly useful
+  # for package building and should be left empty otherwise.
+  #
+! # DESTDIR		= 
+! # specify on the make command line!
+  
+  #
+  # A BSD-like install program. GNU install will fit well here, too.
+  #
+! INSTALL		= /usr/bin/install
+  
+  #
+  # Compiler and linker flags.
+***************
+*** 102,108 ****
+  # On HP-UX, add -D_INCLUDE__STDC_A1_SOURCE to CPPFLAGS.
+  #
+  #CFLAGS	=
+! #CPPFLAGS =
+  #LDFLAGS	=
+  #LDADD	=
+  
+--- 112,118 ----
+  # On HP-UX, add -D_INCLUDE__STDC_A1_SOURCE to CPPFLAGS.
+  #
+  #CFLAGS	=
+! CPPFLAGS = -D_MINIX=1 -D_POSIX_SOURCE=1 -wo -Ilibwchar
+  #LDFLAGS	=
+  #LDADD	=
+  
+***************
+*** 130,136 ****
+  #
+  # If your system expands tabs to 4 spaces you should -DTABS=4 below
+  #
+! FEATURES	= -DLISPCODE -DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8
+  
+  #
+  # This disables the LC_CTYPE locale settings and assumes all characters
+--- 140,151 ----
+  #
+  # If your system expands tabs to 4 spaces you should -DTABS=4 below
+  #
+! #FEATURES	= -DLISPCODE -DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8
+! #
+! # on Minix, one might enable MB by including the widechar library
+! # from the heirloom-toolchest; investigate later
+! #
+! FEATURES	= -DLISPCODE -DCHDIR -DFASTTAG -DUCVISUAL -DBIT8 -DMB
+  
+  #
+  # This disables the LC_CTYPE locale settings and assumes all characters
+***************
+*** 161,166 ****
+--- 176,184 ----
+  # (wchar.h, wctype.h, btowc() etc.) which is not provided by older
+  # compilation environments.
+  #
++ # on Minix this can only be enabled when the inclusion of the
++ # heirloom-toolchest's widechar library works
++ #
+  REINC	= -I./libuxre -DUXRE
+  RELIB	= -L./libuxre -luxre
+  RETGT	= uxre
+***************
+*** 219,231 ****
+  # The first is to allocate a static pool for all malloc purposes. This will
+  # work on any kind of system.
+  #
+! #MALLOC=malloc.o
+  #
+  # If mmap() can be used to allocate anonymous memory, this is the preferred
+  # choice as it allows to grow memory dynamically as it is needed. This will
+  # usually work unless you are compiling for a vector machine or another
+  # unusual enviroment.
+! MALLOC=mapmalloc.o
+  
+  ###############################################################################
+  #                                                                             #
+--- 237,249 ----
+  # The first is to allocate a static pool for all malloc purposes. This will
+  # work on any kind of system.
+  #
+! MALLOC=malloc.o
+  #
+  # If mmap() can be used to allocate anonymous memory, this is the preferred
+  # choice as it allows to grow memory dynamically as it is needed. This will
+  # usually work unless you are compiling for a vector machine or another
+  # unusual enviroment.
+! #MALLOC=mapmalloc.o
+  
+  ###############################################################################
+  #                                                                             #
+***************
+*** 241,253 ****
+  CCFLAGS	= $(CFLAGS) $(WARN) $(CPPFLAGS) $(FEATURES) $(CHARSET) $(OSTYPE) \
+  		$(LARGEF) $(RECOVER) $(LANGMSG) $(REINC) $(RPMCFLAGS)
+  TLIB	= libterm/libtermlib.a
+  INCLUDE	= /usr/include
+  OBJS	= ex.o ex_addr.o ex_cmds.o ex_cmds2.o ex_cmdsub.o \
+  		ex_data.o ex_extern.o ex_get.o ex_io.o ex_put.o ex_re.o \
+  		ex_set.o ex_subr.o ex_tagio.o ex_temp.o ex_tty.o ex_unix.o \
+  		ex_v.o ex_vadj.o ex_vget.o ex_vmain.o ex_voper.o \
+  		ex_vops.o ex_vops2.o ex_vops3.o ex_vput.o ex_vwind.o \
+! 		printf.o ex_version.o $(MALLOC)
+  HDRS	= ex.h ex_argv.h ex_re.h ex_temp.h ex_tty.h ex_tune.h ex_vars.h \
+  		ex_vis.h libterm/libterm.h
+  SRC1	= ex.c ex_addr.c ex_cmds.c ex_cmds2.c ex_cmdsub.c
+--- 259,272 ----
+  CCFLAGS	= $(CFLAGS) $(WARN) $(CPPFLAGS) $(FEATURES) $(CHARSET) $(OSTYPE) \
+  		$(LARGEF) $(RECOVER) $(LANGMSG) $(REINC) $(RPMCFLAGS)
+  TLIB	= libterm/libtermlib.a
++ WLIB	= libwchar/libwchar.a
+  INCLUDE	= /usr/include
+  OBJS	= ex.o ex_addr.o ex_cmds.o ex_cmds2.o ex_cmdsub.o \
+  		ex_data.o ex_extern.o ex_get.o ex_io.o ex_put.o ex_re.o \
+  		ex_set.o ex_subr.o ex_tagio.o ex_temp.o ex_tty.o ex_unix.o \
+  		ex_v.o ex_vadj.o ex_vget.o ex_vmain.o ex_voper.o \
+  		ex_vops.o ex_vops2.o ex_vops3.o ex_vput.o ex_vwind.o \
+! 		printf.o ex_version.o $(MALLOC) _longjmp.o
+  HDRS	= ex.h ex_argv.h ex_re.h ex_temp.h ex_tty.h ex_tune.h ex_vars.h \
+  		ex_vis.h libterm/libterm.h
+  SRC1	= ex.c ex_addr.c ex_cmds.c ex_cmds2.c ex_cmdsub.c
+***************
+*** 263,276 ****
+  
+  all: $(RETGT) exrecover expreserve ex
+  
+! ex: $(TLIB) $(OBJS)
+! 	$(CC) -o ex $(LDFLAGS) $(OBJS) $(LDADD) -Llibterm -l$(TERMLIB) $(RELIB)
+  	size ex
+  
+  $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
+  	@cd libterm && $(MAKE) CC="$(CC)" \
+  		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
+  
+  exrecover: exrecover.o $(MALLOC)
+  	$(CC) -o exrecover $(LDFLAGS) exrecover.o $(MALLOC) $(LDADD)
+  
+--- 282,298 ----
+  
+  all: $(RETGT) exrecover expreserve ex
+  
+! ex: $(TLIB) $(WLIB) $(OBJS)
+! 	$(CC) -s -stack 2m -o ex $(LDFLAGS) $(OBJS) $(LDADD) -Llibterm -l$(TERMLIB) $(RELIB) -Llibwchar -lwchar
+  	size ex
+  
+  $(TLIB): libterm/termcap.c libterm/tgoto.c libterm/tputs.c libterm/libterm.h
+  	@cd libterm && $(MAKE) CC="$(CC)" \
+  		COPT="$(CFLAGS) $(WARN) $(CPPFLAGS) $(OSTYPE)"
+  
++ $(WLIB):
++ 	cd libwchar && $(MAKE)
++ 
+  exrecover: exrecover.o $(MALLOC)
+  	$(CC) -o exrecover $(LDFLAGS) exrecover.o $(MALLOC) $(LDADD)
+  
+***************
+*** 286,291 ****
+--- 308,314 ----
+  
+  clean:
+  	@cd libterm && $(MAKE) clean
++ 	@cd libwchar && $(MAKE) clean
+  	@test ! -d libuxre || (cd libuxre && $(MAKE) clean)
+  #	If we dont have ex we cant make it so don't rm ex_vars.h
+  	-rm -f ex exrecover expreserve *.o x*.[cs] core errs trace
+diff -c ex-050325/ex.h ex-050325-patched/ex.h
+*** ex-050325/ex.h Fri Mar  4 12:44:46 2005
+--- ex-050325-patched/ex.h Thu Oct 26 01:52:47 2006
+***************
+*** 267,273 ****
+  #undef	putchar
+  #endif
+  
+! #define	NULL	0
+  #define	EOF	-1
+  
+  #endif	/* !TRACE */
+--- 267,277 ----
+  #undef	putchar
+  #endif
+  
+! #ifndef _MINIX
+! #define	NULL	0
+! #else
+! #include <stddef.h>
+! #endif
+  #define	EOF	-1
+  
+  #endif	/* !TRACE */
+diff -c ex-050325/ex_data.c ex-050325-patched/ex_data.c
+*** ex-050325/ex_data.c Sat Nov 27 01:19:35 2004
+--- ex-050325-patched/ex_data.c Thu Oct 26 02:08:33 2006
+***************
+*** 90,98 ****
+   * These initializations are done char by char instead of as strings
+   * to confuse xstr so it will leave them alone.
+   */
+! #ifdef	notdef
+! char	direct[ONMSZ] =
+! 	{'/', 't', 'm', 'p'}; 
+  #else
+  char	direct[ONMSZ] =
+  	{'/', 'v', 'a', 'r', '/', 't', 'm', 'p' }; 
+--- 90,98 ----
+   * These initializations are done char by char instead of as strings
+   * to confuse xstr so it will leave them alone.
+   */
+! #ifdef	_MINIX
+! char	direct[ONMSZ] =
+! 	{'/', 'u', 's', 'r', '/', 't', 'm', 'p' }; 
+  #else
+  char	direct[ONMSZ] =
+  	{'/', 'v', 'a', 'r', '/', 't', 'm', 'p' }; 
+diff -c ex-050325/ex_io.c ex-050325-patched/ex_io.c
+*** ex-050325/ex_io.c Sat Mar 12 20:52:11 2005
+--- ex-050325-patched/ex_io.c Thu Oct 26 01:55:35 2006
+***************
+*** 583,588 ****
+--- 583,591 ----
+  	deletenone();
+  	clrstats();
+  	first = addr2 + 1;
++ #ifdef _MINIX
++ 	bsize = LBSIZE;
++ #else
+  	if (fstat(io, &statb) < 0 || statb.st_blksize > LBSIZE)
+  		bsize = LBSIZE;
+  	else {
+***************
+*** 590,595 ****
+--- 593,599 ----
+  		if (bsize <= 0)
+  			bsize = LBSIZE;
+  	}
++ #endif
+  	ignore(append(getfile, addr2));
+  	last = dot;
+  	/*
+***************
+*** 903,908 ****
+--- 907,915 ----
+  	cntln = fixedzero ? 0 : addr2 - a1 + 1;
+  	if (cntln == 0 || fixedzero)
+  		return;
++ #ifdef _MINIX
++ 	bsize = LBSIZE;
++ #else
+  	if (fstat(io, &statb) < 0 || statb.st_blksize > LBSIZE)
+  		bsize = LBSIZE;
+  	else {
+***************
+*** 910,915 ****
+--- 917,923 ----
+  		if (bsize <= 0)
+  			bsize = LBSIZE;
+  	}
++ #endif
+  	nib = bsize;
+  	fp = genbuf;
+  	do {
+diff -c ex-050325/ex_tagio.c ex-050325-patched/ex_tagio.c
+*** ex-050325/ex_tagio.c Sat Mar 12 20:52:11 2005
+--- ex-050325-patched/ex_tagio.c Thu Oct 26 01:56:33 2006
+***************
+*** 110,117 ****
+  		return(-1);
+  	}
+  	ibuf = buf;
+! 	if (statb.st_blksize <= MAXBSIZE)
+! 		b_size = statb.st_blksize;
+  	return(fd);
+  }
+  
+--- 110,121 ----
+  		return(-1);
+  	}
+  	ibuf = buf;
+! #ifdef _MINIX
+!     b_size = LBSIZE;
+! #else
+! 	if (statb.st_blksize <= MAXBSIZE)
+! 		b_size = statb.st_blksize;
+! #endif
+  	return(fd);
+  }
+  
+diff -c ex-050325/ex_tty.c ex-050325-patched/ex_tty.c
+*** ex-050325/ex_tty.c Fri Mar  4 12:42:58 2005
+--- ex-050325-patched/ex_tty.c Thu Oct 26 01:59:27 2006
+***************
+*** 110,116 ****
+  #endif
+  #if defined (TAB3)
+  	GT = (tty.c_oflag & TABDLY) != TAB3 && !XT;
+! #elif defined (XTABS)
+  	GT = (tty.c_oflag & TABDLY) != XTABS && !XT;
+  #else
+  	GT = !XT;
+--- 110,116 ----
+  #endif
+  #if defined (TAB3)
+  	GT = (tty.c_oflag & TABDLY) != TAB3 && !XT;
+! #elif defined (XTABS) && !defined (_MINIX)
+  	GT = (tty.c_oflag & TABDLY) != XTABS && !XT;
+  #else
+  	GT = !XT;
+***************
+*** 211,217 ****
+  			 * But as the VSUSP key may be active, we have
+  			 * to override arrow keys either.
+  			 */
+! #ifndef	_CRAY	/* getsid() is a bad syscall on UNICOS */
+  			if (getsid(0) != getpgid(0))
+  #endif	/* !_CRAY */
+  				ldisc = 2;	/* value of NTTYDISC */
+--- 211,217 ----
+  			 * But as the VSUSP key may be active, we have
+  			 * to override arrow keys either.
+  			 */
+! #if !defined(_CRAY) && !defined(_MINIX)	/* getsid() is a bad syscall on UNICOS */
+  			if (getsid(0) != getpgid(0))
+  #endif	/* !_CRAY */
+  				ldisc = 2;	/* value of NTTYDISC */
+diff -c ex-050325/ex_unix.c ex-050325-patched/ex_unix.c
+*** ex-050325/ex_unix.c Sat Mar 12 20:52:11 2005
+--- ex-050325-patched/ex_unix.c Thu Oct 26 01:57:42 2006
+***************
+*** 359,364 ****
+--- 359,367 ----
+  	if (mode & 1) {
+  		if(FIXUNDO)
+  			undap1 = undap2 = addr2+1;
++ #ifdef _MINIX
++ 		bsize = LBSIZE;
++ #else
+  		if (fstat(io, &statb) < 0 || statb.st_blksize > LBSIZE)
+  			bsize = LBSIZE;
+  		else {
+***************
+*** 366,371 ****
+--- 369,375 ----
+  			if (bsize <= 0)
+  				bsize = LBSIZE;
+  		}
++ #endif
+  		ignore(append(getfile, addr2));
+  #ifdef TRACE
+  		if (trace)
+diff -c ex-050325/expreserve.c ex-050325-patched/expreserve.c
+*** ex-050325/expreserve.c Fri Mar  4 12:44:46 2005
+--- ex-050325-patched/expreserve.c Thu Oct 26 02:00:59 2006
+***************
+*** 146,153 ****
+  typedef	short	bbloc;
+  #endif
+  
+! #ifdef	notdef
+! #define TMP	"/tmp"
+  #else
+  #define	TMP	"/var/tmp"
+  #endif
+--- 146,153 ----
+  typedef	short	bbloc;
+  #endif
+  
+! #ifdef _MINIX
+! #define TMP	"/usr/tmp"
+  #else
+  #define	TMP	"/var/tmp"
+  #endif
+diff -c ex-050325/exrecover.c ex-050325-patched/exrecover.c
+*** ex-050325/exrecover.c Fri Mar  4 12:44:46 2005
+--- ex-050325-patched/exrecover.c Thu Oct 26 02:01:24 2006
+***************
+*** 121,127 ****
+  #endif
+  #endif
+  
+! #define	TMP		"/var/tmp"
+  
+  #ifdef	LANGMSG
+  nl_catd	catd;
+--- 121,131 ----
+  #endif
+  #endif
+  
+! #ifdef _MINIX
+! #define	TMP		"/usr/tmp"
+! #else
+! #define	TMP		"/var/tmp"
+! #endif
+  
+  #ifdef	LANGMSG
+  nl_catd	catd;
+diff -c ex-050325/libuxre/Makefile ex-050325-patched/libuxre/Makefile
+*** ex-050325/libuxre/Makefile Thu Mar 24 23:50:09 2005
+--- ex-050325-patched/libuxre/Makefile Thu Oct 26 11:19:35 2006
+***************
+*** 1,4 ****
+! CFLAGS = $(COPT) $(RPMCFLAGS) -I.
+  OBJS = bracket.o _collelem.o _collmult.o regcomp.o regdfa.o regerror.o regexec.o regfree.o regnfa.o regparse.o stubs.o
+  
+  .c.o: ; $(CC) $(CFLAGS) -c $<
+--- 1,4 ----
+! CFLAGS = $(COPT) $(RPMCFLAGS) -I. -I../libwchar -D_MINIX=1 -D_POSIX_SOURCE=1 -wo
+  OBJS = bracket.o _collelem.o _collmult.o regcomp.o regdfa.o regerror.o regexec.o regfree.o regnfa.o regparse.o stubs.o
+  
+  .c.o: ; $(CC) $(CFLAGS) -c $<
+diff -c ex-050325/libuxre/_collelem.c ex-050325-patched/libuxre/_collelem.c
+*** ex-050325/libuxre/_collelem.c Sat Oct 18 19:16:46 2003
+--- ex-050325-patched/libuxre/_collelem.c Thu Oct 26 11:29:11 2006
+***************
+*** 99,111 ****
+  				for (lo = 1; lo < col->nweight; lo++)
+  				{
+  					wuchar_type w;
+  
+  					if ((w = cmp->elem.weight[lo])
+  						== WGHT_SPECIAL)
+  					{
+  						w = spare->weight[0];
+  					}
+! 					spare->weight[lo] = w;
+  				}
+  				return spare;
+  			}
+--- 99,119 ----
+  				for (lo = 1; lo < col->nweight; lo++)
+  				{
+  					wuchar_type w;
++ #ifdef _MINIX
++                     wuchar_type *wuctp;
++ #endif
+  
+  					if ((w = cmp->elem.weight[lo])
+  						== WGHT_SPECIAL)
+  					{
+  						w = spare->weight[0];
+  					}
+! #ifdef _MINIX
+!                     wuctp = spare->weight;
+!                     wuctp[lo] = w;
+! #else
+! 					spare->weight[lo] = w;
+! #endif
+  				}
+  				return spare;
+  			}
+diff -c ex-050325/malloc.c ex-050325-patched/malloc.c
+*** ex-050325/malloc.c Sun Feb 20 22:20:26 2005
+--- ex-050325-patched/malloc.c Thu Oct 26 11:12:10 2006
+***************
+*** 54,59 ****
+--- 54,63 ----
+  #define	catgets(a, b, c, d)	(d)
+  #endif
+  
++ #ifdef _MINIX
++ typedef int intptr_t;
++ #endif
++ 
+  /*
+   * Since ex makes use of sbrk(), the C library's version of malloc()
+   * must be avoided.

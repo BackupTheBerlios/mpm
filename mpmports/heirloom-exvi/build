@@ -1,0 +1,10 @@
+set -e
+
+cd "$SMPM_BUILDROOT/ex-050325"
+
+PATH=/bin:/usr/bin
+export PATH
+
+make install DESTDIR="$SMPM_INSTALLROOT"
+
+exit 0

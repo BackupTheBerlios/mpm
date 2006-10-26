@@ -24,6 +24,7 @@ PACKAGES=\
 	gnu-tar \
 	gnu-textutils \
 	gtk+ \
+	heirloom-exvi \
 	heirloom-sh \
 	heirloom-toolchest \
 	imlib \

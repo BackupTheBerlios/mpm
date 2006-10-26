@@ -1,0 +1,11 @@
+set -e
+
+cd "$SMPM_BUILDROOT/ex-050325"
+patch -p1 < "$SMPM_PATCHES/ex-050325-minix3.patch"
+
+cp "$SMPM_FILES/_longjmp.c" .
+cp -r "$SMPM_FILES/libwchar" .
+
+touch ex_vars.h
+
+exit 0
