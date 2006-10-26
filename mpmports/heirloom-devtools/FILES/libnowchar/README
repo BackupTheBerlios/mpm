@@ -1,0 +1,8 @@
+Heirloom's libwchar is incomplete and is missing a lot of functions that are
+needed for these devtools. With libnowchar, all wchar_t stuff, including
+function calls, is translated to normal, one-byte char.
+
+This works for yacc and lex, but m4 depends too heavily on wchar_t really being
+larger, so m4 is disabled for now until somebody implements proper wchar support
+for Minix.
+

@@ -1,0 +1,8 @@
+set -e
+
+cd "$SMPM_BUILDROOT/heirloom-devtools-051216"
+patch -p1 < "$SMPM_PATCHES/heirloom-devtools-051216-minix3.patch"
+
+cp -r "$SMPM_FILES/libnowchar" .
+
+exit 0

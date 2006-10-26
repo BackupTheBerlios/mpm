@@ -1,0 +1,362 @@
+diff -c heirloom-devtools-051216/lex/Makefile.mk heirloom-devtools-051216-patched/lex/Makefile.mk
+*** heirloom-devtools-051216/lex/Makefile.mk Sun Nov 27 01:02:20 2005
+--- heirloom-devtools-051216-patched/lex/Makefile.mk Thu Oct 26 18:15:46 2006
+***************
+*** 16,22 ****
+  	$(CC) $(LDFLAGS) $(XOBJ) $(LIBS) -o lex
+  
+  libl.a: $(LOBJ)
+! 	$(AR) -rv libl.a $(LOBJ)
+  
+  allprint_w.o: allprint.c
+  	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(WARN) $(WFLAGS) allprint.c -o $@
+--- 16,22 ----
+  	$(CC) $(LDFLAGS) $(XOBJ) $(LIBS) -o lex
+  
+  libl.a: $(LOBJ)
+! 	$(AR) rv libl.a $(LOBJ)
+  
+  allprint_w.o: allprint.c
+  	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(WARN) $(WFLAGS) allprint.c -o $@
+diff -c heirloom-devtools-051216/lex/getopt.c heirloom-devtools-051216-patched/lex/getopt.c
+*** heirloom-devtools-051216/lex/getopt.c Mon Aug  1 22:23:23 2005
+--- heirloom-devtools-051216-patched/lex/getopt.c Thu Oct 26 18:14:20 2006
+***************
+*** 106,112 ****
+   * External function entry point.
+   */
+  int
+! getopt(int argc, char *const *argv, const char *optstring)
+  {
+  	char	c;
+  	char	*cp;
+--- 106,116 ----
+   * External function entry point.
+   */
+  int
+! #ifdef _MINIX
+! ourgetopt(int argc, char *const *argv, const char *optstring)
+! #else
+! getopt(int argc, char *const *argv, const char *optstring)
+! #endif
+  {
+  	char	c;
+  	char	*cp;
+diff -c heirloom-devtools-051216/lex/ldefs.c heirloom-devtools-051216-patched/lex/ldefs.c
+*** heirloom-devtools-051216/lex/ldefs.c Sat Nov 26 18:50:23 2005
+--- heirloom-devtools-051216-patched/lex/ldefs.c Thu Oct 26 18:12:09 2006
+***************
+*** 39,44 ****
+--- 39,45 ----
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <inttypes.h>
++ #include "wchar.h"
+  
+  #ifdef	__sun
+  #include <widec.h>
+***************
+*** 142,148 ****
+   *	 v
+   *       "_<RANGE>09<RANGE>a-z<RANGE>A-Z"
+   */
+! #define	RANGE		0x40ff
+  
+  #define	MAXNCG 1000
+  extern int ncgidtbl;
+--- 143,153 ----
+   *	 v
+   *       "_<RANGE>09<RANGE>a-z<RANGE>A-Z"
+   */
+! #ifdef _MINIX
+! #define RANGE       0xff
+! #else
+! #define	RANGE		0x40ff
+! #endif
+  
+  #define	MAXNCG 1000
+  extern int ncgidtbl;
+diff -c heirloom-devtools-051216/lex/main.c heirloom-devtools-051216-patched/lex/main.c
+*** heirloom-devtools-051216/lex/main.c Sat Nov 26 18:50:23 2005
+--- heirloom-devtools-051216-patched/lex/main.c Thu Oct 26 18:15:14 2006
+***************
+*** 69,77 ****
+  	errorf = stderr;
+  	setlocale(LC_CTYPE, "");
+  #ifdef DEBUG
+! 	while ((c = getopt(argc, argv, "dyctvnewVQ:Y:")) != EOF) {
+! #else
+! 	while ((c = getopt(argc, argv, "ctvnewVQ:Y:")) != EOF) {
+  #endif
+  		switch (c) {
+  #ifdef DEBUG
+--- 69,85 ----
+  	errorf = stderr;
+  	setlocale(LC_CTYPE, "");
+  #ifdef DEBUG
+! # ifdef _MINIX
+! 	while ((c = ourgetopt(argc, argv, "dyctvnewVQ:Y:")) != EOF) {
+! # else
+! 	while ((c = getopt(argc, argv, "dyctvnewVQ:Y:")) != EOF) {
+! # endif
+! #else
+! # ifdef _MINIX
+! 	while ((c = ourgetopt(argc, argv, "ctvnewVQ:Y:")) != EOF) {
+! # else
+! 	while ((c = getopt(argc, argv, "ctvnewVQ:Y:")) != EOF) {
+! # endif
+  #endif
+  		switch (c) {
+  #ifdef DEBUG
+diff -c heirloom-devtools-051216/lex/parser.y heirloom-devtools-051216-patched/lex/parser.y
+*** heirloom-devtools-051216/lex/parser.y Sat Nov 26 18:50:23 2005
+--- heirloom-devtools-051216-patched/lex/parser.y Thu Oct 26 18:10:34 2006
+***************
+*** 43,50 ****
+  void yyerror(char *);
+  
+  #include <ctype.h>
+! #include <wchar.h>
+! #include <inttypes.h>
+  #ifndef	__sun
+  #define	wcsetno(c)	0
+  #endif
+--- 43,50 ----
+  void yyerror(char *);
+  
+  #include <ctype.h>
+! #include <inttypes.h>
+! /*#include <wchar.h>*/
+  #ifndef	__sun
+  #define	wcsetno(c)	0
+  #endif
+diff -c heirloom-devtools-051216/makefile heirloom-devtools-051216-patched/makefile
+*** heirloom-devtools-051216/makefile Thu Nov 10 17:14:07 2005
+--- heirloom-devtools-051216-patched/makefile Thu Oct 26 19:09:46 2006
+***************
+*** 1,4 ****
+! SUBDIRS = yacc lex m4
+  
+  MAKEFILES = $(SUBDIRS:=/Makefile)
+  
+--- 1,6 ----
+! SUBDIRS = libnowchar yacc lex
+! 
+! #m4 disabled
+  
+  MAKEFILES = $(SUBDIRS:=/Makefile)
+  
+diff -c heirloom-devtools-051216/mk.config heirloom-devtools-051216-patched/mk.config
+*** heirloom-devtools-051216/mk.config Fri Dec 16 20:37:39 2005
+--- heirloom-devtools-051216-patched/mk.config Thu Oct 26 21:34:11 2006
+***************
+*** 1,27 ****
+  #
+  # A BSD-compatible install command.
+  #
+! INSTALL=/usr/ucb/install
+  
+  #
+  # Where to place binaries.
+  #
+! BINDIR=/usr/ccs/bin
+  
+  #
+  # Where to place additional binaries that aim at POSIX conformance.
+  #
+! SUSBIN=/usr/5bin/posix
+  
+  #
+  # Where to place libraries.
+  #
+! LIBDIR=/usr/ccs/lib
+  
+  #
+  # Where to place manual pages.
+  #
+! MANDIR=/usr/ccs/share/man
+  
+  #
+  # Binaries are stripped with this command after installation.
+--- 1,27 ----
+  #
+  # A BSD-compatible install command.
+  #
+! INSTALL=/usr/bin/install
+  
+  #
+  # Where to place binaries.
+  #
+! BINDIR=$(DESTDIR)/usr/ccs/bin
+  
+  #
+  # Where to place additional binaries that aim at POSIX conformance.
+  #
+! SUSBIN=$(DESTDIR)/usr/5bin/posix
+  
+  #
+  # Where to place libraries.
+  #
+! LIBDIR=$(DESTDIR)/usr/ccs/lib
+  
+  #
+  # Where to place manual pages.
+  #
+! MANDIR=$(DESTDIR)/usr/ccs/share/man
+  
+  #
+  # Binaries are stripped with this command after installation.
+***************
+*** 39,71 ****
+  # Use -D_GNU_SOURCE for Linux with GNU libc.
+  # Use -D_INCLUDE__STDC_A1_SOURCE for HP-UX.
+  #
+! CPPFLAGS=-D_GNU_SOURCE
+  
+  #
+  # Warning flags for the compiler.
+  #
+! WERROR=-Werror
+! WARN = -Wchar-subscripts -Wformat -Wno-format-y2k -Wimplicit \
+! 	-Wmissing-braces -Wsequence-point -Wreturn-type -Wtrigraphs \
+! 	-Wunused-function -Wunused-label -Wunused-variable -Wunused-value \
+! 	-Wuninitialized -Wmultichar -Wpointer-arith -Wno-missing-braces \
+! 	-Wdeclaration-after-statement $(WERROR)
+! WARN=
+  
+  #
+  # Linker flags.
+  #
+! LDFLAGS=
+  
+  #
+  # Additional libraries to link with.
+  #
+! LIBS=
+  
+  #
+  # It may be necessary to define AR on some systems, e.g. on HP-UX.
+  #
+! #AR=ar
+  
+  #
+  # Use the generated yacc to process .y files. You can set this to another
+--- 39,72 ----
+  # Use -D_GNU_SOURCE for Linux with GNU libc.
+  # Use -D_INCLUDE__STDC_A1_SOURCE for HP-UX.
+  #
+! CPPFLAGS=-D_MINIX=1 -D_POSIX_SOURCE=1 -I../libnowchar
+  
+  #
+  # Warning flags for the compiler.
+  #
+! #WERROR=-Werror
+! WERROR=
+! #WARN = -Wchar-subscripts -Wformat -Wno-format-y2k -Wimplicit \
+! #	-Wmissing-braces -Wsequence-point -Wreturn-type -Wtrigraphs \
+! #	-Wunused-function -Wunused-label -Wunused-variable -Wunused-value \
+! #	-Wuninitialized -Wmultichar -Wpointer-arith -Wno-missing-braces \
+! #	-Wdeclaration-after-statement $(WERROR)
+! WARN= -wo
+  
+  #
+  # Linker flags.
+  #
+! LDFLAGS= -stack 2m -s -L../libnowchar
+  
+  #
+  # Additional libraries to link with.
+  #
+! LIBS=-lnowchar
+  
+  #
+  # It may be necessary to define AR on some systems, e.g. on HP-UX.
+  #
+! AR=ar
+  
+  #
+  # Use the generated yacc to process .y files. You can set this to another
+diff -c heirloom-devtools-051216/yacc/Makefile.mk heirloom-devtools-051216-patched/yacc/Makefile.mk
+*** heirloom-devtools-051216/yacc/Makefile.mk Thu Nov 10 20:34:46 2005
+--- heirloom-devtools-051216-patched/yacc/Makefile.mk Thu Oct 26 17:58:37 2006
+***************
+*** 10,16 ****
+  	$(CC) $(LDFLAGS) $(YOBJ) $(LIBS) -o yacc
+  
+  liby.a: $(LOBJ)
+! 	$(AR) -rv liby.a $(LOBJ)
+  
+  install: all
+  	test -d $(ROOT)$(BINDIR) || mkdir -p $(ROOT)$(BINDIR)
+--- 10,16 ----
+  	$(CC) $(LDFLAGS) $(YOBJ) $(LIBS) -o yacc
+  
+  liby.a: $(LOBJ)
+! 	$(AR) rv liby.a $(LOBJ)
+  
+  install: all
+  	test -d $(ROOT)$(BINDIR) || mkdir -p $(ROOT)$(BINDIR)
+diff -c heirloom-devtools-051216/yacc/getopt.c heirloom-devtools-051216-patched/yacc/getopt.c
+*** heirloom-devtools-051216/yacc/getopt.c Mon Aug  1 22:23:23 2005
+--- heirloom-devtools-051216-patched/yacc/getopt.c Thu Oct 26 16:00:19 2006
+***************
+*** 106,112 ****
+   * External function entry point.
+   */
+  int
+! getopt(int argc, char *const *argv, const char *optstring)
+  {
+  	char	c;
+  	char	*cp;
+--- 106,116 ----
+   * External function entry point.
+   */
+  int
+! #ifdef _MINIX
+! ourgetopt(int argc, char *const *argv, const char *optstring)
+! #else
+! getopt(int argc, char *const *argv, const char *optstring)
+! #endif
+  {
+  	char	c;
+  	char	*cp;
+diff -c heirloom-devtools-051216/yacc/y1.c heirloom-devtools-051216-patched/yacc/y1.c
+*** heirloom-devtools-051216/yacc/y1.c Sat Nov 26 17:37:56 2005
+--- heirloom-devtools-051216-patched/yacc/y1.c Thu Oct 26 15:57:07 2006
+***************
+*** 42,47 ****
+--- 42,51 ----
+  #include <locale.h>
+  #include <stdarg.h>	/* For error() */
+  #include <wchar.h>
++ #ifdef _MINIX
++ #include <limits.h>
++ #define MAXPATHLEN PATH_MAX
++ #endif
+  
+  static void mktbls(void);
+  static void others(void);
+diff -c heirloom-devtools-051216/yacc/y2.c heirloom-devtools-051216-patched/yacc/y2.c
+*** heirloom-devtools-051216/yacc/y2.c Sat Nov 26 17:39:44 2005
+--- heirloom-devtools-051216-patched/yacc/y2.c Thu Oct 26 16:46:44 2006
+***************
+*** 212,218 ****
+  	mem = mem0;
+  	tracemem = mem0;
+  
+! 	while ((c = getopt(argc, argv, "vVdltp:Q:Y:P:b:")) != EOF)
+  		switch (c) {
+  		case 'v':
+  			options |= v_FLAG;
+--- 212,222 ----
+  	mem = mem0;
+  	tracemem = mem0;
+  
+! #ifdef _MINIX
+! 	while ((c = ourgetopt(argc, argv, "vVdltp:Q:Y:P:b:")) != EOF)
+! #else
+! 	while ((c = getopt(argc, argv, "vVdltp:Q:Y:P:b:")) != EOF)
+! #endif
+  		switch (c) {
+  		case 'v':
+  			options |= v_FLAG;

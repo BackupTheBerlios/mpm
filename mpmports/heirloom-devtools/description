@@ -1,0 +1,6 @@
+The Traditional Unix yacc and lex.
+
+Installs to /usr/ccs.
+
+M4 is not included due to its large dependency on wchar support, which is
+lacking on Minix for the moment. Use Minix' m4 or GNU M4 instead.
