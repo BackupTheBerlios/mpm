@@ -1,6 +1,6 @@
 set -e
 
-PATH=/bin:/usr/bin:/usr/X11R6/bin:/usr/local/bin
+PATH=/bin:/usr/bin
 export PATH
 
 cd "$SMPM_BUILDROOT"
@@ -92,5 +92,11 @@ cp kshrc "$SMPM_INSTALLROOT/usr/ast/.kshrc"
 cp profile "$SMPM_INSTALLROOT/root/.profile"
 cp bashrc "$SMPM_INSTALLROOT/root/.bashrc"
 cp kshrc "$SMPM_INSTALLROOT/root/.kshrc"
+
+# /lib is empty
+rm -rf "$SMPM_INSTALLROOT/lib
+
+# symlink /var/log
+ln -s ../usr/log /var/log
 
 exit 0
