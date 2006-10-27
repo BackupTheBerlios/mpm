@@ -1,4 +1,21 @@
-# placeholder for new attributes functionality
-#
-# bin     operator    0555    DIRECTORIES
-# bin     operator    0444    FILES
+bin     operator    0555    DIRECTORIES
+bin     operator    0444    FILES
+-       -           0555    /usr/5bin/*
+-       -           0555    /usr/5bin/s42/*
+-       -           0555    /usr/5bin/posix/*
+-       -           0555    /usr/5bin/posix2001/*
+-       -           0555    /usr/ucb/*
+-       -           0555    /usr/5lib/calprog
+-       -           0555    /usr/5lib/diff3prog
+-       -           0555    /usr/5lib/diffh
+-       -           0555    /usr/5lib/spell/*
+-       -           0444    /usr/5lib/spell/hlista
+-       -           0444    /usr/5lib/spell/hlistb
+-       -           0444    /usr/5lib/spell/hstop
+root    -           4555    /usr/5bin/s42/ps
+root    -           4555    /usr/5bin/posix/ps
+root    -           4555    /usr/5bin/ps
+root    -           4555    /usr/5bin/su
+root    -           4555    /usr/ucb/ps
+root    -           0644    /usr/log/sulog
+nobody  nogroup     0666    /usr/adm/spellhist

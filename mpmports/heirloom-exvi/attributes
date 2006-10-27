@@ -1,4 +1,5 @@
-# placeholder for new attributes functionality
-#
-# bin     operator    0555    DIRECTORIES
-# bin     operator    0444    FILES
+bin     operator    0555    DIRECTORIES
+bin     operator    0444    FILES
+-       -           0555    /usr/5bin/*
+-       -           0555    /usr/5libexec/*
+-       -           0777    /usr/5preserve
