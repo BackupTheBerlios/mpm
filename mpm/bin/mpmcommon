@@ -488,20 +488,9 @@ set_attributes() {
             case "$file" in
                 FILES)
                      find "$reldir" ! -type d | set_mul_attr "$owner" "$group" "$mode"
-#                    test "$owner" != "-" && \
-#                        find "$reldir" ! -type d -exec chown $owner {} \;
-#                    test "$group" != "-" && \
-#                        find "$reldir" ! -type d -exec chgrp $group {} \;
-#                    test "$mode" != "-" && \
-#                        find "$reldir" ! -type d -exec chmod $mode {} \;
                     ;;
                 DIRECTORIES)
-                    test "$owner" != "-" && \
-                        find "$reldir" -type d -exec chown $owner {} \;
-                    test "$group" != "-" && \
-                        find "$reldir" -type d -exec chgrp $group {} \;
-                    test "$mode" != "-" && \
-                        find "$reldir" -type d -exec chmod $mode {} \;
+                     find "$reldir" -type d | set_mul_attr "$owner" "$group" "$mode"
                     ;;
                 *)
                     for i in ./$file ; do
