@@ -224,7 +224,32 @@ action_build_smpm() {
     _output="$MPM_MPMS/$_smpm_basename-$osarch.mpm"
     echostart "creating $_echo_bold$_output$_echo_normal ... "
     cd "$SMPM_INSTALLROOT"
-    tar cf - . | bzip2 -9 -c > "$_output" || error "cannot create package"
+    (
+    # all directories that are not symlinks
+        find . -type d | { read f;      while test -n "$f"; do
+                                            test -h "$f" || echo "$f"
+                                            read f
+                                        done ;
+                         }
+    # all directories that are symlinks
+        find . -type d | { read f;      while test -n "$f"; do
+                                            test -h "$f" && echo "$f"
+                                            read f
+                                        done ;
+                         }
+    # all files that are symlinks
+        find . ! -type d | { read f;    while test -n "$f"; do
+                                            test -h "$f" && echo "$f"
+                                            read f
+                                        done ;
+                           }
+    # all files that are not symlinks
+        find . ! -type d | { read f;    while test -n "$f"; do
+                                            test -h "$f" || echo "$f"
+                                            read f
+                                        done ;
+                           }
+    ) | pax -w -d | bzip2 -9 -c > "$_output" || error "cannot create package"
     echoend "ok"
 
     echostart "cleaning up: "
