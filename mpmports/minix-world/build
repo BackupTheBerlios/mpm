@@ -8,6 +8,7 @@ touch "timestamp"
 
 # be absolutely sure that timestamp is at least one minute older than any newer
 # file
+echo "*** sleeping 60 seconds for correct timestamps"
 sleep 60
 
 echo "*** entering chroot environment and making fresh etcfiles"
