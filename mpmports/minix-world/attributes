@@ -1,6 +1,10 @@
 root    operator    0555    /
 #
 bin     operator    0555    /bin
+bin     operator    0555    /bin/*
+root    -           4555    /bin/install
+root    -           4555    /bin/mount
+root    -           4555    /bin/umount
 #
 root    operator    0555    /boot
 root    operator    0555    /boot/image
@@ -26,9 +30,37 @@ bin     operator    0555    /sbin
 bin     operator    0555    /sbin/*
 #
 root    operator    0555    /usr
+#
 root    operator    0755    /usr/adm
+root    operator    0755    /usr/adm/old
+#
 ast     other       0555    /usr/ast
+#
 bin     operator    0555    /usr/bin
+bin     operator    0555    /usr/bin/*
+root    -           4555    /usr/bin/arp
+root    -           4555    /usr/bin/at
+root    -           4555    /usr/bin/chfn
+root    -           4555    /usr/bin/chsh
+root    -           4555    /usr/bin/crontab
+root    -           4555    /usr/bin/df
+root    -           4555    /usr/bin/elvprsv
+root    -           4555    /usr/bin/elvrec
+root    -           4555    /usr/bin/format
+root    -           4555    /usr/bin/hostaddr
+root    -           4555    /usr/bin/ifconfig
+root    -           4555    /usr/bin/install
+daemon  -           4555    /usr/bin/lpd
+root    -           4555    /usr/bin/mail
+root    -           4555    /usr/bin/passwd
+root    -           4555    /usr/bin/ping
+root    -           4555    /usr/bin/pr_routes
+root    -           4555    /usr/bin/progressbar
+root    -           4555    /usr/bin/su
+-       kmem        2555    /usr/bin/ps
+-       uucp        2555    /usr/bin/term
+-       tty         2555    /usr/bin/write
+#
 root    operator    0555    /usr/etc
 bin     operator    0555    /usr/include
 bin     operator    0555    /usr/lib
