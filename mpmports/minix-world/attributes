@@ -43,4 +43,3 @@ root    operator    0555    /usr/spool
 nobody  nogroup     0777    /usr/tmp
 #
 root    operator    0555    /var
-root    operator    0755    /var/run
