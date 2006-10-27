@@ -127,7 +127,7 @@ bin     operator    0555    /usr/sbin/*
 root    operator    0555    /usr/spool
 root    operator    0711    /usr/spool/at
 root    operator    0711    /usr/spool/at/past
-root    operator    0700    /usr/spool/ctrontabs
+root    operator    0700    /usr/spool/crontabs
 root    uucp        0775    /usr/spool/locks
 daemon  daemon      0700    /usr/spool/lpd
 root    operator    0755    /usr/spool/mail
