@@ -1,0 +1,10 @@
+name:       xli
+version:    1.16
+release:    1
+source:     http://ftp.x.org/contrib/applications/xli.1.16.tar.gz
+filesize:   287692
+md5sum:     0123456789abcdef0123456789abcdef
+license:    X11
+summary:    xli (xloadimage), xview, xsetbg
+os:         yes
+arch:       yes

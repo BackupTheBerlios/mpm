@@ -1,0 +1,12 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+
+PATH=/bin:/usr/bin:/usr/X11R6/bin
+export PATH
+
+xmkmf
+make
+make install install.man DESTDIR="$SMPM_INSTALLROOT"
+
+exit 0

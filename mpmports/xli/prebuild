@@ -1,0 +1,6 @@
+set -e
+
+cd "$SMPM_BUILDROOT"
+patch -p1 < "$SMPM_PATCHES/xli-1.16-minix3.patch"
+
+exit 0

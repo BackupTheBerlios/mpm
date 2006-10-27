@@ -1,0 +1,133 @@
+diff -c xli/Imakefile xli-patched/Imakefile
+*** xli/Imakefile Fri Jul 29 01:45:10 1994
+--- xli-patched/Imakefile Fri Oct 27 01:13:00 2006
+***************
+*** 10,16 ****
+        CCOPTIONS = -Aa -D_HPUX_SOURCE
+  #endif
+  
+!     SYSPATHFILE = $(XAPPLOADDIR)/Xloadimage
+          DEPLIBS = $(DEPXLIB)
+  LOCAL_LIBRARIES = $(XLIB)
+  SYS_LIBRARIES   = -lm
+--- 10,16 ----
+        CCOPTIONS = -Aa -D_HPUX_SOURCE
+  #endif
+  
+!     SYSPATHFILE = $(DESTDIR)$(XAPPLOADDIR)/Xloadimage
+          DEPLIBS = $(DEPXLIB)
+  LOCAL_LIBRARIES = $(XLIB)
+  SYS_LIBRARIES   = -lm
+***************
+*** 27,35 ****
+  ComplexProgramTarget_2(xlito,,)
+  
+  install:: $(SYSPATHFILE)
+! 	$(RM) $(BINDIR)/xview $(BINDIR)/xsetbg
+! 	$(LN) $(BINDIR)/xli $(BINDIR)/xview
+! 	$(LN) $(BINDIR)/xli $(BINDIR)/xsetbg
+  
+  $(SYSPATHFILE):
+  	@echo "*** Creating default $(SYSPATHFILE) since you"
+--- 27,35 ----
+  ComplexProgramTarget_2(xlito,,)
+  
+  install:: $(SYSPATHFILE)
+! 	$(RM) $(DESTDIR)$(BINDIR)/xview $(DESTDIR)$(BINDIR)/xsetbg
+! 	$(LN) xli $(DESTDIR)$(BINDIR)/xview
+! 	$(LN) xli $(DESTDIR)$(BINDIR)/xsetbg
+  
+  $(SYSPATHFILE):
+  	@echo "*** Creating default $(SYSPATHFILE) since you"
+***************
+*** 37,42 ****
+--- 37,43 ----
+  	@echo "*** and names to look for images.  You probably want to edit"
+  	@echo "*** it for your site.  See the xloadimage manual page for"
+  	@echo "*** details on the contents of this file."
++ 	mkdir -p $(DESTDIR)$(XAPPLOADDIR)
+  	cp /dev/null $(SYSPATHFILE)
+  	echo "path=$(INCDIR)/bitmaps $(INCDIR)/images" 		>> $(SYSPATHFILE)
+  	echo "extension=.gif .jpg .rle .csun .msun .sun .face .xbm .bm" 		>>$(SYSPATHFILE)
+diff -c xli/path.c xli-patched/path.c
+*** xli/path.c Fri Jul 29 01:13:26 1994
+--- xli-patched/path.c Fri Oct 27 00:51:25 2006
+***************
+*** 18,24 ****
+  #include <pwd.h>
+  #endif
+  #include <errno.h>
+! #if defined(SYSV) || defined(MSDOS) || defined(linux)
+  #include <unistd.h>
+  #endif
+  
+--- 18,24 ----
+  #include <pwd.h>
+  #endif
+  #include <errno.h>
+! #if defined(SYSV) || defined(MSDOS) || defined(linux) || defined(_MINIX)
+  #include <unistd.h>
+  #endif
+  
+diff -c xli/rlelib.c xli-patched/rlelib.c
+*** xli/rlelib.c Fri Jul 23 08:18:45 1993
+--- xli-patched/rlelib.c Fri Oct 27 00:52:07 2006
+***************
+*** 12,18 ****
+   */
+  
+  #include "xli.h"
+! #include <varargs.h>
+  #include <ctype.h>
+  #include "rle.h"
+  
+--- 12,20 ----
+   */
+  
+  #include "xli.h"
+! #ifndef _MINIX
+! #include <varargs.h>
+! #endif
+  #include <ctype.h>
+  #include "rle.h"
+  
+diff -c xli/root.c xli-patched/root.c
+*** xli/root.c Fri Jul 29 01:13:27 1994
+--- xli-patched/root.c Fri Oct 27 00:52:44 2006
+***************
+*** 171,177 ****
+       */
+  
+      for (s= ServerVendor(disp); *s; s++)
+!       if (!strncmp(s, "DECWINDOWS", 10) && xlistrstr(s,"OSF/1") == NULL)
+  	root= getDECRootWindow(disp, root);
+  
+      /* Added for window managers like swm and tvtwm that follow solbourne's 
+--- 171,177 ----
+       */
+  
+      for (s= ServerVendor(disp); *s; s++)
+!       if (!strncmp(s, "DECWINDOWS", 10) && xlistrstr(s,"OSF/1") == 0)
+  	root= getDECRootWindow(disp, root);
+  
+      /* Added for window managers like swm and tvtwm that follow solbourne's 
+diff -c xli/window.c xli-patched/window.c
+*** xli/window.c Fri Jul 29 01:13:27 1994
+--- xli-patched/window.c Fri Oct 27 00:53:20 2006
+***************
+*** 22,28 ****
+  #include <stropts.h>
+  #include <poll.h>
+  #endif
+! #ifdef _AIX
+  #include <sys/select.h>
+  #endif
+  
+--- 22,28 ----
+  #include <stropts.h>
+  #include <poll.h>
+  #endif
+! #if defined(_AIX) || defined(_MINIX)
+  #include <sys/select.h>
+  #endif
+  

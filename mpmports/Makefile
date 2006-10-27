@@ -46,6 +46,7 @@ PACKAGES=\
 	progmtr \
 	putty \
 	rxvt \
+	xli \
 	xorg6 \
 	vim \
 	windowmaker \
