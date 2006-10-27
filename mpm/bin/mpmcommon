@@ -451,6 +451,26 @@ progress2() {
     progress NULL "$1"
 }
 
+set_file_attr() {
+    owner="$1"
+    group="$2"
+    mode="$3"
+    i="$4"
+    if test ! -h $i ; then
+        test "$owner" != "-" && chown $owner $i
+        test "$group" != "-" && chgrp $group $i
+        test "$mode"  != "-" && chmod $mode  $i
+    fi
+}
+
+set_mul_attr() {
+    read i
+    while test -n "$i" ; do
+        set_file_attr "$1" "$2" "$3" "$i"
+        read i
+    done
+}
+
 set_attributes() {
     reldir="$1"
 
@@ -467,12 +487,13 @@ set_attributes() {
             esac
             case "$file" in
                 FILES)
-                    test "$owner" != "-" && \
-                        find "$reldir" ! -type d -exec chown $owner {} \;
-                    test "$group" != "-" && \
-                        find "$reldir" ! -type d -exec chgrp $group {} \;
-                    test "$mode" != "-" && \
-                        find "$reldir" ! -type d -exec chmod $mode {} \;
+                     find "$reldir" ! -type d | set_mul_attr "$owner" "$group" "$mode"
+#                    test "$owner" != "-" && \
+#                        find "$reldir" ! -type d -exec chown $owner {} \;
+#                    test "$group" != "-" && \
+#                        find "$reldir" ! -type d -exec chgrp $group {} \;
+#                    test "$mode" != "-" && \
+#                        find "$reldir" ! -type d -exec chmod $mode {} \;
                     ;;
                 DIRECTORIES)
                     test "$owner" != "-" && \
@@ -483,9 +504,9 @@ set_attributes() {
                         find "$reldir" -type d -exec chmod $mode {} \;
                     ;;
                 *)
-                    test "$owner" != "-" && chown $owner ./$file
-                    test "$group" != "-" && chgrp $group ./$file
-                    test "$mode"  != "-" && chmod $mode ./$file
+                    for i in ./$file ; do
+                        set_file_attr "$owner" "$group" "$mode" "$i"
+                    done
                     ;;
             esac
             read owner group mode file
