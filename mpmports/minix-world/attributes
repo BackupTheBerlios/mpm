@@ -106,10 +106,21 @@ bin     operator    0555    /usr/local/man/*
 bin     operator    0444    /usr/local/man/man1/*
 #
 root    operator    0755    /usr/log
+#
 bin     operator    0555    /usr/man
+bin     operator    0555    /usr/man/*
+-       -           0444    /usr/man/macros.9
+-       -           0444    /usr/man/template.1
+root    -           0644    /usr/man/whatis
+bin     operator    0444    /usr/man/man?/*
+#
 bin     operator    0555    /usr/mdec
+bin     operator    0444    /usr/mdec/*
+#
 nobody  nogroup     0777    /usr/preserve
+#
 root    operator    0755    /usr/run
+#
 bin     operator    0555    /usr/sbin
 root    operator    0555    /usr/spool
 nobody  nogroup     0777    /usr/tmp
