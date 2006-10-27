@@ -97,6 +97,14 @@ bin     operator    0444    /usr/lib/keymaps/*
 bin     operator    0444    /usr/lib/m2/*
 #
 bin     operator    0555    /usr/local
+bin     operator    0555    /usr/local/*
+root    -           -       /usr/local/etc
+root    operator    0555    /usr/local/etc/rc.d
+bin     operator    0444    /usr/local/include/*
+bin     operator    0444    /usr/local/lib/*
+bin     operator    0555    /usr/local/man/*
+bin     operator    0444    /usr/local/man/man1/*
+#
 root    operator    0755    /usr/log
 bin     operator    0555    /usr/man
 bin     operator    0555    /usr/mdec
