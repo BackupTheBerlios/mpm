@@ -99,4 +99,8 @@ rm -rf "$SMPM_INSTALLROOT/lib
 # symlink /var/log
 ln -s ../usr/log "$SMPM_INSTALLROOT/var/log"
 
+# symlink /var/run
+rm -rf "$SMPM_INSTALLROOT/var/run"
+ln -s ../usr/run "$SMPM_INSTALLROOT/var/run"
+
 exit 0
