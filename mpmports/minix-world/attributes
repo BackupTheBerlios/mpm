@@ -62,8 +62,22 @@ root    -           4555    /usr/bin/su
 -       tty         2555    /usr/bin/write
 #
 root    operator    0555    /usr/etc
+root    operator    0555    /usr/etc/*
+#
 bin     operator    0555    /usr/include
+bin     operator    0555    /usr/include/*
+-       -           0444    /usr/include/*.h
+bin     operator    0444    /usr/include/arpa/*
+bin     operator    0444    /usr/include/ibm/*
+bin     operator    0444    /usr/include/minix/*
+bin     operator    0444    /usr/include/net/*
+-       -           0555    /usr/include/net/gen
+bin     operator    0444    /usr/include/net/gen/*
+bin     operator    0444    /usr/include/netinet/*
+bin     operator    0444    /usr/include/sys/*
+#
 bin     operator    0555    /usr/lib
+#
 bin     operator    0555    /usr/local
 root    operator    0755    /usr/log
 bin     operator    0555    /usr/man
