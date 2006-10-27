@@ -97,6 +97,7 @@ cp kshrc "$SMPM_INSTALLROOT/root/.kshrc"
 rm -rf "$SMPM_INSTALLROOT/lib"
 
 # symlink /var/log
+rm -rf "$SMPM_INSTALLROOT/var/log"
 ln -s ../usr/log "$SMPM_INSTALLROOT/var/log"
 
 # symlink /var/run
