@@ -1,3 +1,7 @@
 set -e
 
+echo "*** creating devices"
+cd "$MPM_INSTALLROOT/dev"
+"$MPM_INSTALLROOT/usr/bin/MAKEDEV" std
+
 exit 0
