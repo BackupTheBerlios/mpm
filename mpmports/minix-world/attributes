@@ -77,6 +77,24 @@ bin     operator    0444    /usr/include/netinet/*
 bin     operator    0444    /usr/include/sys/*
 #
 bin     operator    0555    /usr/lib
+bin     operator    0555    /usr/lib/*
+root    operator    0444    /usr/lib/crontab
+-       -           0444    /usr/lib/descr
+-       -           0444    /usr/lib/fortune.dat
+-       -           0444    /usr/lib/libmath.b
+bin     operator    0444    /usr/lib/advent/*
+bin     operator    0444    /usr/lib/cawf/*
+bin     operator    0444    /usr/lib/dict/*
+bin     operator    0444    /usr/lib/ego/*
+bin     operator    0444    /usr/lib/fonts/*
+bin     operator    0444    /usr/lib/i386/*
+-       -           0555    /usr/lib/i386/as
+-       -           0555    /usr/lib/i386/cg
+bin     operator    0444    /usr/lib/i86/*
+-       -           0555    /usr/lib/i86/as
+-       -           0555    /usr/lib/i86/cg
+bin     operator    0444    /usr/lib/keymaps/*
+bin     operator    0444    /usr/lib/m2/*
 #
 bin     operator    0555    /usr/local
 root    operator    0755    /usr/log
