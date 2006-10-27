@@ -107,4 +107,7 @@ ln -s ../usr/run "$SMPM_INSTALLROOT/var/run"
 # there is no flex installed
 rm -rf "$SMPM_INSTALLROOT/usr/lib/flex"
 
+# create /tmp
+mkdir "$SMPM_INSTALLROOT/tmp"
+
 exit 0

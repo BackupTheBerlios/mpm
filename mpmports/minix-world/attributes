@@ -29,6 +29,8 @@ root    operator    0700    /root
 bin     operator    0555    /sbin
 bin     operator    0555    /sbin/*
 #
+nobody  nogroup     0777    /tmp
+#
 root    operator    0555    /usr
 #
 root    operator    0755    /usr/adm
