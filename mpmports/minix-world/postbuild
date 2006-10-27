@@ -110,4 +110,7 @@ rm -rf "$SMPM_INSTALLROOT/usr/lib/flex"
 # create /tmp
 mkdir "$SMPM_INSTALLROOT/tmp"
 
+# create /dev
+mkdir "$SMPM_INSTALLROOT/dev"
+
 exit 0

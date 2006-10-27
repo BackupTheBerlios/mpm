@@ -11,6 +11,8 @@ root    operator    0555    /boot/image
 root    operator    0400    /boot/image/*
 root    operator    0555    /boot/rescue
 #
+root    operator    0555    /dev
+#
 root    operator    0555    /etc
 root    operator    0444    /etc/*
 -       -           0600    /etc/shadow
