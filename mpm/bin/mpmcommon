@@ -158,6 +158,7 @@ check_tempdir() {
 
 # ALWAYS call this before doing anything serious
 check_system() {
+    gzip=/usr/gnu/bin/gzip
     test "$_check_applications" = "no" || check_applications
     check_arch_os
     case "$os" in
@@ -172,107 +173,41 @@ check_system() {
     fi
 }
 
+# search_path PATH file
+search_path() {
+    for p in `echo $1 | tr ':' ' '` ; do
+        pp=$p/$2
+        test -f $pp -a -x $pp && echomid "$2 " && break
+    done
+}
+
 # checking applications that are needed for proper operation of mpm
 check_applications() {
 #    check_tempdir      forget about the tempdir and test tar like touch etc.
 
     echostart "checking applications: "
 
-    r=`( echo "qwerty" | grep "wer" ) 2>/dev/null`
-    test -n "$r" || error "cannot find grep"
-    echomid "grep "
+    for r in grep cut wc sed touch tar bzip2 basename tr expr patch find cp \
+             mkdir rm pax rev pax rev pwd ; do
+        search_path "$PATH" $r || error "cannot find $r"
+    done
 
-    r=`( echo "1:2:3" | cut -d ':' -f 2 ) 2>/dev/null`
-    test "$r" -eq 2 || error "cannot find cut"
-    echomid "cut "
-
-    r=`( echo "1 2 3" | wc -w ) 2>/dev/null`
-    test "$r" -eq 3 || error "cannot find wc"
-    echomid "wc "
-
-    r=`( echo "bilbo" | sed 's/bilbo/frodo/' ) 2>/dev/null`
-    test "$r" = "frodo" || error "cannot find sed"
-    echomid "sed "
-
-    r=`( touch 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find touch"
-    echomid "touch "
-
-    r=`( tar 2>&1 ) 2>/dev/null;`
-    test -n "$r" || error "cannot find tar"
-    echomid "tar "
-
-    r=`( echo "gandalf" | bzip2 -9c | bzip2 -dc ) 2>/dev/null`
-    test "$r" = "gandalf" || error "cannot find bzip2"
-    echomid "bzip2 "
-
-    r=`( basename /path/file.ext .ext ) 2>/dev/null`
-    test "$r" = "file" || error "cannot find basename"
-    echomid "basename "
-
-    urlget="urlget"
-    r=`( urlget 2>&1 ) 2>/dev/null`
-    test -n "$r" || unset urlget
-    wget="wget"
-    r=`( wget --version >/dev/null 2>&1 && echo yes ) 2>/dev/null`
-    test -n "$r" || unset wget
-    test -z "$wget" -a -z "$urlget" && error "cannot find urlget or wget"
-    download="$wget"
-    test -z "$download" && download="$urlget"
-    echomid "$download "
-    test "$download" = "wget" && download="wget -O -"
-
-    r=`( echo "SAM" | tr '[A-Z]' '[a-z]' ) 2>/dev/null`
-    test "$r" = "sam" || error "cannot find tr"
-    echomid "tr "
-
-    rp=`( /usr/bin/uname -p ) 2>/dev/null`
-    rs=`( /usr/bin/uname -s ) 2>/dev/null`
-    test -n "$rp" -a -n "$rs" || error "cannot find uname"
+    search_path "$PATH" uname || error "cannot find uname"
+    rp=`( uname -p ) 2>/dev/null`
+    rs=`( uname -s ) 2>/dev/null`
+    test -n "$rp" -a -n "$rs" || error "uname does not return useful values"
     test "$rp" != "unknown" || error "uname -p returns unknown"
     test "$rs" != "unknown" || error "uname -s returns unknown"
-    echomid "uname "
 
-    r=`( expr 6 \* 7 ) 2>/dev/null`
-    test "$r" -eq 42 || error "cannot find expr"
-    echomid "expr "
+    search_path "/usr/gnu/bin" "gzip" || error "cannot find gzip"
 
-    r=`( echo "gandalf" | gzip -9c | gzip -dc ) 2>/dev/null`
-    test "$r" = "gandalf" || error "cannot find gzip"
-    echomid "gzip "
+    download=urlget
+    search_path "$PATH" urlget
 
-    r=`( patch --help 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find patch"
-    echomid "patch "
-
-    r=`( find $MPM_HOME/bin ) 2>/dev/null`
-    test -n "$r" || error "cannot find find"
-    echomid "find "
-
-    r=`( cp 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find cp"
-    echomid "cp "
-
-    r=`( mkdir 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find mkdir"
-    echomid "mkdir "
-
-    r=`( rm 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find rm"
-    echomid "rm "
-
-    # minix tar cannot handle extracting of selected files, so i need pax
-    r=`( pax -h 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find pax"
-    echomid "pax "
-
-    r=`( echo "ring" | rev ) 2>/dev/null`
-    test "$r" = "gnir" || error "cannot find rev"
-    echomid "rev "
-
-    r=`( pwd 2>&1 ) 2>/dev/null`
-    test -n "$r" || error "cannot find pwd"
-    echomid "pwd "
+    if test "$?" -ne 0 ; then
+        search_path "$PATH" wget || error "cannot find urlget or wget"
+        download="wget -O -"
+    fi
 
     echoend ""
 }
@@ -434,8 +369,7 @@ filesize() {
 # progress <filename>
 # progress NULL <size>
 progress() {
-    r=`( /usr/local/bin/progmtr --help 2>&1 ) 2>/dev/null`
-    if test -z "$r" ; then
+    if test ! -f "/usr/local/bin/progmtr" ; then
         cat
     else
         if test -z "$2" ; then

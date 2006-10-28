@@ -159,7 +159,7 @@ action_build_smpm() {
             *.tar.bz2|*.tbz2|*.tbz)
                 cat "$_src_tarball" | progress2 "$_d_filesize" | bzcat | tar oxf - ;;
             *.tar.gz|*.tgz)
-                cat "$_src_tarball" | progress2 "$_d_filesize" | gzip -dc | tar oxf - ;;
+                cat "$_src_tarball" | progress2 "$_d_filesize" | $gzip -dc | tar oxf - ;;
             *.tar)
                 cat "$_src_tarball" | progress2 "$_d_filesize" | tar oxf - ;;
             *)  error "don't know how to unpack $_src_tarball"          ;;
