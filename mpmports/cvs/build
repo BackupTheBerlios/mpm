@@ -5,11 +5,11 @@ cd "$SMPM_BUILDROOT/cvs-1.11.22"
 PATH=/bin:/usr/bin
 export PATH
 
+CC="cc -stack 8m -s" \
 sh configure --prefix=/usr/local \
              --disable-dependency-tracking \
              --disable-nls \
 
-binsizes xxl
 make
 
 DESTDIR="$SMPM_INSTALLROOT" \

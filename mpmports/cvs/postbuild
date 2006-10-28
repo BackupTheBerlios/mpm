@@ -1,7 +1,3 @@
 set -e
 
-# install-strip does not seem to work properly
-strip "$SMPM_INSTALLROOT/usr/local/bin/cvs"
-chmem =`expr 8 \* 1024 \* 1024` "$SMPM_INSTALLROOT/usr/local/bin/cvs"
-
 exit 0
