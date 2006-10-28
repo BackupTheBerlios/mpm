@@ -113,4 +113,7 @@ mkdir "$SMPM_INSTALLROOT/tmp"
 # create /dev
 mkdir "$SMPM_INSTALLROOT/dev"
 
+# copy boot
+cp "$SMPM_INSTALLROOT/usr/mdec/boot" "$SMPM_INSTALLROOT/boot/boot"
+
 exit 0
