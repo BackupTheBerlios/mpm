@@ -223,7 +223,7 @@ check_arch_os() {
 }
 
 bzcat() {
-    bzip2 -dc $@
+    $bzip2 -dc $@
 }
 
 # $1 = directory
