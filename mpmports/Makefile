@@ -63,11 +63,11 @@ all:
 allsrcmpm:
 	@test -d CVS && echo "please use cvs export first, to avoid CVS" \
 	             && echo "directories inside the packages" && exit 1
-	@test -d work  || mkdir work
+	@test -d WORK  || mkdir WORK
 	@test -d SMPMS || mkdir SMPMS
 	@set -e && for i in $(PACKAGES) ; do \
 		echo "[[[ creating .src.mpm for $$i ]]]" ; \
-		MPM_WORK=`pwd`/work MPM_SMPMS=`pwd`/SMPMS \
+		MPM_WORK=`pwd`/WORK MPM_SMPMS=`pwd`/SMPMS \
 		/usr/mpm/bin/mpmsrc create $$i ; \
 	done
 
