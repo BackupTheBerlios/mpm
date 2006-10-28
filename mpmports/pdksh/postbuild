@@ -1,5 +1,6 @@
 set -e
 
+mkdir "$SMPM_INSTALLROOT/usr/local/etc"
 cp "$SMPM_FILES/kshrc" "$SMPM_INSTALLROOT/usr/local/etc/kshrc"
 
 exit 0
