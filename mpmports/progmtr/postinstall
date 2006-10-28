@@ -1,3 +1,5 @@
 set -e
 
+makewhatis /usr/local/man
+
 exit 0
