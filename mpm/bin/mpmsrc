@@ -74,7 +74,7 @@ action_create_smpm() {
     _output="$MPM_SMPMS/$_smpm_basename.src.mpm"
     echostart "creating $_echo_bold$_output$_echo_normal ... "
     cd "$_base/.."
-    tar cf - "$_smpm_basename" | bzip2 -9 -c > "$_output" || error "cannot create package"
+    tar cf - "$_smpm_basename" | $bzip2 -9 -c > "$_output" || error "cannot create package"
     echoend "ok"
 
     echostart "cleaning up: "
@@ -249,7 +249,7 @@ action_build_smpm() {
                                             read f
                                         done ;
                            }
-    ) | pax -w -d | bzip2 -9 -c > "$_output" || error "cannot create package"
+    ) | pax -w -d | $bzip2 -9 -c > "$_output" || error "cannot create package"
     echoend "ok"
 
     echostart "cleaning up: "

@@ -12,6 +12,8 @@ if test "$_myname" = "mpmcommon" ; then
     exit 2
 fi
 
+PATH=/bin:/usr/bin export PATH
+
 MPM_WORK=${MPM_WORK-"$MPM_HOME/work"}
 export MPM_WORK
 MPM_DB=${MPM_DB-"$MPM_HOME/db"}
@@ -159,6 +161,7 @@ check_tempdir() {
 # ALWAYS call this before doing anything serious
 check_system() {
     gzip=/usr/gnu/bin/gzip
+    bzip2=/usr/local/bin/bzip2
     test "$_check_applications" = "no" || check_applications
     check_arch_os
     case "$os" in
@@ -187,7 +190,7 @@ check_applications() {
 
     echostart "checking applications: "
 
-    for r in grep cut wc sed touch tar bzip2 basename tr expr patch find cp \
+    for r in grep cut wc sed touch tar basename tr expr patch find cp \
              mkdir rm pax rev pax rev pwd ; do
         search_path "$PATH" $r || error "cannot find $r"
     done
@@ -199,6 +202,7 @@ check_applications() {
     test "$rp" != "unknown" || error "uname -p returns unknown"
     test "$rs" != "unknown" || error "uname -s returns unknown"
 
+    search_path "/usr/local/bin" "bzip2" || error "cannot find bzip2"
     search_path "/usr/gnu/bin" "gzip" || error "cannot find gzip"
 
     download=urlget
