@@ -9,7 +9,6 @@ PACKAGES=\
 	gnu-bash \
 	gnu-coreutils \
 	gnu-diffutils \
-	gnu-fileutils \
 	gnu-findutils \
 	gnu-grep \
 	gnu-gzip \
@@ -20,9 +19,7 @@ PACKAGES=\
 	gnu-make \
 	gnu-ncurses \
 	gnu-sed \
-	gnu-shutils \
 	gnu-tar \
-	gnu-textutils \
 	gtk+ \
 	heirloom-devtools \
 	heirloom-exvi \
