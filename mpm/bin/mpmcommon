@@ -12,7 +12,8 @@ if test "$_myname" = "mpmcommon" ; then
     exit 2
 fi
 
-PATH=/bin:/usr/bin export PATH
+PATH=/bin:/usr/bin
+export PATH
 
 MPM_WORK=${MPM_WORK-"$MPM_HOME/work"}
 export MPM_WORK
