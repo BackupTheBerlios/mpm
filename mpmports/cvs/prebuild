@@ -1,6 +1,6 @@
 set -e
 
 cd "$SMPM_BUILDROOT/cvs-1.11.22"
-patch -s -p1 < "$SMPM_PATCHES/cvs-1.11.22-minix3.patch"
+patch -p1 < "$SMPM_PATCHES/cvs-1.11.22-minix3.patch"
 
 exit 0
