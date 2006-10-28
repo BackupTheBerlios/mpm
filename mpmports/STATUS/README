@@ -1,0 +1,17 @@
+This directory contains several files that denote the status of all the
+packages.
+
+up-to-date      These packages are up to par with latest MPM developments
+                and could be used as a basis for a release.
+
+in-progress     The listed packages need to be updated to match the latest
+                MPM developments. This could be a missing or incomplete
+                attributes file or something regarding future development.
+
+halted          Those listed as halted are not ported completely. Either
+                because it is too much work, I lost interest, or both.
+
+obsolete        Packages are considered obsolete if other packages contain
+                the same binaries or libraries or if another port implements
+                similar functionality that obsoletes maintaining this
+                particular package.
