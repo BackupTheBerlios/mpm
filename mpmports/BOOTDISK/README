@@ -89,6 +89,14 @@ spacesaver. Depending on the number of compiled-in utilities, savings range
 from 60-75% and that does NOT include the additional bzip2 compression.
 Perhaps I should add service and sh to lazybox.
 
+* Start with less devices in /dev within imgrd
+
+Removing all the devices saves ~16kB. A few cannot be removed, namely: imgrd,
+rescue, null and probably a few tty's. After that, put the MAKEDEV script in
+/usr/bin and have /usr/etc execute it. A compressed MAKEDEV script is just a
+little over 2kB. A handmade script that makes just that what we need could
+even be a couple of hundred bytes smaller.
+
 * bunzipping bootloader
 
 Rewrite the bootloader and have it uncompress the kernel image on-the-fly. This
