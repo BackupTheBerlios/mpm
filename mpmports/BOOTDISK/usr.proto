@@ -23,6 +23,12 @@ d--755 0 0
         df ---755 0 0 /usr/bin/df
         ps ---755 0 0 /usr/bin/ps
         mkdir ---755 0 0 /usr/bin/mkdir
+        MAKEDEV ---755 0 0 /usr/bin/MAKEDEV
+        mknod ---755 0 0 /usr/bin/mknod
+        chmod ---755 0 0 /usr/bin/chmod
+        chown ---755 0 0 /usr/bin/chown
+        chgrp ---755 0 0 /usr/bin/chgrp
+        tr ---755 0 0 /usr/bin/tr
 	$
 	etc d--755 0 0
 	$

@@ -23,4 +23,4 @@ echo "${_green}ok$_normal"
 # exec /bin/sh /usr/etc/rc
 
 echo ""
-intr /bin/sh -i
+exec intr /bin/sh -i
