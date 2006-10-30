@@ -9,10 +9,10 @@ all:
 
 .PHONY: fd0 diskimage
 
-usr.bz2:
+usr.bz2: usr.proto
 	@sh mk.usr.sh
 
-root:	usr.bz2
+root:	usr.bz2 root.proto rc.root
 	@sh mk.root.sh
 
 memory:	root
@@ -29,4 +29,4 @@ diskimage: fd0
 	dd if=/dev/fd0 of=bootdisk.img bs=1024 count=1440
 
 clean:
-	rm -f *~ bootdisk.img usr usr.bz2 root root.s bintoc memory .*~ work/*
+	rm -f *~ bootdisk.img usr usr.bz2 root root.s bintoc memory .*~ work/* image
