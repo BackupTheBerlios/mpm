@@ -95,7 +95,9 @@ Removing all the devices saves ~16kB. A few cannot be removed, namely: imgrd,
 rescue, null and probably a few tty's. After that, put the MAKEDEV script in
 /usr/bin and have /usr/etc execute it. A compressed MAKEDEV script is just a
 little over 2kB. A handmade script that makes just that what we need could
-even be a couple of hundred bytes smaller.
+even be a couple of hundred bytes smaller. Perhaps /dev could be removed and
+symlinked to /usr/dev before running MAKEDEV. That way, we could drasticly
+decrease the number of inodes of the root filesystem.
 
 * bunzipping bootloader
 
