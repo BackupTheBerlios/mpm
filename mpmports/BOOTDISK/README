@@ -107,3 +107,14 @@ contains an imgrd that has all the applications installed without the need for
 additional uncompression and /dev/rescue tricks). Cleaner, but a lot harder
 to implement and currently not worth the effort.
 
+* use 7zip
+
+Perhaps less challenging than having a bunzipping bootloader is porting
+7zip/LZMA to Minix. Unless the (de)compression program binary is a lot larger
+than bzip2, this could be usefull, as 7zip is able to compress up to 15%
+smaller than bzip2 (relative to the compressed bz2 filesize).
+
+* 7unzipping bootloader
+
+et cetera... :)
+
