@@ -9,12 +9,24 @@ all:
 
 .PHONY: fd0 diskimage
 
-fd0:
-	@./mk.fd0.sh
+usr.bz2:
+	@sh mk.usr.sh
+
+root:	usr.bz2
+	@sh mk.root.sh
+
+memory:	root
+	@sh mk.memory.sh
+
+image: memory
+	@sh mk.image.sh
+
+fd0: image
+	@sh mk.fd0.sh
 
 diskimage: fd0
 	@echo "*** Extracting bootdisk.img from /dev/fd0"
 	dd if=/dev/fd0 of=bootdisk.img bs=1024 count=1440
 
 clean:
-	rm -f *~ bootdisk.img usr usr.bz2
+	rm -f *~ bootdisk.img usr usr.bz2 root root.s bintoc memory .*~ work/*

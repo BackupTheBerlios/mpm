@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+_black="[30m" _red="[31m" _green="[32m" _yellow="[33m" _blue="[34m"
+_purple="[35m" _cyan="[36m" _white="[37m" _bold="[1m" _normal="[0m"
+_reset="$_normal[39m"
+
+echo "${_purple}starting rescue, size 4096kB"
+service up /bin/rescue -dev /dev/rescue -args 4096 -period 4HZ
+echo "uncompressing image to /dev/rescue"
+bzip2 -dc /usr.bz2 > /dev/rescue
+echo "mounting /dev/rescue as /usr${_normal}"
+mount /dev/rescue /usr
+
+# put this stuff in usrbin image, which should be a usr image when final
+#
+#service up /bin/pci 2>/dev/null 1>/dev/null
+#echo
+# yeah I know the pci entry is fake but it looks nice ;-)
+#echo -n "${_echo_bold}starting services: $_echo_normal"
+#echo -n "${_echo_green}pci $_echo_normal"
+#service up /bin/floppy -dev /dev/fd0
+#echo -n "${_echo_green}floppy $_echo_normal"
+#service up /bin/at_wini -dev /dev/c0d0
+#echo -n "${_echo_green}at_wini $_echo_normal"
+#echo
+
+intr /bin/sh -i

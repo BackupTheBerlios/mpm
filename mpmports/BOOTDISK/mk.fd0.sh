@@ -7,7 +7,7 @@ curdir=`pwd`
 dev=/dev/fd0
 boot=/usr/src/boot/boot
 bootblock=/usr/src/boot/bootblock
-image=work/kernelimage
+image=image
 makeboot=/usr/src/boot
 
 error() {
@@ -54,6 +54,7 @@ echo "*** Installing bootblock"
 installboot -d $dev $bootblock /boot
 
 echo "*** Setting boot options"
+edparams $dev 'image=/image; save'
 edparams $dev 'leader(){echo PRESS ESC FOR PROMPT}; save'
 edparams $dev 'main(){delay 2000; boot}; save'
 
