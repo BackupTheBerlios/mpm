@@ -1,0 +1,12 @@
+The bzlib library has been heavily stripped down. I removed all stdio code
+by hand and all compression code that was somehow not removed by the linker.
+(removing the stdio code instead of compiling with BZ_NO_STDIO was done to
+decrease the size of the source code and increase readability for myself).
+I also removed the small=1 code from bzlib.c and decompress.c. No matter
+what you pass on to DecompressInit, it will always use the FAST method and
+not the small and slow method.
+
+Furthermore, I added an ifdef/endif pair and a few defines to bzlib_private.h
+which can be used to disable CRC checking. Compile with -DNO_CRC to "enable".
+Saves 1136 bytes, at the cost of no decompression errors detection.
+
