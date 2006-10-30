@@ -14,7 +14,7 @@ echo "*** Deleting old $usr and/or $usr.bz2"
 rm -f $usr $usr.bz2
 
 echo "*** Creating $usr filesystem according to $usrproto"
-$mkfs -B 2048 usr usr.proto
+$mkfs -B 2048 $usr $usrproto
 
 echo "*** Compressing $usr"
 bzip2 -9v $usr
