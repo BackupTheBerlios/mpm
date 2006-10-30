@@ -54,6 +54,11 @@ init starts /bin/sh /etc/rc
 /etc/rc mounts /dev/rescue on /usr
 /etc/rc start /usr/etc/rc
 
+If you need more files in /etc, like passwd, group, termcap, ttytab, et cetera
+you should put them in /usr/etc and have /usr/etc/rc move them in place. That
+way, they are compressed on disk. The first action of /usr/etc/rc has to be
+removing /usr.bz2 to make room on the root filesystem.
+
 
 How to save even more space and include even more applications in usr.bz2?
 ==========================================================================
