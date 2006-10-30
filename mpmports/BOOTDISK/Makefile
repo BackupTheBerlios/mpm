@@ -17,4 +17,4 @@ diskimage: fd0
 	dd if=/dev/fd0 of=bootdisk.img bs=1024 count=1440
 
 clean:
-	rm -f *~ bootdisk.img
+	rm -f *~ bootdisk.img usr

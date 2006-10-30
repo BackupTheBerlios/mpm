@@ -1,0 +1,44 @@
+boot 
+2048 512
+d--755 0 0
+	bin d--755 0 0
+        cat ---755 0 0 /bin/cat
+        cp ---755 0 0 /bin/cp
+        date ---755 0 0 /bin/date
+        elvis ---755 0 0 /bin/elvis
+        expr ---755 0 0 /bin/expr
+        halt ---755 0 0 /bin/halt
+        intr ---755 0 0 /bin/intr
+        ln ---755 0 0 /bin/ln
+        ls ---755 0 0 /bin/ls
+        mv ---755 0 0 /bin/ls
+        printroot ---755 0 0 /bin/printroot
+        pwd ---755 0 0 /bin/pwd
+        readclock ---755 0 0 /bin/readclock
+        reboot ---755 0 0 /bin/reboot
+        rm ---755 0 0 /bin/rm
+        sed ---755 0 0 /bin/sed
+        sync ---755 0 0 /bin/sync
+        umount ---755 0 0 /bin/umount
+        df ---755 0 0 /usr/bin/df
+        ps ---755 0 0 /usr/bin/ps
+        mkdir ---755 0 0 /usr/bin/mkdir
+	$
+	etc d--755 0 0
+	$
+	sbin d--755 0 0
+        at_wini ---755 0 0 /sbin/at_wini
+        bios_wini ---755 0 0 /sbin/bios_wini
+        cmos ---755 0 0 /sbin/cmos
+        is ---755 0 0 /sbin/is
+        dp8390 ---755 0 0 /usr/sbin/dp8390
+        dpeth ---755 0 0 /usr/sbin/dpeth
+        fxp ---755 0 0 /usr/sbin/fxp
+        inet ---755 0 0 /usr/sbin/inet
+        lance ---755 0 0 /usr/sbin/lance
+        pci ---755 0 0 /usr/sbin/pci
+        random ---755 0 0 /usr/sbin/random
+        rtl8139 ---755 0 0 /usr/sbin/rtl8139
+        ti1225 ---755 0 0 /usr/sbin/ti1225
+	$
+$
