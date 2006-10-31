@@ -1,4 +1,5 @@
 0.91
+    * add the ability to call: lazybox <command> <args>, i.e. lazybox ls -l
     * fixed core dump
 
 0.90
