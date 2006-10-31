@@ -64,7 +64,7 @@ action_verify_bmpm() {
 
     check_workdir
 
-    echostart "unpacking relevant portion of the archive: "
+    echostart "unpacking metadata of the archive: "
     cd "$MPM_WORK"
     rm-rf "$MPM_WORK/.mpm"
     cat "$1" | progress "$1" | bzcat | pax -r -p e './.mpm*' || error "error unpacking $1"
