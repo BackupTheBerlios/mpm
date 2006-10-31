@@ -1,0 +1,58 @@
+#!/bin/sh
+set -e
+
+PATH=/bin:/usr/bin
+export PATH
+
+_black="[30m" _red="[31m" _green="[32m" _yellow="[33m" _blue="[34m"
+_purple="[35m" _cyan="[36m" _white="[37m" _bold="[1m" _normal="[0m"
+_reset="$_normal[39m"
+
+ok() { echo "${_green}ok$_normal" ; }
+failed() { echo "${_red}failed$_normal" ; }
+
+up() {
+    s=$1
+    sb=`basename $s`
+    shift
+    echo -n "${_cyan} $sb$_normal"
+    service up $s "$@"
+}
+
+ok
+
+echo -n "Creating lazybox links: "
+cd /usr/bin
+for i in `./lazybox 2>&1 | ./lazybox tail -1` ; do
+    ./lazybox ln -s lazybox $i
+done
+ok
+
+echo -n "Reordering filesystem: "
+rm -f /usr.bz2
+cp /usr/bin/sh /bin/sh      # overwrite bintool
+mkdir /tmp /usr/tmp
+rm -rf /dev
+cd /usr/etc
+cp passwd group /etc
+ok
+
+echo -n "Populating /dev: "
+mkdir /usr/dev
+ln -s /usr/dev /dev
+cd /usr/dev
+MAKEDEV std
+mknod imgrd b 1 6
+chgrp kmem imgrd
+ok
+
+echo -n "Services:"
+up /usr/sbin/is -period 5HZ
+up /usr/sbin/cmos -dev /dev/cmos -period 5HZ
+echo .
+
+readclock || intr date -q
+
+echo "Date: ${_bold}`date`$_normal"
+
+exec intr /usr/bin/sh -i

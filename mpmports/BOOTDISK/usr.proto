@@ -4,36 +4,15 @@ d--755 0 0
 	bin d--755 0 0
         sh ---755 0 0 /bin/sh
         service ---755 0 0 /bin/service
-        mount ---755 0 0 /usr/bin/mount
         bzip2 ---755 0 0 /usr/local/bin/bzip2
-        cat ---755 0 0 /bin/cat
-        cp ---755 0 0 /bin/cp
-        date ---755 0 0 /bin/date
         elvis ---755 0 0 /bin/elvis
-        expr ---755 0 0 /bin/expr
         halt ---755 0 0 /bin/halt
-        intr ---755 0 0 /bin/intr
-        ln ---755 0 0 /bin/ln
-        ls ---755 0 0 /bin/ls
-        mv ---755 0 0 /bin/ls
-        printroot ---755 0 0 /bin/printroot
-        pwd ---755 0 0 /bin/pwd
         readclock ---755 0 0 /bin/readclock
         reboot ---755 0 0 /bin/reboot
-        rm ---755 0 0 /bin/rm
-        sed ---755 0 0 /bin/sed
-        sync ---755 0 0 /bin/sync
-        umount ---755 0 0 /bin/umount
-        df ---755 0 0 /usr/bin/df
         ps ---755 0 0 /usr/bin/ps
-        mkdir ---755 0 0 /usr/bin/mkdir
         MAKEDEV ---755 0 0 /usr/bin/MAKEDEV
-        mknod ---755 0 0 /usr/bin/mknod
-        chmod ---755 0 0 /usr/bin/chmod
-        chown ---755 0 0 /usr/bin/chown
         chgrp ---755 0 0 /usr/bin/chgrp
-        tr ---755 0 0 /usr/bin/tr
-        basename ---755 0 0 /usr/bin/basename
+        lazybox -ug755 0 0 lazybox
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr
