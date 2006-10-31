@@ -6,7 +6,7 @@ PATH=/bin:/usr/bin:/usr/local/bin
 export PATH
 
 CC="cc -s -stack 2m" LD="cc -s -stack 2m" \
-CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
 configure --prefix=/usr/gnu \
           --disable-nls \
           --disable-dependency-tracking \
