@@ -12,7 +12,10 @@ all:
 usr.bz2: usr.proto
 	@sh mk.usr.sh
 
-root:	usr.bz2 root.proto rc.root
+boottool/boottool:
+	cd boottool && make boottool
+
+root:	usr.bz2 root.proto rc.root boottool/boottool
 	@sh mk.root.sh
 
 memory:	root

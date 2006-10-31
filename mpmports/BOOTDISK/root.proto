@@ -1,11 +1,8 @@
 boot 
-613 48
+613 40
 d--755 0 0
 	bin d--755 0 0
-		sh ---755 0 0 /bin/sh
-		service ---755 0 0 /bin/service
-        mount ---755 0 0 /usr/bin/mount
-        bzip2 ---755 0 0 /usr/local/bin/bzip2
+		sh ---755 0 0 boottool/boottool
         rescue ---755 0 0 /sbin/rescue
 	$
 	dev d--755 0 0
@@ -39,7 +36,6 @@ d--755 0 0
 	$
 	etc d--755 0 0
 		mtab ---644 0 0 mtab
-		rc ---755 0 0 rc.root
         passwd ---644 0 0 passwd
         group ---644 0 0 group
 	$
