@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
     if (0) x=x;
 #include "elseif.h"
 
-    fprintf(stderr, "%s %d can be called as:\n%s\n", argv[0], VERSION, ALLNAMES);
+    fprintf(stderr, "%s %0.2f can be called as:\n%s\n", argv[0], VERSION, ALLNAMES);
     return 1;
 }
 
