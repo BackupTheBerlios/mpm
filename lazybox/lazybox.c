@@ -88,6 +88,7 @@ int main(int argc, char **argv) {
 
     if (!strcmp(&argv[0][x], "lazybox")) {
         argv = &argv[1];
+        argc--;
         x = 0;
     }
 
