@@ -25,11 +25,11 @@ imgrd lay-out:
 ==============
 
 /bin
-    service sh rescue mount bzip2
+    rescue sh [which is not sh, but boottool]
 /dev
     all devices
 /etc
-    mtab rc
+    mtab
 /usr
     empty mountpoint
 /usr.bz2
@@ -48,11 +48,11 @@ boot sequence:
 MBR --> /boot --> /image
 kernel does its bits
 memory initializes ramdisk on /
-init starts /bin/sh /etc/rc
-/etc/rc starts /bin/rescue
-/etc/rc uncompresses /usr.bz2 to /dev/rescue
-/etc/rc mounts /dev/rescue on /usr
-/etc/rc start /usr/etc/rc
+init starts /bin/sh /etc/rc     [/bin/sh is boottool]
+boottool starts /bin/rescue
+boottool uncompresses /usr.bz2 to /dev/rescue
+boottool mounts /dev/rescue on /usr
+boottool starts /usr/bin/sh /usr/etc/rc
 
 If you need more files in /etc, like passwd, group, termcap, ttytab, et cetera
 you should put them in /usr/etc and have /usr/etc/rc move them in place. That
@@ -67,20 +67,6 @@ Currently, the following stuff is uncompressed on the floppy:
 
 bootloader, kernel, pm, fs, rs, ds, tty, log, init, sh, service, mount, bzip2
 rescue, memory (the driver part)
-
-* One way to save more space would be:
-
-Remove sh, service, mount en bzip2 (which is 198kB) and replace it with a
-handcoded utility that starts rescue like service does, uncompresses usr.bz2
-to /dev/rescue, mounts /dev/rescue on /usr and start /usr/bin/sh /usr/etc/rc.
-The idea is that such a utility will be much smaller than sh/bzip2/service/mount
-combined and the total amount of diskspace of such a utility plus compressed
-versions of sh/bzip2/service/mount inside usr.bz2 is still smaller, thus
-leaving more room for other applications in usr.bz2
-
-Such a utility would be smaller because it does not contain all the shell code,
-only contains the uncompression part of libbz2 and does exactly what it needs
-to do without any overhead.
 
 * Lazybox
 
