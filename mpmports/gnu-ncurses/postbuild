@@ -1,8 +1,3 @@
 set -e
 
-P="$SMPM_INSTALLROOT/usr/gnu"
-
-cd "$P/bin"
-strip *
-
 exit 0

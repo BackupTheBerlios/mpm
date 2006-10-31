@@ -6,7 +6,8 @@ PATH=/bin:/usr/bin
 export PATH
 
 AWK=/usr/local/bin/bwk \
-CC="cc" LD="cc" RANLIB=true CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1" sh \
+CC="cc -s" LD="cc -s" \
+RANLIB=true CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 -wo" sh \
 configure --prefix=/usr/gnu \
           --without-cxx \
           --without-cxx-binding \
@@ -23,7 +24,6 @@ configure --prefix=/usr/gnu \
           --with-ospeed=int \
           --with-mmask-t=int \
 
-binsizes xxl
 make
 
 DESTDIR="$SMPM_INSTALLROOT" \

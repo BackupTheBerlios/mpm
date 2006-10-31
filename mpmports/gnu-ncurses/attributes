@@ -1,4 +1,2 @@
-# placeholder for new attributes functionality
-#
-# bin     operator    0555    DIRECTORIES
-# bin     operator    0444    FILES
+bin     operator    0555    DIRECTORIES
+bin     operator    0444    FILES
