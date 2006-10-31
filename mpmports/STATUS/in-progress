@@ -1,4 +1,3 @@
-bwk
 dialog
 endeavour
 expat
@@ -16,7 +15,6 @@ gnu-help2man
 gnu-inetutils
 gnu-less
 gnu-m4
-gnu-ncurses
 gnu-sed
 gnu-tar
 gtk+

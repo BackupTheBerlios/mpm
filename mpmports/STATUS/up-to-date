@@ -1,6 +1,8 @@
+bwk
 cvs
 gnu-make
 gnu-gzip
+gnu-ncurses
 minix-world
 pdksh
 progmtr
