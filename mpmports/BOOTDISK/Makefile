@@ -15,7 +15,7 @@ usr.bz2: usr.proto
 boottool/boottool:
 	cd boottool && make boottool
 
-root:	usr.bz2 root.proto rc.root boottool/boottool
+root:	usr.bz2 root.proto boottool/boottool
 	@sh mk.root.sh
 
 memory:	root
