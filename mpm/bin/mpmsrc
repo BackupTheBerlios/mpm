@@ -133,6 +133,12 @@ action_verify_smpm() {
 action_build_smpm() {
     action_verify_smpm "$1"
 
+    check_db_status_short
+
+    echostart "checking build dependencies: "
+    check_dependencies "$_dotmpmdir/depsbuild"
+    echoend "ok"
+
     SMPM_BUILDROOT="$MPM_WORK/$_smpm_basename/buildroot"
     SMPM_INSTALLROOT="$MPM_WORK/$_smpm_basename/installroot"
     export SMPM_BUILDROOT

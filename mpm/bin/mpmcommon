@@ -331,6 +331,12 @@ unmangle_bmpmname() {
     _b_name=`basename "$1" -$_b_version-$_b_release-$_b_os-$_b_arch.mpm`
 }
 
+# check is package is in database
+is_installed() {
+    fl=`echo "$1" | sed 's/\(.\).*/\1/'`    # first letter
+    ls -d "$MPM_DB/installed/$fl/$1" 2>/dev/null
+}
+
 check_db_status_short() {
     echostart "checking database location: "
     test -d "$MPM_DB" || error "there is no database at $MPM_DB"
@@ -440,4 +446,17 @@ set_attributes() {
             read owner group mode file
         done
     )
+}
+
+check_dependencies() {
+    { cat $1; echo __EOF__; } | {
+        read pkgname rest
+        while test "$pkgname" != "__EOF__" ; do
+            r=`is_installed "$pkgname"`
+            test -n "$r" || error "$pkgname is not installed"
+            echo -n "$pkgname "
+            read pkgname rest
+        done
+    }
+    if test "$?" != "0" ; then exit $? ; fi
 }

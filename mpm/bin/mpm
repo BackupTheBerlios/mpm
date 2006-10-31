@@ -104,11 +104,6 @@ action_verify_bmpm() {
     esac
 }
 
-is_installed() {
-    fl=`echo "$1" | sed 's/\(.\).*/\1/'`    # first letter
-    ls -d "$MPM_DB/installed/$fl/$1" 2>/dev/null
-}
-
 action_install_bmpm() {
     check_db_status_short
 
