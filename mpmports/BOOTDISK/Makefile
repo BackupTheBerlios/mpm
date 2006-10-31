@@ -9,7 +9,7 @@ all:
 
 .PHONY: fd0 diskimage
 
-usr.bz2: usr.proto
+usr.bz2: usr.proto rc.usr
 	@sh mk.usr.sh
 
 boottool/boottool:

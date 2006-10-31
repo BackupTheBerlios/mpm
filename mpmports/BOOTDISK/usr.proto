@@ -33,9 +33,12 @@ d--755 0 0
         chown ---755 0 0 /usr/bin/chown
         chgrp ---755 0 0 /usr/bin/chgrp
         tr ---755 0 0 /usr/bin/tr
+        basename ---755 0 0 /usr/bin/basename
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr
+        passwd ---644 0 0 passwd
+        group ---644 0 0 group
 	$
 	sbin d--755 0 0
         at_wini ---755 0 0 /sbin/at_wini
