@@ -1,7 +1,9 @@
 CC         = cc
 # compile with -DNO_CRC to save another 1136 bytes, but beware: decompression
 # errors are NOT detected anymore!
-CPPFLAGS   = -D_POSIX_SOURCE=1
+#
+# -O2 gives smallest binary
+CPPFLAGS   = -D_POSIX_SOURCE=1 -O2
 BZCPFLAGS ?=
 
 OBJ      = bzcp.o

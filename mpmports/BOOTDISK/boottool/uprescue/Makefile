@@ -1,5 +1,5 @@
 CC             = cc
-CPPFLAGS       =
+CPPFLAGS       = -O2
 UPRESCUEFLAGS ?=
 
 OBJ      = uprescue.o
