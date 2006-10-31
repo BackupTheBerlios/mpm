@@ -1,6 +1,3 @@
 set -e
 
-strip "$SMPM_INSTALLROOT/usr/gnu/bin/make"
-chmem =`expr 2 \* 1024 \* 1024` "$SMPM_INSTALLROOT/usr/gnu/bin/make"
-
 exit 0
