@@ -251,7 +251,7 @@ static void printscore(void) {
 static void printlevel(void) {
     setbg(blue); setfg(white);
     moveto(68,1);
-    printf(" Level: %02d ", level);
+    printf(" Stage: %02d ", level);
     moveto(68,3);
     printf(" Speed: %02d ", speed);
     flush();
