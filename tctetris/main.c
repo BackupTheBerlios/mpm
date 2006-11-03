@@ -355,10 +355,12 @@ static void checkboard(int y) {
         if (c == WIDTH) {
             setbg(white);
             horizontal(40-WIDTH, 40+WIDTH-1, b-3);
+            moveto(1,24);
             flush();
             usleep(100000);
             setbg(black);
             horizontal(40-WIDTH, 40+WIDTH-1, b-3);
+            moveto(1,24);
             flush();
             usleep(100000);
             removeline(b);
