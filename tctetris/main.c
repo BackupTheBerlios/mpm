@@ -1,5 +1,5 @@
 /*
- * tctetris - ANSI Tetris
+ * tctetris - Tiny Console Tetris
  *
  * Copyright (c) 2006 Ivo van Poorten
  *
