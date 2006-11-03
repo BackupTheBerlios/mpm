@@ -1,5 +1,5 @@
 /*
- * tctetris - termcap tetris
+ * tctetris - ANSI Tetris
  *
  * Copyright (c) 2006 Ivo van Poorten
  *
@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <termcap.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <termios.h>
@@ -44,18 +43,15 @@ static shape_t basicshapes[7] = {
 };
 static shape_t shapes[28];
 
-static char termcap[1024];
-static char tc[256];
-static char *tcp;
 static struct termios saveti, ti;
 static int gameclock = 1000000 / 100; /* usec */
 
-static char *ansicl="\033[H\033[0J", *ansiSf="\033[3%dm",
-            *ansiSb="\033[4%dm",     *ansiop="\033[39;49m",
-            *ansicm="\033[%i%d;%dH", *ansimd="\033[1m",
-            *ansime="\033[0m",       *ansimr="\033[7m";
-static char *cl, *Sf, *Sb, *op, *cm, *md, *me, *mr;
-static int li, co;
+/* ANSI escape sequences */
+static char *cl="\033[H\033[0J", *Sf="\033[3%dm",
+            *Sb="\033[4%dm",     *op="\033[39;49m",
+            *cm="\033[%i%d;%dH", *md="\033[1m",
+            *me="\033[0m",       *mr="\033[7m";
+static int li=24, co=80;
 static border = BORDER, bg = BG;
 
 /* XXX: I can put those in one array (status + (c<<1)) */
@@ -104,18 +100,6 @@ static void init(void) {
 
     srandom(time(NULL));
     if ((TERM = getenv("TERM")) == NULL) error("TERM not set");
-    if (tgetent(termcap, TERM) != 1) error("cannot read termcap");
-    tcp = tc;
-    cl = tgetstr("cl", &tcp); cl = setit(cl, ansicl);
-    Sf = tgetstr("Sf", &tcp); Sf = setit(Sf, ansiSf);
-    Sb = tgetstr("Sb", &tcp); Sb = setit(Sb, ansiSb);
-    op = tgetstr("op", &tcp); op = setit(op, ansiop);
-    cm = tgetstr("cm", &tcp); cm = setit(cm, ansicm);
-    md = tgetstr("md", &tcp); md = setit(md, ansimd);
-    me = tgetstr("me", &tcp); me = setit(me, ansime);
-    mr = tgetstr("mr", &tcp); mr = setit(mr, ansimr);
-    li = tgetnum("li");
-    co = tgetnum("co");
     li = li < 0 ? 24 : li;
     co = co < 0 ? 80 : co;
 
