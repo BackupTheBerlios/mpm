@@ -1,0 +1,27 @@
+#! /bin/sh
+
+s=`uname -s | tr '[A-Z]' '[a-z]'`
+
+echo "system: $s"
+
+case "$s" in
+    minix)
+        cc="cc"
+        cppflags="-O2 -D_MINIX"
+        ldflags="-s"
+        ;;
+    linux|*)
+        cc="gcc"
+        cppflags="-O2"
+        ldflags=""
+        ;;
+esac
+
+echo "generating config.mak"
+
+cat > config.mak << __EOF__
+CC=$cc
+CPPFLAGS=$cppflags
+LDFLAGS=$ldflags
+__EOF__
+
