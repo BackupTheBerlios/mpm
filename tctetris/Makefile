@@ -11,4 +11,7 @@ $(PROG):	$(OBJS)
 	$(CC) -c $(CPPFLAGS) -o $@ $<
 
 clean:
-	rm -f *~ $(OBJS) $(PROG) config.mak
+	rm -f *~ $(OBJS) $(PROG)
+
+distclean: clean
+	rm -f config.mak
