@@ -13,7 +13,7 @@ case "$s" in
     linux|*)
         cc="gcc"
         cppflags="-O2"
-        ldflags=""
+        ldflags="-s"
         ;;
 esac
 
