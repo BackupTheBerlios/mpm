@@ -99,7 +99,7 @@ static void gametick(void) {
     static int init = 0;
     static struct timeval last;
     struct timeval now;
-    int prev, cur; /* msec */
+    int prev, cur, next; /* msec */
 
     if (!init) {
         gettimeofday(&last, NULL);
@@ -107,14 +107,11 @@ static void gametick(void) {
     }
 
     prev = last.tv_usec / 1000;
-    for(;;) {
-        gettimeofday(&now, NULL);
-        cur = (now.tv_sec - last.tv_sec) * 1000 + now.tv_usec / 1000;
-        if ( (cur-prev) >= gameclock ) break;
-        usleep(10);
-    }
-    last.tv_sec = now.tv_sec;
-    last.tv_usec = now.tv_usec;
+    next = prev + gameclock;
+    gettimeofday(&now, NULL);
+    cur = (now.tv_sec - last.tv_sec) * 1000 + now.tv_usec / 1000;
+    usleep( (next-cur) * 1000);
+    gettimeofday(&last,NULL);
 }
 
 static void init(void) {
