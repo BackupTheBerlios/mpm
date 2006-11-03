@@ -44,11 +44,7 @@ static shape_t basicshapes[7] = {
 static shape_t shapes[28];
 
 static struct termios saveti, ti;
-#ifdef _MINIX   /* Minix console is slooow; XXX implement signal based timer */
-static int gameclock = 1000000 / 100; /* usec */
-#else
-static int gameclock = 1000000 / 50; /* usec */
-#endif
+static int gameclock = 1000 / 50; /* msec */
 
 /* ANSI escape sequences */
 static char *cl="\033[H\033[0J", *Sf="\033[3%dm",
@@ -97,6 +93,27 @@ static void error(char *msg) {
 
 static int rnd(void) {
     return random()>>8;
+}
+
+static void gametick(void) {
+    static int init = 0;
+    static struct timeval last;
+    struct timeval now;
+    int prev, cur; /* msec */
+
+    if (!init) {
+        gettimeofday(&last, NULL);
+        init = 1;
+    }
+
+    prev = last.tv_usec / 1000;
+    for(;;) {
+        gettimeofday(&now, NULL);
+        cur = (now.tv_sec - last.tv_sec) * 1000 + now.tv_usec / 1000;
+        if ( (cur-prev) >= gameclock ) break;
+    }
+    last.tv_sec = now.tv_sec;
+    last.tv_usec = now.tv_usec;
 }
 
 static void init(void) {
@@ -376,7 +393,7 @@ static void game(void) {
 
     for(;;) {
         if (paused) {
-            usleep(gameclock);
+            gametick();
             c = tgetchar();
             switch(c) {
             case 'q':
@@ -418,7 +435,7 @@ static void game(void) {
 
         moveto(1,24);
         flush();
-        usleep(gameclock);
+        gametick();
         c = tgetchar();
         switch(c) {
         case 'q':
@@ -575,7 +592,8 @@ int main(int argc, char **argv) {
         starfield();
         moveto(1,24);
         flush();
-        usleep(gameclock*4);
+        gametick();
+        gametick();
         c = tgetchar();
         switch(c) {
         case 'n':
