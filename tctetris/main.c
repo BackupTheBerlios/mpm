@@ -111,6 +111,7 @@ static void gametick(void) {
         gettimeofday(&now, NULL);
         cur = (now.tv_sec - last.tv_sec) * 1000 + now.tv_usec / 1000;
         if ( (cur-prev) >= gameclock ) break;
+        usleep(10);
     }
     last.tv_sec = now.tv_sec;
     last.tv_usec = now.tv_usec;
