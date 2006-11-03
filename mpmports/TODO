@@ -1,5 +1,2 @@
 * have all packages install all files as bin:operator, except for suid/sgid
   programs
-
-* port of Xorg 7.1 has been postponed
-
