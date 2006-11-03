@@ -44,7 +44,7 @@ static shape_t basicshapes[7] = {
 static shape_t shapes[28];
 
 static struct termios saveti, ti;
-static int gameclock = 1000 / 50; /* msec */
+static int gameclock = 1000 / 40; /* msec */
 
 /* ANSI escape sequences */
 static char *cl="\033[H\033[0J", *Sf="\033[3%dm",
