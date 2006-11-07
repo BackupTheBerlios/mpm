@@ -62,6 +62,7 @@ action_status() {
 action_check() {
     check_db_status_short
 
+    # XXX
     # check each installed entry for consistency, i.e. all the files are
     # present and, if possible to check (like details), sane
 }
@@ -107,6 +108,12 @@ action_queryfile() {
 }
 
 action_querypackage() {
+    check_db_status_short
+
+    r=`is_installed "$1"`
+    test -n "$r" || error "package $1 is not installed"
+
+    cat "$r/filelist"
 }
 
 action_delete() {
