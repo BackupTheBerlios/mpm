@@ -41,7 +41,7 @@ myusage() {
 check_help_and_quiet $@
 check_system
 
-action_verify_bmpm() {
+check_filename() {
     test -f "$1" || error "$1 is not a file"
 
     echostart "checking filename conventions: "
@@ -52,6 +52,10 @@ action_verify_bmpm() {
     test "$_b_name-$_b_version-$_b_release-$_b_os-$_b_arch.mpm" = "$_bmpm" || \
         error "correct format should be name-version-release-os-arch.mpm"
     echoend "ok"
+}
+
+action_verify_bmpm() {
+    check_filename "$1"
 
     echostart "checking if package is suitable: "
     if test "$_b_os" != "any" ; then
@@ -107,12 +111,14 @@ action_verify_bmpm() {
 action_install_bmpm() {
     check_db_status_short
 
-    action_verify_bmpm "$1"
+    check_filename "$1"
 
     echostart "checking if $_b_name is not in the database: "
     r=`is_installed "$_b_name"`
-    test -z "$r" || error "$_b_name is already installed"
+    test -z "$r" || error "$_b_name is already installed (`cat \"$r/filename\"`)"
     echoend "ok"
+
+    action_verify_bmpm "$1"
 
     echostart "checking installation root: "
     test -d "$_mpm_install_root" || error "cannot find $_mpm_install_root"
