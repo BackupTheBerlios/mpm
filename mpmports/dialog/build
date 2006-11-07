@@ -7,13 +7,12 @@ export PATH
 
 INCLUDES="-I/usr/gnu/include/ncurses -I/usr/gnu/include"
 
-CC="cc" LD="cc" RANLIB=true \
+CC="cc -stack 256k -s" LD="cc -stack 256k -s" RANLIB=true \
 CFLAGS="-D_MINIX=1 -D_POSIX_SOURCE=1 $INCLUDES" \
 LDFLAGS="-L/usr/gnu/lib" sh \
 configure --prefix=/usr/local \
           --with-ncurses \
 
-binsizes xxl
 make
 
 DESTDIR="$SMPM_INSTALLROOT" \
