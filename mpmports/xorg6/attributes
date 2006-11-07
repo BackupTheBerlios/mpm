@@ -1,4 +1,18 @@
-# placeholder for new attributes functionality
-#
-# bin     operator    0555    DIRECTORIES
-# bin     operator    0444    FILES
+bin     operator    0555    DIRECTORIES
+bin     operator    0444    FILES
+-       -           0555    /usr/X11R6/lib/X11/x11perfcomp/*
+-       -           0555    /usr/X11R6/bin/*
+-       -           0555    /usr/X11R6/etc/rstart/rstartd.real
+-       -           0555    /usr/X11R6/etc/rstart/commands/x11r6/Terminal
+-       -           0555    /usr/X11R6/etc/rstart/commands/x11r6/LoadMonitor
+-       -           0555    /usr/X11R6/etc/rstart/commands/ListGenericCommands
+-       -           0555    /usr/X11R6/etc/rstart/commands/ListContexts
+-       -           0555    /usr/X11R6/etc/xdm/chooser
+-       -           0555    /usr/X11R6/etc/xdm/Xsession
+-       -           0555    /usr/X11R6/etc/xdm/GiveConsole
+-       -           0555    /usr/X11R6/etc/xdm/TakeConsole
+-       -           0555    /usr/X11R6/etc/xdm/Xsetup_0
+-       -           0555    /usr/X11R6/etc/xdm/Xwilling
+-       -           0555    /usr/X11R6/etc/xkb/xkbcomp
+-       -           0555    /usr/X11R6/etc/xserver/C/print/models/PSspooldir/spooltodir.sh
+-       -           0555    /etc/init.d/xprint

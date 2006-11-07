@@ -3,10 +3,10 @@ set -e
 cd "$SMPM_BUILDROOT"
 
 echo -n "*** unpacking files that changed: "
-bzip2 -dc "$SMPM_FILES/homburgfiles2.tar.bz2" | tar opxf - 2>/dev/null
+/usr/local/bin/bzip2 -dc "$SMPM_FILES/homburgfiles2.tar.bz2" | tar opxf - 2>/dev/null
 echo "ok"
 echo -n "*** unpacking new files: "
-bzip2 -dc "$SMPM_FILES/homburgfiles.tar.bz2" | tar opxf - 2>/dev/null
+/usr/local/bin/bzip2 -dc "$SMPM_FILES/homburgfiles.tar.bz2" | tar opxf - 2>/dev/null
 echo "ok"
 
 exit 0
