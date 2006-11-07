@@ -192,7 +192,7 @@ check_applications() {
     echostart "checking applications: "
 
     for r in grep cut wc sed touch tar basename tr expr patch find cp \
-             mkdir rm pax rev pax rev pwd ; do
+             mkdir rm pax rev pwd ; do
         search_path "$PATH" $r || error "cannot find $r"
     done
 
