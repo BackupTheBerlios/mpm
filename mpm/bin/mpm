@@ -40,9 +40,14 @@ myusage() {
 
 check_help_and_quiet $@
 check_system
+_bmpm=""
 
 check_filename() {
     test -f "$1" || error "$1 is not a file"
+
+    if test -n "$_bmpm" ; then
+        return
+    fi
 
     echostart "checking filename conventions: "
     _bmpm=`basename "$1"`
