@@ -6,13 +6,12 @@ PATH=/bin:/usr/bin
 export PATH
 
 rm -f config.sh Policy.sh
-/usr/gnu/bin/bash Configure -de \
+/usr/local/bin/ksh Configure -de \
     -Uusenm \
     -Accflags="-D_MINIX=1 -D_POSIX_SOURCE=1" \
     -Alibs="-ld -lc -lutil" \
     prefix=/usr/local \
 
-binsizes xxl
 make
 
 DESTDIR="$SMPM_INSTALLROOT" \
