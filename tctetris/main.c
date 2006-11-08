@@ -20,7 +20,7 @@ enum colors_e { black = 0, red, green, yellow, blue, magenta, cyan, white };
 #define minlevel 1
 #define maxlevel 100
 #define minspeed 1
-#define maxspeed 10
+#define maxspeed 13
 #define blocksperlevel 30
 #define BORDER red
 #define BG     black
@@ -411,7 +411,7 @@ static void game(void) {
         }
 
         if (counter <= 0) {
-            counter = 11 - speed;
+            counter = 14 - speed;
             if (shapefits(current.s, current.x, current.y+1)) {
                 drawshape(current.s, 0, 40-WIDTH-8+current.x*2, current.y-3);
                 current.y++;
