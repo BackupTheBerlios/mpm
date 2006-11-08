@@ -1,0 +1,1 @@
+Run ./configure && make
