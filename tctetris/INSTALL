@@ -1,1 +1,26 @@
+Building:
+---------
+
 Run ./configure && make
+
+
+Installation:
+-------------
+
+make install <environment>
+
+<environment> can be one or more of the following:
+
+prefix=PREFIX
+bindir=BINDIR
+dirmode=DIRMODE
+filemode=FILEMODE
+owner=OWNER
+group=GROUP
+
+for example:
+
+make install bindir=/usr/local/bin filemode=555 owner=nobody
+
+The install target supports DESTDIR.
+
