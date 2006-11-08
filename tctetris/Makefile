@@ -25,4 +25,4 @@ distclean: clean
 
 install:	$(PROG)
 	install -d -m $(dirmode) -o $(owner) -g $(group) $(DESTDIR)$(bindir)
-	install -m $(filemode) -o $(owner) -g $(group) $(PROG) $(DESTDIR)$(bindir)$(PROG)
+	install -m $(filemode) -o $(owner) -g $(group) $(PROG) $(DESTDIR)$(bindir)/$(PROG)
