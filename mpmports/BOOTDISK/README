@@ -108,3 +108,11 @@ smaller than bzip2 (relative to the compressed bz2 filesize).
 
 et cetera... :)
 
+* strip dialog or rewrite
+
+Currently, I (plan to) use dialog for all user interaction. Dialog is
+relatively huge, as it links with ncurses. The dialog binary is circa 270kB
+and bzip-compressed it's around 122kB. It might be beneficial to rip out all
+the widgets I do not need or to rewrite it all together to use ANSI escape
+sequences and forget about (n)curses.
+
