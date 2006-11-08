@@ -1,0 +1,14 @@
+Tiny Console Tetris, Copyright (c) 2006, Ivo van Poorten
+
+tctetris is a very small implementation of the well-known tetris game which
+runs entirely on the console. It does not depend on termcap, curses or ncurses
+but uses ANSI escape sequences to move the cursor around an set colors et
+cetera. Hence, you need an ANSI capable terminal to run this game, for example
+the Minix and Linux console or an xterm.
+
+The rules are straightforward. Create solid horizontal lines by turning the
+shapes before they reach the bottom and prevent the screen from filling up.
+For every solid line, you score one point. If you drop a shape prematurely,
+you score one point for every position it drops. If you create four solid lines
+at once, the speed decreases by one, except when the speed is already at its
+lowest setting. There are 13 speed settings and 100 levels ;-) Have fun!
