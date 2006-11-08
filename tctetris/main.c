@@ -495,7 +495,21 @@ static void game(void) {
     }
 
 stopgame:
-    return;
+    setbg(white);
+    rect(20,8,60,12);
+    setbg(red);
+    frect(21,9,59,11);
+    setfg(white);
+    bold();
+    moveto(30,10);
+    printf(" G A M E    O V E R ");
+    moveto(1,24);
+    flush();
+
+    for(;;) {
+        c = tgetchar();
+        if (c > 0) return;
+    }
 }
 
 #define copyshape(a,b) memcpy(a, b, sizeof(shape_t))
@@ -541,7 +555,6 @@ static void splash(void) {
     normal(); setbg(red); setfg(white);
     moveto(23,10);  printf("Copyright (c) 2006, Ivo van Poorten");
     moveto(MENUX,12); printf("n - new game");
-    moveto(MENUX,13); printf("h - high scores");
     moveto(MENUX,14); printf("s - speed [%02d]", sspeed);
     moveto(MENUX,16); printf("q - quit");
     moveto(1,23);
