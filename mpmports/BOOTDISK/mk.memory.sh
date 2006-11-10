@@ -24,5 +24,6 @@ echo "*** Generating root.s"
 
 echo "*** Assembling memory driver"
 set -x
+TMPDIR=/usr/tmp \
 cc -o memory -s -stack 8k -sep $memorysrc imgrd.s $driversrc -lsys -lsysutil
 set +x
