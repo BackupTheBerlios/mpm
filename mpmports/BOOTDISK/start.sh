@@ -2,10 +2,9 @@
 
 keymaps=/usr/lib/keymaps
 
-DEBUG="echo DEBUG:"
+#DEBUG="echo DEBUG:"
 VERSION="2007.0 (beta)"
 TERM=minix-color
-TERMCAP=/home/root/save/termcap
 eval DIALOGOPTS=\'--backtitle "\"               The MPMPORTS Minix Distribution, $VERSION\""\'
 export TERM TERMCAP DIALOGOPTS
 
