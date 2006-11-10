@@ -13,11 +13,16 @@ d--755 0 0
         MAKEDEV ---755 0 0 /usr/bin/MAKEDEV
         chgrp ---755 0 0 /usr/bin/chgrp
         lazybox -ug755 0 0 lazybox
+        command ---755 0 0 /bin/command
+        dialog ---755 0 0 /usr/local/bin/dialog
+        loadkeys ---755 0 0 /bin/loadkeys
+        start.sh ---755 0 0 start.sh
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr
         passwd ---644 0 0 passwd
         group ---644 0 0 group
+        termcap ---644 0 0 termcap
 	$
 	sbin d--755 0 0
         at_wini ---755 0 0 /sbin/at_wini
@@ -34,4 +39,21 @@ d--755 0 0
         rtl8139 ---755 0 0 /usr/sbin/rtl8139
         ti1225 ---755 0 0 /usr/sbin/ti1225
 	$
+	lib d--755 0 0
+	    keymaps d--755 0 0
+            us-std.map ---644 0 0 /usr/lib/keymaps/us-std.map
+            dvorak.map ---644 0 0 /usr/lib/keymaps/dvorak.map
+            french.map ---644 0 0 /usr/lib/keymaps/french.map
+            german.map ---644 0 0 /usr/lib/keymaps/german.map
+            italian.map ---644 0 0 /usr/lib/keymaps/italian.map
+            japanese.map ---644 0 0 /usr/lib/keymaps/japanese.map
+            latin-america.map ---644 0 0 /usr/lib/keymaps/latin-america.map
+            olivetti.map ---644 0 0 /usr/lib/keymaps/olivetti.map
+            polish.map ---644 0 0 /usr/lib/keymaps/polish.map
+            scandinavian.map ---644 0 0 /usr/lib/keymaps/scandinavian.map
+            spanish.map ---644 0 0 /usr/lib/keymaps/spanish.map
+            uk.map ---644 0 0 /usr/lib/keymaps/uk.map
+            us-swap.map ---644 0 0 /usr/lib/keymaps/us-swap.map
+        $
+    $
 $
