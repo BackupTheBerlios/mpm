@@ -14,10 +14,11 @@ ok() { echo "${_green}ok$_normal" ; }
 failed() { echo "${_red}failed$_normal" ; }
 
 up() {
-    s=$1
+    n=$1
+    s=$2
     sb=`basename $s`
-    shift
-    echo -n "${_cyan} $sb$_normal"
+    shift 2
+    echo $n "${_cyan} $sb$_normal"
     service up $s "$@"
 }
 
@@ -30,13 +31,24 @@ for i in `./lazybox 2>&1 | ./lazybox tail -1` ; do
 done
 ok
 
+echo -n "Creating command links: "
+cd /usr/bin
+for i in "[" cd echo expr false getopts read test true umask wait ; do
+    ln -s command $i
+done
+ok
+
 echo -n "Reordering filesystem: "
 rm -f /usr.bz2
 cp /usr/bin/sh /bin/sh      # overwrite bintool
-mkdir /tmp /usr/tmp
+mkdir /usr/tmp
+ln -s /usr/tmp /tmp
 rm -rf /dev
 cd /usr/etc
 cp passwd group /etc
+ln -s /usr/bin/lazybox /bin/pwd
+ln -s /usr/sbin /sbin
+mkdir /mnt
 ok
 
 echo -n "Populating /dev: "
@@ -46,15 +58,20 @@ cd /usr/dev
 MAKEDEV std
 mknod imgrd b 1 6
 chgrp kmem imgrd
+cd /
 ok
 
-echo -n "Services:"
-up /usr/sbin/is -period 5HZ
-up /usr/sbin/cmos -dev /dev/cmos -period 5HZ
-echo .
+echo -n "Servers:"
+up "" /sbin/is -period 5HZ
 
-readclock || intr date -q
+echo -n "Drivers:"
+up "-n" /sbin/cmos -dev /dev/cmos -period 5HZ
+up "" /sbin/pci
 
-echo "Date: ${_bold}`date`$_normal"
+readclock
+
+echo "Press ENTER to start installation"
+echo -n ":"
+intr read ans
 
 exec intr /usr/bin/sh -i
