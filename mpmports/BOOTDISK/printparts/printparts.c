@@ -27,7 +27,7 @@ ind_t ind_table[] = {
     { 0x65,"NOVELL386" }, { 0x75,"PC/IX"     }, { 0x80,"MINIX-OLD" },
     { 0x81,"MINIX"     }, { 0x82,"LINUXswap" }, { 0x83,"LINUX"     },
     { 0x93,"AMOEBA"    }, { 0x94,"AMOEBAbad" }, { 0xA5,"386BSD"    },
-    { 0xA9,"NETBSD"    },
+    { 0xA6,"OPENBSD"   }, { 0xA9,"NETBSD"    },
     { 0xB7,"BSDI"      }, { 0xB8,"BSDI swap" }, { 0xC7,"SYRINX"    },
     { 0xDB,"CPM"       }, { 0xFF,"BADBLOCKS" }, { 0x00,NULL        }
 };
