@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     if (uprescue() != 0)    goto failed;
     write(1, GREEN "ok\n" NORMAL "Uncompressing image to /dev/rescue: ", 48);
     if (bzcp("/usr.bz2", "/dev/rescue") != 0)   goto failed;
-    write(1, GREEN "ok\n" NORMAL "Mounting /dev/rescue on /mnt: ", 42);
+    write(1, GREEN "ok\n" NORMAL "Mounting /dev/rescue on /usr: ", 42);
     if (mntrescue() != 0)   goto failed;
     write(1, GREEN "ok\n" NORMAL "Starting sh /usr/etc/rc: ", 37);
     execve(cmd[0], cmd, nullenv); /* should not return */
