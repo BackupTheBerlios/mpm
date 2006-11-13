@@ -151,12 +151,64 @@ PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
     return 0;
 }
 
-PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
-    int tx, ty;
+#undef ABS
+#define ABS(x) ( ((x)<0) ? (-(x)) : (x) )
 
-    DEBUG report(myname, "hiero", 0);
-    if (x1==x2) return draw_line_vert(x1, y1, y2, c);
-    if (y1==y2) return draw_line_hori(x1, y1, x2, c);
+PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
+    int dx, dy, i, e, x, y;
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+
+    if (ABS(dx) > ABS(dy)) {
+        if (dx < 0) {
+            int tx, ty;
+            tx = x1;    ty = y1;
+            x1 = x2;    y1 = y2;
+            x2 = tx;    y2 = ty;
+            dx = -dx;   dy = -dy;
+        }
+        if (dy < 0) {
+            i = -1;
+            dy = -dy;
+        } else {
+            i = 1;
+        }
+        e = dx / 2;
+        y = y1;
+        for (x=x1; x<=x2; x++) {
+            if (e >= dx) {
+                e -= dx;
+                y += i;
+            }
+            e += dy;
+            put_pixel(x, y, c);
+        }
+    } else {
+        if (dy < 0) {
+            int tx, ty;
+            tx = x1;    ty = y1;
+            x1 = x2;    y1 = y2;
+            x2 = tx;    y2 = ty;
+            dx = -dx;   dy = -dy;
+        }
+        if (dx < 0) {
+            i = -1;
+            dx = -dx;
+        } else {
+            i = 1;
+        }
+        e = dy / 2;
+        x = x1;
+        for (y=y1; y<=y2; y++) {
+            if (e >= dy) {
+                e -= dy;
+                x += i;
+            }
+            e += dx;
+            put_pixel(x, y, c);
+        }
+    }
 
     return 0;
 }

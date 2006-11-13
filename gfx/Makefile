@@ -1,7 +1,7 @@
 PROG=gfx
 OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o
 
-all:	$(PROG) test
+all:	$(PROG) test tm
 
 $(PROG):	$(OBJS)
 	cc -o $@ $(OBJS) -lsysutil -lsys
