@@ -116,7 +116,7 @@ PRIVATE int clear_screen(void) {
 }
 
 PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
-    int tx, x;
+    int tx;
     struct reg86u reg86;
 
     if (x1>x2) {

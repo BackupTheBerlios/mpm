@@ -32,13 +32,16 @@ PUBLIC int main(int argc, char **argv) {
 
     mode = EGA_640x350x16;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
-    fprintf(stderr, "r=%d\n", r);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);
         _exit(-1);
     }
 
     line.x1 = 0; line.x2 = 639; line.y1 = 175; line.c = 3;
+    ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
+    line.y1 = 0; line.c = 3;
+    ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
+    line.y1 = 349; line.c = 3;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
     line.x1 = 0; line.y1 = 0; line.y2 = 349;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
