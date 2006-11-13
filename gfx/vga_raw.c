@@ -43,6 +43,18 @@ PRIVATE int clear_screen(void) {
     return 0;
 }
 
+PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
+    return 0;
+}
+
+PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
+    return 0;
+}
+
+PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
+    return 0;
+}
+
 PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     "vga_raw",
     TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x16 | VGA_640x480x16 |
@@ -51,5 +63,8 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     set_mode,
     get_pixel,
     put_pixel,
-    clear_screen
+    clear_screen,
+    draw_line,
+    draw_line_hori,
+    draw_line_vert
 };

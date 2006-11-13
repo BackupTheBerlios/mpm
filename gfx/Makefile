@@ -22,6 +22,9 @@ down:
 test:	test.c
 	cc -o test test.c
 
+tm:	tm.c
+	cc -o tm tm.c
+
 depend:
 	/usr/bin/mkdep "cc -E" *.c > .depend
 

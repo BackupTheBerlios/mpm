@@ -18,6 +18,7 @@
 
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
+PRIVATE gfx_request_line_t line;
 
 PUBLIC int main(int argc, char **argv) {
     int fd, r;
@@ -37,31 +38,32 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    pixel.c=2;
-    for (y=0; y<100; y+=16) {
-        pixel.y = y;
-        for (x=0; x<160; x+=16) {
-            pixel.x = x;
+    line.x1 = 0;
+    line.x2 = 639;
+    line.y1 = 100;
+    line.y2 = 100;
+    line.c = 3;
+    ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
+    line.x1 = 0;
+    line.x2 = 0;
+    line.y1 = 0;
+    line.y2 = 349;
+    ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
+
+/*    pixel.c=2;
+    for (x=0; x<640; x+=32) {
+        pixel.x=x;
+        for (y=0; y<480; y+=32) {
+            pixel.y=y;
             ioctl(fd, GFX_REQUEST_PUT_PIXEL, &pixel);
         }
     }
+    */
 
     sleep(2);
 
-    ioctl(fd, GFX_REQUEST_CLEAR_SCREEN, NULL);
-
-    pixel.x = pixel.y = 0;
-    ioctl(fd, GFX_REQUEST_GET_PIXEL, &pixel);
-    c1 = pixel.c;
-    pixel.x++;
-    ioctl(fd, GFX_REQUEST_GET_PIXEL, &pixel);
-    c2 = pixel.c;
-
     mode = TEXT_COLOR;
-    ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
-
-    printf("c1 = %d    c2 = %d\n", c1, c2);
-
+    r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     close(fd);
 
     return 0;

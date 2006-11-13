@@ -28,6 +28,7 @@ EXTERN gfx_funcs_t *driver;
 
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
+PRIVATE gfx_request_line_t line;
 
 PUBLIC int gfx_ioctl(message *mess) {
     int r;
@@ -60,6 +61,27 @@ PUBLIC int gfx_ioctl(message *mess) {
                             sizeof(pixel));
             if (r != OK) return EGFX_ERROR;
             return driver->put_pixel(pixel.x, pixel.y, pixel.c);
+            break;
+        case GFX_REQUEST_DRAW_LINE:
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &line,
+                            sizeof(line));
+            if (r != OK) return EGFX_ERROR;
+            return driver->draw_line(line.x1, line.y1, line.x2, line.y2, line.c);
+            break;
+        case GFX_REQUEST_DRAW_LINE_HORI:
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &line,
+                            sizeof(line));
+            if (r != OK) return EGFX_ERROR;
+            return driver->draw_line_hori(line.x1, line.y1, line.x2, line.c);
+            break;
+        case GFX_REQUEST_DRAW_LINE_VERT:
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &line,
+                            sizeof(line));
+            if (r != OK) return EGFX_ERROR;
+            return driver->draw_line_vert(line.x1, line.y1, line.y2, line.c);
             break;
         case GFX_REQUEST_CLEAR_SCREEN:
             return driver->clear_screen();

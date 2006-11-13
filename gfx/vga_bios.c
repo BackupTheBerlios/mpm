@@ -115,6 +115,52 @@ PRIVATE int clear_screen(void) {
     return 0;
 }
 
+PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
+    int tx, x;
+    struct reg86u reg86;
+
+    if (x1>x2) {
+        tx=x1; x1=x2; x2=tx;
+    }
+    c=(c&0xff)|0x0c00;
+    for (; x1<=x2; x1++) {
+        reg86.u.w.ax = c;
+        reg86.u.w.dx = y1;
+        reg86.u.w.cx = x1;
+        int10h(&reg86);
+    }
+
+    return 0;
+}
+
+PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
+    int ty;
+    struct reg86u reg86;
+
+    if (y1>y2) {
+        ty=y1; y1=y2; y2=ty;
+    }
+    c=(c&0xff)|0x0c00;
+    for (; y1<=y2; y1++) {
+        reg86.u.w.ax = c;
+        reg86.u.w.cx = x1;
+        reg86.u.w.dx = y1;
+        int10h(&reg86);
+    }
+
+    return 0;
+}
+
+PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
+    int tx, ty;
+
+    DEBUG report(myname, "hiero", 0);
+    if (x1==x2) return draw_line_vert(x1, y1, y2, c);
+    if (y1==y2) return draw_line_hori(x1, y1, x2, c);
+
+    return 0;
+}
+
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     "vga_bios",
     TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x16 | VGA_640x480x16 |
@@ -123,7 +169,10 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     set_mode,
     get_pixel,
     put_pixel,
-    clear_screen
+    clear_screen,
+    draw_line,
+    draw_line_hori,
+    draw_line_vert
 };
 
 PUBLIC gfx_funcs_t gfx_funcs_ega_bios = {
@@ -133,5 +182,8 @@ PUBLIC gfx_funcs_t gfx_funcs_ega_bios = {
     set_mode,
     get_pixel,
     put_pixel,
-    clear_screen
+    clear_screen,
+    draw_line,
+    draw_line_hori,
+    draw_line_vert
 };

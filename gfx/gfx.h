@@ -21,6 +21,9 @@ typedef struct gfx_funcs_s {
     int (*get_pixel)(int x, int y, int *c);
     int (*put_pixel)(int x, int y, int c);
     int (*clear_screen)(void);
+    int (*draw_line)(int x1, int y1, int x2, int y2, int c);
+    int (*draw_line_hori)(int x1, int y1, int x2, int c);
+    int (*draw_line_vert)(int x1, int y1, int y2, int c);
 } gfx_funcs_t;
 
 #endif

@@ -81,7 +81,7 @@ PUBLIC int main(int argc, char **argv) {
         caller = mess.m_source;
         proc_nr = mess.IO_ENDPT;
 
-        report(MYNAME, "mess.m_type", mess.m_type);
+        DEBUG report(MYNAME, "mess.m_type", mess.m_type);
 
         r = 0;
         switch (mess.m_type) {
