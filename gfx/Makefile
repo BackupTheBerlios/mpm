@@ -1,13 +1,15 @@
 PROG=gfx
 OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o
 
+CPPFLAGS=-O2
+
 all:	$(PROG) test tm
 
 $(PROG):	$(OBJS)
 	cc -o $@ $(OBJS) -lsysutil -lsys
 
 .c.o:
-	cc -c -o $@ $<
+	cc -c $(CPPFLAGS) -o $@ $<
 
 clean:
 	rm -f *~ $(OBJS) $(PROG) test.o test
@@ -23,11 +25,11 @@ updebug:
 down:
 	service down `cat /usr/run/gfx.pid`
 
-test:	test.c
-	cc -o test test.c
+test:	test.o
+	cc -o test test.o
 
-tm:	tm.c
-	cc -o tm tm.c
+tm:	tm.o
+	cc -o tm tm.o
 
 depend:
 	/usr/bin/mkdep "cc -E" *.c > .depend

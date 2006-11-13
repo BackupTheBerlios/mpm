@@ -65,8 +65,6 @@ PUBLIC int main(int argc, char **argv) {
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
 
-    sleep(2);
-
     mode = TEXT_COLOR;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     close(fd);

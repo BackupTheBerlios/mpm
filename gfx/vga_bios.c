@@ -24,6 +24,7 @@ PRIVATE vir_bytes bios_buf_vir, bios_buf_size;
 PRIVATE phys_bytes bios_buf_phys;
 PRIVATE int current_mode;
 PRIVATE char *myname;
+PRIVATE struct reg86u reg86;
 
 PRIVATE struct mode_list_s {
     gfx_mode_t mode;
@@ -37,14 +38,6 @@ PRIVATE struct mode_list_s {
     { VGA_320x200x256, 0x13 },
     { GFX_MODE_NONE,   0x00 }
 };
-
-PRIVATE void int10h(struct reg86u *reg86) {
-    int r;
-
-    reg86->u.b.intno = 0x10;
-    r = sys_int86(reg86);
-    if (r != OK) panic(myname, "BIOS call failed", r);
-}
 
 PRIVATE int init(char *name) {
     struct reg86u reg86;
@@ -68,8 +61,7 @@ PRIVATE int init(char *name) {
 }
 
 PRIVATE int set_mode(gfx_mode_t mode) {
-    struct reg86u reg86;
-    int x;
+    int x, r;
 
     for (x=0; mode_list[x].al; x++) {
         if (mode == mode_list[x].mode) break;
@@ -77,7 +69,9 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     if (mode_list[x].al == 0) return EGFX_UNSUPPORTED_MODE;
     reg86.u.b.ah = 0x00;
     reg86.u.b.al = mode_list[x].al;
-    int10h(&reg86);
+    reg86.u.b.intno = 0x10;
+    r = sys_int86(&reg86);
+    if (r != OK) panic(myname, "BIOS call failed", r);
 
     current_mode = mode;
 
@@ -85,25 +79,25 @@ PRIVATE int set_mode(gfx_mode_t mode) {
 }
 
 PRIVATE int get_pixel(int x, int y, int *c) {
-    struct reg86u reg86;
 
     reg86.u.b.ah = 0x0d;
     reg86.u.w.cx = x;
     reg86.u.w.dx = y;
-    int10h(&reg86);
+    reg86.u.b.intno = 0x10;
+    sys_int86(&reg86);
     *c = reg86.u.b.al;
 
     return 0;
 }
 
 PRIVATE int put_pixel(int x, int y, int c) {
-    struct reg86u reg86;
 
     reg86.u.b.ah = 0x0c;
     reg86.u.b.al = c;
     reg86.u.w.cx = x;
     reg86.u.w.dx = y;
-    int10h(&reg86);
+    reg86.u.b.intno = 0x10;
+    sys_int86(&reg86);
 
     return 0;
 }
@@ -117,7 +111,6 @@ PRIVATE int clear_screen(void) {
 
 PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
     int tx;
-    struct reg86u reg86;
 
     if (x1>x2) {
         tx=x1; x1=x2; x2=tx;
@@ -127,7 +120,8 @@ PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
         reg86.u.w.ax = c;
         reg86.u.w.dx = y1;
         reg86.u.w.cx = x1;
-        int10h(&reg86);
+        reg86.u.b.intno = 0x10;
+        sys_int86(&reg86);
     }
 
     return 0;
@@ -135,7 +129,6 @@ PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
 
 PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
     int ty;
-    struct reg86u reg86;
 
     if (y1>y2) {
         ty=y1; y1=y2; y2=ty;
@@ -145,7 +138,8 @@ PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
         reg86.u.w.ax = c;
         reg86.u.w.cx = x1;
         reg86.u.w.dx = y1;
-        int10h(&reg86);
+        reg86.u.b.intno = 0x10;
+        sys_int86(&reg86);
     }
 
     return 0;
@@ -155,11 +149,12 @@ PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
 #define ABS(x) ( ((x)<0) ? (-(x)) : (x) )
 
 PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
-    int dx, dy, i, e, x, y;
+    int dx, dy, i, e, x, y, t;
 
     dx = x2 - x1;
     dy = y2 - y1;
 
+    c=(c&0xff)|0x0c00;
     if (ABS(dx) > ABS(dy)) {
         if (dx < 0) {
             int tx, ty;
@@ -174,15 +169,18 @@ PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
         } else {
             i = 1;
         }
-        e = dx / 2;
+        e = dx >> 1;
         y = y1;
         for (x=x1; x<=x2; x++) {
-            if (e >= dx) {
-                e -= dx;
-                y += i;
-            }
-            e += dy;
-            put_pixel(x, y, c);
+            /* (e>=dx) --> TX=1 else TY=0 */
+#define TX (((unsigned int)dx - (unsigned int)e - 1) >> 31)
+            e = e - TX*dx + dy;
+            y += TX*i;
+            reg86.u.w.ax = c;
+            reg86.u.w.cx = x;
+            reg86.u.w.dx = y;
+            reg86.u.b.intno=0x10;
+            sys_int86(&reg86);
         }
     } else {
         if (dy < 0) {
@@ -198,15 +196,17 @@ PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
         } else {
             i = 1;
         }
-        e = dy / 2;
+        e = dy >> 1;
         x = x1;
         for (y=y1; y<=y2; y++) {
-            if (e >= dy) {
-                e -= dy;
-                x += i;
-            }
-            e += dx;
-            put_pixel(x, y, c);
+#define TY (((unsigned int)dy - (unsigned int)e - 1) >> 31)
+            e = e - TY*dy + dx;
+            x += TY*i;
+            reg86.u.w.ax = c;
+            reg86.u.w.cx = x;
+            reg86.u.w.dx = y;
+            reg86.u.b.intno=0x10;
+            sys_int86(&reg86);
         }
     }
 
