@@ -22,4 +22,12 @@
 #define	VGA_NUM_GC_REGS     9
 #define	VGA_NUM_AC_REGS     21
 
+typedef struct vga_raw_mode_s {
+    unsigned char misc[1];
+    unsigned char seq[VGA_NUM_SEQ_REGS];
+    unsigned char crtc[VGA_NUM_CRTC_REGS];
+    unsigned char gc[VGA_NUM_GC_REGS];
+    unsigned char ac[VGA_NUM_AC_REGS];
+} vga_raw_mode_t;
+
 #endif
