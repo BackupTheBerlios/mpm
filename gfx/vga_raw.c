@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "gfx.h"
+#include "vga_raw.h"
 
 EXTERN int debug;
 
