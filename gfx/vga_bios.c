@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#define GFX_DRIVER
+
 #include "gfx.h"
 #include "gfx_ioctl.h"
 
@@ -78,7 +80,7 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     return 0;
 }
 
-PRIVATE int get_pixel(int x, int y, int *c) {
+PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
 
     reg86.u.b.ah = 0x0d;
     reg86.u.w.cx = x;
@@ -90,7 +92,7 @@ PRIVATE int get_pixel(int x, int y, int *c) {
     return 0;
 }
 
-PRIVATE int put_pixel(int x, int y, int c) {
+PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
     reg86.u.b.ah = 0x0c;
     reg86.u.b.al = c;
@@ -109,7 +111,9 @@ PRIVATE int clear_screen(void) {
     return 0;
 }
 
-PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
+PRIVATE int draw_line_hori(unsigned short x1, unsigned short y1,
+                           unsigned short x2,
+                           unsigned int c) {
     int tx;
 
     if (x1>x2) {
@@ -127,7 +131,9 @@ PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
     return 0;
 }
 
-PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
+PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
+                                              unsigned short y2,
+                           unsigned int c) {
     int ty;
 
     if (y1>y2) {
@@ -148,7 +154,9 @@ PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
 #undef ABS
 #define ABS(x) ( ((x)<0) ? (-(x)) : (x) )
 
-PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
+PRIVATE int draw_line(unsigned short x1, unsigned short y1,
+                      unsigned short x2, unsigned short y2,
+                      unsigned int c) {
     int dx, dy, i, e, x, y, t;
 
     dx = x2 - x1;

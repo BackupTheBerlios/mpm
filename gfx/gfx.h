@@ -18,12 +18,39 @@ typedef struct gfx_funcs_s {
     unsigned long modes;
     int (*init)(char *name);
     int (*set_mode)(gfx_mode_t mode);
-    int (*get_pixel)(int x, int y, int *c);
-    int (*put_pixel)(int x, int y, int c);
+    int (*get_pixel)(unsigned short x, unsigned short y, unsigned int *c);
+    int (*put_pixel)(unsigned short x, unsigned short y, unsigned int c);
     int (*clear_screen)(void);
-    int (*draw_line)(int x1, int y1, int x2, int y2, int c);
-    int (*draw_line_hori)(int x1, int y1, int x2, int c);
-    int (*draw_line_vert)(int x1, int y1, int y2, int c);
+    int (*draw_line)(unsigned short x1, unsigned short y1,
+                     unsigned short x2, unsigned short y2,
+                     unsigned int c);
+    int (*draw_line_hori)(unsigned short x1, unsigned short y1,
+                          unsigned short x2,
+                          unsigned int c);
+    int (*draw_line_vert)(unsigned short x1, unsigned short y1,
+                                             unsigned short y2,
+                          unsigned int c);
 } gfx_funcs_t;
+
+#ifdef GFX_DRIVER
+#define _PROTOPRIV(a,b)     PRIVATE _PROTOTYPE(a,b)
+
+_PROTOPRIV( int init,           (char *name)                            );
+_PROTOPRIV( int set_mode,       (gfx_mode_t mode)                       );
+_PROTOPRIV( int get_pixel,      (unsigned short x, unsigned short y,
+                                 unsigned int *c)                       );
+_PROTOPRIV( int put_pixel,      (unsigned short x, unsigned short y,
+                                 unsigned int c)                        );
+_PROTOPRIV( int clear_screen,   (void)                                  );
+_PROTOPRIV( int draw_line,      (unsigned short x1, unsigned short y1,
+                                 unsigned short x2, unsigned short y2,
+                                 unsigned int c)                        );
+_PROTOPRIV( int draw_line_hori, (unsigned short x1, unsigned short y1,
+                                 unsigned short x2,
+                                 unsigned int c)                        );
+_PROTOPRIV( int draw_line_vert, (unsigned short x1, unsigned short y1,
+                                                    unsigned short y2,
+                                 unsigned int c)                        );
+#endif
 
 #endif

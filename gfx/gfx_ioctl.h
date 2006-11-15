@@ -16,10 +16,12 @@ _PROTOTYPE(int gfx_ioctl, (message *mess));
 
 typedef unsigned long gfx_request_set_mode_t;
 typedef struct gfx_request_pixel_s {
-    int x, y, c;
+    unsigned short x, y;
+    unsigned int c;
 } gfx_request_pixel_t;
 typedef struct gfx_request_line_s {
-    int x1, y1, x2, y2, c;
+    unsigned short x1, y1, x2, y2;
+    unsigned int c;
 } gfx_request_line_t;
 
 #define GFX_OK                      0

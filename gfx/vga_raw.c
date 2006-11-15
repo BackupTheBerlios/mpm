@@ -15,6 +15,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#define GFX_DRIVER
+
 #include "gfx.h"
 #include "vga_raw.h"
 
@@ -76,11 +78,11 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     return 0;
 }
 
-PRIVATE int get_pixel(int x, int y, int *c) {
+PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
     return 0;
 }
 
-PRIVATE int put_pixel(int x, int y, int c) {
+PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
     return 0;
 }
 
@@ -88,15 +90,21 @@ PRIVATE int clear_screen(void) {
     return 0;
 }
 
-PRIVATE int draw_line(int x1, int y1, int x2, int y2, int c) {
+PRIVATE int draw_line(unsigned short x1, unsigned short y1,
+                      unsigned short x2, unsigned short y2,
+                      unsigned int c) {
     return 0;
 }
 
-PRIVATE int draw_line_hori(int x1, int y1, int x2, int c) {
+PRIVATE int draw_line_hori(unsigned short x1, unsigned short y1,
+                           unsigned short x2,
+                           unsigned int c) {
     return 0;
 }
 
-PRIVATE int draw_line_vert(int x1, int y1, int y2, int c) {
+PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
+                                              unsigned short y2,
+                           unsigned int c) {
     return 0;
 }
 
