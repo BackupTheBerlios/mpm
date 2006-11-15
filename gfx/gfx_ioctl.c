@@ -20,6 +20,7 @@
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
+#include "vga_regs.h"
 
 #define MYNAME "gfx_ioctl"
 
@@ -29,6 +30,8 @@ EXTERN gfx_funcs_t *driver;
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
+
+FORWARD int dump_registers(vga_registers_t *regs);
 
 PUBLIC int gfx_ioctl(message *mess) {
     int r;
@@ -85,8 +88,45 @@ PUBLIC int gfx_ioctl(message *mess) {
             break;
         case GFX_REQUEST_CLEAR_SCREEN:
             return driver->clear_screen();
+        case GFX_REQUEST_DUMP_REGISTERS: {
+            vga_registers_t regs;
+
+            dump_registers(&regs);
+            r = sys_vircopy(SELF,           D, (vir_bytes) &regs,
+                            mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            sizeof(regs));
+            if (r != OK) return EGFX_ERROR;
+            return 0;
+            break;
+        }
         default:
             break;
+    }
+
+    return 0;
+}
+
+#define READ_RANGE(num, idx, dta, ary) \
+    for (i=0; i<num; i++) { \
+        sys_outb(idx, i); \
+        sys_inb(dta, &lv); \
+        regs->ary[i] = lv; \
+    }
+
+PRIVATE int dump_registers(vga_registers_t *regs) {
+    unsigned long lv, i;
+
+    sys_inb(VGA_MISC_READ, &lv);
+    regs->misc[0] = lv;
+
+    READ_RANGE(VGA_NUM_SEQ_REGS,  VGA_SEQ_INDEX,  VGA_SEQ_DATA,  seq);
+    READ_RANGE(VGA_NUM_CRTC_REGS, VGA_CRTC_INDEX, VGA_CRTC_DATA, crtc);
+    READ_RANGE(VGA_NUM_GC_REGS,   VGA_GC_INDEX,   VGA_GC_DATA,   gc);
+    for (i=0; i<VGA_NUM_AC_REGS; i++) {
+        sys_inb(VGA_INSTAT_READ, &lv);
+        sys_outb(VGA_AC_INDEX, i);
+        sys_inb(VGA_AC_READ, &lv);
+        regs->ac[i] = lv;
     }
 
     return 0;

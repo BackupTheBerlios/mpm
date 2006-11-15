@@ -15,14 +15,16 @@
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
+#include "vga_regs.h"
 
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
+PRIVATE vga_registers_t vgaregs;
 
 PUBLIC int main(int argc, char **argv) {
     int fd, r;
-    int x, y, c1, c2;
+    int x, y, c1, c2, i;
 
     fd = open("/dev/gfx", O_RDWR);
     if (fd < 0 ) {
@@ -30,7 +32,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = EGA_640x350x16;
+    mode = VGA_640x480x16;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);
@@ -65,8 +67,24 @@ PUBLIC int main(int argc, char **argv) {
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
 
+    ioctl(fd, GFX_REQUEST_DUMP_REGISTERS, &vgaregs);
+
     mode = TEXT_COLOR;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
+
+#define PRINT_RANGE(num, ary) \
+    printf("{ "); \
+    for (i=0; i<num-1; i++) { \
+        printf("0x%02X, ", vgaregs.ary[i]); \
+    } \
+    printf("0x%02X },\n", vgaregs.ary[num-1]);
+
+    PRINT_RANGE(1, misc);
+    PRINT_RANGE(VGA_NUM_SEQ_REGS, seq);
+    PRINT_RANGE(VGA_NUM_CRTC_REGS, crtc);
+    PRINT_RANGE(VGA_NUM_GC_REGS, gc);
+    PRINT_RANGE(VGA_NUM_AC_REGS, ac);
+
     close(fd);
 
     return 0;

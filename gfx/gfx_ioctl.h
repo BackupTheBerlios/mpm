@@ -12,6 +12,7 @@ _PROTOTYPE(int gfx_ioctl, (message *mess));
 #define GFX_REQUEST_DRAW_LINE       (GFX_REQUEST_BASE + 0x05)
 #define GFX_REQUEST_DRAW_LINE_HORI  (GFX_REQUEST_BASE + 0x06)
 #define GFX_REQUEST_DRAW_LINE_VERT  (GFX_REQUEST_BASE + 0x07)
+#define GFX_REQUEST_DUMP_REGISTERS  (GFX_REQUEST_BASE + 0x08)
 
 typedef unsigned long gfx_request_set_mode_t;
 typedef struct gfx_request_pixel_s {
