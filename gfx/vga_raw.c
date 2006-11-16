@@ -10,10 +10,12 @@
 #include <minix/const.h>
 #include <ibm/int86.h>
 #include <sys/types.h>
+#include <sys/vm.h>
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define GFX_DRIVER
 
@@ -68,9 +70,23 @@ PRIVATE struct mode_list_s {
           0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x41, 0x00, 0x0F, 0x00, 0x00 } } }
 };
 
+PRIVATE unsigned char *fb, *afb;
+
 PRIVATE int init(char *name) {
+    int d, r;
 
     myname = name;
+
+    afb = malloc(0x20000 + PAGE_SIZE);
+    if (afb == NULL) panic(myname, "out of memory", errno);
+
+    fb = afb;
+    d = ((unsigned)fb % PAGE_SIZE);
+    if (d) fb = (unsigned char *) fb + (PAGE_SIZE - d);
+
+    r = sys_vm_map(SELF, 1, (phys_bytes)fb, 0x20000, 0xa0000);
+    if (r != OK) panic(myname, "sys_vm_map failed", r);
+
     return 0;
 }
 
