@@ -30,7 +30,7 @@ EXTERN int debug;
 PRIVATE char *myname;
 
 PRIVATE unsigned char *fb, *afb, *curfb;
-PRIVATE unsigned short width = 0, height = 0;
+PRIVATE unsigned short width = 0, height = 0, stride = 0;
 PRIVATE unsigned char bpp = 0, planar = 0;
 
 #define OUTB(p,v) sys_outb(p,v)
@@ -209,6 +209,11 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     height = mode_list[x].height;
     bpp = mode_list[x].bpp;
     planar = mode_list[x].planar;
+    if (bpp == 4) {
+        stride = width / 8;
+    } else {
+        stride = (unsigned int) width * bpp / 8;
+    }
 
     if (planar) set_plane(0);
 
@@ -225,37 +230,34 @@ PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
     if (y<0 || y>= height) return EGFX_ERROR;
 
     if (bpp == 1) { /* 1bpp packed */
-        int stride, mask, off, p;
-        stride = width / 8;
+        int mask, off, p;
         c = (!!c) * 0xff;
         off = stride * y + (x >> 3);
         x &= 7;
         mask = 0x80 >> x;
         curfb[off] = (curfb[off] & ~mask) | ( c & mask );
-    } else if (bpp == 4) { /* currently, there are only planar 4bpp modes */
-        int stride, mask, off, p;
-        stride = width / 8;
+    } else if (bpp == 4) { /* 4bpp is always planar */
+        int mask, off, p;
         off = stride * y + (x >> 3);
-        x &= 7;
-        mask = 0x80 >> x;
+        mask = 0x80 >> (x & 7);
         OUTB(VGA_GC_INDEX, 4);
         OUTB(VGA_SEQ_INDEX, 2);
+
         OUTB(VGA_GC_DATA, 0);
         OUTB(VGA_SEQ_DATA, 0x01);
-        if (c & 0x01)   curfb[off] |= mask;
-        else            curfb[off] &= ~mask;
+        curfb[off] = (curfb[off] & ~mask) | ((!!(c&0x01)) * mask);
+
         OUTB(VGA_GC_DATA, 1);
         OUTB(VGA_SEQ_DATA, 0x02);
-        if (c & 0x02)   curfb[off] |= mask;
-        else            curfb[off] &= ~mask;
+        curfb[off] = (curfb[off] & ~mask) | ((!!(c&0x02)) * mask);
+
         OUTB(VGA_GC_DATA, 2);
         OUTB(VGA_SEQ_DATA, 0x04);
-        if (c & 0x04)   curfb[off] |= mask;
-        else            curfb[off] &= ~mask;
+        curfb[off] = (curfb[off] & ~mask) | ((!!(c&0x04)) * mask);
+
         OUTB(VGA_GC_DATA, 3);
         OUTB(VGA_SEQ_DATA, 0x08);
-        if (c & 0x08)   curfb[off] |= mask;
-        else            curfb[off] &= ~mask;
+        curfb[off] = (curfb[off] & ~mask) | ((!!(c&0x08)) * mask);
     }
 
     return 0;
@@ -289,7 +291,7 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
     dx = x2 - x1;
     dy = y2 - y1;
 
-    c=(c&0xff)|0x0c00;
+    c &= 0xff;
     if (ABS(dx) > ABS(dy)) {
         if (dx < 0) {
             int tx, ty;
