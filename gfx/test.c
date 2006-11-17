@@ -39,18 +39,29 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    line.x1 = 0; line.x2 = 639; line.y1 = 175; line.c = 3;
+    ioctl(fd, GFX_REQUEST_CLEAR_SCREEN, &mode);
+
+    pixel.c = 3;
+    for (x=16; x<=639; x+=32) {
+        pixel.x = x;
+        for (y=16; y<=349; y+=32) {
+            pixel.y = y;
+            ioctl(fd, GFX_REQUEST_PUT_PIXEL, &pixel);
+        }
+    }
+
+    line.x1 = 0; line.x2 = 639; line.y1 = 175; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
-    line.y1 = 0; line.c = 3;
+    line.y1 = 0; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
-    line.y1 = 349; line.c = 3;
+    line.y1 = 349; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
     line.x1 = 0; line.y1 = 0; line.y2 = 349;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
     line.x1 = 639;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
 
-    line.c = 4;
+    line.c = 1;
     for (x=0; x<=639; x+=32) {
         line.x1 = x;
         line.y1 = 0;
@@ -58,7 +69,7 @@ PUBLIC int main(int argc, char **argv) {
         line.y2 = 349;
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
-    line.c = 5;
+    line.c = 2;
     for (y=349; y>=0; y-=32) {
         line.x1 = 0;
         line.y1 = y;
@@ -69,8 +80,9 @@ PUBLIC int main(int argc, char **argv) {
 
     ioctl(fd, GFX_REQUEST_DUMP_REGISTERS, &vgaregs);
 
-    mode = TEXT_COLOR;
-    r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
+    sleep(2);
+
+    r = ioctl(fd, GFX_REQUEST_RESET, NULL);
 
 #define PRINT_RANGE(num, ary) \
     printf("{ "); \

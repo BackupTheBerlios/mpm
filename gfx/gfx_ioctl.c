@@ -99,6 +99,16 @@ PUBLIC int gfx_ioctl(message *mess) {
             return 0;
             break;
         }
+        case GFX_REQUEST_RESET: {
+            struct reg86u reg86;
+
+            reg86.u.b.intno = 0x10;
+            reg86.u.w.ax = 0x0003;
+            r = sys_int86(&reg86);
+            if (r != OK) return EGFX_ERROR;
+            return 0;
+            break;
+        }
         default:
             break;
     }
