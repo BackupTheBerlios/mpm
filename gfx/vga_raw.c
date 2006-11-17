@@ -322,6 +322,8 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
                 for (x=x1; x<=x2; x++) {
                     e = e - TX*dx + dy;
                     y += TX*i;
+                    if (x<0 || x>=width) continue;
+                    if (y<0 || y>=height) continue;
                     off = stride * y + (x >> 3);
                     mask = 0x80 >> (x & 7);
                     curfb[off] = (curfb[off] & ~mask) | ((!!(c&(0x01<<p))) * mask);
@@ -364,6 +366,8 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
                 for (y=y1; y<=y2; y++) {
                     e = e - TY*dy + dx;
                     x += TY*i;
+                    if (x<0 || x>=width) continue;
+                    if (y<0 || y>=height) continue;
                     off = stride * y + (x >> 3);
                     mask = 0x80 >> (x & 7);
                     curfb[off] = (curfb[off] & ~mask) | ((!!(c&(0x01<<p))) * mask);
