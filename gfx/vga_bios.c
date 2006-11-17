@@ -27,18 +27,24 @@ PRIVATE phys_bytes bios_buf_phys;
 PRIVATE int current_mode;
 PRIVATE char *myname;
 PRIVATE struct reg86u reg86;
+PRIVATE unsigned short width = 0, height = 0;
+PRIVATE unsigned char bpp = 0;
 
 PRIVATE struct mode_list_s {
     gfx_mode_t mode;
     unsigned char al;
+    unsigned short width, height;
+    unsigned char bpp;
 } mode_list[] = {
-    { TEXT_MONO,       0x02 },
-    { TEXT_COLOR,      0x03 },
-    { EGA_320x200x16,  0x0d },
-    { EGA_640x350x16,  0x10 },
-    { VGA_640x480x16,  0x12 },
-    { VGA_320x200x256, 0x13 },
-    { GFX_MODE_NONE,   0x00 }
+    { TEXT_MONO,       0x02,  80,  25, 16 },
+    { TEXT_COLOR,      0x03,  80,  25, 16 },
+    { EGA_320x200x16,  0x0d, 320, 200,  4 },
+    { EGA_640x350x2,   0x0f, 640, 350,  1 },
+    { EGA_640x350x16,  0x10, 640, 350,  4 },
+    { VGA_640x480x2,   0x11, 640, 480,  1 },
+    { VGA_640x480x16,  0x12, 640, 480,  4 },
+    { VGA_320x200x256, 0x13, 320, 200,  8 },
+    { GFX_MODE_NONE,   0x00,   0,   0,  0 }
 };
 
 PRIVATE int init(char *name) {
@@ -77,10 +83,17 @@ PRIVATE int set_mode(gfx_mode_t mode) {
 
     current_mode = mode;
 
+    width = mode_list[x].width;
+    height = mode_list[x].height;
+    bpp = mode_list[x].bpp;
+
     return 0;
 }
 
 PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
+
+    if (x<0 || x>width) return EGFX_ERROR;
+    if (y<0 || y>height) return EGFX_ERROR;
 
     reg86.u.b.ah = 0x0d;
     reg86.u.w.cx = x;
@@ -93,6 +106,10 @@ PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
 }
 
 PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
+
+    if (x<0 || x>width) return EGFX_ERROR;
+    if (y<0 || y>height) return EGFX_ERROR;
+    if (bpp = 2) c = !!c;
 
     reg86.u.b.ah = 0x0c;
     reg86.u.b.al = c;
@@ -119,14 +136,7 @@ PRIVATE int draw_line_hori(unsigned short x1, unsigned short y1,
     if (x1>x2) {
         tx=x1; x1=x2; x2=tx;
     }
-    c=(c&0xff)|0x0c00;
-    for (; x1<=x2; x1++) {
-        reg86.u.w.ax = c;
-        reg86.u.w.dx = y1;
-        reg86.u.w.cx = x1;
-        reg86.u.b.intno = 0x10;
-        sys_int86(&reg86);
-    }
+    for (; x1<=x2; x1++) put_pixel(x1, y1, c);
 
     return 0;
 }
@@ -139,14 +149,7 @@ PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
     if (y1>y2) {
         ty=y1; y1=y2; y2=ty;
     }
-    c=(c&0xff)|0x0c00;
-    for (; y1<=y2; y1++) {
-        reg86.u.w.ax = c;
-        reg86.u.w.cx = x1;
-        reg86.u.w.dx = y1;
-        reg86.u.b.intno = 0x10;
-        sys_int86(&reg86);
-    }
+    for (; y1<=y2; y1++) put_pixel(x1, y1, c);
 
     return 0;
 }
@@ -184,11 +187,7 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
 #define TX (((unsigned int)dx - (unsigned int)e - 1) >> 31)
             e = e - TX*dx + dy;
             y += TX*i;
-            reg86.u.w.ax = c;
-            reg86.u.w.cx = x;
-            reg86.u.w.dx = y;
-            reg86.u.b.intno=0x10;
-            sys_int86(&reg86);
+            put_pixel(x,y,c);
         }
     } else {
         if (dy < 0) {
@@ -210,11 +209,7 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
 #define TY (((unsigned int)dy - (unsigned int)e - 1) >> 31)
             e = e - TY*dy + dx;
             x += TY*i;
-            reg86.u.w.ax = c;
-            reg86.u.w.cx = x;
-            reg86.u.w.dx = y;
-            reg86.u.b.intno=0x10;
-            sys_int86(&reg86);
+            put_pixel(x,y,c);
         }
     }
 
@@ -223,8 +218,8 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     "vga_bios",
-    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x16 | VGA_640x480x16 |
-    VGA_320x200x256,
+    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x2 | EGA_640x350x16 |
+    VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
     init,
     set_mode,
     get_pixel,
@@ -237,7 +232,7 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
 
 PUBLIC gfx_funcs_t gfx_funcs_ega_bios = {
     "ega_bios",
-    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x16,
+    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x2 | EGA_640x350x16,
     init,
     set_mode,
     get_pixel,

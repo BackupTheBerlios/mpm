@@ -32,7 +32,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = VGA_640x480x16;
+    mode = EGA_640x350x2;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);
@@ -44,19 +44,19 @@ PUBLIC int main(int argc, char **argv) {
     pixel.c = 3;
     for (x=16; x<=639; x+=32) {
         pixel.x = x;
-        for (y=16; y<=349; y+=32) {
+        for (y=16; y<=479; y+=32) {
             pixel.y = y;
             ioctl(fd, GFX_REQUEST_PUT_PIXEL, &pixel);
         }
     }
 
-    line.x1 = 0; line.x2 = 639; line.y1 = 175; line.c = 2;
+    line.x1 = 0; line.x2 = 639; line.y1 = 240; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
     line.y1 = 0; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
-    line.y1 = 349; line.c = 2;
+    line.y1 = 479; line.c = 2;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_HORI, &line);
-    line.x1 = 0; line.y1 = 0; line.y2 = 349;
+    line.x1 = 0; line.y1 = 0; line.y2 = 479;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
     line.x1 = 639;
     ioctl(fd, GFX_REQUEST_DRAW_LINE_VERT, &line);
@@ -66,15 +66,15 @@ PUBLIC int main(int argc, char **argv) {
         line.x1 = x;
         line.y1 = 0;
         line.x2 = 639-x;
-        line.y2 = 349;
+        line.y2 = 479;
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
     line.c = 2;
-    for (y=349; y>=0; y-=32) {
+    for (y=479; y>=0; y-=32) {
         line.x1 = 0;
         line.y1 = y;
         line.x2 = 639;
-        line.y2 = 349 - y;
+        line.y2 = 479 - y;
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
 

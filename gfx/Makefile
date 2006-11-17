@@ -17,11 +17,11 @@ clean:
 
 up:
 	test -c /dev/gfx || mknod /dev/gfx c 18 0
-	service up `pwd`/gfx -dev /dev/gfx -args "driver=vga_raw"
+	service up `pwd`/gfx -dev /dev/gfx -args "driver=vga_bios"
 
 updebug:
 	test -c /dev/gfx || mknod /dev/gfx c 18 0
-	service up `pwd`/gfx -dev /dev/gfx -args "debug driver=vga_raw"
+	service up `pwd`/gfx -dev /dev/gfx -args "debug driver=vga_bios"
 
 down:
 	service down `cat /usr/run/gfx.pid`
