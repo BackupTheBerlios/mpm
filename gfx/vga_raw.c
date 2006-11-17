@@ -29,7 +29,6 @@ EXTERN int debug;
 
 PRIVATE char *myname;
 
-PRIVATE unsigned char *bottom, *abottom;
 PRIVATE unsigned char *fb, *afb, *curfb;
 PRIVATE unsigned short width = 0, height = 0;
 PRIVATE unsigned char bpp = 0, planar = 0;
@@ -122,16 +121,6 @@ PRIVATE int init(char *name) {
     if (r != OK) panic(myname, "sys_vm_map on 0xa0000 failed", r);
 
     curfb = fb;
-
-    abottom = malloc(2 * PAGE_SIZE);
-    if (abottom == NULL) panic(myname, "out of memory", errno);
-
-    bottom = abottom;
-    d = ((unsigned)bottom % PAGE_SIZE);
-    if (d) bottom = (unsigned char *) bottom + (PAGE_SIZE - d);
-
-    r = sys_vm_map(SELF, 1, (phys_bytes)bottom, PAGE_SIZE, 0x00000);
-    if (r != OK) panic(myname, "sys_vm_map on 0x00000 failed", r);
 
     return 0;
 }
