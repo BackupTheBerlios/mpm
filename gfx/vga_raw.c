@@ -369,7 +369,6 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
                     curfb[off] = (curfb[off] & ~mask) | ((!!(c&(0x01<<p))) * mask);
                 }
             }
-
         } else {
             for (y=y1; y<=y2; y++) {
                 e = e - TY*dy + dx;
@@ -385,12 +384,58 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
 PRIVATE int draw_line_hori(unsigned short x1, unsigned short y1,
                            unsigned short x2,
                            unsigned int c) {
+    int tx;
+
+    if (x1>x2) {
+        tx=x1; x1=x2; x2=tx;
+    }
+    if (planar) {
+        int x, mask, off, p;
+        c &= 0x0f;
+        OUTB(VGA_GC_INDEX, 4);
+        OUTB(VGA_SEQ_INDEX, 2);
+        for (p=0; p<4; p++) {
+            OUTB(VGA_GC_DATA, p);
+            OUTB(VGA_SEQ_DATA, 0x01 << p);
+            for (x=x1; x<=x2; x++) {
+                off = stride * y1 + (x >> 3);
+                mask = 0x80 >> (x & 7);
+                curfb[off] = (curfb[off] & ~mask) | ((!!(c&(0x01<<p))) * mask);
+            }
+        }
+    } else {
+        for (; x1<=x2; x1++) put_pixel(x1, y1, c);
+    }
+
     return 0;
 }
 
 PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
                                               unsigned short y2,
                            unsigned int c) {
+    int ty;
+
+    if (y1>y2) {
+        ty=y1; y1=y2; y2=ty;
+    }
+    if (planar) {
+        int y, mask, off, p;
+        c &= 0x0f;
+        OUTB(VGA_GC_INDEX, 4);
+        OUTB(VGA_SEQ_INDEX, 2);
+        for (p=0; p<4; p++) {
+            OUTB(VGA_GC_DATA, p);
+            OUTB(VGA_SEQ_DATA, 0x01 << p);
+            for (y=y1; y<=y2; y++) {
+                off = stride * y + (x1 >> 3);
+                mask = 0x80 >> (x1 & 7);
+                curfb[off] = (curfb[off] & ~mask) | ((!!(c&(0x01<<p))) * mask);
+            }
+        }
+    } else {
+        for (; y1<=y2; y1++) put_pixel(x1, y1, c);
+    }
+
     return 0;
 }
 
