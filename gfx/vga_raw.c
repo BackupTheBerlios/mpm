@@ -131,6 +131,18 @@ PRIVATE int init(char *name) {
         OUTB(dta, ary[i]); \
     }
 
+PRIVATE void set_plane(int p) {
+    unsigned char pmask;
+
+    p &= 3;
+    pmask = 1 << p;
+
+    OUTB(VGA_GC_INDEX, 4);
+    OUTB(VGA_SEQ_INDEX, 2);
+    OUTB(VGA_GC_DATA, p);
+    OUTB(VGA_SEQ_DATA, pmask);
+}
+
 PRIVATE int set_mode(gfx_mode_t mode) {
     unsigned long lv;
     int x, r, i;
@@ -167,6 +179,8 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     INB(VGA_INSTAT_READ, &lv);
     OUTB(VGA_AC_INDEX, 0x20);
 
+    set_plane(0);
+
     curfb = &fb[mode_list[x].fb_off];
     width = mode_list[x].width;
     height = mode_list[x].height;
@@ -174,18 +188,6 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     planar = mode_list[x].planar;
 
     return 0;
-}
-
-PRIVATE void set_plane(int p) {
-    unsigned char pmask;
-
-    p &= 3;
-    pmask = 1 << p;
-
-    OUTB(VGA_GC_INDEX, 4);
-    OUTB(VGA_SEQ_INDEX, 2);
-    OUTB(VGA_GC_DATA, p);
-    OUTB(VGA_SEQ_DATA, pmask);
 }
 
 PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
