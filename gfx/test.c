@@ -32,7 +32,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = EGA_640x350x2;
+    mode = VGA_640x480x2;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);

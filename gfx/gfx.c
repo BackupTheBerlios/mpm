@@ -23,7 +23,6 @@
 #define MYPIDFILE "/usr/run/gfx.pid"
 #define MYNAME "gfx"
 
-EXTERN gfx_funcs_t gfx_funcs_ega_bios;
 EXTERN gfx_funcs_t gfx_funcs_vga_bios;
 EXTERN gfx_funcs_t gfx_funcs_vga_raw;
 
@@ -34,7 +33,6 @@ PRIVATE struct driverlist_s {
     char *name;
     gfx_funcs_t *driver;
 } drivers[] = {
-    { "ega_bios", &gfx_funcs_ega_bios },
     { "vga_bios", &gfx_funcs_vga_bios },
     { "vga_raw",  &gfx_funcs_vga_raw  },
     { NULL, NULL }

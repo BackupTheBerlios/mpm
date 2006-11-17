@@ -38,9 +38,6 @@ PRIVATE struct mode_list_s {
 } mode_list[] = {
     { TEXT_MONO,       0x02,  80,  25, 16 },
     { TEXT_COLOR,      0x03,  80,  25, 16 },
-    { EGA_320x200x16,  0x0d, 320, 200,  4 },
-    { EGA_640x350x2,   0x0f, 640, 350,  1 },
-    { EGA_640x350x16,  0x10, 640, 350,  4 },
     { VGA_640x480x2,   0x11, 640, 480,  1 },
     { VGA_640x480x16,  0x12, 640, 480,  4 },
     { VGA_320x200x256, 0x13, 320, 200,  8 },
@@ -109,7 +106,7 @@ PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
     if (x<0 || x>width) return EGFX_ERROR;
     if (y<0 || y>height) return EGFX_ERROR;
-    if (bpp = 2) c = !!c;
+    if (bpp == 1) c = !!c;
 
     reg86.u.b.ah = 0x0c;
     reg86.u.b.al = c;
@@ -218,21 +215,7 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     "vga_bios",
-    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x2 | EGA_640x350x16 |
-    VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
-    init,
-    set_mode,
-    get_pixel,
-    put_pixel,
-    clear_screen,
-    draw_line,
-    draw_line_hori,
-    draw_line_vert
-};
-
-PUBLIC gfx_funcs_t gfx_funcs_ega_bios = {
-    "ega_bios",
-    TEXT_MONO | TEXT_COLOR | EGA_320x200x16 | EGA_640x350x2 | EGA_640x350x16,
+    TEXT_MONO | TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
     init,
     set_mode,
     get_pixel,
