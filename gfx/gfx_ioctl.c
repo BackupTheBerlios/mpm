@@ -30,6 +30,7 @@ EXTERN gfx_funcs_t *driver;
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
+PRIVATE gfx_request_rect_t rect;
 
 FORWARD int dump_registers(vga_registers_t *regs);
 
@@ -109,6 +110,13 @@ PUBLIC int gfx_ioctl(message *mess) {
             return 0;
             break;
         }
+        case GFX_REQUEST_DRAW_RECT:
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &rect,
+                            sizeof(rect));
+            if (r != OK) return EGFX_ERROR;
+            return driver->draw_rect(rect.x1, rect.y1, rect.x2, rect.y2, rect.c);
+            break;
         default:
             break;
     }

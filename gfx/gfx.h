@@ -29,6 +29,9 @@ typedef struct gfx_funcs_s {
     int (*draw_line_vert)(unsigned short x1, unsigned short y1,
                                              unsigned short y2,
                           unsigned int c);
+    int (*draw_rect)(unsigned short x1, unsigned short y1,
+                     unsigned short x2, unsigned short y2,
+                     unsigned int c);
 } gfx_funcs_t;
 
 #ifdef GFX_DRIVER
@@ -49,6 +52,9 @@ _PROTOPRIV( int draw_line_hori, (unsigned short x1, unsigned short y1,
                                  unsigned int c)                        );
 _PROTOPRIV( int draw_line_vert, (unsigned short x1, unsigned short y1,
                                                     unsigned short y2,
+                                 unsigned int c)                        );
+_PROTOPRIV( int draw_rect,      (unsigned short x1, unsigned short y1,
+                                 unsigned short x2, unsigned short y2,
                                  unsigned int c)                        );
 #endif
 

@@ -20,6 +20,7 @@
 PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
+PRIVATE gfx_request_rect_t rect;
 PRIVATE vga_registers_t vgaregs;
 
 PUBLIC int main(int argc, char **argv) {
@@ -78,9 +79,18 @@ PUBLIC int main(int argc, char **argv) {
         ioctl(fd, GFX_REQUEST_DRAW_LINE, &line);
     }
 
+    rect.c = 4;
+    for (x=0, y=0; x<=319; x+=32, y+=24) {
+        rect.x1 = x;
+        rect.x2 = 639 - x;
+        rect.y1 = y;
+        rect.y2 = 479 - y;
+        ioctl(fd, GFX_REQUEST_DRAW_RECT, &rect);
+    }
+
     ioctl(fd, GFX_REQUEST_DUMP_REGISTERS, &vgaregs);
 
-/*    sleep(2);*/
+    sleep(2);
 
     r = ioctl(fd, GFX_REQUEST_RESET, NULL);
 

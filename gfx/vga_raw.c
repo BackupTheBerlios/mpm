@@ -457,6 +457,20 @@ PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
     return 0;
 }
 
+PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
+                      unsigned short x2, unsigned short y2,
+                      unsigned int c) {
+    int r;
+
+    r  = draw_line_hori(x1, y1, x2, c);
+    r += draw_line_hori(x1, y2, x2, c);
+    r += draw_line_vert(x1, y1, y2, c);
+    r += draw_line_vert(x2, y1, y2, c);
+
+    if (r<0) r = EGFX_OUT_OF_RANGE;
+    return r;
+}
+
 PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     "vga_raw",
     TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
@@ -467,5 +481,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     clear_screen,
     draw_line,
     draw_line_hori,
-    draw_line_vert
+    draw_line_vert,
+    draw_rect
 };
