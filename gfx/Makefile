@@ -1,5 +1,5 @@
 PROG=gfx
-OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o
+OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o generic.o
 
 CPPFLAGS=-O2
 LDFLAGS=-stack 256k -s

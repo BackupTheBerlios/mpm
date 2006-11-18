@@ -22,6 +22,7 @@
 #include "gfx.h"
 #include "gfx_ioctl.h"
 #include "vga_raw.h"
+#include "generic.h"
 
 #define FB_BASE 0xa0000
 
@@ -457,23 +458,17 @@ PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
     return 0;
 }
 
+/* Unused, but here to avoid compile warnings */
 PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
                       unsigned short x2, unsigned short y2,
                       unsigned int c) {
-    int r;
-
-    r  = draw_line_hori(x1, y1, x2, c);
-    r += draw_line_hori(x1, y2, x2, c);
-    r += draw_line_vert(x1, y1, y2, c);
-    r += draw_line_vert(x2, y1, y2, c);
-
-    if (r<0) r = EGFX_OUT_OF_RANGE;
-    return r;
+    return -1;
 }
 
+/* Unused, but here to avoid compile warnings */
 PRIVATE int put_char(unsigned short x, unsigned short y,
                      unsigned int c, unsigned char chr, gfx_font_t f) {
-    return 0;
+    return -1;
 }
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
@@ -487,6 +482,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     draw_line,
     draw_line_hori,
     draw_line_vert,
-    draw_rect,
-    put_char
+    generic_draw_rect,
+    generic_put_char
 };

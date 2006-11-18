@@ -19,7 +19,7 @@
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
-#include "fonts.h"
+#include "generic.h"
 
 EXTERN int debug;
 
@@ -214,45 +214,17 @@ PRIVATE int draw_line(unsigned short x1, unsigned short y1,
     return 0;
 }
 
+/* Unused, but here to avoid compile warnings */
 PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
                       unsigned short x2, unsigned short y2,
                       unsigned int c) {
-    int r;
-
-    r  = draw_line_hori(x1, y1, x2, c);
-    r += draw_line_hori(x1, y2, x2, c);
-    r += draw_line_vert(x1, y1, y2, c);
-    r += draw_line_vert(x2, y1, y2, c);
-
-    if (r<0) r = EGFX_OUT_OF_RANGE;
-    return r;
+    return -1;
 }
 
+/* Unused, but here to avoid compile warnings */
 PRIVATE int put_char(unsigned short x, unsigned short y,
                      unsigned int c, unsigned char chr, gfx_font_t f) {
-    int h, cnt, p;
-    unsigned char *bm;
-
-    switch (f) {
-        case GFX_FONT_8x8:
-            h = 8;
-            bm = &font_8x8[chr*h];
-            break;
-        case GFX_FONT_8x16:
-            h = 16;
-            bm = &font_8x16[chr*h];
-            break;
-        default:
-            return EGFX_ERROR;
-    }
-
-    for (cnt=0; cnt<h; cnt++) {
-        for (p=0; p<8; p++) {
-            put_pixel(x+p, y+cnt, (!!(bm[cnt]&(0x80>>p)))*c);
-        }
-    }
-
-    return 0;
+    return -1;
 }
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
@@ -266,6 +238,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     draw_line,
     draw_line_hori,
     draw_line_vert,
-    draw_rect,
-    put_char
+    generic_draw_rect,
+    generic_put_char
 };
