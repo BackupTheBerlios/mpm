@@ -430,10 +430,10 @@ PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
     return -1;
 }
 
-/* Unused, but here to avoid compile warnings */
+/* call generic for 4bpp and 8bpp */
 PRIVATE int put_char(unsigned short x, unsigned short y,
                      unsigned int c, unsigned char chr, gfx_font_t f) {
-    int h, cnt, xm, xr, off;
+    int h, cnt, xm, xr, off, border;
     unsigned char *bm;
 
     switch(f) {
@@ -450,15 +450,19 @@ PRIVATE int put_char(unsigned short x, unsigned short y,
     }
 
     if (bpp == 1) {
+        /* it does not write beyond the end of curfb, but it does wrap the
+         * character at the end of a line, so be careful with that ;) */
         xm = x >> 3;
         xr = x &  0x0007;
         off = stride * y + xm;
+        border = stride*height-1;
         for (cnt=0; cnt<h; cnt++) {
             curfb[off]   &= ~(bm[cnt] >> xr);
             if (c) curfb[off]   |= bm[cnt] >> xr;
             curfb[off+1]   &= ~(bm[cnt] << (8-xr));
             if (c) curfb[off+1] |= bm[cnt] << (8-xr);
             off += stride;
+            if (off >= border) break;
         }
     } else if (bpp == 4) {
         return generic_put_char(x, y, c, chr, f);
