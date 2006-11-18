@@ -226,8 +226,8 @@ PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
 
 PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
-    if (x<0 || x>= width) return EGFX_ERROR;
-    if (y<0 || y>= height) return EGFX_ERROR;
+    if (x<0 || x>= width) return EGFX_OUT_OF_RANGE;
+    if (y<0 || y>= height) return EGFX_OUT_OF_RANGE;
 
     if (bpp == 1) { /* 1bpp packed */
         int mask, off;
@@ -392,12 +392,12 @@ PRIVATE int draw_line_hori(unsigned short x1, unsigned short y1,
                            unsigned int c) {
     int tx;
 
-    if (y1<0 || y1>=height) return EGFX_ERROR;
+    if (y1<0 || y1>=height) return EGFX_OUT_OF_RANGE;
     if (x1>x2) {
         tx=x1; x1=x2; x2=tx;
     }
-    if (x1 >= width && x2 >= width) return EGFX_ERROR;
-    if (x1<0 && x2<0) return EGFX_ERROR;
+    if (x1 >= width && x2 >= width) return EGFX_OUT_OF_RANGE;
+    if (x1<0 && x2<0) return EGFX_OUT_OF_RANGE;
     if (x1 < 0) x1 = 0;
     if (x2 >= width) x2 = width-1;
 
@@ -427,12 +427,12 @@ PRIVATE int draw_line_vert(unsigned short x1, unsigned short y1,
                            unsigned int c) {
     int ty;
 
-    if (x1<0 || x1>=width) return EGFX_ERROR;
+    if (x1<0 || x1>=width) return EGFX_OUT_OF_RANGE;
     if (y1>y2) {
         ty=y1; y1=y2; y2=ty;
     }
-    if (y1 >= height && y2 >= height) return EGFX_ERROR;
-    if (y1<0 && y2<0) return EGFX_ERROR;
+    if (y1 >= height && y2 >= height) return EGFX_OUT_OF_RANGE;
+    if (y1<0 && y2<0) return EGFX_OUT_OF_RANGE;
     if (y1 < 0) y1 = 0;
     if (y2 >= height) y2 = height-1;
 

@@ -89,8 +89,8 @@ PRIVATE int set_mode(gfx_mode_t mode) {
 
 PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
 
-    if (x<0 || x>width) return EGFX_ERROR;
-    if (y<0 || y>height) return EGFX_ERROR;
+    if (x<0 || x>width) return EGFX_OUT_OF_RANGE;
+    if (y<0 || y>height) return EGFX_OUT_OF_RANGE;
 
     reg86.u.b.ah = 0x0d;
     reg86.u.w.cx = x;
@@ -104,8 +104,8 @@ PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
 
 PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
-    if (x<0 || x>width) return EGFX_ERROR;
-    if (y<0 || y>height) return EGFX_ERROR;
+    if (x<0 || x>width) return EGFX_OUT_OF_RANGE;
+    if (y<0 || y>height) return EGFX_OUT_OF_RANGE;
     if (bpp == 1) c = !!c;
 
     reg86.u.b.ah = 0x0c;
