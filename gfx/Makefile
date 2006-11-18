@@ -1,8 +1,8 @@
 PROG=gfx
-OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o
+OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o
 
 CPPFLAGS=-O2
-LDFLAGS=-stack 256k
+LDFLAGS=-stack 256k -s
 
 all:	$(PROG) test tm
 
@@ -27,10 +27,10 @@ down:
 	service down `cat /usr/run/gfx.pid`
 
 test:	test.o
-	cc -o test test.o
+	cc -o test test.o -s
 
 tm:	tm.o
-	cc -o tm tm.o
+	cc -o tm tm.o -s
 
 depend:
 	/usr/bin/mkdep "cc -E" *.c > .depend

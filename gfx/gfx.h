@@ -12,6 +12,11 @@ typedef enum gfx_mode_e {
     VGA_320x200x256 = 0x00000010
 } gfx_mode_t;
 
+typedef enum gfx_font_e {
+    GFX_FONT_8x8    = 0x00,
+    GFX_FONT_8x16   = 0x01
+} gfx_font_t;
+
 typedef struct gfx_funcs_s {
     char *name;
     unsigned long modes;
@@ -32,6 +37,8 @@ typedef struct gfx_funcs_s {
     int (*draw_rect)(unsigned short x1, unsigned short y1,
                      unsigned short x2, unsigned short y2,
                      unsigned int c);
+    int (*put_char)(unsigned short x, unsigned short y,
+                    unsigned int c, unsigned char chr, gfx_font_t f);
 } gfx_funcs_t;
 
 #ifdef GFX_DRIVER
@@ -56,6 +63,9 @@ _PROTOPRIV( int draw_line_vert, (unsigned short x1, unsigned short y1,
 _PROTOPRIV( int draw_rect,      (unsigned short x1, unsigned short y1,
                                  unsigned short x2, unsigned short y2,
                                  unsigned int c)                        );
+_PROTOPRIV( int put_char,       (unsigned short x, unsigned short y,
+                                 unsigned int c, unsigned char chr,
+                                 gfx_font_t f)                          );
 #endif
 
 #endif

@@ -21,6 +21,7 @@ PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
 PRIVATE gfx_request_rect_t rect;
+PRIVATE gfx_request_char_t chr;
 PRIVATE vga_registers_t vgaregs;
 
 PUBLIC int main(int argc, char **argv) {
@@ -33,7 +34,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = VGA_640x480x16;
+    mode = VGA_640x480x2;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);
@@ -48,6 +49,30 @@ PUBLIC int main(int argc, char **argv) {
         for (y=16; y<=479; y+=32) {
             pixel.y = y;
             ioctl(fd, GFX_REQUEST_PUT_PIXEL, &pixel);
+        }
+    }
+
+    chr.f = GFX_FONT_8x8; chr.c = 6;
+    chr.y = 13; chr.x = 13;
+    for (i=0; i<256; i++) {
+        chr.chr = i;
+        ioctl(fd, GFX_REQUEST_PUT_CHAR, &chr);
+        chr.x += 8;
+        if (chr.x > 600) {
+            chr.x = 13;
+            chr.y += 8;
+        }
+    }
+
+    chr.f = GFX_FONT_8x16; chr.c = 7;
+    chr.y = 87; chr.x = 13;
+    for (i=0; i<256; i++) {
+        chr.chr = i;
+        ioctl(fd, GFX_REQUEST_PUT_CHAR, &chr);
+        chr.x += 8;
+        if (chr.x > 600) {
+            chr.x = 13;
+            chr.y += 16;
         }
     }
 

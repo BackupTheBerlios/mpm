@@ -19,6 +19,7 @@
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
+#include "fonts.h"
 
 EXTERN int debug;
 
@@ -227,6 +228,33 @@ PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
     return r;
 }
 
+PRIVATE int put_char(unsigned short x, unsigned short y,
+                     unsigned int c, unsigned char chr, gfx_font_t f) {
+    int h, cnt, p;
+    unsigned char *bm;
+
+    switch (f) {
+        case GFX_FONT_8x8:
+            h = 8;
+            bm = &font_8x8[chr*h];
+            break;
+        case GFX_FONT_8x16:
+            h = 16;
+            bm = &font_8x16[chr*h];
+            break;
+        default:
+            return EGFX_ERROR;
+    }
+
+    for (cnt=0; cnt<h; cnt++) {
+        for (p=0; p<8; p++) {
+            put_pixel(x+p, y+cnt, (!!(bm[cnt]&(0x80>>p)))*c);
+        }
+    }
+
+    return 0;
+}
+
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     "vga_bios",
     TEXT_MONO | TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
@@ -238,5 +266,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     draw_line,
     draw_line_hori,
     draw_line_vert,
-    draw_rect
+    draw_rect,
+    put_char
 };

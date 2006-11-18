@@ -471,6 +471,11 @@ PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
     return r;
 }
 
+PRIVATE int put_char(unsigned short x, unsigned short y,
+                     unsigned int c, unsigned char chr, gfx_font_t f) {
+    return 0;
+}
+
 PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     "vga_raw",
     TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
@@ -482,5 +487,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     draw_line,
     draw_line_hori,
     draw_line_vert,
-    draw_rect
+    draw_rect,
+    put_char
 };

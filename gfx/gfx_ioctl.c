@@ -31,6 +31,7 @@ PRIVATE gfx_request_set_mode_t mode;
 PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
 PRIVATE gfx_request_rect_t rect;
+PRIVATE gfx_request_char_t chr;
 
 FORWARD int dump_registers(vga_registers_t *regs);
 
@@ -116,6 +117,13 @@ PUBLIC int gfx_ioctl(message *mess) {
                             sizeof(rect));
             if (r != OK) return EGFX_ERROR;
             return driver->draw_rect(rect.x1, rect.y1, rect.x2, rect.y2, rect.c);
+            break;
+        case GFX_REQUEST_PUT_CHAR:
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &chr,
+                            sizeof(chr));
+            if (r != OK) return EGFX_ERROR;
+            return driver->put_char(chr.x, chr.y, chr.c, chr.chr, chr.f);
             break;
         default:
             break;
