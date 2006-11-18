@@ -258,6 +258,8 @@ PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
         OUTB(VGA_GC_DATA, 3);
         OUTB(VGA_SEQ_DATA, 0x08);
         curfb[off] = (curfb[off] & ~mask) | ((!!(c&0x08)) * mask);
+    } else if (bpp == 8) {
+        curfb[stride * y + x] = c;
     }
 
     return 0;
