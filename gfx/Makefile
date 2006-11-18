@@ -13,7 +13,7 @@ $(PROG):	$(OBJS)
 	cc -c $(CPPFLAGS) -o $@ $<
 
 clean:
-	rm -f *~ $(OBJS) $(PROG) test.o test tm
+	rm -f *~ $(OBJS) $(PROG) test.o test tm tm.o
 
 upraw:
 	test -c /dev/gfx || mknod /dev/gfx c 18 0
