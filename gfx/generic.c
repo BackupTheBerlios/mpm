@@ -50,7 +50,9 @@ PUBLIC int generic_put_char(unsigned short x, unsigned short y,
 
     for (cnt=0; cnt<h; cnt++) {
         for (p=0; p<8; p++) {
-            driver->put_pixel(x+p, y+cnt, (!!(bm[cnt]&(0x80>>p)))*c);
+            if (bm[cnt]&(0x80>>p)) {
+                driver->put_pixel(x+p, y+cnt, c);
+            }
         }
     }
 

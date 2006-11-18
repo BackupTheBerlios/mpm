@@ -23,6 +23,7 @@
 #include "gfx_ioctl.h"
 #include "vga_raw.h"
 #include "generic.h"
+#include "fonts.h"
 
 #define FB_BASE 0xa0000
 
@@ -432,7 +433,40 @@ PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
 /* Unused, but here to avoid compile warnings */
 PRIVATE int put_char(unsigned short x, unsigned short y,
                      unsigned int c, unsigned char chr, gfx_font_t f) {
-    return -1;
+    int h, cnt, xm, xr, off;
+    unsigned char *bm;
+
+    switch(f) {
+        case GFX_FONT_8x8:
+            h = 8;
+            bm = &font_8x8[chr*h];
+            break;
+        case GFX_FONT_8x16:
+            h = 16;
+            bm = &font_8x16[chr*h];
+            break;
+        default:
+            return EGFX_ERROR;
+    }
+
+    if (bpp == 1) {
+        xm = x >> 3;
+        xr = x &  0x0007;
+        off = stride * y + xm;
+        for (cnt=0; cnt<h; cnt++) {
+            curfb[off]   &= ~(bm[cnt] >> xr);
+            if (c) curfb[off]   |= bm[cnt] >> xr;
+            curfb[off+1]   &= ~(bm[cnt] << (8-xr));
+            if (c) curfb[off+1] |= bm[cnt] << (8-xr);
+            off += stride;
+        }
+    } else if (bpp == 4) {
+        return generic_put_char(x, y, c, chr, f);
+    } else if (bpp == 8) {
+        return generic_put_char(x, y, c, chr, f);
+    }
+
+    return 0;
 }
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
@@ -447,5 +481,5 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     draw_line_hori,
     draw_line_vert,
     generic_draw_rect,
-    generic_put_char
+    put_char
 };
