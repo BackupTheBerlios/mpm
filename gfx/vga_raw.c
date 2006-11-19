@@ -433,7 +433,7 @@ PRIVATE int draw_rect(unsigned short x1, unsigned short y1,
 /* call generic for 4bpp and 8bpp */
 PRIVATE int put_char(unsigned short x, unsigned short y,
                      unsigned int c, unsigned char chr, gfx_font_t f) {
-    int h, cnt, xm, xr, off, border;
+    int h, cnt, xm, xr, off, border, p, offsave;
     unsigned char *bm;
 
     switch(f) {
@@ -449,23 +449,34 @@ PRIVATE int put_char(unsigned short x, unsigned short y,
             return EGFX_ERROR;
     }
 
-    if (bpp == 1) {
+    if (bpp == 1 || bpp == 4) {
         /* it does not write beyond the end of curfb, but it does wrap the
          * character at the end of a line, so be careful with that ;) */
         xm = x >> 3;
         xr = x &  0x0007;
         off = stride * y + xm;
         border = stride*height-1;
-        for (cnt=0; cnt<h; cnt++) {
-            curfb[off]   &= ~(bm[cnt] >> xr);
-            if (c) curfb[off]   |= bm[cnt] >> xr;
-            curfb[off+1]   &= ~(bm[cnt] << (8-xr));
-            if (c) curfb[off+1] |= bm[cnt] << (8-xr);
-            off += stride;
-            if (off >= border) break;
+        if (bpp == 1 && c) c = 0x0f;
+        else {
+            OUTB(VGA_GC_INDEX, 4);
+            OUTB(VGA_SEQ_INDEX, 2);
+            offsave = off;
         }
-    } else if (bpp == 4) {
-        return generic_put_char(x, y, c, chr, f);
+        for (p=0; p< (planar ? 4 : 1); p++) {
+            if (planar) {
+                OUTB(VGA_GC_DATA, p);
+                OUTB(VGA_SEQ_DATA, 0x01 << p);
+                off = offsave;
+            }
+            for (cnt=0; cnt<h; cnt++) {
+                curfb[off]   &= ~(bm[cnt] >> xr);
+                if (c & (0x01<<p) ) curfb[off]   |= bm[cnt] >> xr;
+                curfb[off+1]   &= ~(bm[cnt] << (8-xr));
+                if (c & (0x01<<p) ) curfb[off+1] |= bm[cnt] << (8-xr);
+                off += stride;
+                if (off >= border) break;
+            }
+        }
     } else if (bpp == 8) {
         return generic_put_char(x, y, c, chr, f);
     }
