@@ -26,6 +26,7 @@ PRIVATE gfx_request_string_t str;
 PRIVATE vga_registers_t vgaregs;
 
 PRIVATE const char *qbf = "The quick brown fox jumps over the lazy dog";
+PRIVATE const char *pwl = "Pa's wijze lynx bezag vroom het fikse aquaduct";
 
 PUBLIC int main(int argc, char **argv) {
     int fd, r;
@@ -85,6 +86,13 @@ PUBLIC int main(int argc, char **argv) {
         str.y = 270 + i*16;
         ioctl(fd, GFX_REQUEST_PUT_STRING, &str);
         str.x++;
+    }
+
+    str.s = (unsigned char*) pwl; str.len = strlen(pwl);
+    str.x = 13; str.y = 416; str.c = 1;
+    for (i=0; i<15; i++) {
+        ioctl(fd, GFX_REQUEST_PUT_STRING, &str);
+        str.c++; str.x++; str.y++;
     }
 
     line.x1 = 0; line.x2 = 639; line.y1 = 240; line.c = 2;
