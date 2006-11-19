@@ -16,8 +16,6 @@
 #include "gfx.h"
 #include "gfx_ioctl.h"
 
-PRIVATE gfx_request_set_mode_t mode;
-
 PUBLIC int main(int argc, char **argv) {
     int fd, r;
 
@@ -27,8 +25,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = TEXT_COLOR;
-    r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
+    r = ioctl(fd, GFX_REQUEST_RESET, NULL);
     close(fd);
 
     return 0;
