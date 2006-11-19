@@ -16,6 +16,7 @@ _PROTOTYPE(int gfx_ioctl, (message *mess));
 #define GFX_REQUEST_RESET           (GFX_REQUEST_BASE + 0x09)
 #define GFX_REQUEST_DRAW_RECT       (GFX_REQUEST_BASE + 0x0a)
 #define GFX_REQUEST_PUT_CHAR        (GFX_REQUEST_BASE + 0x0b)
+#define GFX_REQUEST_PUT_STRING      (GFX_REQUEST_BASE + 0x0c)
 
 typedef unsigned long gfx_request_set_mode_t;
 
@@ -38,6 +39,14 @@ typedef struct gfx_request_char_s {
     unsigned char f;
 } gfx_request_char_t;
 
+typedef struct gfx_request_string_s {
+    unsigned short x, y;
+    unsigned int c;
+    unsigned char *s;
+    unsigned int len;
+    unsigned char f;
+} gfx_request_string_t;
+
 #define GFX_OK                      0
 
 #define EGFX_BASE                   GFX_REQUEST_BASE
@@ -45,5 +54,6 @@ typedef struct gfx_request_char_s {
 #define EGFX_ERROR                  _SIGN (EGFX_BASE)
 #define EGFX_UNSUPPORTED_MODE       _SIGN (EGFX_BASE + 0x01)
 #define EGFX_OUT_OF_RANGE           _SIGN (EGFX_BASE + 0x02)
+#define EGFX_OUT_OF_MEMORY          _SIGN (EGFX_BASE + 0x03)
 
 #endif

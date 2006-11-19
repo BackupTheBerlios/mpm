@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
+#include <stdlib.h>
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
@@ -32,6 +33,7 @@ PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
 PRIVATE gfx_request_rect_t rect;
 PRIVATE gfx_request_char_t chr;
+PRIVATE gfx_request_string_t string;
 
 FORWARD int dump_registers(vga_registers_t *regs);
 
@@ -125,6 +127,27 @@ PUBLIC int gfx_ioctl(message *mess) {
             if (r != OK) return EGFX_ERROR;
             return driver->put_char(chr.x, chr.y, chr.c, chr.chr, chr.f);
             break;
+        case GFX_REQUEST_PUT_STRING: {
+            unsigned char *s;
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
+                            SELF,           D, (vir_bytes) &string,
+                            sizeof(string));
+            if (r != OK) return EGFX_ERROR;
+            s = malloc(string.len);
+            if (!s) return EGFX_OUT_OF_MEMORY;
+            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) string.s,
+                            SELF,           D, (vir_bytes) s,
+                            string.len);
+            if (r != OK) {
+                free(s);
+                return EGFX_ERROR;
+            }
+            r = driver->put_string(string.x, string.y, string.c, s, string.len,
+                                   string.f);
+            free(s);
+            return r;
+            break;
+        }
         default:
             break;
     }

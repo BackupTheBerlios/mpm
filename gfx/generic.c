@@ -58,3 +58,15 @@ PUBLIC int generic_put_char(unsigned short x, unsigned short y,
 
     return 0;
 }
+
+PUBLIC int generic_put_string(unsigned short x, unsigned short y,
+                              unsigned int c, unsigned char *s,
+                              unsigned int len, gfx_font_t f) {
+    int i;
+
+    for (i=0; i<len; i++) {
+        driver->put_char(x+i*8, y, c, s[i], f);
+    }
+    return 0;
+}
+

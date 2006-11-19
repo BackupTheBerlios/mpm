@@ -22,7 +22,10 @@ PRIVATE gfx_request_pixel_t pixel;
 PRIVATE gfx_request_line_t line;
 PRIVATE gfx_request_rect_t rect;
 PRIVATE gfx_request_char_t chr;
+PRIVATE gfx_request_string_t str;
 PRIVATE vga_registers_t vgaregs;
+
+PRIVATE const char *qbf = "The quick brown fox jumps over the lazy dog";
 
 PUBLIC int main(int argc, char **argv) {
     int fd, r;
@@ -34,7 +37,7 @@ PUBLIC int main(int argc, char **argv) {
         _exit(-1);
     }
 
-    mode = VGA_640x480x2;
+    mode = VGA_640x480x16;
     r = ioctl(fd, GFX_REQUEST_SET_MODE, &mode);
     if (r<0) {
         fprintf(stderr, "unable to set videomode, error %d\n", errno);
@@ -74,6 +77,14 @@ PUBLIC int main(int argc, char **argv) {
             chr.x = 13;
             chr.y += 16;
         }
+    }
+
+    str.f = GFX_FONT_8x16; str.c = 9;
+    str.x = 13; str.s = (unsigned char*) qbf; str.len = strlen(qbf);
+    for (i=0; i<8; i++) {
+        str.y = 270 + i*16;
+        ioctl(fd, GFX_REQUEST_PUT_STRING, &str);
+        str.x++;
     }
 
     line.x1 = 0; line.x2 = 639; line.y1 = 240; line.c = 2;

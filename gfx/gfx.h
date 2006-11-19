@@ -39,6 +39,9 @@ typedef struct gfx_funcs_s {
                      unsigned int c);
     int (*put_char)(unsigned short x, unsigned short y,
                     unsigned int c, unsigned char chr, gfx_font_t f);
+    int (*put_string)(unsigned short x, unsigned short y,
+                      unsigned int c, unsigned char *s,
+                      unsigned int len, gfx_font_t f);
 } gfx_funcs_t;
 
 #ifdef GFX_DRIVER
@@ -66,6 +69,9 @@ _PROTOPRIV( int draw_rect,      (unsigned short x1, unsigned short y1,
 _PROTOPRIV( int put_char,       (unsigned short x, unsigned short y,
                                  unsigned int c, unsigned char chr,
                                  gfx_font_t f)                          );
+_PROTOPRIV( int put_string,     (unsigned short x, unsigned short y,
+                                 unsigned int c, unsigned char *s,
+                                 unsigned int len, gfx_font_t f)        );
 #endif
 
 #endif
