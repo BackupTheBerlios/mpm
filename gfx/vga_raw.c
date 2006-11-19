@@ -49,7 +49,7 @@
 
 #include "gfx.h"
 #include "gfx_ioctl.h"
-#include "vga_raw.h"
+#include "vga_regs.h"
 #include "generic.h"
 #include "fonts.h"
 
@@ -71,7 +71,7 @@ PRIVATE struct mode_list_s {
     unsigned int fb_off;
     unsigned char bpp, planar;
     unsigned short width, height;
-    vga_raw_mode_t raw_mode;
+    vga_registers_t raw_mode;
 } mode_list[] = {
     /* from sample modes.c */
     { TEXT_COLOR, 0xb0000 - FB_BASE, 16, 0, 80, 24,
@@ -165,7 +165,7 @@ PRIVATE void set_plane(int p) {
 PRIVATE int set_mode(gfx_mode_t mode) {
     unsigned long lv;
     int x, r, i;
-    vga_raw_mode_t *rm;
+    vga_registers_t *rm;
 
     for (x=0; mode_list[x].mode != GFX_MODE_NONE; x++) {
         if (mode == mode_list[x].mode) break;
