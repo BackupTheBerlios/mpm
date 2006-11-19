@@ -1,3 +1,9 @@
+/*
+ * font_8x8 and font_8x16 were found on http://my.execpc.com/~geezer and
+ * are considered Public Domain
+ *
+ */
+
 #define _MINIX
 #define _POSIX_SOURCE
 
