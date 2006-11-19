@@ -65,8 +65,6 @@ PRIVATE struct mode_list_s {
     unsigned short width, height;
     unsigned char bpp;
 } mode_list[] = {
-    { TEXT_MONO,       0x02,  80,  25, 16 },
-    { TEXT_COLOR,      0x03,  80,  25, 16 },
     { VGA_640x480x2,   0x11, 640, 480,  1 },
     { VGA_640x480x16,  0x12, 640, 480,  4 },
     { VGA_320x200x256, 0x13, 320, 200,  8 },
@@ -90,7 +88,7 @@ PRIVATE int init(char *name) {
         panic(myname, "bad BIOS buffer, phys", bios_buf_phys);
     DEBUG report(myname, "bios_buf_phys", bios_buf_phys);
 
-    current_mode = TEXT_COLOR;
+    current_mode = GFX_MODE_NONE;
     return 0;
 }
 
@@ -249,7 +247,7 @@ PRIVATE int put_string(unsigned short x, unsigned short y,
 
 PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     "vga_bios",
-    TEXT_MONO | TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
+    VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
     init,
     set_mode,
     put_pixel,
