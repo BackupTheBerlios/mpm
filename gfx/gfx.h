@@ -22,7 +22,6 @@ typedef struct gfx_funcs_s {
     unsigned long modes;
     int (*init)(char *name);
     int (*set_mode)(gfx_mode_t mode);
-    int (*get_pixel)(unsigned short x, unsigned short y, unsigned int *c);
     int (*put_pixel)(unsigned short x, unsigned short y, unsigned int c);
     int (*clear_screen)(void);
     int (*draw_line)(unsigned short x1, unsigned short y1,
@@ -49,8 +48,6 @@ typedef struct gfx_funcs_s {
 
 _PROTOPRIV( int init,           (char *name)                            );
 _PROTOPRIV( int set_mode,       (gfx_mode_t mode)                       );
-_PROTOPRIV( int get_pixel,      (unsigned short x, unsigned short y,
-                                 unsigned int *c)                       );
 _PROTOPRIV( int put_pixel,      (unsigned short x, unsigned short y,
                                  unsigned int c)                        );
 _PROTOPRIV( int clear_screen,   (void)                                  );

@@ -50,18 +50,6 @@ PUBLIC int gfx_ioctl(message *mess) {
             if ((driver->modes & mode) == 0) return EGFX_UNSUPPORTED_MODE;
             return driver->set_mode(mode);
             break;
-        case GFX_REQUEST_GET_PIXEL:
-            r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
-                            SELF,           D, (vir_bytes) &pixel,
-                            sizeof(pixel));
-            if (r != OK) return EGFX_ERROR;
-            driver->get_pixel(pixel.x, pixel.y, &pixel.c);
-            r = sys_vircopy(SELF,           D, (vir_bytes) &pixel,
-                            mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
-                            sizeof(pixel));
-            if (r != OK) return EGFX_ERROR;
-            return 0;
-            break;
         case GFX_REQUEST_PUT_PIXEL:
             r = sys_vircopy(mess->IO_ENDPT, D, (vir_bytes) mess->ADDRESS,
                             SELF,           D, (vir_bytes) &pixel,

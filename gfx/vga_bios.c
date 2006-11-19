@@ -88,21 +88,6 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     return 0;
 }
 
-PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
-
-    if (x<0 || x>width) return EGFX_OUT_OF_RANGE;
-    if (y<0 || y>height) return EGFX_OUT_OF_RANGE;
-
-    reg86.u.b.ah = 0x0d;
-    reg86.u.w.cx = x;
-    reg86.u.w.dx = y;
-    reg86.u.b.intno = 0x10;
-    sys_int86(&reg86);
-    *c = reg86.u.b.al;
-
-    return 0;
-}
-
 PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
     if (x<0 || x>width) return EGFX_OUT_OF_RANGE;
@@ -239,7 +224,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_bios = {
     TEXT_MONO | TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
     init,
     set_mode,
-    get_pixel,
     put_pixel,
     clear_screen,
     draw_line,

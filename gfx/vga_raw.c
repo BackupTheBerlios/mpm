@@ -186,10 +186,6 @@ PRIVATE int set_mode(gfx_mode_t mode) {
     return 0;
 }
 
-PRIVATE int get_pixel(unsigned short x, unsigned short y, unsigned int *c) {
-    return 0;
-}
-
 PRIVATE int put_pixel(unsigned short x, unsigned short y, unsigned int c) {
 
     if (x<0 || x>= width) return EGFX_OUT_OF_RANGE;
@@ -495,7 +491,6 @@ PUBLIC gfx_funcs_t gfx_funcs_vga_raw = {
     TEXT_COLOR | VGA_640x480x2 | VGA_640x480x16 | VGA_320x200x256,
     init,
     set_mode,
-    get_pixel,
     put_pixel,
     clear_screen,
     draw_line,
