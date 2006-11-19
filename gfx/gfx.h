@@ -1,5 +1,5 @@
-#ifndef VGA_H
-#define VGA_H
+#ifndef GFX_H
+#define GFX_H
 
 #define DEBUG if (debug)
 
