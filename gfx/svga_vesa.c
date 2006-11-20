@@ -92,20 +92,26 @@ PRIVATE int init(char *name) {
 
     DEBUG {
         snprintf(tmp, 80, "Signature: '%c%c%c%c'",
-            vesa.VESASignature[0], vesa.VESASignature[1],
-            vesa.VESASignature[2], vesa.VESASignature[3]);
+            VI_SIGNATURE(vesa)[0], VI_SIGNATURE(vesa)[1],
+            VI_SIGNATURE(vesa)[2], VI_SIGNATURE(vesa)[3] );
         report(myname, tmp, NO_NUM);
         snprintf(tmp, 80, "Version: %i.%i",
-            vesa.VESAVersion>>8, vesa.VESAVersion & 0xff);
+            VI_VERSION(vesa)>>8, VI_VERSION(vesa) & 0xff);
         report(myname, tmp, NO_NUM);
-        snprintf(tmp, 80, "TotalMemory: %i kB", vesa.TotalMemory * 64);
+        snprintf(tmp, 80, "OemStringPtr: %08x", VI_OEMSTRINGPTR(vesa));
+        report(myname, tmp, NO_NUM);
+        snprintf(tmp, 80, "Capabilities: %08x", VI_CAPABILITIES(vesa));
+        report(myname, tmp, NO_NUM);
+        snprintf(tmp, 80, "VideoModePtr: %08x", VI_VIDEOMODEPTR(vesa));
+        report(myname, tmp, NO_NUM);
+        snprintf(tmp, 80, "TotalMemory: %i kB", VI_TOTALMEMORY(vesa) * 64);
         report(myname, tmp, NO_NUM);
     }
 
-    if (strncmp((char*)vesa.VESASignature, "VESA", 4) != 0)
+    if (strncmp((char*)VI_SIGNATURE(vesa), "VESA", 4) != 0)
         panic(myname, "no VESA BIOS support found", NO_NUM);
 
-    if (vesa.VESAVersion < 0x0100)
+    if (VI_VERSION(vesa) < 0x0100)
         panic(myname, "need at least VESA 1.0", NO_NUM);
 
     current_mode = GFX_MODE_NONE;
