@@ -29,19 +29,22 @@
 #ifndef VESA_H
 #define VESA_H
 
-typedef unsigned char  BYTE;
-typedef unsigned short WORD;
-typedef unsigned long  POINTER;
+#include <stdint.h>
 
-/* vesa 1.2 */
+/* VESA 1.0     size = 256 bytes
+ * VESA 1.1     size = 262 bytes
+ * VESA 1.2     size = 256 bytes
+ * VESA 2.0     size = 512 bytes
+ */
+
 typedef struct vesa_info_s {
-    BYTE        VESASignature[4];
-    WORD        VESAVersion;
-    POINTER     OEMStringPtr;
-    BYTE        Capabilities[4];
-    POINTER     VideoModePtr;
-    WORD        TotalMemory;
-    BYTE        Reserved[236];
+    uint8_t     VESASignature[4];
+    uint16_t    VESAVersion;
+    uint32_t    OEMStringPtr;
+    uint8_t     Capabilities[4];
+    uint32_t    VideoModePtr;
+    uint16_t    TotalMemory;
+    uint8_t     Reserved[236];      /* be conservative; VESA 1.0 size */
 } vesa_info_t;
 
 #endif
