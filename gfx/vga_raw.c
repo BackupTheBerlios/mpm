@@ -254,9 +254,7 @@ PRIVATE int clear_screen(void) {
 
     for (p=0; p< (planar ? 4 : 1); p++) {
         if (planar) set_plane(p);
-        for (i=0; i<len/4; i++) {
-            ((unsigned long *)curfb)[i] = 0;
-        }
+        memset(curfb, 0, len);
     }
 
     return 0;
