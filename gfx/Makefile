@@ -19,7 +19,7 @@ clean:
 	mknod /dev/gfx c 18 0
 
 upvesa:	$(PROG) /dev/gfx test tm
-	service up `pwd`/gfx -dev /dev/gfx -args "driver=svga_vesa"
+	service up `pwd`/gfx -dev /dev/gfx -args "debug driver=svga_vesa"
 
 upraw:	$(PROG) /dev/gfx test tm
 	service up `pwd`/gfx -dev /dev/gfx -args "driver=vga_raw"
