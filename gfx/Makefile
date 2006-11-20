@@ -1,5 +1,5 @@
 PROG=gfx
-OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o generic.o
+OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o generic.o svga_vesa.o
 
 CPPFLAGS=-O2
 LDFLAGS=-stack 256k -s
@@ -15,12 +15,16 @@ $(PROG):	$(OBJS)
 clean:
 	rm -f *~ $(OBJS) $(PROG) test.o test tm tm.o
 
-upraw:
-	test -c /dev/gfx || mknod /dev/gfx c 18 0
+/dev/gfx:
+	mknod /dev/gfx c 18 0
+
+upvesa:	$(PROG) /dev/gfx test tm
+	service up `pwd`/gfx -dev /dev/gfx -args "driver=svga_vesa"
+
+upraw:	$(PROG) /dev/gfx test tm
 	service up `pwd`/gfx -dev /dev/gfx -args "driver=vga_raw"
 
-upbios:
-	test -c /dev/gfx || mknod /dev/gfx c 18 0
+upbios:	$(PROG) /dev/gfx test tm
 	service up `pwd`/gfx -dev /dev/gfx -args "driver=vga_bios"
 
 down:

@@ -53,6 +53,7 @@
 
 EXTERN gfx_funcs_t gfx_funcs_vga_bios;
 EXTERN gfx_funcs_t gfx_funcs_vga_raw;
+EXTERN gfx_funcs_t gfx_funcs_svga_vesa;
 
 PUBLIC int debug = 0;
 PUBLIC gfx_funcs_t *driver = &gfx_funcs_vga_bios;
@@ -63,6 +64,7 @@ PRIVATE struct driverlist_s {
 } drivers[] = {
     { "vga_bios", &gfx_funcs_vga_bios },
     { "vga_raw",  &gfx_funcs_vga_raw  },
+    { "svga_vesa",  &gfx_funcs_svga_vesa  },
     { NULL, NULL }
 };
 
