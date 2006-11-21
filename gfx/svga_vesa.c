@@ -30,6 +30,8 @@
 #define _MINIX
 #define _SYSTEM
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/com.h>
 #include <minix/type.h>
@@ -96,13 +98,17 @@ PRIVATE int init(char *name) {
 
     r = sys_getbiosbuffer(&bios_buf_vir, &bios_buf_size);
     if (r != OK) panic(myname, "sys_getbiosbuffer failed", r);
+#ifdef ENABLE_DEBUG
     DEBUG report(myname, "bios_buf_vir", bios_buf_vir);
     DEBUG report(myname, "bios_buf_size", bios_buf_size);
+#endif
     r = sys_umap(SYSTEM, D, bios_buf_vir, bios_buf_size, &bios_buf_phys);
     if (r != OK) panic(myname, "sys_umap failed", r);
     if (bios_buf_phys + bios_buf_size > 0x100000)
         panic(myname, "bad BIOS buffer, phys", bios_buf_phys);
+#ifdef ENABLE_DEBUG
     DEBUG report(myname, "bios_buf_phys", bios_buf_phys);
+#endif
 
     /* get svga info */
     reg86.u.w.ax = 0x4f00;
@@ -116,6 +122,7 @@ PRIVATE int init(char *name) {
                     SELF, D, (vir_bytes) &vesa, sizeof(vesa) );
     if (r != OK) panic(myname, "sys_vircopy failed", r);
 
+#ifdef ENABLE_DEBUG
     DEBUG {
         phys_bytes ptr;
 
@@ -142,6 +149,7 @@ PRIVATE int init(char *name) {
         tmp[79] = 0;
         report(myname, tmp, NO_NUM);
     }
+#endif
 
     if (strncmp((char*)VI_SIGNATURE(vesa), "VESA", 4) != 0)
         panic(myname, "no VESA BIOS support found", NO_NUM);

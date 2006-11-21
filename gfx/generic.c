@@ -30,6 +30,8 @@
 #define _MINIX
 #define _SYSTEM
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/com.h>
 #include <minix/type.h>

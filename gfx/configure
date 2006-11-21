@@ -1,0 +1,151 @@
+#! /bin/sh
+
+# -=- CHECK SYSTEM AND RELEASE -=-
+
+system=`uname -s | tr '[A-Z]' '[a-z]'`
+release=`uname -r`
+
+case "$system" in
+    minix)
+        if test "$release" -lt 3 ; then
+            echo "you need at least Minix 3.x" >&2
+            exit 2
+        fi
+        ;;
+    *)
+        echo "gfx has not been ported to $system (yet)" >&2
+        exit 2
+        ;;
+esac
+
+# -=- CHECK WHETHER TO DISPLAY HELP -=-
+
+case "$@" in
+    *--help*|*-help*)
+        cat >&2 << __EOF__
+--disable-vga-bios      disable vga_bios driver [default: enabled]
+--disable-vga-raw       disable vga_raw driver [default: enabled]
+--disable-svga-vesa     disable svga_vesa driver [default: enabled]
+
+--enable-debug          enables the ability to display debug information
+                                                           [default: disabled]
+
+--help|-help            print this message
+__EOF__
+        exit 2
+        ;;
+esac
+
+# -=- SET DEFAULTS -=-
+
+_enable_vga_bios=yes
+_enable_vga_raw=yes
+_enable_svga_vesa=yes
+_enable_debug=no
+
+# -=- PARSE COMMAND LINE -=-
+
+while test "$#" -ge 1 ; do
+    case "$1" in
+        --disable-vga-bios)     _enable_vga_bios=no     ;;
+        --disable-vga-raw)      _enable_vga_raw=no      ;;
+        --disable-svga-vesa)    _enable_svga_vesa=no    ;;
+        --disable-debug)        _enable_debug=no        ;;
+        --enable-vga-bios)      _enable_vga_bios=yes    ;;
+        --enable-vga-raw)       _enable_vga_raw=yes     ;;
+        --enable-svga-vesa)     _enable_svga_vesa=yes   ;;
+        --enable-debug)         _enable_debug=yes       ;;
+        *)
+            echo "unknown command line option: $1" >&2
+            exit 2
+            ;;
+    esac
+    shift
+done
+
+# -=- REPORT -=-
+
+cat << __EOF__
+vga_bios:   $_enable_vga_bios
+vga_raw:    $_enable_vga_raw
+svga_vesa:  $_enable_svga_vesa
+debug:      $_enable_debug
+
+__EOF__
+
+# -=- CHECK THERE IS AT LEAST ONE DRIVER ENABLED -=-
+
+if test "$_enable_vga_bios$_enable_vga_raw$_enable_svga_vesa" = "nonono" ; then
+    echo "you need to enable at least one output driver"
+    exit 2
+fi
+
+# -=- GENERATING config.h -=-
+
+printenable() {
+    if test "$2" = "yes" ; then
+        echo "#define $1"
+    else
+        echo "#undef $1"
+    fi
+}
+
+echo -n "generating config.h: "
+cat > config.h << __EOF__
+#ifndef CONFIG_H
+#define CONFIG_H
+
+/* This file is generated automatically. DO NOT EDIT! */
+
+__EOF__
+
+{
+    printenable ENABLE_VGA_BIOS     $_enable_vga_bios
+    printenable ENABLE_VGA_RAW      $_enable_vga_raw
+    printenable ENABLE_SVGA_VESA    $_enable_svga_vesa
+    printenable ENABLE_DEBUG        $_enable_debug
+} >> config.h
+
+cat >> config.h << __EOF__
+
+#endif
+__EOF__
+echo "done"
+
+# -=- GENERATING config.mak -=-
+
+adddriverobj() {
+    if test "$2" = "yes" ; then
+        echo -n "$1 "
+    fi
+}
+
+echo -n "generating config.mak: "
+cat >config.mak << __EOF__
+# This file is generated. DO NOT EDIT!
+
+__EOF__
+
+{
+echo -n "DRIVEROBJS="
+adddriverobj vga_bios.o     $_enable_vga_bios
+adddriverobj vga_raw.o      $_enable_vga_raw
+adddriverobj svga_vesa.o    $_enable_svga_vesa
+echo ""
+} >> config.mak
+
+echo "done"
+
+# -=- PREPARE FOR COMPILATION -=-
+
+echo -n "running mkdep: "
+>.depend
+make depend >/dev/null
+echo "done"
+
+# -=- END -=-
+
+echo ""
+echo "run 'make' to build"
+echo ""
+

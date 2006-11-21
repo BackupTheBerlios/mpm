@@ -7,6 +7,8 @@
 #define _MINIX
 #define _POSIX_SOURCE
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/const.h>
 

@@ -1,7 +1,9 @@
-PROG=gfx
-OBJS=gfx.o gfx_ioctl.o vga_bios.o vga_raw.o fonts.o generic.o svga_vesa.o
+include config.mak
 
-CPPFLAGS=-O2
+PROG=gfx
+OBJS=gfx.o gfx_ioctl.o fonts.o generic.o $(DRIVEROBJS)
+
+#CPPFLAGS=-O2
 LDFLAGS=-stack 256k -s
 
 all:	$(PROG) test tm
@@ -13,7 +15,7 @@ $(PROG):	$(OBJS)
 	cc -c $(CPPFLAGS) -o $@ $<
 
 clean:
-	rm -f *~ $(OBJS) $(PROG) test.o test tm tm.o
+	rm -f *~ $(OBJS) $(PROG) test.o test tm tm.o config.h config.mak
 
 /dev/gfx:
 	mknod /dev/gfx c 18 0

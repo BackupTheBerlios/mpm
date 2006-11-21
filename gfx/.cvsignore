@@ -1,4 +1,6 @@
 .depend
+config.h
+config.mak
 tm
 test
 gfx

@@ -30,6 +30,8 @@
 #define _MINIX
 #define _SYSTEM
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/com.h>
 #include <minix/type.h>
@@ -79,14 +81,18 @@ PRIVATE int init(char *name) {
 
     r = sys_getbiosbuffer(&bios_buf_vir, &bios_buf_size);
     if (r != OK) panic(myname, "sys_getbiosbuffer failed", r);
+#ifdef ENABLE_DEBUG
     DEBUG report(myname, "bios_buf_vir", bios_buf_vir);
     DEBUG report(myname, "bios_buf_size", bios_buf_size);
+#endif
     r = sys_umap(SYSTEM, D, bios_buf_vir, (phys_bytes)bios_buf_size,
                                                             &bios_buf_phys);
     if (r != OK) panic(myname, "sys_umap failed", r);
     if (bios_buf_phys + bios_buf_size > 0x100000)
         panic(myname, "bad BIOS buffer, phys", bios_buf_phys);
+#ifdef ENABLE_DEBUG
     DEBUG report(myname, "bios_buf_phys", bios_buf_phys);
+#endif
 
     current_mode = GFX_MODE_NONE;
     return 0;

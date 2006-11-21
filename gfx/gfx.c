@@ -30,6 +30,8 @@
 #define _MINIX
 #define _SYSTEM
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/com.h>
 #include <minix/type.h>
@@ -51,20 +53,38 @@
 #define MYPIDFILE "/usr/run/gfx.pid"
 #define MYNAME "gfx"
 
+#ifdef ENABLE_VGA_BIOS
 EXTERN gfx_funcs_t gfx_funcs_vga_bios;
+#endif
+#ifdef ENABLE_VGA_RAW
 EXTERN gfx_funcs_t gfx_funcs_vga_raw;
+#endif
+#ifdef ENABLE_SVGA_VESA
 EXTERN gfx_funcs_t gfx_funcs_svga_vesa;
+#endif
 
 PUBLIC int debug = 0;
+#if   defined(ENABLE_VGA_BIOS)
 PUBLIC gfx_funcs_t *driver = &gfx_funcs_vga_bios;
+#elif defined(ENABLE_VGA_RAW)
+PUBLIC gfx_funcs_t *driver = &gfx_funcs_vga_raw;
+#else
+PUBLIC gfx_funcs_t *driver = &gfx_funcs_svga_vesa;
+#endif
 
 PRIVATE struct driverlist_s {
     char *name;
     gfx_funcs_t *driver;
 } drivers[] = {
+#ifdef ENABLE_VGA_BIOS
     { "vga_bios", &gfx_funcs_vga_bios },
+#endif
+#ifdef ENABLE_VGA_RAW
     { "vga_raw",  &gfx_funcs_vga_raw  },
+#endif
+#ifdef ENABLE_SVGA_VESA
     { "svga_vesa",  &gfx_funcs_svga_vesa  },
+#endif
     { NULL, NULL }
 };
 
@@ -109,7 +129,9 @@ PUBLIC int main(int argc, char **argv) {
         caller = mess.m_source;
         proc_nr = mess.IO_ENDPT;
 
+#ifdef ENABLE_DEBUG
         DEBUG report(MYNAME, "mess.m_type", mess.m_type);
+#endif
 
         r = 0;
         switch (mess.m_type) {
@@ -124,7 +146,9 @@ PUBLIC int main(int argc, char **argv) {
                 break;
         }
 
+#ifdef ENABLE_DEBUG
         DEBUG report(MYNAME, "sending reply, r = ", r);
+#endif
 
         mess.m_type = TASK_REPLY;
         mess.REP_ENDPT = proc_nr;

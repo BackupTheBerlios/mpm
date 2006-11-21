@@ -29,7 +29,11 @@
 #ifndef GFX_H
 #define GFX_H
 
+#ifdef ENABLE_DEBUG
 #define DEBUG if (debug)
+#else
+#define DEBUG if(0)
+#endif
 
 typedef enum gfx_mode_e {
     GFX_MODE_NONE       = 0x00000000,

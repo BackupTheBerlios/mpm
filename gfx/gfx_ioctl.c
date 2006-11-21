@@ -30,6 +30,8 @@
 #define _MINIX
 #define _SYSTEM
 
+#include "config.h"
+
 #include <minix/config.h>
 #include <minix/com.h>
 #include <minix/type.h>
@@ -73,7 +75,6 @@ PUBLIC int gfx_ioctl(message *mess) {
                             SELF,           D, (vir_bytes) &mode,
                             sizeof(mode));
             if (r != OK) return EGFX_ERROR;
-            DEBUG report(MYNAME, "gfx_request_set_mode", mode);
             if ((driver->modes & mode) == 0) return EGFX_UNSUPPORTED_MODE;
             return driver->set_mode(mode);
             break;
