@@ -15,7 +15,7 @@ $(PROG):	$(OBJS)
 	cc -c $(CPPFLAGS) -o $@ $<
 
 clean:
-	rm -f *~ $(OBJS) $(PROG) test.o test tm tm.o config.h config.mak
+	rm -f .*~ *~ $(OBJS) $(PROG) test.o test tm tm.o config.h config.mak
 
 /dev/gfx:
 	mknod /dev/gfx c 18 0
