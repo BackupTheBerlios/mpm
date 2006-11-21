@@ -52,7 +52,7 @@ typedef enum gfx_mode_e {
     SVGA_1280x1024x256  = 0x00010000,
     SVGA_1280x1024x32k  = 0x00020000,
     SVGA_1280x1024x64k  = 0x00040000,
-    SVGA_1280x1024x16M  = 0x00080000,
+    SVGA_1280x1024x16M  = 0x00080000
 } gfx_mode_t;
 
 typedef enum gfx_font_e {
