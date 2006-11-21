@@ -60,11 +60,37 @@ PRIVATE struct reg86u reg86;
 PRIVATE unsigned short width = 0, height = 0;
 PRIVATE unsigned char bpp = 0;
 PRIVATE vesa_info_t vesa;
+PRIVATE char tmp[80];
+PRIVATE phys_bytes tmp_phys;
+
+PRIVATE struct mode_list_s {
+    gfx_mode_t mode;
+    unsigned int vesa_mode;
+    unsigned short width, height;
+    unsigned char bpp, Bpp;
+} mode_list[] = {
+    { SVGA_640x400x256,     0x0100,  640,  400,  8, 1 },
+    { SVGA_640x480x256,     0x0101,  640,  480,  8, 1 },
+    { SVGA_640x480x32k,     0x0110,  640,  480, 15, 2 },
+    { SVGA_640x480x64k,     0x0111,  640,  480, 16, 2 },
+    { SVGA_640x480x16M,     0x0112,  640,  480, 24, 3 },
+    { SVGA_800x600x256,     0x0103,  800,  600,  8, 1 },
+    { SVGA_800x600x32k,     0x0113,  800,  600, 15, 2 },
+    { SVGA_800x600x64k,     0x0114,  800,  600, 16, 2 },
+    { SVGA_800x600x16M,     0x0115,  800,  600, 24, 3 },
+    { SVGA_1024x768x256,    0x0105, 1024,  768,  8, 1 },
+    { SVGA_1024x768x32k,    0x0116, 1024,  768, 15, 2 },
+    { SVGA_1024x768x64k,    0x0117, 1024,  768, 16, 2 },
+    { SVGA_1024x768x16M,    0x0118, 1024,  768, 24, 3 },
+    { SVGA_1280x1024x256,   0x0107, 1280, 1024,  8, 1 },
+    { SVGA_1280x1024x32k,   0x0119, 1280, 1024, 15, 2 },
+    { SVGA_1280x1024x64k,   0x011a, 1280, 1024, 16, 2 },
+    { SVGA_1280x1024x16M,   0x011b, 1280, 1024, 24, 3 }
+};
 
 PRIVATE int init(char *name) {
     struct reg86u reg86;
     int r;
-    char tmp[80];
 
     myname = name;
 
@@ -91,6 +117,8 @@ PRIVATE int init(char *name) {
     if (r != OK) panic(myname, "sys_vircopy failed", r);
 
     DEBUG {
+        phys_bytes ptr;
+
         snprintf(tmp, 80, "Signature: '%c%c%c%c'",
             VI_SIGNATURE(vesa)[0], VI_SIGNATURE(vesa)[1],
             VI_SIGNATURE(vesa)[2], VI_SIGNATURE(vesa)[3] );
@@ -105,6 +133,13 @@ PRIVATE int init(char *name) {
         snprintf(tmp, 80, "VideoModePtr: %08x", VI_VIDEOMODEPTR(vesa));
         report(myname, tmp, NO_NUM);
         snprintf(tmp, 80, "TotalMemory: %i kB", VI_TOTALMEMORY(vesa) * 64);
+        report(myname, tmp, NO_NUM);
+        r = sys_umap(SELF, D, tmp, 80, &tmp_phys);
+        if (r != OK) panic(myname, "sys_umap failed", r);
+        ptr = ((VI_OEMSTRINGPTR(vesa) >> 12) & 0x000f0000) + (VI_OEMSTRINGPTR(vesa) & 0x0000ffff);
+        r = sys_abscopy(ptr, tmp_phys, 80);
+        if (r != OK) panic(myname, "sys_abscopy failed", r);
+        tmp[79] = 0;
         report(myname, tmp, NO_NUM);
     }
 
