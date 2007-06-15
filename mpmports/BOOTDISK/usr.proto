@@ -17,6 +17,7 @@ d--755 0 0
         dialog ---755 0 0 /usr/local/bin/dialog
         loadkeys ---755 0 0 /bin/loadkeys
         start.sh ---755 0 0 start.sh
+        printparts ---755 0 0 printparts/printparts
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr

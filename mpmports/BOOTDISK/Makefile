@@ -9,7 +9,10 @@ all:
 
 .PHONY: fd0 diskimage
 
-usr.bz2: usr.proto rc.usr
+printparts/printparts:
+	cd printparts && make
+
+usr.bz2: usr.proto rc.usr printparts/printparts
 	@sh mk.usr.sh
 
 boottool/boottool:
