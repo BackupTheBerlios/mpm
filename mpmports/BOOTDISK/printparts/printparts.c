@@ -14,6 +14,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <ibm/partition.h>
+#include <minix/partition.h>
+#include <minix/u64.h>
+#include <sys/ioctl.h>
 #include "printparts.h"
 
 ind_t ind_table[] = {
@@ -32,7 +35,15 @@ ind_t ind_table[] = {
     { 0xDB,"CPM"       }, { 0xFF,"BADBLOCKS" }, { 0x00,NULL        }
 };
 
-int cflag = 0, dflag = 0, eflag = 0, uflag = 0;
+#define UNITS_B     0
+#define UNITS_KB    1
+#define UNITS_MB    2
+#define UNITS_GB    3
+
+static const char* unitstr[4] = { "bytes", "kB", "MB", "GB" };
+static const unsigned int factors[4] = { 0, 1024, 1024*1024, 1024*1024*1024 };
+
+static int cflag = 0, dflag = 0, eflag = 0, uflag = 0, units = UNITS_B;
 
 static void print_ind(unsigned char ind) {
     int x;
@@ -80,6 +91,23 @@ static void part_type(char *dev, off_t offset, partition_t *partition) {
     close(fd);
 }
 
+static void part_size(char *dev, partition_t *partition) {
+    int fd;
+    struct partition entry;
+    u64_t size;
+
+    fd = open(dev, O_RDONLY);
+
+    if (fd > 0 && ioctl(fd, DIOCGETP, &entry) >= 0 ) {
+        size = add64u(entry.size, factors[units]/2);
+        partition->size = div64u(size, factors[units]);
+    } else {
+        partition->size = 0;
+    }
+
+    close(fd);
+}
+
 static void scan_partitions(char *dev, device_t *device) {
     int x, y;
     char pdev[16], sdev[16];
@@ -90,6 +118,7 @@ static void scan_partitions(char *dev, device_t *device) {
         if (part_exists(pdev, &partitions[x])) {
             part_type(dev, PART_TABLE_OFF + x * sizeof(struct part_entry),
                                                             &partitions[x]);
+            part_size(pdev, &partitions[x]);
             if (partitions[x].type == 0x81 /* MINIX */ ) {
                 partition_t *partitions = device->subpartitions[x];
 
@@ -99,6 +128,7 @@ static void scan_partitions(char *dev, device_t *device) {
                         part_type(pdev, PART_TABLE_OFF + \
                                         x * sizeof(struct part_entry), \
                                         &partitions[y]);
+                        part_size(sdev, &partitions[y]);
                     }
                 }
             }
@@ -139,6 +169,7 @@ static void print_partitions(char *dev, device_t *device) {
         if (partitions[x].exists) {
             printf("    %s) ", pdev);
             print_ind(partitions[x].type);
+            printf(" (%lu %s)", partitions[x].size, unitstr[units]);
             printf("\n");
             if (partitions[x].type == 0x81 /* MINIX */) {
                 partition_t *partitions = device->subpartitions[x];
@@ -147,6 +178,7 @@ static void print_partitions(char *dev, device_t *device) {
                     if (partitions[y].exists) {
                         printf("        %s) ", sdev);
                         print_ind(partitions[y].type);
+                        printf(" (%lu %s)", partitions[y].size, unitstr[units]);
                         printf("\n");
                     } else {
                         if (eflag) printf("        %s) n/a\n", sdev);
@@ -202,7 +234,11 @@ static void usage(char *myname) {
                     "  -d  include harddisk devices\n"
                     "  -e  include non-existent devices\n"
                     "  -h  print this help message\n"
-                    "  -u  include unknown devices\n");
+                    "  -u  include unknown devices\n"
+                    "  -k  print sizes in kB\n"
+                    "  -m  print sizes in MB\n"
+                    "  -g  print sizes in GB\n");
+
     _exit(1);
 }
 
@@ -218,6 +254,9 @@ static void parse_args(int argc, char **argv) {
                 case 'd':   dflag = 1;      break;
                 case 'e':   eflag = 1;      break;
                 case 'u':   uflag = 1;      break;
+                case 'k':   units = UNITS_KB;   break;
+                case 'm':   units = UNITS_MB;   break;
+                case 'g':   units = UNITS_GB;   break;
                 default:
                 case 'h':   usage(myname);  break;
             }

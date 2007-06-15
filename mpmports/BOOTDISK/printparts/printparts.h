@@ -7,6 +7,7 @@
 typedef struct partition_s {
     int             exists;
     unsigned char   type;
+    unsigned long   size;
 } partition_t;
 
 typedef partition_t partitions_t[nr_partitions];
