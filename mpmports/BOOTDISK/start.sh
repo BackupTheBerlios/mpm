@@ -57,7 +57,7 @@ set_time() {
     h=`echo $r | cut -d ':' -f 1`
     m=`echo $r | cut -d ':' -f 2`
     s=`echo $r | cut -d ':' -f 3`
-    date $h$m$s
+    date $h$m$s >/dev/null
 }
 
 time_and_date() {
