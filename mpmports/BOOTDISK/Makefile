@@ -12,7 +12,7 @@ all:
 printparts/printparts:
 	cd printparts && make
 
-usr.bz2: usr.proto rc.usr printparts/printparts
+usr.bz2: usr.proto rc.usr printparts/printparts lazybox
 	@sh mk.usr.sh
 
 boottool/boottool:
@@ -33,6 +33,10 @@ fd0: image
 diskimage: fd0
 	@echo "*** Extracting bootdisk.img from /dev/fd0"
 	dd if=/dev/fd0 of=bootdisk.img bs=1024 count=1440
+
+lazybox:
+	@echo "lazybox is missing"
+	@echo "create lazybox manually in the lazybox directory and move it here"
 
 clean:
 	rm -f *~ bootdisk.img usr usr.bz2 root root.s bintoc memory .*~ work/* image
