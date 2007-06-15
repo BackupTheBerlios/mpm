@@ -104,6 +104,13 @@ Perhaps less challenging than having a bunzipping bootloader is porting
 than bzip2, this could be usefull, as 7zip is able to compress up to 15%
 smaller than bzip2 (relative to the compressed bz2 filesize).
 
+[update: I read the code of 7zip's LZMA SDK and this might be feasible. There
+is a decoder written in C which is fairly small already and runs on systems
+without (u)int64 support. Downside is that the encoder is written in either
+C++ or C# and no C version is available. By the looks of it, porting to C will
+take quite some time. I could of course encode under Linux or *BSD, but
+that will make mpmports not self-contained anymore.]
+
 * 7unzipping bootloader
 
 et cetera... :)
