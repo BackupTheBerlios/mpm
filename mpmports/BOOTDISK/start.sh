@@ -92,7 +92,6 @@ ethernet_chip() {
     r=`dialog --no-cancel --stdout \
               --radiolist \
               "Please select your ethernet card" 0 0 0 \
-              "No networking" "" off \
               "Intel Pro/100" "" off \
               "3Com 501 / 3Com 509 based card" "" off \
               "Realtek 8139 based card" "" off \
@@ -107,7 +106,8 @@ ethernet_chip() {
         *8029*) q="dp8390@DPETH0=pci" ;;
         NE200*) q="dp8390@DPETH0=240:9" ;;
         AMD*L*) q="lance@" ;;
-        *)      q="none@" ;;
+        *)      echo "This should not be possible. There's a bug in $0."
+                exit 2 ;;
     esac
 
     ethname="$r"
