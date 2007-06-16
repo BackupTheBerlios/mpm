@@ -114,16 +114,49 @@ ethernet_chip() {
     ethargs="${ethdriver}_args='"`echo "$q" | cut -d '@' -f 2`"'"
 }
 
+dhcp_or_manual() {
+    r=`dialog --no-cancel --stdout \
+              --radiolist \
+              "Network Settings" 0 0 0 \
+              "Manual" "" on \
+              "DHCP" "" off `
+    test "$r" = "Manual" && netdhcp=0 || netdhcp=1
+}
+
+network_settings() {
+    r=`dialog --no-cancel --stdout \
+              --form \
+              "Network Settings" 0 0 0 \
+              "IP Address" 1 0 "$netip"   1 15 15 15 \
+              "Netmask"    2 0 "$netmask" 2 15 15 15 \
+              "Nameserver" 3 0 "$netdns"  3 15 15 15 \
+              "Gateway"    4 0 "$netgw"   4 15 15 15 \
+              "MTU"        5 0 "$netmtu"  5 15  5  5 `
+    netip=`  echo "$r" | head -1`
+    netmask=`echo "$r" | head -2 | tail -1`
+    netdns=` echo "$r" | head -3 | tail -1`
+    netgw=`  echo "$r" | head -4 | tail -1`
+    netmtu=` echo "$r" | head -5 | tail -1`
+}
+
 # -----------------------------------------------------------------------------
 
 ethdriver="none"
 ethargs=""
+netdhcp=0
+netip=192.168.0.
+netmask=255.255.255.0
+netdns=192.168.0.1
+netgw=192.168.0.1
+netmtu=1500
 
 welcome
 set_keymap
 time_and_date
 at_or_bios_wini
 ethernet_chip
+dhcp_or_manual
+test $netdhcp -eq 0 && network_settings
 
 # -----------------------------------------------------------------------------
 
