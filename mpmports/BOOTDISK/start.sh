@@ -92,24 +92,25 @@ ethernet_chip() {
     r=`dialog --no-cancel --stdout \
               --radiolist \
               "Please select your ethernet card" 0 0 0 \
-              "0" "No networking" off \
-              "1" "Intel Pro/100" off \
-              "2" "3Com 501 / 3Com 509 based card" off \
-              "3" "Realtek 8139 based card" off \
-              "4" "Realtek 8029 based card (use by Qemu)" off \
-              "5" "NE2000, 3Com 503 or WD based card (used by Bochs)" off \
-              "6" "AMD LANCE (used by VMware)" on `
+              "No networking" "" off \
+              "Intel Pro/100" "" off \
+              "3Com 501 / 3Com 509 based card" "" off \
+              "Realtek 8139 based card" "" off \
+              "Realtek 8029 based card (use by Qemu)" "" off \
+              "NE2000, 3Com 503 or WD based card (used by Bochs)" "" off \
+              "AMD LANCE (used by VMware)" "" on `
 
     case $r in
-        1)  q="fxp@" ;;
-        2)  q="dpeth@" ;;
-        3)  q="rtl8139@" ;;
-        4)  q="dp8390@DPETH0=pci" ;;
-        5)  q="dp8390@DPETH0=240:9" ;;
-        6)  q="lance@" ;;
-        *)  q="none@" ;;
+        Intel*) q="fxp@" ;;
+        3Com**) q="dpeth@" ;;
+        *8139*) q="rtl8139@" ;;
+        *8029*) q="dp8390@DPETH0=pci" ;;
+        NE200*) q="dp8390@DPETH0=240:9" ;;
+        AMD*L*) q="lance@" ;;
+        *)      q="none@" ;;
     esac
 
+    ethname="$r"
     ethdriver=`echo "$q" | cut -d '@' -f 1`
     ethargs="${ethdriver}_args='"`echo "$q" | cut -d '@' -f 2`"'"
 }
@@ -141,6 +142,7 @@ network_settings() {
 
 # -----------------------------------------------------------------------------
 
+ethname="none"
 ethdriver="none"
 ethargs=""
 netdhcp=0
