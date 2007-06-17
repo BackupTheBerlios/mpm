@@ -88,6 +88,8 @@ at_or_bios_wini() {
 
 # -----------------------------------------------------------------------------
 
+allethdrivers="fxp dpeth rtl8139 dp8390 lance"
+
 ethernet_chip() {
     r=`dialog --no-cancel --stdout \
               --radiolist \
@@ -105,14 +107,15 @@ ethernet_chip() {
         *8139*) q="rtl8139@" ;;
         *8029*) q="dp8390@DPETH0=pci" ;;
         NE200*) q="dp8390@DPETH0=240:9" ;;
-        AMD*L*) q="lance@" ;;
+        AMD*L*) q="lance@LANCE0=on" ;;
         *)      echo "This should not be possible. There's a bug in $0."
                 exit 2 ;;
     esac
 
     ethname="$r"
     ethdriver=`echo "$q" | cut -d '@' -f 1`
-    ethargs="${ethdriver}_args='"`echo "$q" | cut -d '@' -f 2`"'"
+    ethjustargs=`echo "$q" | cut -d '@' -f 2`
+    ethargs="${ethdriver}_args='$ethjustargs'"
 }
 
 dhcp_or_manual() {
@@ -140,25 +143,64 @@ network_settings() {
     netmtu=` echo "$r" | head -5 | tail -1`
 }
 
+kill_service_by_fullname() {
+    tmp=`ps -ef | grep $1 | grep -v grep`
+    pid=`echo $tmp | cut -d ' ' -f 4`
+    test -n "$pid" && service down $pid
+}
+
+network_restart() {
+    echo "eth0 $ethdriver 0 { default; };" > /etc/inet.conf
+    echo "127.0.0.1 localhost" >  /etc/hosts
+    echo "$netdns %nameserver" >> /etc/hosts
+    echo "minix-install" > /etc/hostname.file
+
+    pid=`cat /usr/run/nonamed.pid` 2>/dev/null
+    test -n "$pid" && kill $pid
+    kill_service_by_fullname /sbin/inet
+
+    for i in $allethdrivers ; do
+        kill_service_by_fullname /sbin/$i
+    done
+
+    echo "Bringing up network..."
+
+    test -n "$ethjustargs" && args="-args $ethargs"
+    service up /sbin/$ethdriver $args -period 5HZ
+    service up /sbin/inet
+    ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
+    add_route -I /dev/ip -g $netgw
+    nonamed -L &
+}
+
 # -----------------------------------------------------------------------------
 
 ethname="none"
 ethdriver="none"
 ethargs=""
+ethjustargs=""
 netdhcp=0
 netip=192.168.0.
 netmask=255.255.255.0
 netdns=192.168.0.1
 netgw=192.168.0.1
 netmtu=1500
+netup=no
 
 welcome
 set_keymap
 time_and_date
 at_or_bios_wini
-ethernet_chip
-dhcp_or_manual
-test $netdhcp -eq 0 && network_settings
+
+while test "$netup" = "no" ; do
+    ethernet_chip
+    dhcp_or_manual
+    test $netdhcp -eq 0 && network_settings
+
+    network_restart
+
+    ping $netdns >/dev/null 2>&1 && netup=yes
+done
 
 # -----------------------------------------------------------------------------
 
