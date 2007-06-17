@@ -165,7 +165,7 @@ network_restart() {
 
     echo "Bringing up network..."
 
-    test -n "$ethjustargs" && args="-args $ethargs"
+    test -n "$ethjustargs" && args="-args $ethjustargs"
     service up /sbin/$ethdriver $args -period 5HZ
     service up /sbin/inet
     ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
