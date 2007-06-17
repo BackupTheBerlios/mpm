@@ -45,7 +45,7 @@ mkdir /usr/tmp
 ln -s /usr/tmp /tmp
 rm -rf /dev
 cd /usr/etc
-cp termcap passwd group /etc
+cp termcap passwd group services /etc
 ln -s /usr/bin/lazybox /bin/pwd
 ln -s /usr/sbin /sbin
 mkdir /mnt
