@@ -65,6 +65,7 @@ echo -n "Servers:"
 up "" /sbin/is -period 5HZ
 
 echo -n "Drivers:"
+up "-n" /sbin/random -dev /dev/random -period 3HZ
 up "-n" /sbin/cmos -dev /dev/cmos -period 5HZ
 up "" /sbin/pci
 
