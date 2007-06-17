@@ -40,7 +40,7 @@ ok
 
 echo -n "Reordering filesystem: "
 rm -f /usr.bz2
-cp /usr/bin/sh /bin/sh      # overwrite bintool
+cp /usr/bin/sh /bin/sh      # overwrite boottool
 mkdir /usr/tmp /usr/adm /usr/run /mnt
 ln -s /usr/tmp /tmp
 rm -rf /dev
