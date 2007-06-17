@@ -1,0 +1,2 @@
+- instead of copying system tools unmodified from running system to usr-fs,
+  copy them to work/ first and set stacksizes ourselves.
