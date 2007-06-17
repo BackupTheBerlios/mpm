@@ -41,14 +41,13 @@ ok
 echo -n "Reordering filesystem: "
 rm -f /usr.bz2
 cp /usr/bin/sh /bin/sh      # overwrite bintool
-mkdir /usr/tmp
+mkdir /usr/tmp /usr/adm /usr/run /mnt
 ln -s /usr/tmp /tmp
 rm -rf /dev
 cd /usr/etc
 cp termcap passwd group services /etc
 ln -s /usr/bin/lazybox /bin/pwd
 ln -s /usr/sbin /sbin
-mkdir /mnt
 ok
 
 echo -n "Populating /dev: "
