@@ -70,8 +70,10 @@ up "" /sbin/pci
 
 readclock
 
-echo "Press ENTER to start installation"
+echo "Press ENTER to continue"
 echo -n ":"
 intr read ans
+
+intr /usr/bin/start.sh
 
 exec intr /usr/bin/sh -i
