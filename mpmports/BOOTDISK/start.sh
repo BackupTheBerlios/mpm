@@ -16,6 +16,7 @@ WELCOME="        Welcome to the MPMPORTS Minix distribution, $VERSION
 The Vrije Universiteit DOES NOT actively endorse, support or affiliates
                  itself with this project in ANY WAY
 "
+ABOUT="/usr/lib/about.txt"
 
 welcome() {
     r=""
@@ -31,8 +32,9 @@ welcome() {
                 "Exit" "Exit to shell" `
         case "$r" in
             Install)    : ;;
-            About)      : ;;
-            License)    : ;;
+            About)
+                dialog --no-cancel --begin 3 1 --textbox $ABOUT 20 76 
+                ;;
             Exit)       exit 0 ;;
         esac
     done
