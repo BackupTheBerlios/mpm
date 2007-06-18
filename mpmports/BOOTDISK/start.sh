@@ -64,10 +64,10 @@ time_and_date() {
     while test "$r" != "Done" ; do
         DATE=`date`
         r=`dialog --no-cancel --stdout \
-                  --menu "$DATE" 7 36 0 "Refresh" ""  \
+                  --menu "$DATE" 7 36 0 "Done" ""  \
                                         "Set date" "" \
                                         "Set time" "" \
-                                        "Done" ""`
+                                        "Refresh" ""`
         case "$r" in
             *date) set_date ;;
             *time) set_time ;;
