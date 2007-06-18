@@ -155,7 +155,7 @@ network_restart() {
     echo "$netdns %nameserver" >> /etc/hosts
     echo "minix-install" > /etc/hostname.file
 
-    pid=`cat /usr/run/nonamed.pid` 2>/dev/null
+    pid=`cat /usr/run/nonamed.pid 2>/dev/null`
     test -n "$pid" && kill $pid
     kill_service_by_fullname /sbin/inet
 
