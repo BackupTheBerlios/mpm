@@ -12,7 +12,7 @@ all:
 printparts/printparts:
 	cd printparts && make
 
-usr.bz2: usr.proto rc.usr printparts/printparts lazybox start.sh
+usr.bz2: usr.proto rc.usr printparts/printparts lazybox start.sh about.txt
 	@sh mk.usr.sh
 
 boottool/boottool:
