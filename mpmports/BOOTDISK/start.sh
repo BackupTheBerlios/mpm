@@ -9,27 +9,31 @@ export TERM TERMCAP DIALOGOPTS
 
 # -----------------------------------------------------------------------------
 
-WELCOME="Welcome to the MPMPORTS Minix distribution, $VERSION"
+WELCOME="        Welcome to the MPMPORTS Minix distribution, $VERSION
+
+     MPMPORTS Framework Copyright (C) 2006-2007 by Ivo van Poorten
+   Minix 3.1.2a Copyright (C) 1986-2006 Vrije Universiteit, Amsterdam
+The Vrije Universiteit DOES NOT actively endorse, support or affiliates
+                 itself with this project in ANY WAY
+"
 
 welcome() {
     r=""
     while test "$r" != "Install" ; do
         r=`dialog \
                 --stdout \
-                --begin 3 1 --infobox "$WELCOME" 7 76 \
+                --begin 3 1 --infobox "$WELCOME" 8 76 \
                 --and-widget \
-                --no-cancel --begin 12 22 \
-                --menu "What do you want to do?" 11 36 4 \
+                --no-cancel --begin 13 22 \
+                --menu "What do you want to do?" 10 36 3 \
                 "Install" "Install to harddisk" \
                 "About" "About MPMPORTS" \
-                "License" "View license" \
                 "Exit" "Exit to shell" `
         case "$r" in
             Install)    : ;;
             About)      : ;;
             License)    : ;;
             Exit)       exit 0 ;;
-            *)          echo blerk ;;
         esac
     done
 }
