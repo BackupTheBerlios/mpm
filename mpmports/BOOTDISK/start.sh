@@ -2,7 +2,6 @@
 
 keymaps=/usr/lib/keymaps
 
-#DEBUG="echo DEBUG:"
 VERSION="2007.0 (beta)"
 TERM=minix-color
 eval DIALOGOPTS=\'--backtitle "\"               The MPMPORTS Minix Distribution, $VERSION\""\'
@@ -83,7 +82,7 @@ at_or_bios_wini() {
               --radiolist "Please select an I/O driver" 0 0 0 \
                           "at_wini" "AT/IDE Driver" on \
                           "bios_wini" "BIOS Driver" off `
-    $DEBUG service up /sbin/$r -dev /dev/c0d0
+    service up /sbin/$r -dev /dev/c0d0
 }
 
 # -----------------------------------------------------------------------------
