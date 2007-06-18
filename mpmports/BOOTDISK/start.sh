@@ -9,12 +9,29 @@ export TERM TERMCAP DIALOGOPTS
 
 # -----------------------------------------------------------------------------
 
-welcome() {
-    dialog --begin 3 1 --msgbox "
-Welcome to the MPMPORTS Minix distribution, $VERSION
+WELCOME="Welcome to the MPMPORTS Minix distribution, $VERSION"
 
-Not much to say here at the moment, so let's continue with the installation.
-" 20 76
+welcome() {
+    r=""
+    while test "$r" != "Install" ; do
+        r=`dialog \
+                --stdout \
+                --begin 3 1 --infobox "$WELCOME" 7 76 \
+                --and-widget \
+                --no-cancel --begin 12 22 \
+                --menu "What do you want to do?" 11 36 4 \
+                "Install" "Install to harddisk" \
+                "About" "About MPMPORTS" \
+                "License" "View license" \
+                "Exit" "Exit to shell" `
+        case "$r" in
+            Install)    : ;;
+            About)      : ;;
+            License)    : ;;
+            Exit)       exit 0 ;;
+            *)          echo blerk ;;
+        esac
+    done
 }
 
 # -----------------------------------------------------------------------------
@@ -149,6 +166,9 @@ kill_service_by_fullname() {
 }
 
 network_restart() {
+    dialog --infobox "Preparing..." 3 40
+    sleep 1
+
     echo "eth0 $ethdriver 0 { default; };" > /etc/inet.conf
     echo "127.0.0.1 localhost" >  /etc/hosts
     echo "$netdns %nameserver" >> /etc/hosts
@@ -162,7 +182,8 @@ network_restart() {
         kill_service_by_fullname /sbin/$i
     done
 
-    echo "Bringing up network..."
+    dialog --infobox "Bringing up networking..." 3 40
+    sleep 1
 
     test -n "$ethjustargs" && args="-args $ethjustargs"
     service up /sbin/$ethdriver $args -period 5HZ
@@ -199,6 +220,12 @@ while test "$netup" = "no" ; do
     network_restart
 
     ping $netdns >/dev/null 2>&1 && netup=yes
+
+    if test "$netup" = "no" ; then
+        dialog --ok-label "Retry" --msgbox "Cannot bring up networking!" 5 40
+    else
+        dialog --ok-label "Continue" --msgbox "Networking OK" 5 40
+    fi
 done
 
 # -----------------------------------------------------------------------------
