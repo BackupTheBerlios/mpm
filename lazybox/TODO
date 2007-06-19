@@ -1,0 +1,3 @@
+chgrp == chown
+uptime == last
+perhaps add part and sh and other non-'simple' tools
