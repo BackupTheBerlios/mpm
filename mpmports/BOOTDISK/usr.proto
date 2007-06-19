@@ -18,6 +18,7 @@ d--755 0 0
         loadkeys ---755 0 0 /bin/loadkeys
         start.sh ---755 0 0 start.sh
         printparts ---755 0 0 printparts/printparts
+        part ---755 0 0 /usr/bin/part
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr
