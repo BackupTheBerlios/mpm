@@ -51,10 +51,9 @@ set_keymap() {
     done
     r=""
     while test -z "$r" ; do
-    r=`eval dialog --no-cancel --stdout \
-              --radiolist \"Please select a keymap\" 0 0 0 \
-                          us-std \"\" on \
-                          $items`
+        r=`eval dialog --no-cancel --stdout \
+                       --radiolist \"Please select a keymap\" 0 0 0 \
+                       us-std \"\" on $items`
     done
     loadkeys $keymaps/$r.map
 }
@@ -67,8 +66,8 @@ set_date() {
     D=`date +%d`
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --calendar "Please specify the current date" 0 0 $D $M $Y`
+        r=`dialog --no-cancel --stdout \
+                  --calendar "Please specify the current date" 0 0 $D $M $Y`
     done
     D=`echo $r | cut -d '/' -f 1`
     M=`echo $r | cut -d '/' -f 2`
@@ -82,8 +81,8 @@ set_time() {
     s=`date +%S`
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --timebox "Please specify the current time" 0 0 $h $m $s`
+        r=`dialog --no-cancel --stdout \
+                  --timebox "Please specify the current time" 0 0 $h $m $s`
     done
     h=`echo $r | cut -d ':' -f 1`
     m=`echo $r | cut -d ':' -f 2`
@@ -112,10 +111,10 @@ time_and_date() {
 at_or_bios_wini() {
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --radiolist "Please select an I/O driver" 0 0 0 \
-                          "at_wini" "AT/IDE Driver" on \
-                          "bios_wini" "BIOS Driver" off `
+        r=`dialog --no-cancel --stdout \
+                  --radiolist "Please select an I/O driver" 0 0 0 \
+                              "at_wini" "AT/IDE Driver" on \
+                              "bios_wini" "BIOS Driver" off `
     done
     service up /sbin/$r -dev /dev/c0d0
 }
@@ -127,15 +126,15 @@ allethdrivers="fxp dpeth rtl8139 dp8390 lance"
 ethernet_chip() {
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --radiolist \
-              "Please select your ethernet card" 0 0 0 \
-              "Intel Pro/100" "" off \
-              "3Com 501 / 3Com 509 based card" "" off \
-              "Realtek 8139 based card" "" off \
-              "Realtek 8029 based card (use by Qemu)" "" off \
-              "NE2000, 3Com 503 or WD based card (used by Bochs)" "" off \
-              "AMD LANCE (used by VMware)" "" on `
+        r=`dialog --no-cancel --stdout \
+                  --radiolist \
+                  "Please select your ethernet card" 0 0 0 \
+                  "Intel Pro/100" "" off \
+                  "3Com 501 / 3Com 509 based card" "" off \
+                  "Realtek 8139 based card" "" off \
+                  "Realtek 8029 based card (use by Qemu)" "" off \
+                  "NE2000, 3Com 503 or WD based card (used by Bochs)" "" off \
+                  "AMD LANCE (used by VMware)" "" on `
     done
 
     case $r in
@@ -158,11 +157,11 @@ ethernet_chip() {
 dhcp_or_manual() {
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --radiolist \
-              "Network Settings" 0 0 0 \
-              "Manual" "" on \
-              "DHCP" "" off `
+        r=`dialog --no-cancel --stdout \
+                  --radiolist \
+                  "Network Settings" 0 0 0 \
+                  "Manual" "" on \
+                  "DHCP" "" off `
     done
     test "$r" = "Manual" && netdhcp=0 || netdhcp=1
 }
@@ -170,14 +169,14 @@ dhcp_or_manual() {
 network_settings() {
     r=""
     while test -z "$r" ; do
-    r=`dialog --no-cancel --stdout \
-              --form \
-              "Network Settings" 0 0 0 \
-              "IP Address" 1 0 "$netip"   1 15 15 15 \
-              "Netmask"    2 0 "$netmask" 2 15 15 15 \
-              "Nameserver" 3 0 "$netdns"  3 15 15 15 \
-              "Gateway"    4 0 "$netgw"   4 15 15 15 \
-              "MTU"        5 0 "$netmtu"  5 15  5  5 `
+        r=`dialog --no-cancel --stdout \
+                  --form \
+                  "Network Settings" 0 0 0 \
+                  "IP Address" 1 0 "$netip"   1 15 15 15 \
+                  "Netmask"    2 0 "$netmask" 2 15 15 15 \
+                  "Nameserver" 3 0 "$netdns"  3 15 15 15 \
+                  "Gateway"    4 0 "$netgw"   4 15 15 15 \
+                  "MTU"        5 0 "$netmtu"  5 15  5  5 `
     done
     netip=`  echo "$r" | head -1`
     netmask=`echo "$r" | head -2 | tail -1`
