@@ -193,7 +193,6 @@ kill_service_by_fullname() {
 
 network_restart() {
     dialog --infobox "Preparing..." 3 40
-    sleep 1
 
     echo "eth0 $ethdriver 0 { default; };" > /etc/inet.conf
     echo "127.0.0.1 localhost" >  /etc/hosts
@@ -203,10 +202,12 @@ network_restart() {
     pid=`cat /usr/run/nonamed.pid 2>/dev/null`
     test -n "$pid" && kill $pid
     kill_service_by_fullname /sbin/inet
+    sleep 1
 
     for i in $allethdrivers ; do
         kill_service_by_fullname /sbin/$i
     done
+    sleep 1
 
     dialog --infobox "Bringing up networking..." 3 40
     sleep 1
@@ -217,6 +218,7 @@ network_restart() {
     ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
     add_route -I /dev/ip -g $netgw
     nonamed -L &
+    sleep 1
 }
 
 # -----------------------------------------------------------------------------
