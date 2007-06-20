@@ -191,6 +191,12 @@ kill_service_by_fullname() {
     test -n "$pid" && service down $pid
 }
 
+kill_proc_by_fullname() {
+    tmp=`ps -ef | grep $1 | grep -v grep`
+    pid=`echo $tmp | cut -d ' ' -f 4`
+    test -n "$pid" && kill $2 $pid
+}
+
 network_restart() {
     dialog --infobox "Preparing..." 3 40
 
@@ -201,6 +207,7 @@ network_restart() {
 
     pid=`cat /usr/run/nonamed.pid 2>/dev/null`
     test -n "$pid" && kill $pid
+    kill_proc_by_fullname dhcpd
     kill_service_by_fullname /sbin/inet
     sleep 1
 
