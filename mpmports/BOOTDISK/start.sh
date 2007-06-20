@@ -233,6 +233,36 @@ network_restart() {
     sleep 1
 }
 
+network() {
+    while test "$netup" = "no" ; do
+        ethernet_chip
+        dhcp_or_manual
+        test $netdhcp -eq 0 && network_settings
+
+        network_restart
+
+        netup=yes
+
+        trap '' 2
+        intr -t 10 hostaddr -h || netup=no
+        trap 2
+
+        if test "$netup" = "yes" ; then
+            trap '' 2
+            intr -t 10 ping $netdns >/dev/null 2>&1 || netup=no
+            trap 2
+        fi
+
+        if test "$netup" = "no" ; then
+            dialog --ok-label "Retry" \
+                   --msgbox "Cannot bring up networking!" 5 40
+        else
+            dialog --ok-label "Continue" \
+                   --msgbox "Networking OK" 5 40
+        fi
+    done
+}
+
 # -----------------------------------------------------------------------------
 
 ethname="none"
@@ -251,32 +281,7 @@ welcome
 set_keymap
 time_and_date
 at_or_bios_wini
-
-while test "$netup" = "no" ; do
-    ethernet_chip
-    dhcp_or_manual
-    test $netdhcp -eq 0 && network_settings
-
-    network_restart
-
-    netup=yes
-
-    trap '' 2
-    intr -t 10 hostaddr -h || netup=no
-    trap 2
-
-    if test "$netup" = "yes" ; then
-        trap '' 2
-        intr -t 10 ping $netdns >/dev/null 2>&1 || netup=no
-        trap 2
-    fi
-
-    if test "$netup" = "no" ; then
-        dialog --ok-label "Retry" --msgbox "Cannot bring up networking!" 5 40
-    else
-        dialog --ok-label "Continue" --msgbox "Networking OK" 5 40
-    fi
-done
+network
 
 # -----------------------------------------------------------------------------
 
