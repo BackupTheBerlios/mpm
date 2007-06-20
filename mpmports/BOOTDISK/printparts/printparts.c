@@ -41,7 +41,7 @@ ind_t ind_table[] = {
 #define UNITS_GB    3
 
 static const char* unitstr[4] = { "bytes", "kB", "MB", "GB" };
-static const unsigned int factors[4] = { 0, 1024, 1024*1024, 1024*1024*1024 };
+static const unsigned int factors[4] = { 1, 1024, 1024*1024, 1024*1024*1024 };
 
 static int cflag = 0, dflag = 0, eflag = 0, uflag = 0, units = UNITS_B;
 
