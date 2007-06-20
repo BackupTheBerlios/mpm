@@ -219,9 +219,9 @@ network_restart() {
     if test $netdhcp -eq 1 ; then
         dhcpd &
     else
-    ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
-    add_route -I /dev/ip -g $netgw
-    nonamed -L &
+        ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
+        add_route -I /dev/ip -g $netgw
+        nonamed -L &
     fi
     sleep 1
 }
