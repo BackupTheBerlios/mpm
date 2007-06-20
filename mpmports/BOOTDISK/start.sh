@@ -310,10 +310,10 @@ insts1=""       # /home
 insts2=""       # /usr
 
 welcome
-#set_keymap
-#time_and_date
-#at_or_bios_wini
-#network
+set_keymap
+time_and_date
+at_or_bios_wini
+network
 partitions
 
 # -----------------------------------------------------------------------------
