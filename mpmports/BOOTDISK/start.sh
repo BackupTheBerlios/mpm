@@ -259,11 +259,17 @@ while test "$netup" = "no" ; do
 
     network_restart
 
-    ping $netdns >/dev/null 2>&1 && netup=yes
+    netup=yes
 
     trap '' 2
     intr -t 10 hostaddr -h || netup=no
     trap 2
+
+    if test "$netup" = "yes" ; then
+        trap '' 2
+        intr -t 10 ping $netdns >/dev/null 2>&1 || netup=no
+        trap 2
+    fi
 
     if test "$netup" = "no" ; then
         dialog --ok-label "Retry" --msgbox "Cannot bring up networking!" 5 40
