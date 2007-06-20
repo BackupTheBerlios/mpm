@@ -33,7 +33,8 @@ welcome() {
         case "$r" in
             Install)    : ;;
             About)
-                dialog --no-cancel --begin 3 1 --textbox $ABOUT 20 76 
+                dialog --no-cancel --exit-label "Back" \
+                       --begin 3 1 --textbox $ABOUT 20 76 
                 ;;
             Exit)       exit 0 ;;
         esac
