@@ -19,6 +19,7 @@ d--755 0 0
         start.sh ---755 0 0 start.sh
         printparts ---755 0 0 printparts/printparts
         part ---755 0 0 /usr/bin/part
+        dhcpd ---755 0 0 /usr/bin/dhcpd
 	$
 	etc d--755 0 0
         rc ---755 0 0 rc.usr
