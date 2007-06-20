@@ -266,8 +266,29 @@ network() {
 
 # -----------------------------------------------------------------------------
 
+part_intro() {
+    dialog --no-cancel --ok-label "Continue" --begin 3 1 \
+           --msgbox \
+"Next, we have to select the partition to which the system will be
+installed. Minix devices are specified as follows:
+
+/dev/c0d0[p0[s0]]
+      ^ ^  ^  ^
+      | |  |  +-- subpartitions (0-3)
+      | |  +----- primary partitions (0-3)
+      | +-------- device (0-7)
+      +---------- controller
+
+e.g. c0d0 is the first device, c0d1p1 is the second partition on the
+second device, et cetera.
+
+Minix can only be installed on primary partitions of IDE devices (SCSI
+is not supported yet).
+" 20 76 
+}
+
 partitions() {
-    :
+    part_intro
 }
 
 # -----------------------------------------------------------------------------
@@ -283,12 +304,16 @@ netdns=192.168.0.1
 netgw=192.168.0.1
 netmtu=1500
 netup=no
+instprim=""
+insts0=""       # /
+insts1=""       # /home
+insts2=""       # /usr
 
 welcome
-set_keymap
-time_and_date
-at_or_bios_wini
-network
+#set_keymap
+#time_and_date
+#at_or_bios_wini
+#network
 partitions
 
 # -----------------------------------------------------------------------------
