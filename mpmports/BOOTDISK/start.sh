@@ -215,9 +215,14 @@ network_restart() {
     test -n "$ethjustargs" && args="-args $ethjustargs"
     service up /sbin/$ethdriver $args -period 5HZ
     service up /sbin/inet
+
+    if test $netdhcp -eq 1 ; then
+        dhcpd &
+    else
     ifconfig -I /dev/ip -h $netip -n $netmask -m $netmtu
     add_route -I /dev/ip -g $netgw
     nonamed -L &
+    fi
     sleep 1
 }
 
@@ -248,6 +253,10 @@ while test "$netup" = "no" ; do
     network_restart
 
     ping $netdns >/dev/null 2>&1 && netup=yes
+
+    trap '' 2
+    intr -t 10 hostaddr -h || netup=no
+    trap 2
 
     if test "$netup" = "no" ; then
         dialog --ok-label "Retry" --msgbox "Cannot bring up networking!" 5 40
