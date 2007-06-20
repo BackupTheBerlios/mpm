@@ -194,7 +194,7 @@ kill_service_by_fullname() {
 kill_proc_by_fullname() {
     tmp=`ps -ef | grep $1 | grep -v grep`
     pid=`echo $tmp | cut -d ' ' -f 4`
-    test -n "$pid" && kill $2 $pid
+    test -n "$pid" && kill $2 $pid && sleep 3
 }
 
 network_restart() {
