@@ -13,10 +13,10 @@
  *     * My name may NOT be used to endorse or promote products derived from
  *       this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER(S) ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -141,13 +141,27 @@ PRIVATE int init(char *name) {
         report(myname, tmp, NO_NUM);
         snprintf(tmp, 80, "TotalMemory: %i kB", VI_TOTALMEMORY(vesa) * 64);
         report(myname, tmp, NO_NUM);
-        r = sys_umap(SELF, D, tmp, 80, &tmp_phys);
+        r = sys_umap(SELF, D, (vir_bytes) tmp, 80, &tmp_phys);
         if (r != OK) panic(myname, "sys_umap failed", r);
         ptr = ((VI_OEMSTRINGPTR(vesa) >> 12) & 0x000f0000) + (VI_OEMSTRINGPTR(vesa) & 0x0000ffff);
         r = sys_abscopy(ptr, tmp_phys, 80);
         if (r != OK) panic(myname, "sys_abscopy failed", r);
         tmp[79] = 0;
         report(myname, tmp, NO_NUM);
+
+        ptr = ((VI_VIDEOMODEPTR(vesa) >> 12) & 0x000f0000) + (VI_VIDEOMODEPTR(vesa) & 0x0000ffff);
+
+#if 0
+        do {
+            int i;
+            r = sys_abscopy(ptr, tmp_phys, 2);
+            if (r != OK) panic(myname, "sys_abscopy failed", r);
+            ptr += 2;
+            i = (tmp[1]<<8)+tmp[0];
+            snprintf(tmp, 80, "listed mode: %04x", i);
+            report(myname, tmp, NO_NUM);
+        } while (i >= 0);
+#endif
     }
 #endif
 
