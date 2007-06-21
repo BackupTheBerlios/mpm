@@ -288,7 +288,11 @@ is not supported yet).
 }
 
 partitions() {
+    partdone=no
+
+    while test "$partdone" = "no" ; do
     part_intro
+    done
 }
 
 # -----------------------------------------------------------------------------
