@@ -291,7 +291,7 @@ partitions() {
     partdone=no
 
     while test "$partdone" = "no" ; do
-    part_intro
+        part_intro
     done
 }
 
