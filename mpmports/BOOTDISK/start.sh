@@ -269,7 +269,7 @@ network() {
 part_intro() {
     dialog --no-cancel --ok-label "Continue" --begin 3 1 \
            --msgbox \
-"Next, we have to select the partition to which the system will be
+"Next, you have to select the partition to which the system will be
 installed. Minix devices are specified as follows:
 
 /dev/c0d0[p0[s0]]
