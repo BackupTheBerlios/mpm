@@ -287,11 +287,26 @@ is not supported yet).
 " 20 76 
 }
 
+part_menu() {
+    r=""
+    while test "$r" != "Select Partition" ; do
+        r=`dialog \
+                --stdout --no-cancel \
+                --menu "What do you want to do?" 0 0 0 \
+                "Select Partition" "" \
+                "Partition Editor" "" `
+        case "$r" in
+            Part*)  part    ;;
+        esac
+    done
+}
+
 partitions() {
     partdone=no
 
     while test "$partdone" = "no" ; do
         part_intro
+        part_menu
     done
 }
 
