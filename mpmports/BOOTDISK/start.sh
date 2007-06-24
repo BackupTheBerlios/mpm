@@ -12,7 +12,7 @@ export TERM TERMCAP DIALOGOPTS
 WELCOME="        Welcome to the MPMPORTS Minix distribution, $VERSION
 
      MPMPORTS Framework Copyright (C) 2006-2007 by Ivo van Poorten
-   Minix 3.1.2a Copyright (C) 1986-2006 Vrije Universiteit, Amsterdam
+      MINIX Copyright (C) 1986-2007 Vrije Universiteit, Amsterdam
 The Vrije Universiteit DOES NOT actively endorse, support or affiliates
                  itself with this project in ANY WAY
 "
