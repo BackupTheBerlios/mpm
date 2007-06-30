@@ -287,15 +287,34 @@ is not supported yet).
 " 20 76 
 }
 
+devdump=/tmp/devdump
+primdump=/tmp/primdump
+
+select_prim_part() {
+    dialog --infobox "Scanning devices..." 3 40
+    printparts -m -d -c > $devdump
+
+    grep "^    [^ ]" $devdump | cut -d ')' -f 1 |
+        sed 's/\(.*\)/\1 _ off/' > $primdump
+    primlist=`cat $primdump`
+
+    instprim=`dialog --stdout --keep-window --begin 3 1 \
+        --infobox "This are the devices I found..." 3 50 \
+        --and-widget --keep-window --begin 8 1 --exit-label "Continue" \
+        --textbox $devdump 15 50 \
+        --and-widget --begin 3 54 --no-cancel \
+        --radiolist "Select partition" 20 23 13 $primlist `
+}
+
 part_menu() {
-    r=""
-    while test "$r" != "Select Partition" ; do
+    while test -z "$instprim" ; do
         r=`dialog \
                 --stdout --no-cancel \
                 --menu "What do you want to do?" 0 0 0 \
-                "Select Partition" "" \
+                "Select Primary Partition" "" \
                 "Partition Editor" "" `
         case "$r" in
+            Sele*)  select_prim_part    ;;
             Part*)  part    ;;
         esac
     done
