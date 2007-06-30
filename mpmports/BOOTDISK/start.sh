@@ -320,12 +320,51 @@ part_menu() {
     done
 }
 
+part_subs() {
+    printparts -m -d | grep "$instprim" > $devdump
+
+    doautopart=no
+
+    insts0="$instprim/s0"
+    insts1="$instprim/s1"
+    insts2="$instprim/s2"
+
+    s0=`cat $devdump | grep "$insts0"`
+    s1=`cat $devdump | grep "$insts1"`
+    s2=`cat $devdump | grep "$insts2"`
+
+    r=""
+    while test -z "$r" ; do
+        if test -n "$s0" -a -n "$s1" -a -n "$s2" ; then
+            dialog --stdout --no-cancel --yesno \
+"Selected primary partition: $instprim
+
+Use existing sub-partitions?" 7 50
+            r="$?"
+            case "$r" in
+                0)  return  ;;
+                1)          ;;  # NO, next step
+                *)  r=""    ;;  # ESC, repeat
+            esac
+        fi
+    done
+
+    doautopart=yes
+}
+
+part_confirm() {
+    :
+}
+
 partitions() {
     partdone=no
 
     while test "$partdone" = "no" ; do
         part_intro
+        instprim=""
         part_menu
+        part_subs
+        part_confirm
     done
 }
 
@@ -346,12 +385,16 @@ instprim=""
 insts0=""       # /
 insts1=""       # /home
 insts2=""       # /usr
+doautopart=no
+formats0=yes
+formats1=no
+formats2=yes
 
 welcome
-set_keymap
-time_and_date
-at_or_bios_wini
-network
+#set_keymap
+#time_and_date
+#at_or_bios_wini
+#network
 partitions
 
 # -----------------------------------------------------------------------------
