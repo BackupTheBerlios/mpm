@@ -6,6 +6,7 @@ VERSION="2007.0 (beta)"
 TERM=minix-color
 eval DIALOGOPTS=\'--backtitle "\"               The MPMPORTS Minix Distribution, $VERSION\""\'
 export TERM TERMCAP DIALOGOPTS
+maxmnxfssize=2048       # or was it 4096? check later
 
 # -----------------------------------------------------------------------------
 
@@ -325,35 +326,51 @@ part_subs() {
 
     doautopart=no
 
-    insts0="$instprim/s0"
-    insts1="$instprim/s1"
-    insts2="$instprim/s2"
+    insts0="${instprim}s0"
+    insts1="${instprim}s1"
+    insts2="${instprim}s2"
 
     s0=`cat $devdump | grep "$insts0"`
     s1=`cat $devdump | grep "$insts1"`
     s2=`cat $devdump | grep "$insts2"`
 
-    r=""
-    while test -z "$r" ; do
-        if test -n "$s0" -a -n "$s1" -a -n "$s2" ; then
+    if test -n "$s0" -a -n "$s1" -a -n "$s2" ; then
+        r=""
+        while test -z "$r" ; do
             dialog --stdout --no-cancel --yesno \
 "Selected primary partition: $instprim
 
 Use existing sub-partitions?" 7 50
             r="$?"
             case "$r" in
-                0)  return  ;;
+                0)
+                    insts0size=`echo $s0 | cut -d '(' -f 2 | cut -d ' ' -f 1`
+                    insts1size=`echo $s1 | cut -d '(' -f 2 | cut -d ' ' -f 1`
+                    insts2size=`echo $s2 | cut -d '(' -f 2 | cut -d ' ' -f 1`
+                    return  ;;
                 1)          ;;  # NO, next step
                 *)  r=""    ;;  # ESC, repeat
             esac
-        fi
-    done
+        done
+    fi
 
     doautopart=yes
+
+    instprimsize=`cat $devdump | head -1 | cut -d '(' -f 2 | cut -d ' ' -f 1`
+    t=`expr $instprimsize - 32`
+    insts0size=32
+    insts1size=`expr $t / 2`
+    test $insts1size -lt $maxmnxfssize && insts1size=$maxmnxfssize
+    insts2size=$insts1size
+}
+
+fmt_check() {
+    :
 }
 
 part_confirm() {
     :
+    partdone=yes
 }
 
 partitions() {
@@ -364,6 +381,7 @@ partitions() {
         instprim=""
         part_menu
         part_subs
+        fmt_check
         part_confirm
     done
 }
@@ -385,6 +403,10 @@ instprim=""
 insts0=""       # /
 insts1=""       # /home
 insts2=""       # /usr
+instprimsize=""
+insts0size=""
+insts1size=""
+insts2size=""
 doautopart=no
 formats0=yes
 formats1=no
