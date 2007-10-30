@@ -4,7 +4,7 @@ LD         ?= cc
 CFLAGS     ?= -O -D_MINIX -I${SRCPATH} -I ${SRVSRCPATH} -I${FSSRCPATH} -w
 LDFLAGS    ?= -stack 4096k -s
 
-SOURCEPATH = /mnt/src.commands/simple
+SOURCEPATH = /mnt/src/commands/simple
 SRCPATH    = /mnt/src
 SRVSRCPATH = ${SRCPATH}/servers
 FSSRCPATH  = ${SRVSRCPATH}/fs
