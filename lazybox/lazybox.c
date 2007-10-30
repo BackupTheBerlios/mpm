@@ -3,7 +3,7 @@
  *
  * Multi-call binary wrapper for Minix src/commands/simple
  *
- * Copyright (c) 2006, Ivo van Poorten
+ * Copyright (c) 2006, 2007, Ivo van Poorten
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,13 +102,11 @@ int main(int argc, char **argv) {
     if (sugid >= 0) { /* drop to listed privileges */
         if (sugidbins[sugid].u) {
             pwd = getpwnam(sugidbins[sugid].u);
-            if (pwd)
-            uid = pwd->pw_uid;
+            if (pwd) uid = pwd->pw_uid;
         }
         if (sugidbins[sugid].g) {
             grp = getgrnam(sugidbins[sugid].g);
-            if (grp)
-            gid = grp->gr_gid;
+            if (grp) gid = grp->gr_gid;
         }
     }
 
